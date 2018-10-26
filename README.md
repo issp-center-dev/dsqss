@@ -1,5 +1,7 @@
 # dsqss
 
+[![Build Status](https://travis-ci.org/issp-center-dev/dsqss.svg?branch=master)](https://travis-ci.org/issp-center-dev/dsqss)
+
 ## Build
 
 ### Simple build
