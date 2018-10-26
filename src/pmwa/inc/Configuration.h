@@ -15,7 +15,7 @@
 #include <list>
 #include <algorithm>
 #include <systemparameter.h>
-#include <mpi.h>
+#include "mpi.h"
 #include <string.h>
 
 #include <simtype.h>
@@ -298,7 +298,7 @@ private:
 
 //************************************Configurationクラスここから***********************************************************
 
-#include <Quantities.h>
+#include "Quantities.h"
 
 class Configuration : public GraphSpace {
   Lattice *LT;

@@ -113,7 +113,8 @@ Quantities::Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT, Paral
 
   int S = Nc + Nq;
 
-  newcall(values_S, Nq1);
+ // newcall(values_S, Nq1);
+  newcall(values_S, Nq);
   newcall(MCmean_S, Nq * 2);
   newcall(BINmean_S, Nq * 2 * MC->Nbin);
   //newcall(RNDmean_S,Nq*2*PR->Npara);
