@@ -1,0 +1,86 @@
+<LATTICE>
+
+<Comment>
+  1-dimension square lattice
+</Comment>
+
+<Dimension> 1 </Dimension>
+<BondDimension> 1 </BondDimension>
+<LinearSize> 30 </LinearSize>
+<Beta> 0.5 </Beta>
+<NumberOfCells> 30 </NumberOfCells>
+<NumberOfSites> 30 </NumberOfSites>
+<NumberOfInteractions> 30 </NumberOfInteractions>
+<NumberOfSiteTypes> 1 </NumberOfSiteTypes>
+<NumberOfInteractionTypes> 1 </NumberOfInteractionTypes>
+<NumberOfEdgeInteractions> 1 </NumberOfEdgeInteractions>
+
+<!-- <S> [id] [stype] [mtype] </S> -->
+<S> 0 0 0 </S>
+<S> 1 0 1 </S>
+<S> 2 0 0 </S>
+<S> 3 0 1 </S>
+<S> 4 0 0 </S>
+<S> 5 0 1 </S>
+<S> 6 0 0 </S>
+<S> 7 0 1 </S>
+<S> 8 0 0 </S>
+<S> 9 0 1 </S>
+<S> 10 0 0 </S>
+<S> 11 0 1 </S>
+<S> 12 0 0 </S>
+<S> 13 0 1 </S>
+<S> 14 0 0 </S>
+<S> 15 0 1 </S>
+<S> 16 0 0 </S>
+<S> 17 0 1 </S>
+<S> 18 0 0 </S>
+<S> 19 0 1 </S>
+<S> 20 0 0 </S>
+<S> 21 0 1 </S>
+<S> 22 0 0 </S>
+<S> 23 0 1 </S>
+<S> 24 0 0 </S>
+<S> 25 0 1 </S>
+<S> 26 0 0 </S>
+<S> 27 0 1 </S>
+<S> 28 0 0 </S>
+<S> 29 0 1 </S>
+
+<!-- <I> [id] [itype] [nbody] [s0] [s1] ... [eid] [edim] </I> -->
+
+<I> 0 0 2 0 1 -1 0 </I>
+<I> 1 0 2 1 2 -1 0 </I>
+<I> 2 0 2 2 3 -1 0 </I>
+<I> 3 0 2 3 4 -1 0 </I>
+<I> 4 0 2 4 5 -1 0 </I>
+<I> 5 0 2 5 6 -1 0 </I>
+<I> 6 0 2 6 7 -1 0 </I>
+<I> 7 0 2 7 8 -1 0 </I>
+<I> 8 0 2 8 9 -1 0 </I>
+<I> 9 0 2 9 10 -1 0 </I>
+<I> 10 0 2 10 11 -1 0 </I>
+<I> 11 0 2 11 12 -1 0 </I>
+<I> 12 0 2 12 13 -1 0 </I>
+<I> 13 0 2 13 14 -1 0 </I>
+<I> 14 0 2 14 15 -1 0 </I>
+<I> 15 0 2 15 16 -1 0 </I>
+<I> 16 0 2 16 17 -1 0 </I>
+<I> 17 0 2 17 18 -1 0 </I>
+<I> 18 0 2 18 19 -1 0 </I>
+<I> 19 0 2 19 20 -1 0 </I>
+<I> 20 0 2 20 21 -1 0 </I>
+<I> 21 0 2 21 22 -1 0 </I>
+<I> 22 0 2 22 23 -1 0 </I>
+<I> 23 0 2 23 24 -1 0 </I>
+<I> 24 0 2 24 25 -1 0 </I>
+<I> 25 0 2 25 26 -1 0 </I>
+<I> 26 0 2 26 27 -1 0 </I>
+<I> 27 0 2 27 28 -1 0 </I>
+<I> 28 0 2 28 29 -1 0 </I>
+<I> 29 0 2 29 0 0 0 </I>
+
+<!-- <V> [bond dim] [unit vectorx]...  </V> -->
+
+<V> 0 1 </V>
+</LATTICE>

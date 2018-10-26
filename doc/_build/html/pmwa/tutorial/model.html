@@ -1,0 +1,189 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>4.2.2. PMWAで扱える模型 &#8212; DSQSS 1.2.0 ドキュメント</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="検索" href="../../search.html" />
+    <link rel="next" title="4.3. チュートリアル" href="tutorial.html" />
+    <link rel="prev" title="4.2.1. 格子生成ツール：lattgene" href="lattgene.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="pmwa">
+<h1>4.2.2. PMWAで扱える模型<a class="headerlink" href="#pmwa" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>PMWAではハードコアボソン系(サイトに最大1つのボソン)とS=1/2のXXZ模型について計算可能である。ハードコアボソン系のハミルトニアンは</p>
+<div class="math">
+\[\begin{split}{\cal H} &amp;= -t_{b} \sum_{\langle i, j\rangle}b_i^{\dagger} b_j + U_{BB}\sum_i n_i(n_i -1)
++V_{B1}\sum_{\langle i, j\rangle} n_i n_j + V_{B2}\sum_{\langle\langle i, j\rangle\rangle} n_i n_j\\
+&amp;+\mu\sum_i n_i-\Gamma\sum_i(b_i^{\dagger}+b_i),\end{split}\]</div>
+<p>で与えられる。ここで、 <span class="math">\(\langle i,j \rangle\)</span> は最近接のペア、 <span class="math">\(\langle\langle i,j \rangle\rangle\)</span> は次次近接のペアをそれぞれ表す。
+S=1/2のXXZ模型は</p>
+<div class="math">
+\[{\cal H}^{XXZ} = -J_{xy} \sum_{\langle i, j\rangle}(S_i^x S_j^x + S_i^y S_j^y)-J_z\sum_{\langle i, j\rangle}S_i^zS_j^z-H \sum_{i}S_{i}^z -\Gamma \sum_i S_i^x,\]</div>
+<p>で与えられる。
+入力ファイルで指定するパラメータと上記式のパラメータは以下のように対応する。</p>
+<blockquote>
+<div><table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Boson</th>
+<th class="head">Spin</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>tb</td>
+<td><span class="math">\(t_b\)</span></td>
+<td><span class="math">\(J_{xy}\)</span></td>
+</tr>
+<tr class="row-odd"><td>UBB</td>
+<td><span class="math">\(U_{BB}\)</span></td>
+<td><cite>-</cite></td>
+</tr>
+<tr class="row-even"><td>VB1</td>
+<td><span class="math">\(V_{B1}\)</span></td>
+<td><span class="math">\(J_{z}\)</span></td>
+</tr>
+<tr class="row-odd"><td>VB2</td>
+<td><span class="math">\(V_{B2}\)</span></td>
+<td><cite>-</cite></td>
+</tr>
+<tr class="row-even"><td>MU</td>
+<td><span class="math">\(\mu\)</span></td>
+<td><span class="math">\(H\)</span></td>
+</tr>
+<tr class="row-odd"><td>G</td>
+<td><span class="math">\(\Gamma\)</span></td>
+<td><span class="math">\(\Gamma/2\)</span></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>ナビゲーション</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. DSQSSとは？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. インストール</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dla/users-manual/index.html">3. DLAのユーザーマニュアル</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tu-index.html">4. PMWAのユーザーマニュアル</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">4.1. PMWAとは？</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="usage.html">4.2. 使用方法</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="lattgene.html">4.2.1. 格子生成ツール：lattgene</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.2.2. PMWAで扱える模型</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html">4.3. チュートリアル</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html">4.4. リファレンス</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/algorithm.html">5. アルゴリズム</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="tu-index.html">4. PMWAのユーザーマニュアル</a><ul>
+  <li><a href="usage.html">4.2. 使用方法</a><ul>
+      <li>Previous: <a href="lattgene.html" title="前の章へ">4.2.1. 格子生成ツール：lattgene</a></li>
+      <li>Next: <a href="tutorial.html" title="次の章へ">4.3. チュートリアル</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="検索" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="../../_sources/pmwa/tutorial/model.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

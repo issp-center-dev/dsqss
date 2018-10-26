@@ -1,0 +1,5 @@
+find_package(PythonInterp REQUIRED)
+set(testdirs dla pmwa tool)
+foreach(testdir ${testdirs})
+  add_subdirectory(${testdir})
+endforeach(testdir)

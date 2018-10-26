@@ -1,0 +1,50 @@
+.. DSQSS documentation master file, created by
+   sphinx-quickstart on Mon Jun 11 16:12:51 2018.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to DSQSS's documentation!
+=================================
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+About DSQSS
+---------------------------------
+DSQSS is a program package for solving quantum many-body problems defined on lattices. It is based on the quantum Monte Carlo method in Feynman's path integral representation. It covers a broad range of problems taking input files that define arbitrary unit cells in arbitrary dimensions, and arbitrary matrix elements of the interactions among arbitrary number of degrees of freedom.
+
+License
+--------------
+GNU General Public License (GPL)
+The users are kindly requested to acknowledge the usage of this software in their publication, if any, based on the software, and let the developers know its reference information.
+   
+.. topic:: Acknowledgment Sample
+
+    Numerical results in the present paper were obtained by the quantum Monte Carlo program DSQSS(https://github.com/qmc/dsqss/wiki). This package is distributed under GNU General Public License version 3 (GPL v3) or later.
+
+
+Acknowledgement
+---------------
+Development of this software was and is being supported by K-computer project, and post-K computer projects.
+
+Download
+--------
+You can download software and source codes of DSQSS from `GitHub page <https://github.com/qmc/dsqss>`_.
+
+
+Contents
+--------
+.. toctree::
+   :maxdepth: 4
+   :numbered: 4
+
+   dla/users-manual/index
+   pmwa/tutorial/tu-index
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`search`

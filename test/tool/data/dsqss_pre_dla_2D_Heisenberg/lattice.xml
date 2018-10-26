@@ -1,0 +1,75 @@
+<LATTICE>
+
+<Comment>
+  2-dimension square lattice
+</Comment>
+
+<Dimension> 2 </Dimension>
+<BondDimension> 2 </BondDimension>
+<LinearSize> 4 4 </LinearSize>
+<Beta> 10 </Beta>
+<NumberOfCells> 16 </NumberOfCells>
+<NumberOfSites> 16 </NumberOfSites>
+<NumberOfInteractions> 32 </NumberOfInteractions>
+<NumberOfSiteTypes> 1 </NumberOfSiteTypes>
+<NumberOfInteractionTypes> 1 </NumberOfInteractionTypes>
+<NumberOfEdgeInteractions> 8 </NumberOfEdgeInteractions>
+
+<!-- <S> [id] [stype] [mtype] </S> -->
+<S> 0 0 0 </S>
+<S> 1 0 1 </S>
+<S> 2 0 0 </S>
+<S> 3 0 1 </S>
+<S> 4 0 1 </S>
+<S> 5 0 0 </S>
+<S> 6 0 1 </S>
+<S> 7 0 0 </S>
+<S> 8 0 0 </S>
+<S> 9 0 1 </S>
+<S> 10 0 0 </S>
+<S> 11 0 1 </S>
+<S> 12 0 1 </S>
+<S> 13 0 0 </S>
+<S> 14 0 1 </S>
+<S> 15 0 0 </S>
+
+<!-- <I> [id] [itype] [nbody] [s0] [s1] ... [eid] [edim] </I> -->
+
+<I> 0 0 2 0 1 -1 0 </I>
+<I> 1 0 2 0 4 -1 1 </I>
+<I> 2 0 2 1 2 -1 0 </I>
+<I> 3 0 2 1 5 -1 1 </I>
+<I> 4 0 2 2 3 -1 0 </I>
+<I> 5 0 2 2 6 -1 1 </I>
+<I> 6 0 2 3 0 0 0 </I>
+<I> 7 0 2 3 7 -1 1 </I>
+<I> 8 0 2 4 5 -1 0 </I>
+<I> 9 0 2 4 8 -1 1 </I>
+<I> 10 0 2 5 6 -1 0 </I>
+<I> 11 0 2 5 9 -1 1 </I>
+<I> 12 0 2 6 7 -1 0 </I>
+<I> 13 0 2 6 10 -1 1 </I>
+<I> 14 0 2 7 4 1 0 </I>
+<I> 15 0 2 7 11 -1 1 </I>
+<I> 16 0 2 8 9 -1 0 </I>
+<I> 17 0 2 8 12 -1 1 </I>
+<I> 18 0 2 9 10 -1 0 </I>
+<I> 19 0 2 9 13 -1 1 </I>
+<I> 20 0 2 10 11 -1 0 </I>
+<I> 21 0 2 10 14 -1 1 </I>
+<I> 22 0 2 11 8 2 0 </I>
+<I> 23 0 2 11 15 -1 1 </I>
+<I> 24 0 2 12 13 -1 0 </I>
+<I> 25 0 2 12 0 3 1 </I>
+<I> 26 0 2 13 14 -1 0 </I>
+<I> 27 0 2 13 1 4 1 </I>
+<I> 28 0 2 14 15 -1 0 </I>
+<I> 29 0 2 14 2 5 1 </I>
+<I> 30 0 2 15 12 6 0 </I>
+<I> 31 0 2 15 3 7 1 </I>
+
+<!-- <V> [bond dim] [unit vectorx]...  </V> -->
+
+<V> 0 1 0 </V>
+<V> 1 0 1 </V>
+</LATTICE>

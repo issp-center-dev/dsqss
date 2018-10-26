@@ -1,0 +1,17 @@
+algfile = algorithm.xml
+beta = 100
+cfinpfile = 
+cfoutfile = cf.dat
+ckinpfile = 
+ckoutfile = ck.dat
+latfile = lattice.xml
+ndecor = 1000
+nmcs = 10
+npre = 10
+nset = 5
+ntherm = 10
+nvermax = 10000000
+outfile = sample.log
+seed = 31415
+sfinpfile = 
+sfoutfile = sf.dat

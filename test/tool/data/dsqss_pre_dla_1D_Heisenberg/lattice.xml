@@ -1,0 +1,42 @@
+<LATTICE>
+
+<Comment>
+  1-dimension square lattice
+</Comment>
+
+<Dimension> 1 </Dimension>
+<BondDimension> 1 </BondDimension>
+<LinearSize> 8 </LinearSize>
+<Beta> 10 </Beta>
+<NumberOfCells> 8 </NumberOfCells>
+<NumberOfSites> 8 </NumberOfSites>
+<NumberOfInteractions> 8 </NumberOfInteractions>
+<NumberOfSiteTypes> 1 </NumberOfSiteTypes>
+<NumberOfInteractionTypes> 1 </NumberOfInteractionTypes>
+<NumberOfEdgeInteractions> 1 </NumberOfEdgeInteractions>
+
+<!-- <S> [id] [stype] [mtype] </S> -->
+<S> 0 0 0 </S>
+<S> 1 0 1 </S>
+<S> 2 0 0 </S>
+<S> 3 0 1 </S>
+<S> 4 0 0 </S>
+<S> 5 0 1 </S>
+<S> 6 0 0 </S>
+<S> 7 0 1 </S>
+
+<!-- <I> [id] [itype] [nbody] [s0] [s1] ... [eid] [edim] </I> -->
+
+<I> 0 0 2 0 1 -1 0 </I>
+<I> 1 0 2 1 2 -1 0 </I>
+<I> 2 0 2 2 3 -1 0 </I>
+<I> 3 0 2 3 4 -1 0 </I>
+<I> 4 0 2 4 5 -1 0 </I>
+<I> 5 0 2 5 6 -1 0 </I>
+<I> 6 0 2 6 7 -1 0 </I>
+<I> 7 0 2 7 0 0 0 </I>
+
+<!-- <V> [bond dim] [unit vectorx]...  </V> -->
+
+<V> 0 1 </V>
+</LATTICE>

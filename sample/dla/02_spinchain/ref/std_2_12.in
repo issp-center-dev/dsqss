@@ -1,0 +1,15 @@
+
+    solver = DLA
+    model_type = spin
+    J = -1
+    F = 0.0
+    lattice_type = square
+    D = 1
+    L = 30
+    nset = 5
+    ntherm = 1000
+    ndecor = 1000
+    nmcs = 1000
+           M = 2
+beta = 0.666666666667
+outfile = res_2_12.dat

@@ -1,0 +1,30 @@
+<LATTICE>
+
+<Comment>
+  1-dimension square lattice
+</Comment>
+
+<Dimension> 1 </Dimension>
+<BondDimension> 1 </BondDimension>
+<LinearSize> 2 </LinearSize>
+<Beta> 100 </Beta>
+<NumberOfCells> 2 </NumberOfCells>
+<NumberOfSites> 2 </NumberOfSites>
+<NumberOfInteractions> 2 </NumberOfInteractions>
+<NumberOfSiteTypes> 1 </NumberOfSiteTypes>
+<NumberOfInteractionTypes> 1 </NumberOfInteractionTypes>
+<NumberOfEdgeInteractions> 1 </NumberOfEdgeInteractions>
+
+<!-- <S> [id] [stype] [mtype] </S> -->
+<S> 0 0 0 </S>
+<S> 1 0 1 </S>
+
+<!-- <I> [id] [itype] [nbody] [s0] [s1] ... [eid] [edim] </I> -->
+
+<I> 0 0 2 0 1 -1 0 </I>
+<I> 1 0 2 1 0 0 0 </I>
+
+<!-- <V> [bond dim] [unit vectorx]...  </V> -->
+
+<V> 0 1 </V>
+</LATTICE>

@@ -1,0 +1,185 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>4.3.1. Sample1 : S=1/2 Heisenberg model &#8212; DSQSS 1.2.0 ドキュメント</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="検索" href="../../search.html" />
+    <link rel="next" title="4.4. リファレンス" href="reference.html" />
+    <link rel="prev" title="4.3. チュートリアル" href="tutorial.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="sample1-s-1-2-heisenberg-model">
+<h1>4.3.1. Sample1 : S=1/2 Heisenberg model<a class="headerlink" href="#sample1-s-1-2-heisenberg-model" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>PMWAではS=1/2のXXZ模型について計算可能である。ハミルトニアンは下記のように与えられる。
+<span class="math">\({\cal H}^{XXZ} = -J_{xy} \sum_{\langle i, j\rangle}(S_i^x S_j^x + S_i^y S_j^y)-J_z\sum_{\langle i, j\rangle}S_i^zS_j^z-H \sum_{i}S_{i}^z -\Gamma \sum_i S_i^x\)</span></p>
+<p>現状ではボソン系のパラメータとの対応関係上、以下のパラメータで指定する。</p>
+<blockquote>
+<div><table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Spin</th>
+<th class="head">Boson</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>tb</td>
+<td><span class="math">\(J_{xy}\)</span></td>
+<td><span class="math">\(t_b\)</span></td>
+</tr>
+<tr class="row-odd"><td>VB1</td>
+<td><span class="math">\(J_{z}\)</span></td>
+<td><span class="math">\(V_{B1}\)</span></td>
+</tr>
+<tr class="row-even"><td>MU</td>
+<td><span class="math">\(H\)</span></td>
+<td><span class="math">\(\mu\)</span></td>
+</tr>
+<tr class="row-odd"><td>G</td>
+<td><span class="math">\(\Gamma/2\)</span></td>
+<td><span class="math">\(2G\)</span></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>In the following, we consider the 2-site S=1/2 Heisenberg model given by
+<span class="math">\({\cal H} = J (S_0 \cdot S_1 + S_1 \cdot S_0) = 2J S_0\cdot S_1\)</span>, where <span class="math">\(J=0.5\)</span>.</p>
+<ol class="arabic simple">
+<li>Generate input files</li>
+</ol>
+<blockquote>
+<div><p>To execute DSQSS, we must make the input files for Hamiltonian, algorithm and lattice information.
+For simple models, the executable files <code class="docutils literal"><span class="pre">hamgen_H,</span> <span class="pre">dla_alg,</span> <span class="pre">latgene</span></code> are prepared to generate the input files.</p>
+<ul class="simple">
+<li>Generate a file for Hamiltonian.
+<code class="docutils literal"><span class="pre">$</span> <span class="pre">hamgen_H</span> <span class="pre">1</span> <span class="pre">-0.5</span> <span class="pre">0.0</span></code>.</li>
+</ul>
+</div></blockquote>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>ナビゲーション</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. DSQSSとは？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. インストール</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dla/users-manual/index.html">3. DLAのユーザーマニュアル</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tu-index.html">4. PMWAのユーザーマニュアル</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">4.1. PMWAとは？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html">4.2. 使用方法</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="tutorial.html">4.3. チュートリアル</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.3.1. Sample1 : S=1/2 Heisenberg model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html">4.4. リファレンス</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/algorithm.html">5. アルゴリズム</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="tu-index.html">4. PMWAのユーザーマニュアル</a><ul>
+  <li><a href="tutorial.html">4.3. チュートリアル</a><ul>
+      <li>Previous: <a href="tutorial.html" title="前の章へ">4.3. チュートリアル</a></li>
+      <li>Next: <a href="reference.html" title="次の章へ">4.4. リファレンス</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="検索" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="../../_sources/pmwa/tutorial/sample_Heisenberg.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

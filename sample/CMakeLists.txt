@@ -1,0 +1,9 @@
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/dla
+  DESTINATION share/dsqss/${DSQSS_VERSION}/samples
+  )
+
+if(ENABLE_MPI)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/pmwa
+  DESTINATION share/dsqss/${DSQSS_VERSION}/samples
+  )
+endif(ENABLE_MPI)

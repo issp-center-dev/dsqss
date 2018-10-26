@@ -1,0 +1,497 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3.1. DLA の入力ファイル &#8212; DSQSS 1.2.0 ドキュメント</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="検索" href="../../search.html" />
+    <link rel="next" title="3.2. DLA の入力ファイル生成ツール" href="generator.html" />
+    <link rel="prev" title="3. DLAのユーザーマニュアル" href="index.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="dla">
+<h1>3.1. DLA の入力ファイル<a class="headerlink" href="#dla" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id1">
+<h2>3.1.1. 入力ファイル一覧<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">qmc.inp</span></code></dt>
+<dd>モンテカルロの繰り返し回数など、計算制御のためのパラメータファイル。</dd>
+<dt><code class="docutils literal"><span class="pre">lattice.xml</span></code></dt>
+<dd>格子の定義ファイル。</dd>
+<dt><code class="docutils literal"><span class="pre">algorithm.xml</span></code></dt>
+<dd>アルゴリズム（ワームの散乱確率など）の定義ファイル。</dd>
+<dt><code class="docutils literal"><span class="pre">sf.xml</span></code></dt>
+<dd>構造因子の波数定義ファイル。</dd>
+<dt><code class="docutils literal"><span class="pre">cf.xml</span></code></dt>
+<dd>実空間温度グリーン関数の座標定義ファイル。</dd>
+</dl>
+</div>
+<div class="section" id="qmc-inp">
+<h2>3.1.2. パラメータファイル <code class="docutils literal"><span class="pre">qmc.inp</span></code><a class="headerlink" href="#qmc-inp" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>パラメータファイルは次に示すような書式のプレーンテキストファイルである。</p>
+<ul class="simple">
+<li>1行あたり1パラメータを、 <code class="docutils literal"><span class="pre">&lt;name&gt;</span> <span class="pre">=</span> <span class="pre">&lt;value&gt;</span></code> という形式で表す。</li>
+<li>1行の文字数は最大256。</li>
+<li>ファイル名以外は大文字小文字を区別しない。</li>
+<li>空行、空白は無視される。</li>
+<li>「#」 から行末まではコメントとして無視される。</li>
+</ul>
+<p>パラメータのリストと意味を以下に示す。
+名前のあとのカッコはデフォルト値。</p>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">nmcse</span></code> (<code class="docutils literal"><span class="pre">1000</span></code>)</dt>
+<dd>モンテカルロスイープあたりのワーム対生成回数を求めるための事前計算のためのモンテカルロ試行回数。</dd>
+<dt><code class="docutils literal"><span class="pre">nmcsd</span></code> (<code class="docutils literal"><span class="pre">1000</span></code>)</dt>
+<dd>熱平衡化のためのモンテカルロスイープ数。</dd>
+<dt><code class="docutils literal"><span class="pre">nmcs</span></code> (<code class="docutils literal"><span class="pre">1000</span></code>)</dt>
+<dd>物理量計算のためのモンテカルロスイープ数。</dd>
+<dt><code class="docutils literal"><span class="pre">nset</span></code> (<code class="docutils literal"><span class="pre">10</span></code>)</dt>
+<dd>モンテカルロ計算の繰り返し数。</dd>
+<dt><code class="docutils literal"><span class="pre">simulationtime</span></code> (<code class="docutils literal"><span class="pre">0.0</span></code>)</dt>
+<dd><p class="first">計算時間（単位は秒）。</p>
+<ul class="last simple">
+<li><code class="docutils literal"><span class="pre">simulationtime</span> <span class="pre">&gt;</span> <span class="pre">0.0</span></code> のとき<ul>
+<li>指定秒数が経過するか、計算が完了したとき、途中経過をチェックポイントファイルに書き出した後、プログラムを終了する。</li>
+<li>計算開始時にチェックポイントファイルがある場合、そのファイルを読み込んだ後に計算を再開する。</li>
+<li>チェックポイントファイルの名前は <code class="docutils literal"><span class="pre">outfile</span></code> で指定されるメイン出力ファイル名の末尾に <code class="docutils literal"><span class="pre">.cjob</span></code> をつけたもの。</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">simulationtime</span> <span class="pre">&lt;=</span> <span class="pre">0.0</span></code> のとき<ul>
+<li>チェックポイントファイルは無視され、書き出しも読み込みも行われない。</li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt><code class="docutils literal"><span class="pre">seed</span></code> (<code class="docutils literal"><span class="pre">198212240</span></code>)</dt>
+<dd>疑似乱数の種。</dd>
+<dt><code class="docutils literal"><span class="pre">nvermax</span></code> (<code class="docutils literal"><span class="pre">10000</span></code>)</dt>
+<dd>最大バーテックス数。</dd>
+<dt><code class="docutils literal"><span class="pre">nsegmax</span></code> (<code class="docutils literal"><span class="pre">10000</span></code>)</dt>
+<dd>最大セグメント数。</dd>
+<dt><code class="docutils literal"><span class="pre">algfile</span></code> (<code class="docutils literal"><span class="pre">algorithm.xml</span></code>)</dt>
+<dd>アルゴリズム定義ファイル名。</dd>
+<dt><code class="docutils literal"><span class="pre">latfile</span></code> (<code class="docutils literal"><span class="pre">lattice.xml</span></code>)</dt>
+<dd>格子定義ファイル名。</dd>
+<dt><code class="docutils literal"><span class="pre">sfinpfile</span></code> (<code class="docutils literal"><span class="pre">&quot;&quot;</span></code>)</dt>
+<dd>構造因子定義ファイル名。空文字列、もしくは指定しない場合、構造因子は計算されない。</dd>
+<dt><code class="docutils literal"><span class="pre">cfinpfile</span></code> (<code class="docutils literal"><span class="pre">&quot;&quot;</span></code>)</dt>
+<dd>実空間表示温度グリーン関数定義ファイル名。空文字列、もしくは指定しない場合、実空間表示温度グリーン関数は計算されない。</dd>
+<dt><code class="docutils literal"><span class="pre">ckinpfile</span></code> (<code class="docutils literal"><span class="pre">&quot;&quot;</span></code>)</dt>
+<dd>波数空間表示温度グリーン関数定義ファイル名。空文字列、もしくは指定しない場合、波数空間表示温度グリーン関数は計算されない。</dd>
+<dt><code class="docutils literal"><span class="pre">outfile</span></code> (<code class="docutils literal"><span class="pre">sample.log</span></code>)</dt>
+<dd>メイン出力ファイル名。</dd>
+<dt><code class="docutils literal"><span class="pre">sfoutfile</span></code> (<code class="docutils literal"><span class="pre">sf.dat</span></code>)</dt>
+<dd>構造因子出力ファイル名。</dd>
+<dt><code class="docutils literal"><span class="pre">cfoutfile</span></code> (<code class="docutils literal"><span class="pre">cf.dat</span></code>)</dt>
+<dd>実空間表示温度グリーン関数出力ファイル名。</dd>
+<dt><code class="docutils literal"><span class="pre">ckoutfile</span></code> (<code class="docutils literal"><span class="pre">ck.dat</span></code>)</dt>
+<dd>波数空間表示温度グリーン関数出力ファイル名。</dd>
+<dt><code class="docutils literal"><span class="pre">runtype</span></code> (<code class="docutils literal"><span class="pre">0</span></code>)</dt>
+<dd>計算手法。
+互換性および将来の拡張のために用意されている。</dd>
+</dl>
+</div>
+<div class="section" id="lattice-xml">
+<h2>3.1.3. 格子定義ファイル <code class="docutils literal"><span class="pre">lattice.xml</span></code><a class="headerlink" href="#lattice-xml" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>格子ファイルは時空間の情報、たとえばサイトの数やサイト同士のつながりかた、逆温度の大きさなどを定義するための、
+XML ライクな形式で記述されるテキストファイルである。
+これは一般に複雑になりえるので、正方格子などのよく使われる格子については、
+格子定義ファイル作成のための補助ツール <code class="docutils literal"><span class="pre">lattgene</span></code> が用意されている。</p>
+<p>格子ファイルはただ一つの要素 <code class="docutils literal"><span class="pre">Lattice</span></code> を持ち、すべての情報は <code class="docutils literal"><span class="pre">Lattice</span></code> 要素の内容として含まれる。</p>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">Lattice</span></code></dt>
+<dd>ファイル全体の要素。ほかのすべての要素は <code class="docutils literal"><span class="pre">Lattice</span></code> のサブ要素となる。</dd>
+<dt><code class="docutils literal"><span class="pre">Comment</span></code></dt>
+<dd>省略可能。コメント文を示し、計算には使用されない。</dd>
+<dt><code class="docutils literal"><span class="pre">Dimension</span></code></dt>
+<dd>格子の次元。</dd>
+<dt><code class="docutils literal"><span class="pre">Beta</span></code></dt>
+<dd>逆温度。</dd>
+<dt><code class="docutils literal"><span class="pre">LinearSize</span></code></dt>
+<dd><p class="first">ユニットセルを単位とした、各次元の格子の長さ。
+内容として、スペース区切りの正整数を <code class="docutils literal"><span class="pre">Dimension</span></code> で指定した数だけ並べたものを取る。</p>
+<div class="last highlight-none"><div class="highlight"><pre><span></span>&lt;LinearSize&gt; 3 4 &lt;/LinearSize&gt;
+# ユニットセルが第1次元方向に3個、第2次元方向に4個並んでいる場合
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal"><span class="pre">NumberOfCells</span></code></dt>
+<dd>ユニットセルの総数。 <code class="docutils literal"><span class="pre">LinearSize</span></code> で指定した各次元方向のサイズの積。</dd>
+<dt><code class="docutils literal"><span class="pre">NumberOfSites</span></code></dt>
+<dd>サイトの総数。ユニットセルの総数と1セル内のサイト数の積。</dd>
+<dt><code class="docutils literal"><span class="pre">NumberOfInteractions</span></code></dt>
+<dd>相互作用項の総数。二体相互作用のみの場合は、いわゆる「ボンド数」。</dd>
+<dt><code class="docutils literal"><span class="pre">NumberOfSiteTypes</span></code></dt>
+<dd>サイトの種類数。</dd>
+<dt><code class="docutils literal"><span class="pre">NumberOfInteractionTypes</span></code></dt>
+<dd>相互作用の種類数。</dd>
+<dt><code class="docutils literal"><span class="pre">BondDimension</span></code></dt>
+<dd>Winding number を測定する際に定義する要素。</dd>
+<dt><code class="docutils literal"><span class="pre">NumberOfEdgeInteractions</span></code></dt>
+<dd>Winding number を測定する際に定義する要素。格子の周期的境界をまたぐボンドの総数を指定する。</dd>
+<dt><code class="docutils literal"><span class="pre">S</span></code></dt>
+<dd><p class="first">サイト情報。 <code class="docutils literal"><span class="pre">NumberOfSites</span></code> で指定したサイト数だけ指定する必要がある。
+内容として、「サイト番号」、「サイトタイプ」、「測定タイプ」の3つの整数をスペース区切りで持つ。
+サイトタイプの詳細はアルゴリズム定義ファイルの中で定義される。</p>
+<div class="last highlight-none"><div class="highlight"><pre><span></span>&lt;S&gt; 3 0 1 &lt;/S&gt;
+# サイト番号が3のサイトはサイトタイプが0で、測定タイプは1である。
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal"><span class="pre">I</span></code></dt>
+<dd><p class="first">相互作用情報。 <code class="docutils literal"><span class="pre">NumberOfInteractions</span></code> で指定した相互作用数だけ指定する必要がある。
+内容として、「相互作用番号」、「相互作用タイプ」、「相互作用サイト数」、「相互作用サイト番号」を指定するために、
+相互作用サイト数+3個の整数をスペース区切りで持つ。
+相互作用タイプの詳細 ― たとえば相互作用の大きさ ― はアルゴリズム定義ファイルの中で定義される。
+サイト番号の順序は、アルゴリズム定義ファイルの <code class="docutils literal"><span class="pre">InitialConfiguration</span> <span class="pre">|</span> <span class="pre">Vertex</span></code> 要素で用いられるサイトの並び順と整合させる必要がある。</p>
+<div class="last highlight-none"><div class="highlight"><pre><span></span>&lt;I&gt; 5 1 2 8 12 &lt;/I&gt;
+# 相互作用番号が5である相互作用は相互作用タイプが1で、2つのサイトが関与し、
+# それらのサイト番号は8と12である。
+</pre></div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="algorithm-xml">
+<h2>3.1.4. アルゴリズム定義ファイル <code class="docutils literal"><span class="pre">algorithm.xml</span></code><a class="headerlink" href="#algorithm-xml" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>アルゴリズム定義ファイルは相互作用ごとのワームの散乱確率などを定義する、
+XML ライクな形式で記述されるテキストファイルである。
+これは一般に複雑になりえるので、ハイゼンベルグ模型などのよく用いられる模型については、
+アルゴリズム定義ファイル作成のための補助ツール <code class="docutils literal"><span class="pre">hamgen</span></code> や <code class="docutils literal"><span class="pre">dla_alg</span></code> が用意されている。</p>
+<p>格子ファイルはただ一つの要素 <code class="docutils literal"><span class="pre">Lattice</span></code> を持ち、すべての情報は <code class="docutils literal"><span class="pre">Lattice</span></code> 要素の内容として含まれる。</p>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">Algorithm</span></code></dt>
+<dd>ファイル全体の要素名。サブ要素として、 <code class="docutils literal"><span class="pre">General</span></code>, <code class="docutils literal"><span class="pre">Site</span></code>, <code class="docutils literal"><span class="pre">Interaction</span></code>, <code class="docutils literal"><span class="pre">Vertex</span></code> がある。
+ワームの生成・消滅・散乱の仕方を定義する。</dd>
+<dt><code class="docutils literal"><span class="pre">Comment</span></code></dt>
+<dd>省略可能。コメント文を示し、計算には使用されない。</dd>
+<dt><code class="docutils literal"><span class="pre">General</span> <span class="pre">/Algorithm</span></code></dt>
+<dd><p class="first">サブ要素として、 <code class="docutils literal"><span class="pre">NSType</span></code>, <code class="docutils literal"><span class="pre">NIType</span></code>, <code class="docutils literal"><span class="pre">NVType</span></code>, <code class="docutils literal"><span class="pre">NXMax</span></code>, <code class="docutils literal"><span class="pre">WDiag</span></code> がある。
+サイトの種類数や相互作用の 種類数などアルゴリズム定義の基本パラメータを設定する。</p>
+<div class="last highlight-none"><div class="highlight"><pre><span></span>&lt;Algorithm&gt;
+  &lt;General&gt;
+    &lt;NSType&gt;  1 &lt;/NSType&gt;
+    &lt;NIType&gt;  1 &lt;/NIType&gt;
+    &lt;NVType&gt;  2 &lt;/NVType&gt;
+    &lt;NXMax&gt;   2 &lt;/NXMax&gt;
+    &lt;WDiag&gt;        0.2500000000000000 &lt;/WDiag&gt;
+  &lt;/General&gt;
+  ...
+&lt;/Algorithm&gt;
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal"><span class="pre">NSType</span> <span class="pre">/General/Algorithm</span></code></dt>
+<dd>異なるサイト型の個数を指定する整数値。</dd>
+<dt><code class="docutils literal"><span class="pre">NIType</span> <span class="pre">/General/Algorithm</span></code></dt>
+<dd>異なる相互作用型の個数を指定する整数値。</dd>
+<dt><code class="docutils literal"><span class="pre">NVType</span> <span class="pre">/General/Algorithm</span></code></dt>
+<dd>異なるバーテックス型の個数を指定する整数値。</dd>
+<dt><code class="docutils literal"><span class="pre">NXMax</span> <span class="pre">/General/Algorithm</span></code></dt>
+<dd>各サイトが取りうる状態の数の最大値。例えば大きさ <span class="math">\(S\)</span> のスピン系ならば <span class="math">\(2S+1\)</span> 。</dd>
+<dt><code class="docutils literal"><span class="pre">WDiag</span> <span class="pre">/General/Algorithm</span></code></dt>
+<dd>ユーザが改変する measure_specific.cc 以外では用いられないので、その中で使われない場合には指定する必要はない。
+（標準の measure_specific.cc では、ワームの行程長から相関関数を求めるときの比例係数として用いられている。
+この量に興味がない場合は、任意の数を指定しておけばよい。）</dd>
+<dt><code class="docutils literal"><span class="pre">Site</span> <span class="pre">/Algorithm</span></code></dt>
+<dd><p class="first">1つのサイト型を定義する。具体的には、そのサイト型をもつサイトに対する操作を定義する。
+サイトにワームを生成消滅する過程もここで定義される。
+サブ要素として、 <code class="docutils literal"><span class="pre">SType</span></code>, <code class="docutils literal"><span class="pre">NumberOfStates</span></code>, <code class="docutils literal"><span class="pre">VertexTypeOfSource</span></code>, <code class="docutils literal"><span class="pre">InitialConfiguration</span></code> がある。</p>
+<div class="last highlight-none"><div class="highlight"><pre><span></span>&lt;Algorithm&gt;
+  ...
+  &lt;Site&gt;
+    &lt;STYPE&gt; 0 &lt;/STYPE&gt;
+    &lt;NumberOfStates&gt; 2 &lt;/NumberOfStates&gt;
+    &lt;VertexTypeOfSource&gt; 0 &lt;/VertexTypeOfSource&gt;
+    &lt;InitialConfiguration&gt;
+       ...
+    &lt;/InitialConfiguration&gt;
+    &lt;InitialConfiguration&gt;
+       ...
+    &lt;/InitialConfiguration&gt;
+  &lt;/Site&gt;
+  ...
+&lt;/Algorithm&gt;
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal"><span class="pre">SType</span> <span class="pre">/Site/Algorithm</span></code></dt>
+<dd>定義されるサイト型の識別番号。</dd>
+<dt><code class="docutils literal"><span class="pre">NumberOfStates</span> <span class="pre">/Site/Algorithm</span></code></dt>
+<dd>サイトが取りうる状態の数。</dd>
+<dt><code class="docutils literal"><span class="pre">VertexTypeOfSource</span> <span class="pre">/</span> <span class="pre">Site/Algorithm</span></code></dt>
+<dd>挿入される可能性のあるバーテックスのタイプ。</dd>
+<dt><code class="docutils literal"><span class="pre">InitialConfiguration</span> <span class="pre">/</span> <span class="pre">Site/Algorithm</span></code></dt>
+<dd><p class="first">初期条件の定義。 初期条件ごとのワーム対の生成消滅過程を定義もこの要素のなかで行われる。
+サブ要素として、 <code class="docutils literal"><span class="pre">State</span></code>, <code class="docutils literal"><span class="pre">NumberOfChannels</span></code>, <code class="docutils literal"><span class="pre">Channel</span></code> がある。</p>
+<div class="last highlight-none"><div class="highlight"><pre><span></span>&lt;Algorithm&gt;
+  ...
+  &lt;Site&gt;
+    ...
+    &lt;InitialConfiguration&gt;
+      &lt;State&gt; 0 &lt;/State&gt;
+      &lt;NumberOfChannels&gt; 2 &lt;/NumberOfChannels&gt;
+      &lt;Channel&gt; 0 1 0.5 &lt;/Channel&gt;
+      &lt;Channel&gt; 1 1 0.5 &lt;/Channel&gt;
+    &lt;/InitialConfiguration&gt;
+    ...
+  &lt;/Site&gt;
+  ...
+&lt;/Algorithm&gt;
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal"><span class="pre">State</span> <span class="pre">/</span> <span class="pre">InitialConfiguration/Site/Algorithm</span></code></dt>
+<dd>ワーム対が生成される前（もしくは消滅後）のサイトの状態。</dd>
+<dt><code class="docutils literal"><span class="pre">NumberOfChannels</span> <span class="pre">/InitialConfiguration/Site/Algorithm</span></code></dt>
+<dd>可能性のある終状態（チャネル）の数。</dd>
+<dt><code class="docutils literal"><span class="pre">Channel</span> <span class="pre">/InitialConfiguration/Site/Algorithm</span></code></dt>
+<dd><p class="first">各チャネルの定義。 整数値、整数値、浮動小数点値の3つの並びで指定。</p>
+<ul class="simple">
+<li>第1の値はワーム生成後のヘッドの向き（0は虚時間方向負の向き、1は正の向き。）。</li>
+<li>第2の値はワーム生成後のヘッドとテールの間の状態。</li>
+<li>第3の値はそのような終状態をとる確率。</li>
+</ul>
+<p class="last">終状態としてワーム対を生成しない場合は、その Channel の 第1と第2の整数値はともに -1とする。</p>
+</dd>
+<dt><code class="docutils literal"><span class="pre">Interaction</span> <span class="pre">/Algorithm</span></code></dt>
+<dd><p class="first">１つの相互作用型を定義する。
+サブ要素として <code class="docutils literal"><span class="pre">IType</span></code>, <code class="docutils literal"><span class="pre">VType</span></code>, <code class="docutils literal"><span class="pre">NBody</span></code>, <code class="docutils literal"><span class="pre">EBase</span></code>, <code class="docutils literal"><span class="pre">VertexDensity</span></code> がある。</p>
+<div class="last highlight-none"><div class="highlight"><pre><span></span>&lt;Algorithm&gt;
+  ...
+  &lt;Interaction&gt;
+    &lt;IType&gt; 0 &lt;/IType&gt;
+    &lt;VType&gt; 1 &lt;/VType&gt;
+    &lt;NBody&gt; 2 &lt;/NBody&gt;
+    &lt;EBase&gt; 0.125 &lt;/EBase&gt;
+    &lt;VertexDensity&gt; 0 0 0.25 &lt;/VertexDensity&gt;
+    &lt;VertexDensity&gt; 1 1 0.25 &lt;/VertexDensity&gt;
+  &lt;/Interaction&gt;
+  ...
+&lt;/Algorithm&gt;
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal"><span class="pre">IType</span> <span class="pre">/Interaction/Algorithm</span></code></dt>
+<dd>相互作用の型の識別番号。</dd>
+<dt><code class="docutils literal"><span class="pre">VType</span> <span class="pre">/Interaction/Algorithm</span></code></dt>
+<dd>挿入する可能性のあるバーテックスの型の識別番号。 バーテックス型の内容は <code class="docutils literal"><span class="pre">Vertex/Algorithm</span></code> で定義される。</dd>
+<dt><code class="docutils literal"><span class="pre">NBody</span> <span class="pre">/Interaction/Algorithm</span></code></dt>
+<dd>相互作用に関与するサイトの数（ゼーマン項のような1体相互作用であれば1。交換相互作用のような2体相互作用であれば2。3以上を指定することも可能）。</dd>
+<dt><code class="docutils literal"><span class="pre">EBase</span> <span class="pre">/Interaction/Algorithm</span></code></dt>
+<dd>エネルギーオフセットの値。シミュレーション自体には影響しないが、最終的なエネルギーの値を出すときに使用される。</dd>
+<dt><code class="docutils literal"><span class="pre">VertexDensity</span> <span class="pre">/Interaction/Algorithm</span></code></dt>
+<dd>関与するサイトの状態ごとに挿入するバーテックスの密度を指定する。
+<code class="docutils literal"><span class="pre">NBody</span></code> 個の整数値と、1個の浮動小数点値の並びで指定。
+整数値は、関与する各サイトの状態（順序は格子定義ファイルの <code class="docutils literal"><span class="pre">I</span></code> で指定するサイト番号の順序と対応する）。
+浮動小数点値は密度。</dd>
+<dt><code class="docutils literal"><span class="pre">Vertex</span> <span class="pre">/Algorithm</span></code></dt>
+<dd><p class="first">１つのバーテックスの型を定義する。 バーテックスとしては、通常の2体、3体、。。。の相互作用を記述するもの（ <code class="docutils literal"><span class="pre">VCategory=2</span></code> ）と、
+ワームヘッドがテールと消滅する場合のテール（ <code class="docutils literal"><span class="pre">VCategory=1</span></code> ）がある。
+<code class="docutils literal"><span class="pre">Interaction</span></code> の要素になりえるのは、前者である。
+（このほか、時間方向の周期境界（ <code class="docutils literal"><span class="pre">VCategory=0</span></code> ）も１体の バーテックスとして扱っているがユーザが定義する必要はない。）
+サブ要素として <code class="docutils literal"><span class="pre">VType</span></code>, <code class="docutils literal"><span class="pre">VCategory</span></code>, <code class="docutils literal"><span class="pre">NBody</span></code>, <code class="docutils literal"><span class="pre">NumberOfInitialConfigurations</span></code>, <code class="docutils literal"><span class="pre">InitialConfiguration</span></code> がある。</p>
+<div class="last highlight-none"><div class="highlight"><pre><span></span>&lt;Algorithm&gt;
+  ...
+  &lt;Vertex&gt;
+    &lt;VTYPE&gt; 0 &lt;/VTYPE&gt;
+    &lt;VCATEGORY&gt; 1 &lt;/VCATEGORY&gt;
+    &lt;NBODY&gt; 1 &lt;/NBODY&gt;
+    &lt;NumberOfInitialConfigurations&gt; 4 &lt;/NumberOfInitialConfigurations&gt;
+    &lt;InitialConfiguration&gt;
+      ...
+    &lt;/InitialConfiguration&gt;
+    ...
+    &lt;InitialConfiguration&gt;
+      ...
+    &lt;/InitialConfiguration&gt;
+  &lt;/Vertex&gt;
+  ...
+&lt;/Algorithm&gt;
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal"><span class="pre">VType</span> <span class="pre">/Vertex/Algorithm</span></code></dt>
+<dd>バーテックス型の識別番号。 バーテックス型の定義ごとに異なる番号でなければならない。</dd>
+<dt><code class="docutils literal"><span class="pre">VCategory</span> <span class="pre">/Vertex/Algorithm</span></code></dt>
+<dd>1 … ワームテール。2 … 相互作用。</dd>
+<dt><code class="docutils literal"><span class="pre">NBody</span> <span class="pre">/Vertex/Algorithm</span></code></dt>
+<dd>相互作用に関与するサイトの個数。
+テールの場合には1。</dd>
+<dt><code class="docutils literal"><span class="pre">NumberOfInitialConfigurations</span> <span class="pre">/Vertex/Algorithm</span></code></dt>
+<dd>バーテックスの可能な初期状態数。</dd>
+<dt><code class="docutils literal"><span class="pre">InitialConfiguration</span> <span class="pre">/Vertex/Algorithm</span></code></dt>
+<dd><p class="first">特定のバーテックス初期状態に対するワームの可能なアクションを定義する。
+従って、この要素は、NumberOfInitialConfigurations の値と同じ数だけ存在する必要がある。
+サブ要素として、 <code class="docutils literal"><span class="pre">State</span></code>, <code class="docutils literal"><span class="pre">IncomingDirection</span></code>, <code class="docutils literal"><span class="pre">NewState</span></code>, <code class="docutils literal"><span class="pre">NumberOfChannels</span></code>, <code class="docutils literal"><span class="pre">Channel</span></code> がある。</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>&lt;Algorithm&gt;
+  ...
+  &lt;Vertex&gt;
+    ...
+    &lt;InitialConfiguration&gt;
+      &lt;State&gt;  1 0 0 1 &lt;/State&gt;
+      &lt;IncomingDirection&gt; 0 &lt;/IncomingDirection&gt;
+      &lt;NewState&gt; 0 &lt;/NewState&gt;
+      &lt;NumberOfChannels&gt; 1 &lt;/NumberOfChannels&gt;
+      &lt;Channel&gt;    3    0       1.0000000000000000 &lt;/Channel&gt;
+    &lt;/InitialConfiguration&gt;
+    ...
+  &lt;/Vertex&gt;
+  ...
+&lt;/Algorithm&gt;
+</pre></div>
+</div>
+<p class="last">この例で定義されているのは、「バーテックスの左下(0)、左上(1)、右下(2)、右上(3)の脚の状態がそれぞれ1,0,0,1 であって、そこに、左下（脚0の方向）から、その脚の状態を 0 に変化させるような ワームヘッドが入射した場合」のアクションであり、
+その内容は、 「確率1で、そのワームヘッドを 脚3の方向に散乱させて、 その方向の足の状態を 0 に変更する」ことを表している。 （つまり、この散乱が起こった場合、散乱後のバーテックスの状態は 0,0,0,0 になる。）</p>
+</dd>
+<dt><code class="docutils literal"><span class="pre">State</span> <span class="pre">/InitialConfiguration/Vertex/Algorithm</span></code></dt>
+<dd>ワームヘッドが入ってくる前のバーテックスの初期状態を指定する。
+具体的にはバーテックスの各脚の状態を指定する。
+足の本数は、 <code class="docutils literal"><span class="pre">NBody</span> <span class="pre">/Vertex</span></code> で指定される数 (=m) の2倍なので、 2m 個数の整数値をスペースで区切ったものになる。
+その際、脚は対応するサイトの順序に並べる。
+同じサイトに対応する2本の脚については、虚数時間の小さい側を先にする。
+（サイトの並び順は任意でよいが、 格子定義ファイルの <code class="docutils literal"><span class="pre">I</span></code> 要素で 指定されているサイトの並び順はここで用いられた サイトの順序と整合していなければならない。）
+各整数はバーテックスの足の状態を示す 0 から n-1 までの値。 （ここで、n は対応するサイトの、 <code class="docutils literal"><span class="pre">NumberOfStates/Site</span></code> で指定される値。）</dd>
+<dt><code class="docutils literal"><span class="pre">IncomingDirection</span> <span class="pre">/InitialConfiguration/Vertex/Algorithm</span></code></dt>
+<dd>入射するワームヘッドが入射前に乗っている脚の番号。
+対応する足が上記 <code class="docutils literal"><span class="pre">State</span></code> の記述において何番目に出てくるかを 0 から 2m-1 の整数値で指定。</dd>
+<dt><code class="docutils literal"><span class="pre">NewState</span> <span class="pre">/InitialConfiguration/Vertex/Algorithm</span></code></dt>
+<dd>ワームヘッドが通過したあとの <code class="docutils literal"><span class="pre">IncomingDirection</span></code> の足の状態。 0 から n-1 の整数値で指定。</dd>
+<dt><code class="docutils literal"><span class="pre">NumberOfChannels</span> <span class="pre">/InitialConfiguration/Vertex/Algorithm</span></code></dt>
+<dd>可能な散乱チャネルの個数。</dd>
+<dt><code class="docutils literal"><span class="pre">Channel</span> <span class="pre">/InitialConfiguration/Vertex/Algorithm</span></code></dt>
+<dd><p class="first">散乱チャネルの定義。
+<code class="docutils literal"><span class="pre">NumberOfChannels</span></code> の個数だけこの要素が存在しなければならない。
+2つの整数値と1つの浮動小数点値をスペースで区切ったもので指定。</p>
+<ul class="simple">
+<li>第1の整数値は、散乱後のワームヘッドが乗っている足の番号を 0 から 2m-1 の値で指定したもの。</li>
+<li>第2の整数値は、ワームヘッドが飛び去ったあとのその足の状態を 0 から n-1 の値で指定したもの。</li>
+<li>第3の浮動小数点値は、そのチャネルを選ぶ確率。</li>
+</ul>
+<p class="last">特別な場合として、ワームヘッドがテールに衝突して消滅する場合があり、この場合は 第1引数と第2引数に -1 を指定する。</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>ナビゲーション</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. DSQSSとは？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. インストール</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. DLAのユーザーマニュアル</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.1. DLA の入力ファイル</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">3.1.1. 入力ファイル一覧</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#qmc-inp">3.1.2. パラメータファイル <code class="docutils literal"><span class="pre">qmc.inp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lattice-xml">3.1.3. 格子定義ファイル <code class="docutils literal"><span class="pre">lattice.xml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#algorithm-xml">3.1.4. アルゴリズム定義ファイル <code class="docutils literal"><span class="pre">algorithm.xml</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="generator.html">3.2. DLA の入力ファイル生成ツール</a></li>
+<li class="toctree-l2"><a class="reference internal" href="output.html">3.3. DLA の出力ファイル</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tu-index.html">4. PMWAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/algorithm.html">5. アルゴリズム</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">3. DLAのユーザーマニュアル</a><ul>
+      <li>Previous: <a href="index.html" title="前の章へ">3. DLAのユーザーマニュアル</a></li>
+      <li>Next: <a href="generator.html" title="次の章へ">3.2. DLA の入力ファイル生成ツール</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="検索" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="../../_sources/dla/users-manual/input.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

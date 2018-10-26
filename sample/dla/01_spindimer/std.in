@@ -1,0 +1,17 @@
+[System]
+solver = DLA
+[Hamiltonian]
+model_type = spin
+M =  1                 # S=1/2
+J = -0.5               # coupling constant, negative for AF, not 1 but 1/2 due to PBC
+F = 0.0                # magnetic field
+[Lattice]
+lattice_type = square  # hypercubic, periodic
+D = 1                  # dimension
+L = 2                  # number of sites along each direction
+Beta = 100             # inverse temperature
+[Parameter]
+nset = 5               # set of Monte Carlo sweeps
+npre = 10              # MCSteps to estimate hyperparameter
+ntherm = 10            # MCSweeps for thermalization
+nmcs = 10              # MCSweeps for measurement

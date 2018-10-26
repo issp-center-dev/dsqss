@@ -1,0 +1,24 @@
+[System]
+solver = PMWA
+[Hamiltonian]
+model_type = boson
+t = 1.0
+V = 3.0
+mu = 2.0
+Gamma = 0.3
+[Lattice]
+lattice_type = square
+D = 1
+L = 8
+Beta = 8.0
+[Parameter]
+RUNTYPE = 0
+CB=2
+SEED = 31415
+NSET = 10
+NMCS = 10000
+NPRE = 10000
+NTHERM = 10000
+NDECOR = 10000
+latfile = lattice.xml
+outfile = sample.log

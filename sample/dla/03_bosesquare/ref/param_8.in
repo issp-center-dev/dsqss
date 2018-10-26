@@ -1,0 +1,17 @@
+algfile = algorithm_8.xml
+beta = 10.0
+cfinpfile = 
+cfoutfile = cf.dat
+ckinpfile = 
+ckoutfile = ck.dat
+latfile = lattice.xml
+ndecor = 100
+nmcs = 100
+npre = 1000
+nset = 4
+ntherm = 100
+nvermax = 10000000
+outfile = res_8.dat
+seed = 31415
+sfinpfile = 
+sfoutfile = sf.dat

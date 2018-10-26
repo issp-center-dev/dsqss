@@ -1,0 +1,33 @@
+<Hamiltonian>
+  <General>
+    <Comment> SU(2) Heisenberg model with S=1/2 </Comment>
+    <NSTYPE> 1 </NSTYPE>
+    <NITYPE> 1 </NITYPE>
+    <NXMAX>  2 </NXMAX>
+  </General>
+
+  <Site>
+    <STYPE> 0 </STYPE>
+    <TTYPE> 0 </TTYPE>
+    <NX>   2 </NX>
+  </Site>
+
+  <Source>
+    <TTYPE> 0 </TTYPE>
+    <STYPE> 0 </STYPE>
+    <Weight> 0 1       0.5000000000000000 </Weight>
+    <Weight> 1 0       0.5000000000000000 </Weight>
+  </Source>
+
+  <Interaction>
+    <ITYPE> 0 </ITYPE>
+    <NBODY> 2 </NBODY>
+    <STYPE> 0 0 </STYPE>
+    <Weight> 0 0 0 0       0.2500000000000000 </Weight>
+    <Weight> 1 1 0 0      -0.2500000000000000 </Weight>
+    <Weight> 1 0 0 1       0.5000000000000000 </Weight>
+    <Weight> 0 1 1 0       0.5000000000000000 </Weight>
+    <Weight> 0 0 1 1      -0.2500000000000000 </Weight>
+    <Weight> 1 1 1 1       0.2500000000000000 </Weight>
+  </Interaction>
+</Hamiltonian>

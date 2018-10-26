@@ -1,0 +1,22 @@
+[System]
+solver = DLA
+[Hamiltonian]
+model_type = spin
+M =  1
+J = 1.0
+F = 0.0
+[Lattice]
+lattice_type = square
+D = 2
+L = 4,4
+Beta = 10
+[Parameter]
+NMCSE = 1000
+NMCSD = 1000
+NMCS = 1000
+NSET = 10
+SEED = 31415
+NVERMAX = 10000000
+algfile = algorithm.xml
+latfile = lattice.xml
+outfile = sample.log
