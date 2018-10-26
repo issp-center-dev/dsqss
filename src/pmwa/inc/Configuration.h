@@ -15,7 +15,7 @@
 #include <list>
 #include <algorithm>
 #include <systemparameter.h>
-#include <mpi.h>
+#include "mpi.h"
 #include <string.h>
 
 #include <simtype.h>

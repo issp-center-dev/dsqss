@@ -8,7 +8,7 @@
 #include <sys/time.h>
 
 #ifdef MULTI
-#include <mpi.h>
+#include "mpi.h"
 #endif
 int N_PROC;  // the total number of processors
 int I_PROC;  // the processor id of the current processor

@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "Probability.h"
-#include <mpi.h>
+#include "mpi.h"
 
 int Pcomp(const void *p, const void *q) {
   double x, y;

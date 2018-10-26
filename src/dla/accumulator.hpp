@@ -12,7 +12,7 @@
 #include <iomanip>
 
 #ifdef MULTI
-#include <mpi.h>
+#include "mpi.h"
 #endif
 
 #include "name.h"
