@@ -10,7 +10,7 @@ matrix:
       - mkdir build
       - cd build
     script:
-#      - cmake ../
+#      - cmake ../ 
 #      - make
 #      - export OMP_NUM_THREADS=1
 #      - make test
@@ -20,7 +20,7 @@ matrix:
 #      - make test
 #      - rm -r *
       - sudo apt-get install -y libopenmpi-dev openmpi-bin
-      - cmake ../
+      - cmake ../ -DCMAKE_CXX_COMPILER=mpic++
       - make
       - export OMP_NUM_THREADS=1
 #      - make test MPIRUN="mpiexec -np 4"
