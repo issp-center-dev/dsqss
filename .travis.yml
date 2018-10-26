@@ -12,8 +12,8 @@ matrix:
     script:
       - sudo apt-get install -y libopenmpi-dev openmpi-bin
       - cmake ../ -DCMAKE_CXX_COMPILER=mpic++
-      - make
+      - make 
       - export OMP_NUM_THREADS=1
-      - make test
+      - make test ARGS='-V'
  #     - rm -r test
  
