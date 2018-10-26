@@ -1,5 +1,10 @@
 find_package(PythonInterp REQUIRED)
-set(testdirs dla pmwa tool)
+if (ENABLE_MPI)
+   set(testdirs dla pmwa tool)
+else()
+   set(testdirs dla tool)
+endif(ENABLE_MPI)
+
 foreach(testdir ${testdirs})
   add_subdirectory(${testdir})
 endforeach(testdir)
