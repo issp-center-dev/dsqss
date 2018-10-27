@@ -12,7 +12,7 @@ matrix:
       - mkdir build
       - cd build
       - cmake ../
-      - make 
+      - VERBOSE=1 make 
     script:
       - export OMP_NUM_THREADS=1
       - make test ARGS='-V'
