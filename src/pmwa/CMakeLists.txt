@@ -27,10 +27,10 @@ target_compile_definitions(pmwa_B PRIVATE MEASURE_BOSON=1)
 
 target_link_libraries(pmwa_H ${LAPACK_LIBRARIES} RDM STDMA)
 target_link_libraries(pmwa_B ${LAPACK_LIBRARIES} RDM STDMA)
-target_include_directories(pmwa_H PUBLIC ${MPI_CXX_INCLUDE_DIRS})
-target_include_directories(pmwa_B PUBLIC ${MPI_CXX_INCLUDE_DIRS})
-target_link_libraries(pmwa_H ${MPI_CXX_LIBRARIES})
-target_link_libraries(pmwa_B ${MPI_CXX_LIBRARIES})
+target_include_directories(pmwa_H PUBLIC ${MPI_C_INCLUDE_DIRS})
+target_include_directories(pmwa_B PUBLIC ${MPI_C_INCLUDE_DIRS})
+target_link_libraries(pmwa_H ${MPI_C_LIBRARIES})
+target_link_libraries(pmwa_B ${MPI_C_LIBRARIES})
 
 add_custom_target(pmwa
   DEPENDS
