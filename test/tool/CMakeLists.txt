@@ -9,10 +9,16 @@ foreach(testfile ${TEST_FILES})
     configure_file(${testfile} ${CMAKE_BINARY_DIR}/test/tool COPYONLY)
 endforeach()
 
+if(MPI_FOUND)
 set(python_test_src
   test_dsqss_pre_dla
   test_dsqss_pre_pmwa
 )
+else(MPI_FOUND)
+set(python_test_src
+  test_dsqss_pre_dla
+)
+endif(MPI_FOUND)
 foreach(test ${python_test_src})
     add_python_test(${test})
 endforeach(test)
