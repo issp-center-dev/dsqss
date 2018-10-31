@@ -14,10 +14,10 @@ else:
 name = 'amzu'
 mus = [-4.0, -2.0, 0.0, 2.0, 2.5, 3.0, 6.0, 9.0, 9.5, 10.0, 12.0, 14.0]
 
-output = open('{}.dat'.format(name), 'w')
+output = open('{0}.dat'.format(name), 'w')
 
 for i,mu in enumerate(mus):
-    with open('std_{}.in'.format(i), 'w') as f:
+    with open('std_{0}.in'.format(i), 'w') as f:
         f.write('''
 solver = DLA
 model_type = boson
@@ -32,20 +32,19 @@ L = 8,8
 nset = 4
 ntherm = 100
 ndecor = 100
-nmcs = 100
-       ''')
-        f.write('F = {}\n'.format(mu/4))
-        f.write('algfile = algorithm_{}.xml\n'.format(i))
-        f.write('outfile = res_{}.dat\n'.format(i))
-    cmd = [os.path.join(bindir, 'dsqss_pre.py'), '-p', 'param_{}.in'.format(i), '-i', 'std_{}.in'.format(i)]
+nmcs = 100''')
+        f.write('F = {0}\n'.format(mu/4))
+        f.write('algfile = algorithm_{0}.xml\n'.format(i))
+        f.write('outfile = res_{0}.dat\n'.format(i))
+    cmd = [os.path.join(bindir, 'dsqss_pre.py'), '-p', 'param_{0}.in'.format(i), '-i', 'std_{0}.in'.format(i)]
     subprocess.call(cmd)
-    cmd = [os.path.join(bindir, 'dla_B'), 'param_{}.in'.format(i)]
+    cmd = [os.path.join(bindir, 'dla_B'), 'param_{0}.in'.format(i)]
     subprocess.call(cmd)
-    with open('res_{}.dat'.format(i)) as f:
+    with open('res_{0}.dat'.format(i)) as f:
         for line in f:
             if not line.startswith('R'):
                 continue
             words = line.split()
             if words[1] == name:
-                output.write('{} {} {}\n'.format(mu, words[3], words[4]))
+                output.write('{0} {1} {2}\n'.format(mu, words[3], words[4]))
 
