@@ -8,7 +8,7 @@ Overview
 ****************
 DSQSS is a program package for solving quantum many-body problems defined on lattices. It is based on the quantum Monte Carlo method in Feynman's path integral representation. It covers a broad range of problems taking input files that define arbitrary unit cells in arbitrary dimensions, and arbitrary matrix elements of the interactions among arbitrary number of degrees of freedom.
 
-For example, you can perform finite temperature calculation of XXZ spin model by specifing parameters such as dimension, size of lattice, anisotropic coupling constants, length of spin, strength of magnetic field, temperature. You can calculate Bose-Hubbard model as well as quantum spin model. PMWA (Parallel Multi Worm Algorithm) suits for large-scale non-trivial parallel calculation by domain parallelization.
+For example, you can perform finite temperature calculation of XXZ spin model by specifying parameters such as dimension, size of lattice, anisotropic coupling constants, length of spin, strength of magnetic field, temperature. You can calculate Bose-Hubbard model as well as quantum spin model. PMWA (Parallel Multi Worm Algorithm) suits for large-scale non-trivial parallel calculation by domain parallelization.
 
 DSQSS consists of the following sub packages.
 
@@ -29,7 +29,7 @@ DSQSS consists of the following sub packages.
 
 Developers
 ****************
-2018/08/10 
+2018/10/19 
 
 - Yasuyuki Kato (Univ. of Tokyo)
 - Naoki Kawashima (ISSP)
@@ -37,12 +37,12 @@ Developers
 - Takafumi Suzuki (Hyogo Univ.)
 - Kenji Harada (Kyoto Univ.)
 - Akiko Masaki (Hitachi Research Laboratory)
-- Yuishi Motoyama (ISSP)
+- Yuichi Motoyama (ISSP)
 - Kazuyoshi Yoshimi (ISSP)
 
 Collaborators
 ****************
-2018/08/10
+2018/10/19
 
 - Tsuyoshi Okubo (Univ. of Tokyo)
 - Takeo Kato (ISSP)
@@ -58,7 +58,7 @@ The users are kindly requested to acknowledge the usage of this software in thei
 
 Acknowledgment
 ****************
-Development of this software was and is being supported by K-computer project, post-K computer projects and “Project for advance- ment of software usability in materials science” by ISSP.
+Development of this software was and is being supported by K-computer project, post-K computer projects and “Project for advancement of software usability in materials science” by ISSP.
 
 Contact
 *********************

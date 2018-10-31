@@ -2,7 +2,13 @@ DSQSS -- Discrete Space Quantum Systems Solver
 ==============================================
 
 .. toctree::
-  :maxdepth: 2
+  :maxdepth: 4
+  :numbered: 4
 
-  about_dsqs
-  install
+  dsqss/index
+
+  Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`search`

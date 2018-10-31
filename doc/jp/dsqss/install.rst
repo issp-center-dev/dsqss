@@ -17,14 +17,13 @@ DSQSSの使用には以下のプログラム・ライブラリが必要です.
 ********************
 - zipファイルをダウンロードする場合
   
-  DSQSSの最新版は https://github.com/qmc/dsqss からダウンロードできます. 
-  「Clone or download」をクリックし, 「Download ZIP」を選ぶとダウンロードが開始されます. 
+  DSQSSの最新版は https://github.com/issp-center-dev/dsqss/releases からダウンロードできます. 
 
 - gitを利用する場合
   
   Gitを利用されている方は, 端末から以下のコマンドを打つことで直接ダウンロードできます. 
 
-  ``$ git clone https://github.com/qmc/dsqss``
+  ``$ git clone https://github.com/issp-center-dev/dsqss.git``
 
 フォルダ構成
 ********************
