@@ -12,7 +12,7 @@ def p_value(X, E, N, Y):
 
 def cleanup(name=''):
     if name != '':
-        name = '_{}'.format(name)
+        name = '_{0}'.format(name)
     for prefix, suffix in [('hamiltonian', '.xml'),
                            ('algorithm', '.xml'),
                            ('lattice', '.xml'),
@@ -24,14 +24,14 @@ def cleanup(name=''):
                            ('ck', '.dat'),
                            ('cjob.res', '.dat'),
                            ]:
-        fname = '{}{}{}'.format(prefix, name, suffix)
+        fname = '{0}{1}{2}'.format(prefix, name, suffix)
         if os.path.exists(fname):
             os.remove(fname)
 
 
 def genXML(param, BINDIR='.', name=''):
     if name != '':
-        name = '_{}'.format(name)
+        name = '_{0}'.format(name)
 
     D = param['D']
     z = 2*D
@@ -41,7 +41,7 @@ def genXML(param, BINDIR='.', name=''):
         V = param['V']
         U = param['U']/z
         mu = param['mu']/z
-        retval = sub.call(['{}/generators/hamgen_B'.format(BINDIR), str(M), str(t), str(V), str(U), str(mu)])
+        retval = sub.call(['{0}/generators/hamgen_B'.format(BINDIR), str(M), str(t), str(V), str(U), str(mu)])
         if retval != 0:
             sys.exit(retval)
     elif param['Model'] == 'spin':
@@ -56,76 +56,76 @@ def genXML(param, BINDIR='.', name=''):
             print('ERROR: Jz != Jxy')
             sys.exit(1)
         h = param['h']/z
-        retval = sub.call(['{}/generators/hamgen_H'.format(BINDIR), str(M), str(Jz), str(h)])
+        retval = sub.call(['{0}/generators/hamgen_H'.format(BINDIR), str(M), str(Jz), str(h)])
         if retval != 0:
             sys.exit(retval)
     else:
         print('ERROR: unknown model')
         sys.exit(1)
 
-    retval = sub.call(['{}/generators/dla_alg'.format(BINDIR)])
+    retval = sub.call(['{0}/generators/dla_alg'.format(BINDIR)])
     if retval != 0:
         sys.exit(retval)
-    shutil.move('hamiltonian.xml', 'hamiltonian{}.xml'.format(name))
-    shutil.move('algorithm.xml', 'algorithm{}.xml'.format(name))
+    shutil.move('hamiltonian.xml', 'hamiltonian{0}.xml'.format(name))
+    shutil.move('algorithm.xml', 'algorithm{0}.xml'.format(name))
 
     L = param['L']
     # beta = param['beta']
     beta = 1.0
-    cmds = ['{}/generators/lattgene_C'.format(BINDIR), str(D)]
+    cmds = ['{0}/generators/lattgene_C'.format(BINDIR), str(D)]
     cmds.extend(map(str,L))
     cmds.append(str(beta))
     retval = sub.call(cmds)
     if retval != 0:
         sys.exit(retval)
-    shutil.move('lattice.xml', 'lattice{}.xml'.format(name))
+    shutil.move('lattice.xml', 'lattice{0}.xml'.format(name))
 
     ntau = param['ntau']
 
-    cmds = ['{}/generators/sfgene'.format(BINDIR), str(D)]
+    cmds = ['{0}/generators/sfgene'.format(BINDIR), str(D)]
     cmds.extend(map(str,L))
     cmds.extend([str(ntau), str(ntau), '0'])
     retval = sub.call(cmds)
     if retval != 0:
         sys.exit(retval)
-    shutil.move('sf.xml', 'sf{}.xml'.format(name))
+    shutil.move('sf.xml', 'sf{0}.xml'.format(name))
 
-    cmds = ['{}/generators/cfgene'.format(BINDIR), str(D)]
+    cmds = ['{0}/generators/cfgene'.format(BINDIR), str(D)]
     cmds.extend(map(str,L))
     cmds.append(str(ntau))
     retval = sub.call(cmds)
     if retval != 0:
         sys.exit(retval)
-    shutil.move('cf.xml', 'cf{}.xml'.format(name))
+    shutil.move('cf.xml', 'cf{0}.xml'.format(name))
 
 def geninp(beta, seed, nset=10, nmcs=1000, ntherm=1000, npre=1000, simtime=0.0, name=''):
     if name != '':
-        name = '_{}'.format(name)
+        name = '_{0}'.format(name)
 
-    with open('qmc{}.inp'.format(name), 'w') as f:
+    with open('qmc{0}.inp'.format(name), 'w') as f:
         f.write('runtype = 0\n')
-        f.write('beta = {}\n'.format(beta))
-        f.write('seed = {}\n'.format(seed))
-        f.write('nset = {}\n'.format(nset))
-        f.write('nmcs = {}\n'.format(nmcs))
-        f.write('ntherm = {}\n'.format(ntherm))
-        f.write('npre = {}\n'.format(npre))
-        f.write('simulationtime = {}\n'.format(simtime))
-        f.write('latfile = lattice{}.xml\n'.format(name))
-        f.write('algfile = algorithm{}.xml\n'.format(name))
-        f.write('outfile = res{}.dat\n'.format(name))
-        f.write('sfinpfile = sf{}.xml\n'.format(name))
-        f.write('cfinpfile = cf{}.xml\n'.format(name))
-        f.write('ckinpfile = sf{}.xml\n'.format(name))
-        f.write('sfoutfile = sf{}.dat\n'.format(name))
-        f.write('cfoutfile = cf{}.dat\n'.format(name))
-        f.write('ckoutfile = ck{}.dat\n'.format(name))
+        f.write('beta = {0}\n'.format(beta))
+        f.write('seed = {0}\n'.format(seed))
+        f.write('nset = {0}\n'.format(nset))
+        f.write('nmcs = {0}\n'.format(nmcs))
+        f.write('ntherm = {0}\n'.format(ntherm))
+        f.write('npre = {0}\n'.format(npre))
+        f.write('simulationtime = {0}\n'.format(simtime))
+        f.write('latfile = lattice{0}.xml\n'.format(name))
+        f.write('algfile = algorithm{0}.xml\n'.format(name))
+        f.write('outfile = res{0}.dat\n'.format(name))
+        f.write('sfinpfile = sf{0}.xml\n'.format(name))
+        f.write('cfinpfile = cf{0}.xml\n'.format(name))
+        f.write('ckinpfile = sf{0}.xml\n'.format(name))
+        f.write('sfoutfile = sf{0}.dat\n'.format(name))
+        f.write('cfoutfile = cf{0}.dat\n'.format(name))
+        f.write('ckoutfile = ck{0}.dat\n'.format(name))
 
 def run(exename, BINDIR='.', name=''):
     if name != '':
-        name = '_{}'.format(name)
+        name = '_{0}'.format(name)
 
-    retval = sub.call(['{}/{}'.format(BINDIR,exename), 'qmc{}.inp'.format(name)])
+    retval = sub.call(['{0}/{1}'.format(BINDIR,exename), 'qmc{0}.inp'.format(name)])
     if retval != 0:
         sys.exit(retval)
 

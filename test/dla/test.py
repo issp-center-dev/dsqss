@@ -26,16 +26,16 @@ NPRE = 1000
 
 def evaluate(ref, nset, alpha, name=''):
     if name != '':
-        name = '_{}'.format(name)
+        name = '_{0}'.format(name)
 
-    res = read_result('res{}.dat'.format(name))
-    SF = read_result('sf{}.dat'.format(name))
+    res = read_result('res{0}.dat'.format(name))
+    SF = read_result('sf{0}.dat'.format(name))
     res['SF'] = SF
 
     if test_Green:
-        CF = read_result('cf{}.dat'.format(name))
+        CF = read_result('cf{0}.dat'.format(name))
         res['CF'] = CF
-        CK = read_result('ck{}.dat'.format(name))
+        CK = read_result('ck{0}.dat'.format(name))
         res['CK'] = CK
 
     failed = 0
@@ -47,23 +47,23 @@ def evaluate(ref, nset, alpha, name=''):
             Y = ref[name]
             p = p_value(X, E, nset, Y)
             if p < alpha:
-                print('NG: {}: X={}, E={}, Y={}, t={}, p={}'.format(name, X, E, Y, (X-Y)/E, p))
+                print('NG: {0}: X={1}, E={2}, Y={3}, t={4}, p={5}'.format(name, X, E, Y, (X-Y)/E, p))
                 failed += 1
             else:
-                print('OK: {}: X={}, E={}, Y={}, t={}, p={}'.format(name, X, E, Y, (X-Y)/E, p))
+                print('OK: {0}: X={1}, E={2}, Y={3}, t={4}, p={5}'.format(name, X, E, Y, (X-Y)/E, p))
         else:
             y = np.array(ref[name])
             nk, ntau = y.shape
             for ik in range(nk):
                 for it in range(ntau):
-                    X,E = res[name]['C{}t{}'.format(ik,it)]
+                    X,E = res[name]['C{0}t{1}'.format(ik,it)]
                     Y = y[ik,it]
                     p = p_value(X, E, nset, Y)
                     if p < alpha:
-                        print('NG: {}[C{}t{}]: X={}, E={}, Y={}, t={}, p={}'.format(name, ik, it, X, E, Y, (X-Y)/E, p))
+                        print('NG: {0}[C{1}t{2}]: X={3}, E={4}, Y={5}, t={6}, p={7}'.format(name, ik, it, X, E, Y, (X-Y)/E, p))
                         failed += 1
                     else:
-                        print('OK: {}[C{}t{}]: X={}, E={}, Y={}, t={}, p={}'.format(name, ik, it, X, E, Y, (X-Y)/E, p))
+                        print('OK: {0}[C{1}t{2}]: X={3}, E={4}, Y={5}, t={6}, p={7}'.format(name, ik, it, X, E, Y, (X-Y)/E, p))
     if failed > 0:
         sys.exit(1)
 

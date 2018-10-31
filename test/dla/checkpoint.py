@@ -17,21 +17,21 @@ simtime = 1.0
 
 def evaluate(name=''):
     if name != '':
-        name = '_{}'.format(name)
+        name = '_{0}'.format(name)
 
-    res1 = read_result('res{}.dat'.format(name))
-    SF1 = read_result('sf{}.dat'.format(name))
-    CF1 = read_result('cf{}.dat'.format(name))
-    CK1 = read_result('ck{}.dat'.format(name))
+    res1 = read_result('res{0}.dat'.format(name))
+    SF1 = read_result('sf{0}.dat'.format(name))
+    CF1 = read_result('cf{0}.dat'.format(name))
+    CK1 = read_result('ck{0}.dat'.format(name))
     res1['SF'] = SF1
     res1['CF'] = CF1
     res1['CK'] = CK1
     res1.pop('time')
 
-    res2 = read_result('res{}_restarted.dat'.format(name))
-    SF2 = read_result('sf{}_restarted.dat'.format(name))
-    CF2 = read_result('cf{}_restarted.dat'.format(name))
-    CK2 = read_result('ck{}_restarted.dat'.format(name))
+    res2 = read_result('res{0}_restarted.dat'.format(name))
+    SF2 = read_result('sf{0}_restarted.dat'.format(name))
+    CF2 = read_result('cf{0}_restarted.dat'.format(name))
+    CK2 = read_result('ck{0}_restarted.dat'.format(name))
     res2['SF'] = SF2
     res2['CF'] = CF2
     res2['CK'] = CK2
@@ -63,15 +63,15 @@ else:
     exename = 'dla_H'
 
 cleanup(ID)
-cleanup('{}_restarted'.format(ID))
+cleanup('{0}_restarted'.format(ID))
 genXML(param, BINDIR=BINDIR, name=ID)
 geninp(beta, SEED, nset=nset, simtime=simtime, name=ID)
 run(exename, BINDIR=BINDIR, name=ID)
 geninp(beta, 2*SEED, nset=nset, simtime='INF', name=ID)
 run(exename, BINDIR=BINDIR, name=ID)
 for nm in ['res','sf','cf','ck']:
-    shutil.move('{}_{}.dat'.format(nm,ID), '{}_{}_restarted.dat'.format(nm,ID))
-os.remove('res_{}.dat.0.cjob'.format(ID))
+    shutil.move('{0}_{1}.dat'.format(nm,ID), '{0}_{1}_restarted.dat'.format(nm,ID))
+os.remove('res_{0}.dat.0.cjob'.format(ID))
 
 geninp(beta, SEED, nset=nset, simtime=0.0, name=ID)
 run(exename, BINDIR=BINDIR, name=ID)
