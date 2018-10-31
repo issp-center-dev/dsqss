@@ -91,7 +91,7 @@ class info:
         self.gendir = args.gendir
         if self.gendir is None:
             self.gendir = os.path.abspath(os.path.dirname(__file__))
-            print('use file generators in {}'.format(self.gendir))
+            print('use file generators in {0}'.format(self.gendir))
         self._get_info(args.input)
         self._check_condition()
         
@@ -191,7 +191,7 @@ class info:
         LatticeInfo=self._get_latticeinfo()
         genpath = self._get_lattgene()
         if not os.path.exists(genpath):
-            raise RuntimeError('{} is not found: use correct --generator_dir.'.format(genpath))
+            raise RuntimeError('{0} is not found: use correct --generator_dir.'.format(genpath))
         cmd = [genpath, '-o', self.prm.param_dict["latfile"]]
         for l in LatticeInfo:
             cmd.append(str(l))
@@ -210,7 +210,7 @@ class info:
             model_type = self.prm.info_dict["model_type"]
             genpath = os.path.join(self.gendir, self.dict_hamgen[model_type])
             if not os.path.exists(genpath):
-                raise RuntimeError('{} is not found: use correct --generator_dir.'.format(genpath))
+                raise RuntimeError('{0} is not found: use correct --generator_dir.'.format(genpath))
             if model_type == "spin":
                 cmd = [genpath,
                        '-o', hfile,
@@ -229,7 +229,7 @@ class info:
             subprocess.call(cmd)
             genpath = os.path.join(self.gendir, 'dla_alg')
             if not os.path.exists(genpath):
-                raise RuntimeError('{} is not found: use correct --generator_dir.'.format(genpath))
+                raise RuntimeError('{0} is not found: use correct --generator_dir.'.format(genpath))
             cmd = [genpath, hfile, self.prm.param_dict["algfile"]]
             print("\n" + ' '.join(cmd))
             subprocess.call(cmd)
@@ -237,7 +237,7 @@ class info:
             if len(self.prm.param_dict["sfinpfile"]) > 0:
                 genpath = os.path.join(self.gendir, 'sfgene')
                 if not os.path.exists(genpath):
-                    raise RuntimeError('{} is not found: use correct --generator_dir.'.format(genpath))
+                    raise RuntimeError('{0} is not found: use correct --generator_dir.'.format(genpath))
                 cmd = [genpath,
                         '-o', self.prm.param_dict["sfinpfile"],
                         ]
@@ -251,7 +251,7 @@ class info:
             if len(self.prm.param_dict["cfinpfile"]) > 0:
                 genpath = os.path.join(self.gendir, 'cfgene')
                 if not os.path.exists(genpath):
-                    raise RuntimeError('{} is not found: use correct --generator_dir.'.format(genpath))
+                    raise RuntimeError('{0} is not found: use correct --generator_dir.'.format(genpath))
                 cmd = [genpath,
                         '-o', self.prm.param_dict["cfinpfile"],
                         ]
@@ -263,7 +263,7 @@ class info:
             if len(self.prm.param_dict["ckinpfile"]) > 0:
                 genpath = os.path.join(self.gendir, 'sfgene')
                 if not os.path.exists(genpath):
-                    raise RuntimeError('{} is not found: use correct --generator_dir.'.format(genpath))
+                    raise RuntimeError('{0} is not found: use correct --generator_dir.'.format(genpath))
                 cmd = [genpath,
                         '-o', self.prm.param_dict["ckinpfile"],
                         ]
