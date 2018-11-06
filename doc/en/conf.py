@@ -175,6 +175,8 @@ html_sidebars = {
 
 # -- Extension configuration -------------------------------------------------
 
+numfig = True
+
 # -- Options for todo extension ----------------------------------------------
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.

@@ -6,6 +6,7 @@ DSQSS -- Discrete Space Quantum Systems Solver
   :numbered: 4
 
   dsqss/index
+  dla/tutorial/index.rst
 
   Indices and tables
 ==================
