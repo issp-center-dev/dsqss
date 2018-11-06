@@ -102,7 +102,7 @@ For ``DSQSS/PMWA`` , see the section for input file.
    Parameter, Type, Default, Remarks
    ``lattice_type`` , str, square, "Select ``square`` or ``triangular`` for ``DLA``. For ``PMWA``, only  ``square``  can be selected."
    ``D`` , int, , "The number of dimension. "
-   ``L`` , int, , "The liner size of the lattice. Specify the size of the ``D`` dimensional space, separated by , for example, in the case of a lattice of 2D : math:`2 \ times 4`, specify it as` `L = 2, 4``."
+   ``L`` , int, , "The liner size of the lattice. Specify the size of the ``D`` dimensional space, separated by , for example, in the case of a lattice of 2D :math:`2 \ times 4`, specify it as` `L = 2, 4``."
    ``Beta`` , double, 10.0, "Inverse temperature"
    ``NLdiv`` , int, 1, "( for ``DSQSS/PMWA`` ): The devision number for the lattice."
    ``NBdiv``, int, 1, "( for ``DSQSS/PMWA`` ): The devision number for ``Beta`` ."
@@ -151,8 +151,8 @@ In :numref:`fig_nmcs` , the flow of Monte Carlo calculation is shown.
    Schematic figure for the  flow of Monte Carlo calculation and the parameters for Monte Carlo steps
 
 DSQSS defines 1 MC step from generation of worm head pair to disappearance and
-defines 1 MC sweep as :math: `N_\text {cyc}` MC step (even if generation of worm head pair fails, it is counted as 1 MC step.)
-The value of :math: `N_\text {cyc}` is determined by the initial ``NPRE`` MC step.
+defines 1 MC sweep as :math:`N_\text{cyc}` MC step (even if generation of worm head pair fails, it is counted as 1 MC step.)
+The value of :math:`N_\text{cyc}` is determined by the initial ``NPRE`` MC step.
 
 After determining :math:`N_\text{cyc}` ,
 Simulation of the ``NTHERM`` MC sweep is performed as an initial relaxation phase,
@@ -165,5 +165,5 @@ One set consists of two phases, the initial relaxation phase and the physical qu
 or the autocorrelation reduction phase and the physical quantity measurement phase,
 and the whole simulation includes ``NSET`` sets.
 
-Expected value of physical quantity :math: `\langle Q \rangle` and error :math: `\ sigma_Q`
+Expected value of physical quantity :math:`\langle Q \rangle` and error :math:`\sigma_Q`
 can be obtained as the mean and standard error of the physical quantity obtained from each of the ``NSET`` sets.
