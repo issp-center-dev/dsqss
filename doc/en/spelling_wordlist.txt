@@ -12,6 +12,7 @@ hypercubic
 pre
 py
 textfile
+ising
 
 Yasuyuki
 Kato
