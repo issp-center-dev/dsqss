@@ -1,7 +1,7 @@
 .. -*- coding: utf-8 -*-
 .. highlight:: none
 
- Make an input file for DSQSS/PMWA
+Make an input file for DSQSS/PMWA
 ===================================
 
 To execute PMWA, a text format input file is required.
