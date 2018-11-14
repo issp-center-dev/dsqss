@@ -13,6 +13,9 @@ pre
 py
 textfile
 ising
+NLdiv
+NBdiv
+hamiltonian
 
 Yasuyuki
 Kato

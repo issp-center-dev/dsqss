@@ -7,5 +7,5 @@ Tutorial of DSQSS/PMWA
 
 .. toctree::
    intro
-..   usage
+   usage
 ..   sample_Heisenberg
