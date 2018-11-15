@@ -18,5 +18,5 @@ In this section, the usage and parameters are explained for each procedure.
 .. toctree::
    lattgene
    model
-..   output
+   output
 
