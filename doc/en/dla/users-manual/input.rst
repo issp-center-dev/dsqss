@@ -59,111 +59,111 @@ The list of parameters are the following,
 
   - When simulationtime > 0.0
 
-    - After XXX, DSQSS/DLA saves jkkjjkkjj
+    - DSQSS/DLA loads the checkpoint file and resumes the simulation if the checkpoint file exists.
+        - If not, DSQSS/DLA starts a new simulation.
+    - After the time specified by "simulationtime" (in seconds) has elapsed, DSQSS/DLA saves the state of the simulation into the checkpoint file and halts the simulation.
+    - The name of the checkpoint file is that of the main result file with a suffix ".cjob".
 
-    - 指定秒数が経過するか, 計算が完了したとき, 途中経過をチェックポイントファイルに書き出した後, プログラムを終了します.
-    - 計算開始時にチェックポイントファイルがある場合, そのファイルを読み込んだ後に計算を再開します.
-    - チェックポイントファイルの名前は outfile で指定されるメイン出力ファイル名の末尾に .cjob をつけたものです.
+  - When simulationtime <= 0.0
 
-  - simulationtime <= 0.0 のとき
-
-    - チェックポイントファイルは無視され, 書き出しも読み込みも行われません.
+    - The checkpoint file is ignored. DSQSS/DLA never saves nor loads it.
 
 
-格子定義ファイル ``lattice.xml``
+Lattice file ``lattice.xml``
 **************************************
 
-格子ファイルは時空間の情報, たとえばサイトの数やサイト同士のつながりかた, 逆温度の大きさなどを定義するための, 
-XML ライクな形式で記述されるテキストファイルです.
-これは一般に複雑になりえるので, 正方格子などのよく使われる格子については, 
-格子定義ファイル作成のための補助ツール ``lattgene`` が用意されています.
+A lattice file is a textfile written in XML format.
+This defines timespace to be simulation, for example, the number of sites, the connections between sites, the inverse temperature, and so on.
+This file can be very complicated, so DSQSS has an utility tool ``lattgene`` to generate lattice files describing common lattices, such as a hypercubic lattice.
 
-格子ファイルはただ一つの要素 Lattice を持ち, すべての情報は Lattice 要素の内容として含まれます.
+The lattice file has a unique element named "Lattice". The other elements belong to "Lattice" as children.
 
 Lattice
-  ファイル全体の要素.
-  ほかのすべての要素は Lattice のサブ要素です.
+  The root element.
 
 Lattice/Comment
-  省略可能. コメント文を示し, 計算には使用されません.
+  (Optional) Comment. DSQSS ignores this element.
 
 Lattice/Dimension
-  格子の次元.
+  The dimension of the lattice.
 
 Lattice/Beta
-  逆温度. パラメータファイルでの指定が優先されます.
+  The inverse temperature.
+  This is overwritten by the parameter file.
 
 Lattice/LinearSize
-  ユニットセルを単位とした, 各次元の格子の長さ.
-  内容として, スペース区切りの正整数を Lattice/Dimension で指定した数だけ並べたものをとります.
+  The size of the lattice in units of the unitcell.
+  This takes space-separated positive integers as many as specified by "Lattice/Dimension".
   ::
 
     <LinearSize> 3 4 </LinearSize>
-    # ユニットセルが第1次元方向に3個, 第2次元方向に4個並んでいる場合
+    # unitcells are arranged in 3x4.
 
 Lattice/NumberOfCells
-  ユニットセルの総数. LinearSize で指定した各次元方向のサイズの積.
+  The number of unitcells.
 
 Lattice/NumberOfSites
-  サイトの総数. ユニットセルの総数と1セル内のサイト数の積.
+  The number of sites.
 
 Lattice/NumberOfInteractions
-  相互作用項の総数. 二体相互作用のみの場合は,いわゆる「ボンド数」.
+  The number of the interactions.
+  When all the interactions are two-body ones, this is nothing but the number of bonds.
 
 Lattice/NumberOfSiteTypes
-  サイトの種類数.
+  The number of site types.
 
 Lattice/NumberOfInteractionTypes
-  相互作用の種類数.
+  The number of interaction types.
 
 Lattice/BondDimension
-  Winding number を測定する際に定義する要素.
+  Parameter for the winding number.
 
 Lattice/NumberOfEdgeInteractions
-  Winding number を測定する際に定義する要素. 格子の周期的境界をまたぐボンドの総数を指定します.
+  Parameter for the Winding number.
+  The number of bonds connecting sites over the lattice's boundary.
 
 Lattice/S
-  サイト情報. Lattice/NumberOfSites で指定したサイト数だけ指定する必要があります.
-  内容として, 「サイト番号」, 「サイトタイプ」, 「測定タイプ」の3つの整数をスペース区切りで持ちます.
-  サイトタイプの詳細は別途アルゴリズム定義ファイルの中で定義します.
+  Site information.
+  "Lattice" should includes this element as many as the number specified by "Lattice/NumberOfSites".
+  This takes three positive integers, "index of site", "site type", and "measure type".
+  The detail of site type is defined in an algorithm file.
   ::
 
     <S> 3 0 1 </S>
-    # サイト番号が3のサイトはサイトタイプが0で, 測定タイプは1である.
+    # the site with index 3 has the site type of 0 and the measure type of 1.
 
 Lattice/I
-  相互作用情報. Lattice/NumberOfInteractions で指定した相互作用数だけ指定する必要があります.
-  内容として, 「相互作用番号」, 「相互作用タイプ」, 「相互作用サイト数」, 「相互作用サイト番号」を指定するために, 
-  相互作用サイト数+3個の整数をスペース区切りで持ちます.
-  相互作用タイプの詳細 ― たとえば相互作用の大きさ ― は別途アルゴリズム定義ファイルの中で定義します.
-  サイト番号の順序は, アルゴリズム定義ファイルの Algorithm/Vertex/InitialConfiguration 要素で用いられるサイトの並び順と整合させる必要があります.
+  Interaction information.
+  "Lattice" should includes this element as many as the number specified by "Lattice/NumberOfInteractions".
+  This takes space-separated integers, "index of the interaction", "interaction type", "the number of sites involved in the interaction", "indices of involved sites".
+  The details of interaction type, e.g., the strength, are defined in an algorithm file.
+  The order of the indices of sites should be compatible with the order of sites specified in "Algorithm/Vertex/InitialConfiguration" in the algorithm file.
   ::
 
     <I> 5 1 2 8 12 </I>
-    # 相互作用番号が5である相互作用は相互作用タイプが1で, 2つのサイトが関与し, 
-    # それらのサイト番号は8と12である.
+    # the interaction with index 5 has the interaction type of 1 and connects 2 sites, 8 and 12.
 
 
-アルゴリズム定義ファイル ``algorithm.xml``
-************************************************
+Algorithm file ``algorithm.xml``
+***********************************
 
-アルゴリズム定義ファイルは相互作用ごとのワームの散乱確率などを定義する,  
-XML ライクな形式で記述されるテキストファイルです.
-これは一般に複雑になりえるので,  ハイゼンベルグ模型などのよく用いられる模型については,  
-アルゴリズム定義ファイル作成のための補助ツール ``hamgen_H``, ``hamgen_B`` や ``dla_alg`` が用意されています.
+An algorithm file is a textfile written in XML format.
+This defines the details of interactions, for example, the scattering probability of a worm head.
+This file can be very complicated, so DSQSS has an utility tools ``hamgen_H``, ``hamgen_B`` and ``dla_alg`` to generate algorithm files describing common models, such as Heisenberg model.
 
-格子ファイルはただ一つの要素 Algorithm を持ち, すべての情報は Algorithm 要素の内容として含まれます.
+The algorithm file has a unique element named "Algorithm". The other elements belong to "Algorithm" as children.
+
 
 Algorithm
-  ファイル全体の要素名.サブ要素として,  General,  Site,  Interaction,  Vertex があります.
-  ワームの生成・消滅・散乱の仕方を定義します.
+  The root element.
+  This has childrens, "General", "Site", "Interaction", and "Vertex".
 
 Algorithm/Comment
-  省略可能. コメント文を示し, 計算には使用されません.
+  (Optional) Comment. DSQSS ignores this.
 
 Algorithm/General
-  サブ要素として,  NSType,  NIType,  NVType,  NXMax,  WDiag があります.
-  サイトの種類数や相互作用の種類数など, アルゴリズム定義の基本パラメータを設定します.
+  General parameters such as the number of site types.
+  This has childrens, "NSType", "NIType", "NVType", "NXMax", and "WDiag".
   ::
 
     <Algorithm>
@@ -178,27 +178,26 @@ Algorithm/General
     </Algorithm>
 
 Algorithm/General/NSType
-  異なるサイト型の個数を指定する整数値.
+  The number of site types.
 
 Algorithm/General/NIType
-  異なる相互作用型の個数を指定する整数値.
+  The number of interaction types.
 
 Algorithm/General/NVType
-  異なるバーテックス型の個数を指定する整数値.
+  The number of vertex types.
 
 Algorithm/General/NXMax
-  各サイトが取りうる状態の数の最大値.
-  例えば大きさ :math:`S` のスピン系ならば :math:`2S+1` .
+  The maximum number of states on a site.
+  For example, :math:`2S+1` for a spin system with local spin :math:`S`.
 
 Algorithm/General/WDiag
-  ユーザが改変する measure_specific.cc 以外では用いられないので, その中で使われない場合には指定する必要はありません.
-  （標準の measure_specific.cc では, ワームの行程長から相関関数を求めるときの比例係数として用いられています.
-  この量に興味がない場合は, 任意の数を指定してください.）
+  User can use this value for user's own purpose in "measure_specific.cc".
+  In the original "measure_specific.cc" uses this value as a coefficient to measure correlation functions from the length of worms.
 
 Algorithm/Site
-  1つのサイト型を定義します.具体的には, そのサイト型をもつサイトに対する操作を定義します.
-  サイトにワームを生成消滅する過程もここで定義します.
-  サブ要素として,  SType,  NumberOfStates,  VertexTypeOfSource,  InitialConfiguration があります.
+  This defines a site type, for example, the weight of worm heads on a site.
+  This has children "SType", "NumberOfStates", "VertexTypeOfSource", and "InitialConfiguration".
+
   ::
 
     <Algorithm>
@@ -218,17 +217,17 @@ Algorithm/Site
     </Algorithm>
 
 Algorithm/Site/SType
-  定義されるサイト型の識別番号.
+  The index of site type.
 
 Algorithm/Site/NumberOfStates
-  サイトが取りうる状態の数.
+  The number of states of the site.
 
 Algorithm/Site/VertexTypeOfSource
-  挿入される可能性のあるバーテックスのタイプ.
+  The index of the vertex to be inserted here.
 
 Algorithm/Site/InitialConfiguration
-  初期条件の定義. 初期条件ごとのワーム対の生成消滅過程を定義もこの要素のなかで行われます.
-  サブ要素として, State, NumberOfChannels, Channel があります.
+  The process of pair creation/annihilation of worm heads.
+  This has children, "State", "NumberOfChannels", and "Channel"
   ::
 
     <Algorithm>
@@ -247,23 +246,24 @@ Algorithm/Site/InitialConfiguration
     </Algorithm>
 
 Algorithm/Site/InitialConfiguration/State
-  ワーム対が生成される前（もしくは消滅後）のサイトの状態.
+  The state index of the site without worms (before creation or after annihilation).
 
 Algorithm/Site/InitialConfiguration/NumberOfChannels
-  可能性のある終状態（チャネル）の数.
+  The number of the channels (result of creation/annihilation).
 
 Algorithm/Site/InitialConfiguration/Channel
-  各チャネルの定義. 整数値, 整数値, 浮動小数点値の3つの並びで指定.
+  Channels.
+  This takes two integers and one floating number.
 
-  - 第1の値はワーム生成後のヘッドの向き（0は虚時間方向負の向き, 1は正の向き.）.
-  - 第2の値はワーム生成後のヘッドとテールの間の状態.
-  - 第3の値はそのような終状態をとる確率.
+  - First figure denotes the direction of the worm head ( 0 for negative and 1 for positive in the imaginary time direction).
+  - Second figure denotes the state between worms.
+  - Third figure denotes the probability of this channel.
 
-  終状態としてワーム対を生成しない場合は, その Channel の 第1と第2の整数値はともに -1とする.
+  If the result has no worm heads, let both the first and the second integers be -1.
 
 Algorithm/Interaction
-  １つの相互作用型を定義します.
-  サブ要素として IType, VType, NBody, EBase, VertexDensity があります.
+  This defines an interaction.
+  This has children, "IType", "VType", "NBody", "EBase", and "VertexDensity".
   ::
 
     <Algorithm>
@@ -280,29 +280,30 @@ Algorithm/Interaction
     </Algorithm>
 
 Algorithm/Interaction/IType
-  相互作用の型の識別番号.
+  The index of the interaction.
 
 Algorithm/Interaction/VType
-  挿入する可能性のあるバーテックスの型の識別番号. バーテックス型の内容は Vertex/Algorithm で定義します.
+  The index of the vertex to be inserted.
 
 Algorihtn/Interaction/NBody
-  相互作用に関与するサイトの数（ゼーマン項のような1体相互作用であれば1 で, 交換相互作用のような2体相互作用であれば2. 3以上を指定することも可能）.
+  The number of sites involved in this interaction.
+  An onebody interaction such as the Zeeman term has 1 and a twobody interaction such as the exchange coupling has 2.
+  Three or higher body interaction can be treated.
 
 Algorithm/Interaction/EBase
-  エネルギーオフセットの値. シミュレーション自体には影響しませんが, 最終的なエネルギーの値を出すときに使用されます.
+  The offset of the local energy.
+  This value does not contribute to the simulation, but to the value of energy in the final result.
 
 Algorithm/Interaction/VertexDensity
-  関与するサイトの状態ごとに挿入するバーテックスの密度を指定します.
-  Algorithm/Interaction/NBody 個の整数値と, 1個の浮動小数点値の並びで指定.
-  整数値は, 関与する各サイトの状態（順序は格子定義ファイルの I で指定するサイト番号の順序と対応します）.
-  浮動小数点値は密度.
+  The density of vertex to be inserted.
+  This takes integers as many as "Algorithm/Interaction/NBody" and one preceding floating number.
+  The integers denote the states of sites (the order should be compatible with the order of sites in "I" of the lattice file).
+  The last floating number represents the density.
 
 Algorithm/Vertex
-  1つのバーテックスの型を定義します. バーテックスとしては, 通常の2体, 3体, ……の相互作用を記述するもの（ ``VCategory=2`` ）と, 
-  ワームヘッドがテールと消滅する場合のテール（ ``VCategory=1`` ）があります.
-  Algorithm/Interaction の要素になりえるのは, 前者です.
-  （このほか, 時間方向の周期境界（ ``VCategory=0`` ）も1体のバーテックスとして扱っていますが, これをユーザが定義する必要はありません.）
-  サブ要素として VType,  VCategory,  NBody,  NumberOfInitialConfigurations,  InitialConfiguration があります.
+  This defines a vertex.
+  This has children, "VType", "VCategory", "NBody", "NumberOfInitialConfigurations", and "InitialConfiguration".
+  Vertices belongs to a category specified by "Algorithm/Vertex/VCategory".
   ::
 
     <Algorithm>
@@ -324,22 +325,24 @@ Algorithm/Vertex
     </Algorithm>
 
 Algorithm/Vertex/VType
-  バーテックス型の識別番号. バーテックス型の定義ごとに異なる番号である必要があります.
+  The index of the vertex.
 
 Algorithm/Vertex/VCategory
-  1がワームテール, 2が相互作用.
+  
+  0. Boundary of imaginary time. Users need not define this.
+  1. Worm tail.
+  2. Interaction.
 
 Algorithm/Vertex/NBody
-  相互作用に関与するサイトの個数.
-  テールの場合には1.
+  The number of sites involved.
 
 Algorithm/Vertex/NumberOfInitialConfigurations
-  バーテックスの可能な初期状態数.
+  The number of initial states.
 
 Algorithm/Vertex/InitialConfiguration
-  特定のバーテックス初期状態に対するワームの可能なアクションを定義します.
-  従って, この要素は, Algorithm/Vertex/NumberOfInitialConfigurations の値と同じ数だけ存在する必要があります.
-  サブ要素として,  State,  IncomingDirection,  NewState,  NumberOfChannels,  Channel があります.
+  This defines scattering results of a worm head for each initial states.
+  "Algorithm/Vertex" should has this elements as many as the number specified by "Algorithm/Vertex/NumberOfInitialConfigurations".
+  This has children, "State", "IncomingDirection", "NewState", "NumberOfChannels", "Channel".
   ::
 
     <Algorithm>
@@ -358,124 +361,118 @@ Algorithm/Vertex/InitialConfiguration
       ...
     </Algorithm>
 
-  この例で定義されているのは, 「バーテックスの左下(0), 左上(1), 右下(2), 右上(3)の脚の状態がそれぞれ1, 0, 0, 1 であって, そこに, 左下（脚0の方向）から, その脚の状態を 0 に変化させるような ワームヘッドが入射した場合」のアクションであり, 
-  その内容は,  「確率1で, そのワームヘッドを 脚3の方向に散乱させて,  その方向の足の状態を 0 に変更する」ことを表しています. （つまり, この散乱が起こった場合, 散乱後のバーテックスの状態は 0, 0, 0, 0 になる.）
+ This example represents the following scenario;
+
+  - Initial states of bottom-left(0), top-left(0), bottom-right(2), and top-right(3) are 1, 0, 0, and 1, respectively.
+  - A worm head comes from bottom-left(0) and changes the state of this leg to 0.
+  - The worm head will be scattered to leg(3) and the state of outgoing leg will be changed to 0 with the probability 1.
 
 Algorithm/Vertex/InitialConfiguration/State
-  ワームヘッドが入ってくる前のバーテックスの初期状態を指定します.
-  具体的にはバーテックスの各脚の状態を指定します.
-  足の本数は,  Algorithm/Vertex/NBody で指定される数 (=m) の2倍なので,  2m 個数の整数値をスペースで区切ったものを入力します.
-  その順序として, 脚は対応するサイトの順序に並べられ, 
-  同じサイトに対応する2本の脚については, 虚数時間の小さい側が先に来ます.
-  （サイトの並び順は任意でよいが,  格子定義ファイルの Lattice/I 要素で 指定されているサイトの並び順はここで用いられたサイトの順序と整合している必要があります.）
-  各整数はバーテックスの足の状態を示す 0 から n-1 までの値. （ここで, n は対応するサイトの,  Algorithm/Site/NumberOfStates で指定される値.）
+  The initial states of the legs of the vertex.
+  Since the number of the legs is as twice as the number specified by "Algorithm/Vertex/NBody", say m,
+  this takes 2m integers.
+  Legs are in the same order as the corresponding sites.
+  For two legs on the same site, the leg with the smaller imaginary time comes first.
 
 Algorithm/Vertex/InitialConfiguration/IncomingDirection
-  入射するワームヘッドが入射前に乗っている脚の番号. 
-  対応する足が Algorithm/Vertex/InitialConfiguration/State の記述において何番目に出てくるかを 0 から 2m-1 の整数値で指定.
+  The index of the leg which a worm head comes from.
 
 Algorithm/Vertex/InitialConfiguration/NewState
-  ワームヘッドが通過したあとの Algorithm/Vertex/InitialConfiguration/IncomingDirection の足の状態. 0 から n-1 の整数値で指定.
+  The state of the "Algorithm/Vertex/InitialConfiguration/IncomingDirection" leg after a worm head comes.
 
 Algorithm/Vertex/InitialConfiguration/NumberOfChannels
-  可能な散乱チャネルの個数.
+  The number of scattering channels (final results).
 
 Algorithm/Vertex/InitialConfiguration/Channel
-  散乱チャネルの定義.
-  Algorithm/Vertex/InitialConfiguration/NumberOfChannels の個数だけこの要素を用意する必要があります.
-  2つの整数値と1つの浮動小数点値をスペースで区切ったもので指定.
+  A scattering channel.
+  This takes two integers and one floating number.
 
-  - 第1の整数値は, 散乱後のワームヘッドが乗っている足の番号を 0 から 2m-1 の値で指定したもの.
-  - 第2の整数値は, ワームヘッドが飛び去ったあとのその足の状態を 0 から n-1 の値で指定したもの.
-  - 第3の浮動小数点値は, そのチャネルを選ぶ確率.
+  - First figure denotes the index of the leg where the scattered worm head goes.
+  - Second figure denotes the state of the leg where the scattered worm head goes.
+  - Last figure denotes the probability of this channel.
 
-  特別な場合として, ワームヘッドがテールに衝突して消滅する場合があり, この場合は 第1引数と第2引数に -1 を指定します.
+  For the special case, the pair-annihilation of worm heads, let both the first and the second integer be -1.
 
-構造因子定義ファイル ``sf.xml``
-************************************************
+Structure factor file ``sf.xml``
+*********************************
 
-構造因子定義ファイルは, 動的構造因子
+A structure factor file is a textfile written in a XML-like format.
+This defines wave vectors and the discretization of imaginary time to calculate the dynamical structure factor
 
 .. math::
     S^{zz}(\vec{k},\tau) \equiv
-      \left\langle M^z(\vec{k},\tau)M^z(-\vec{k},0) \right\rangle - \left\langle M^z(\vec{k},\tau)\right\rangle \left\langle M^z(-\vec{k},0)\right\rangle 
+      \left\langle M^z(\vec{k},\tau)M^z(-\vec{k},0) \right\rangle - \left\langle M^z(\vec{k},\tau)\right\rangle \left\langle M^z(-\vec{k},0)\right\rangle .
 
-を計算するための波数や虚時間刻みの情報がXML ライクな形式で記述されるテキストファイルです.
-構造因子定義ファイル作成のための補助ツール ``sfgene`` が用意されています.
+DSQSS has an utility tool to generate a structure factor file, ``sfgene``.
 
-格子ファイルはただ一つの要素 StructureFactor を持ち, すべての情報は StructureFactor 要素の内容として含まれます.
+A structure factor file has only one element, "StructureFactor", and the other elements are children of this.
 
 StructureFactor
-  ファイル全体の要素名.
-  サブ要素として, Ntau, NumberOfElements, CutoffOfNtau, NumberOfInverseLattice, SF があります.
+  The root element.
+  This has children, "Ntau", "NumberOfElements", "CutoffOfNtau", "NumberOfInverseLattice", and "SF".
 
 StructureFactor/Comment
-  省略可能.
-  コメント文を示し, 計算には使用されません.
+  (Optional) Comment. DSQSS ignores this.
 
 StructureFactor/Ntau
-  虚時間軸の分割数.
+  The number of discretization of the imaginary time axis.
 
 StructureFactor/CutoffOfNtau
-  動的構造因子の虚時間引数 :math:`\tau` の最大値.
-  StructureFactor/Ntau 以下の整数で指定します.
+  The maximum of the imaginary time distance of the dynamical structure factor, :math:`\tau`.
+  This takes an integer in :math:`0, 1, \dots, \mathrm{Ntau}`.
 
 StructureFactor/NumberOfInverseLattice
-  波数 :math:`\vec{k}` の数.
+  The number of wave vectors, :math:`\vec{k}`
 
 StructureFactor/NumberOfElements
-  波数と座標の組み合わせの総数. 
-  StructureFactor/NumberOfInverseLattice と Lattice/NumberOfSites の積.
+  The number of the combination of wave vectors and sites.
 
 StructureFactor/SF
-  内積 :math:`\vec{r}\cdot\vec{k}` の情報.
-  StructureFactor/NumberOfElements で指定した数だけ指定する必要があります.
-  内容として,
-  「 :math:`\cos(\theta)` の値」,
-  「 :math:`\sin(\theta)` の値」,
-  「サイト番号」,
-  「波数番号」 の4つの数字をスペース区切りで持ちます.
-  ここで :math:`\theta` はサイト番号で示されるサイトの座標 :math:`\vec{r}` と波数番号で示される波数 :math:`\vec{k}` との内積です.
+  The phase factor :math:`z = \exp{vec{r}\cdot\vec{k}}` for a pair of a wave vector and a site.
+  This takes four figures, ":math:`\mathrm{Re}z`", ":math:`\mathrm{Im}z`", "the index of the site", "the index of the wave vector".
+  "StructureFactor" should has this elements as many as the number specified by "StructureFactor/NumberOfElements".
 
-実空間表示温度グリーン関数定義ファイル ``cf.xml``
-****************************************************
+Real space temperature Green's function file ``cf.xml``
+********************************************************
 
-実空間表示温度グリーン関数定義ファイルは,実空間表示温度グリーン関数
+Real space temperature Green's function file is a textfile written in a XML-like format.
+This defines relative coordinate between two sites, :math:`\vec{r}_{ij}`, to calculate real space temperature Green's function,
 
 .. math::
-  G(\vec{r}_{ij},\tau) \equiv \left\langle M_i^+(\tau) M_j^- \right\rangle
+  G(\vec{r},\tau) \equiv \frac{1}{N^2}\sum{i,j}\left\langle M_i^+(\tau) M_j^- \right\rangle \delta(\vec{r}-\vec{r}_{ij}) .
 
-を計算するための相対座標 :math:`\vec{r}_{ij}` の情報がXML ライクな形式で記述されるテキストファイルです.
-実空間表示温度グリーン関数定義ファイル作成のための補助ツール ``cfgene`` が用意されています.
+More precisely, this groups all the pair of sites by the relative coordinates.
 
-格子ファイルはただ一つの要素 CorrelationFunction を持ち, すべての情報は CorrelationFunction 要素の内容として含まれます.
+DSQSS has an utility tool to generate a real space temperature Green's function file, ``cfgene``.
+
+A real space temperature Green's function file has only one element, "CorrelationFunction", and the other elements belong to this as children.
 
 CorrelationFunction
-  ファイル全体の要素名.サブ要素として, Ntau, NumberOfKinds, CF があります.
+  The root element.
+  This has children, "Ntau", "NumberOfKinds", and "CF".
 
 CorrelationFunction/Comment
-  省略可能.
-  コメント文を示し, 計算には使用されません.
+  (Optional) Comment. DSQSS ignores this.
 
 CorrelationFunction/Ntau
-  虚時間軸の分割数.
+  The number of discretization of the imaginary time axis.
 
 CorrelationFunction/NumberOfKinds
-  取りうる相対座標の数.
+  The number of relative coordinates.
 
 CorrelationFunction/CF
-  CorrelationFunction/NumberOfKinds で指定した数だけ指定する必要があります.
-  内容として,
-  「相対座標のインデックス」, 「サイト i のインデックス」, 「サイト j のインデックス」 の3つの整数をスペース区切りで持ちます.
+  This takes three integers, "the index of the relative coordinate", "the index of the site i", and "the index of the site j".
+  "CorrelationFunction" should has this elements as many as the number specified by "CorrelationFunction/NumberOfKinds".
 
-波数表示温度グリーン関数定義ファイル ``ck.xml``
-************************************************
 
-波数表示温度グリーン関数定義ファイルは,波数表示温度グリーン関数
+Momentum space temperature Green's function file ``ck.xml``
+************************************************************
+
+A momentum space temperature Green's function file is a textfile written in a XML-like format.
+This defines wave vectors and the discretization of imaginary time to calculate the momentum space temperature Green's function,
 
 .. math::
-  G(\vec{k},\tau) \equiv \left\langle M^+(\vec{k}, \tau) M^-(-\vec{k},0) \right\rangle
+  G(\vec{k},\tau) \equiv \left\langle M^+(\vec{k}, \tau) M^-(-\vec{k},0) \right\rangle .
 
-を計算するための波数や虚時間刻みの情報がXML ライクな形式で記述されるテキストファイルです.
-
-要素名を含めて, 動的構造因子定義ファイルと全く同じ構造を持つため, 流用が可能です.
+Since this file has the format as same as that of the structure factor file including the names of elements,
+users can use the same file.

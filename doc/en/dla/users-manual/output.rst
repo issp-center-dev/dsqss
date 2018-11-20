@@ -1,24 +1,24 @@
 .. -*- coding: utf-8 -*-
 .. highlight:: none
 
-DLA の出力ファイル
-==============================
+Output of DSQSS/DLA
+====================
 
-フォーマット
-*****************************
-DLA は計算結果を行区切りのプレーンテキストファイルで出力します.
-行頭の文字はその行の意味を表します.
+Format
+*******
+DSQSS/DLA generates the result of a simulation as a plain-text file.
+The first character stands for the meaning of the line.
 
 ``P <name> = <value>``
-  入力パラメータファイルと格子ファイルから読み取ったパラメータ.
+  Parameters read from the input files.
 ``R <name> = <mean> <error>``
-  計算で求められた物理量. ``<mean>`` は平均値を,  ``<error>`` は標準誤差を示します.
+  Result observables. ``<mean>`` denotes the expected value and ``<error>`` denotes the statistical error of ``<mean>``.
 ``I <text> = <value>``
-  その他計算中に得られた情報.
+  Other information.
 ``C <text>``
-  コメント.
+  Comments.
 
-以下にサンプル（反強磁性ハイゼンベルグ鎖）を示します.
+The following one is a result of an antiferromagnetic Heisenberg chain.
 ::
 
   C This is DSQSS ver.1.2.0
@@ -62,51 +62,54 @@ DLA は計算結果を行区切りのプレーンテキストファイルで出�
   I [the maximum number of vertices]          = 66
   I [the maximum number of reg. vertex info.] = 3
 
-以下の物理量定義に現れる記号の意味を示します.
+Notations
+-----------
 
 :math:`N_s`
-  サイト数.
+  The number of sites.
 
 :math:`Q(\vec{k})`
-  格子点 :math:`i` 上で定義される任意の演算子 :math:`Q_i` のフーリエ変換.
+  The Fourier transformation of an arbitrary operator on a site :math:`i`, :math:`Q_i`.
 
   :math:`\displaystyle Q(\vec{k}) \equiv \frac{1}{\sqrt{N_s}} \sum_i^{N_s} Q_i e^{-i\vec{r}_i\cdot\vec{k}}`
 
 :math:`Q(\tau)`
-  虚時間 :math:`\tau` における演算子.
+  An arbitrary operator at imaginary time :math:`\tau`.
 
   :math:`\displaystyle Q(\tau) \equiv \exp\left[\tau \mathcal{H}\right] Q(\tau=0) \exp\left[-\tau \mathcal{H}\right]`
 
 :math:`\tilde{Q}`
-  任意の演算子 :math:`Q` について, 虚時間方向の平均 :math:`\displaystyle \frac{1}{\beta}\int_0^\beta \! \mathrm{d} \tau Q(\tau)`
+  任意の演算子 :math:`Q` について, 虚時間方向の平均
+  The average of an arbitrary operator :math:`Q` over the imaginary time,
+  :math:`\displaystyle \frac{1}{\beta}\int_0^\beta \! \mathrm{d} \tau Q(\tau)`
 
 :math:`M^z`
-  局所自由度の量子化軸方向成分.
-  たとえばスピン系では局在スピン演算子の :math:`z` 成分 :math:`S^z` で, 
-  ボース粒子系では数演算子 :math:`n` です.
+  The component of a local degree of freedom along with the quantized axis.
+  For example, :math:`z` component of the local spin operator :math:`S^z` for spin systems
+  and the number operator :math:`n` for the Bose-Hubbard models.
 
 :math:`M^\pm`
-  :math:`M^z` の昇降演算子.
-  スピン系では :math:`M^{\pm} \equiv S^\pm` , 
-  ボース粒子系では生成消滅演算子 :math:`M^+ \equiv b^\dagger` および :math:`M^- \equiv b` .
+  The ladder operator.
+  :math:`M^{\pm} \equiv S^\pm` for spin systems, and
+  the creation/annihilation operators :math:`M^+ \equiv b^\dagger` / :math:`M^- \equiv b` for the Bose-Hubbard models.
 
 :math:`M^x`
-  非対角秩序変数.
-  スピン系では :math:`M^x \equiv (S^+ + S^-)/2` , 
-  ボース粒子系では :math:`M^x \equiv (b + b^\dagger)` .
+  The off-diagonal order parameter.
+  :math:`M^x \equiv (S^+ + S^-)/2` for spin systems and
+  :math:`M^x \equiv (b + b^\dagger)` for the Bose-Hubbard models.
 
 :math:`T`
-  温度.
+  Temperature.
 
 :math:`\beta`
-  逆温度.
+  Inverse temperature.
 
 :math:`h`
-  :math:`M^z` に共役な外場.
-  スピン系では縦磁場, ボース粒子系では化学ポテンシャル.
+  Conjugate field to the operator :math:`M^z` .
+  The longitudinal magnetic field for spin systems and the chemical potential for the Bose-Hubbard models.
 
 :math:`\left\langle Q \right\rangle`
-  任意の演算子 :math:`Q` のグランドカノニカル平均.
+  The expectation value of an arbitrary operator :math:`Q` over the grand canonical ensemble.
 
 メイン出力
 *****************
