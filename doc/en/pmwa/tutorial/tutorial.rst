@@ -8,4 +8,4 @@ Tutorial of DSQSS/PMWA
 .. toctree::
    intro
    usage
-..   sample_Heisenberg
+   sample_Heisenberg
