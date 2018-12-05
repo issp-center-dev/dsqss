@@ -30,7 +30,8 @@ L = 30
 nset = 5
 ntherm = 1000
 ndecor = 1000
-nmcs = 1000''')
+nmcs = 1000
+''')
             f.write('M = {0}\n'.format(M))
             f.write('beta = {0}\n'.format(1.0/T))
             f.write('outfile = res_{0}_{1}.dat\n'.format(M,i))
