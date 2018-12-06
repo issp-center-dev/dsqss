@@ -12,6 +12,26 @@ hypercubic
 pre
 py
 textfile
+ising
+NLdiv
+NBdiv
+hamiltonian
+evout
+nver
+nkin
+wndx
+wndy
+wndz
+wnd
+wndx
+wndy
+wndz
+bmxu
+bmpu
+bmmu
+lxmx
+ver
+vertices
 
 Yasuyuki
 Kato

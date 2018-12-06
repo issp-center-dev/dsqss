@@ -32,7 +32,8 @@ L = 8,8
 nset = 4
 ntherm = 100
 ndecor = 100
-nmcs = 100''')
+nmcs = 100
+''')
         f.write('F = {0}\n'.format(mu/4))
         f.write('algfile = algorithm_{0}.xml\n'.format(i))
         f.write('outfile = res_{0}.dat\n'.format(i))
