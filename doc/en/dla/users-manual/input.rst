@@ -37,7 +37,7 @@ The list of parameters are the following,
     beta, double, --, "Inverse temperature. Overwrite a setting in lattice.xml."
     npre, int, 1000, "The number of Monte Carlo steps in the pre calculation phase where the number of creation trials of a pair of worms in one Monte Carlo sweep is defined."
     ntherm, int, 1000, "The number of Monte Carlo sweeps to thermalize the system."
-    ndecor, int, 1000, "The number of Monte Carlo sweeps to reduce autocarrelation time between two preceding sets."
+    ndecor, int, 1000, "The number of Monte Carlo sweeps to reduce autocorrelation time between two preceding sets."
     nmcs, int, 1000, "The number of Monte Carlo sweeps to calculate mean values of observables."
     nset, int, 10, "The number of Monte Carlo sets."
     simulationtime, int,  0.0, "Simulation time in second."
@@ -156,14 +156,14 @@ The algorithm file has a unique element named "Algorithm". The other elements be
 
 Algorithm
   The root element.
-  This has childrens, "General", "Site", "Interaction", and "Vertex".
+  This has children, "General", "Site", "Interaction", and "Vertex".
 
 Algorithm/Comment
   (Optional) Comment. DSQSS ignores this.
 
 Algorithm/General
   General parameters such as the number of site types.
-  This has childrens, "NSType", "NIType", "NVType", "NXMax", and "WDiag".
+  This has children, "NSType", "NIType", "NVType", "NXMax", and "WDiag".
   ::
 
     <Algorithm>
@@ -285,7 +285,7 @@ Algorithm/Interaction/IType
 Algorithm/Interaction/VType
   The index of the vertex to be inserted.
 
-Algorihtn/Interaction/NBody
+Algorithm/Interaction/NBody
   The number of sites involved in this interaction.
   An onebody interaction such as the Zeeman term has 1 and a twobody interaction such as the exchange coupling has 2.
   Three or higher body interaction can be treated.

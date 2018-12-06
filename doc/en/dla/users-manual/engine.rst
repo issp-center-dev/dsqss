@@ -1,22 +1,23 @@
 .. highlight:: none
 
-向き付きループアルゴリズムソルバ dla_H, dla_B
-==================================================
+Directed loop algorithm solvers, ``dla_H`` and ``dla_B``
+========================================================
 
-``dla_H`` と ``dla_B`` は向き付きループアルゴリズムを実装した量子モンテカルロプログラムです.
-コマンドライン引数として入力ファイルをとります.
-``dla_H`` はスピン系用のプログラムで, ``dla_B`` はボーズ粒子系用のプログラムであり,
-同じ計算を行いますが, 出力される物理量が異なります.
-例えば ``amzu`` は ``dla_H`` では磁化を, ``dla_B`` では粒子数密度を表します.
+``dla_H`` and ``dla_B`` are quantum Monte Carlo solvers with the directed loop algorithm.
+They take an input file as the command line argument.
+``dla_H`` is for spin system and ``dla_B`` is for Bosonic system.
 
-MPI 実行した場合, 指定したプロセスの数 :math:`N_\text{proc}` だけ乱数並列を行います.
-各プロセスは独立に, 入力ファイル中の ``NSET`` で指定したセット数だけモンテカルロ計算をします.
-その結果, 合計のセット数が :math:`N_\text{proc}` 倍され, 統計誤差は :math:`1/\sqrt{N_\text{proc}}` 倍になることが期待されます.
-
-実行例
 ::
 
   $ dla_H param.in
-  $ mpiexec -np 4 dla_B param.in
 
+
+DSQSS/DLA implements random number parallelization by using MPI.
+Since each process performs ``NSET`` Monte Carlo calculation independently,
+the total number of MC sets increases :math:`N_\text{process}`
+and thus it is expected that the statistical error also reduces to :math:`1/\sqrt{N_\text{process}}` times.
+
+::
+
+  $ mpiexec -np 4 dla_B param.in
 

@@ -38,7 +38,7 @@ DSQSS/DLA による正方格子上ハードコアボソン系の粒子数計算
   ntherm = 100
   ndecor = 100
   nmcs = 100
-         ''')
+  ''')
           f.write('F = {}\n'.format(mu/4))
           f.write('algfile = algorithm_{}.xml\n'.format(i))
           f.write('outfile = res_{}.dat\n'.format(i))

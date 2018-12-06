@@ -32,7 +32,7 @@ The following Python script (sample/dla/02_spinchain/exec.py) performs DSQSS/DLA
       ntherm = 1000
       ndecor = 1000
       nmcs = 1000
-             ''')
+      ''')
               f.write('M = {}\n'.format(M))
               f.write('beta = {}\n'.format(1.0/T))
               f.write('outfile = res_{}_{}.dat\n'.format(M,i))

@@ -79,7 +79,6 @@ Notations
   :math:`\displaystyle Q(\tau) \equiv \exp\left[\tau \mathcal{H}\right] Q(\tau=0) \exp\left[-\tau \mathcal{H}\right]`
 
 :math:`\tilde{Q}`
-  任意の演算子 :math:`Q` について, 虚時間方向の平均
   The average of an arbitrary operator :math:`Q` over the imaginary time,
   :math:`\displaystyle \frac{1}{\beta}\int_0^\beta \! \mathrm{d} \tau Q(\tau)`
 
@@ -111,37 +110,37 @@ Notations
 :math:`\left\langle Q \right\rangle`
   The expectation value of an arbitrary operator :math:`Q` over the grand canonical ensemble.
 
-メイン出力
+Main results
 *****************
-メイン出力ファイルは, 入力パラメータファイルの ``outfile`` キーワードで指定した名前で出力されます.
+Main results are written in a file with the name specified by ``outfile`` keyword in the input parameter file.
 
 ``anv``
-  平均バーテックス数.
+  Mean number of the vertices.
 
   :math:`\displaystyle \frac{\langle N_v \rangle}{N_s}`
 ``ene``
-  エネルギー密度.
+  Energy density (energy per site)
 
   :math:`\displaystyle \epsilon \equiv \frac{1}{N_s}\left(E_0 - T\langle N_v\rangle\right)`
 ``spe``
-  比熱.
+  Specific heat
 
   :math:`\displaystyle C_V \equiv \frac{\partial \epsilon}{\partial T}`
 ``len``
-  平均ワーム長さ.
+  Mean length of worm
 ``xmx``
-  横感受率.
+  Transverse susceptibility
 ``amzu``
-  「磁化」(uniform, :math:`\tau=0`).
+  "Magnetization" (uniform, :math:`\tau=0`).
 
-  :math:`\displaystyle m^z \equiv \frac{1}{N_s} \sum_i^{N_s} M^z_i` としたときの
-  :math:`\left\langle m^z \right\rangle` .
+  :math:`\left\langle m^z \right\rangle` , where
+  :math:`\displaystyle m^z \equiv \frac{1}{N_s} \sum_i^{N_s} M^z_i`
 
 ``bmzu``
-  「磁化」(uniform, :math:`\tau` 平均). :math:`\left\langle \tilde{m}^z \right\rangle` .
+  "Magnetization" (uniform, average over :math:`\tau`). :math:`\left\langle \tilde{m}^z \right\rangle` .
 
 ``smzu``
-  構造因子(uniform).
+  Structure factor (uniform).
 
   :math:`\displaystyle S^{zz}(\vec{k}=0) \equiv \frac{1}{N_s}
   \sum_{i, j} e^{i \vec{k}\cdot(\vec{r}_i-\vec{r}_j)} \left[
@@ -153,7 +152,7 @@ Notations
   - \left\langle m^z\right\rangle^2 \right]`
 
 ``xmzu``
-  縦感受率(uniform).
+  Longitudinal susceptibility (uniform).
 
   :math:`\displaystyle \chi^{zz}(\vec{k}=0,  \omega=0) \equiv
   \frac{\partial \left\langle \tilde{m}^z \right\rangle}{\partial h} =
@@ -161,73 +160,68 @@ Notations
   - \left\langle \tilde{m}^z\right\rangle^2 \right]`
 
 ``amzs``
-  「磁化」("staggered", :math:`\tau=0`)
+  "Magnetization" ("staggered", :math:`\tau=0`)
 
+  :math:`\left\langle m_s^z \right\rangle` , where
   :math:`\displaystyle m_s^z \equiv \frac{1}{N_s} \sum_i^{N_s} M_i^z 
-  \cos\left( 2\pi \frac{\text{mtype}(i)}{N_\text{mtype}} \right)` 
-  としたときの :math:`\left\langle m_s^z \right\rangle` .
-  ここで :math:`\text{mtype}(i)` は :math:`i` サイトの測定種類（格子ファイル参照）, 
-  :math:`N_\text{mtype}` は測定種類の総数.
+  \cos\left( 2\pi \frac{\text{mtype}(i)}{N_\text{mtype}} \right)` ,
+  :math:`\text{mtype}(i)` is the kind of measurement of :math:`i` site (see lattice file), 
+  and :math:`N_\text{mtype}` is the number of kinds of measurements.
 
 ``bmzu``
-  「磁化」("staggered", :math:`\tau` 平均). :math:`\left\langle \tilde{m}_s^z \right\rangle` .
+  "Magnetization" ("staggered", average over :math:`\tau`). :math:`\left\langle \tilde{m}_s^z \right\rangle` .
 
 ``smzs``
-  構造因子 ("staggered").
+  Structure factor ("staggered").
 
   :math:`\displaystyle S^{zz}(\vec{k}_s) = N_s \left[ \left\langle (m_s^z)^2 \right\rangle - \left\langle m_s^z \right\rangle^2 \right]`
 
 ``xmzs``
-  縦感受率 ("staggered").
+  Longitudinal susceptibility ("staggered").
 
   :math:`\displaystyle \chi^{zz}(\vec{k}_s,  \omega=0) 
   = \beta N_s \left[\left\langle (\tilde{m}_s^z)^2 \right\rangle - \left\langle \tilde{m}_s^z \right\rangle^2 \right]`
 
-構造因子出力ファイル
+Structure factor output
 ****************************************
-構造因子出力ファイルは, 入力パラメータファイルの ``sfoutfile`` キーワードで指定した名前で出力されます.
-このファイルには虚時間構造因子
+Structure factor is written into a file with name specified by ``sfoutfile`` keyword in the input file.
+Structure factor is defined as the following:
 
 .. math::
   S^{zz}(\vec{k}, \tau) \equiv
   \left\langle M^z(\vec{k},  \tau) M^z(-\vec{k},  0) \right\rangle
   - \left\langle M^z(\vec{k},  \tau)\right\rangle \left\langle M^z(-\vec{k},  0)\right\rangle
 
-が出力されます. 
-波数 :math:`\vec{k}` や虚時間 :math:`\tau` の値は, 物理量名を用いて
+Wave vector :math:`\vec{k}` and imaginary time :math:`\tau` are specified by the name ``C<k>t<t>`` as the following:
 ::
 
   R C0t0 = 1.32500000e-03 1.40929454e-04
   R C0t1 = 1.32500000e-03 1.40929454e-04
   R C1t0 = 7.35281032e-02 3.18028565e-04
 
-のように ``C<k>t<t>`` という形で区別されます.
-ここで ``<k>`` は構造因子入力ファイルの ``kindex`` (``SF`` タグの最終要素) で指定される波数のインデックスで, 
-``<t>`` は離散化した虚時間のインデックス.
+where ``<k>`` is an index of the wave vector specified by ``kindex`` (the last element of each ``SF`` tag) in the structure factor input file
+and ``<t>`` is an index of the discretized imaginary time.
 
-実空間表示温度グリーン関数出力ファイル
-****************************************
-実空間表示温度グリーン関数出力ファイルは, 入力パラメータファイルの ``cfoutfile`` キーワードで指定した名前で出力されます.
-このファイルには温度グリーン関数
+Real space temperature Green's function output
+**********************************************
+Real space temperature Green's function is written into a file with name specified by ``cfoutfile`` keyword in the input file.
+Real space temperature Green's function is defined as the following:
 
 .. math::
   G(\vec{r}_{ij}, \tau) \equiv \left\langle M_i^+(\tau) M_j^- \right\rangle
 
-が出力されます. 変位 :math:`\vec{r}_{ij}` や虚時間 :math:`\tau` の値は構造因子と同様に, 
-``C<k>t<t>`` という形で物理量名によって区別されます.
-ここで ``<k>`` は実空間温度グリーン関数入力ファイルの ``kind`` (``CF`` タグの第一要素) で指定される変位のインデックスで, 
-``<t>`` は離散化した虚時間のインデックス.
+Displacement :math:`\vec{r}_{ij}` and imaginary time :math:`\tau` are specified by the name ``C<k>t<t>`` as the same way of structure factor,
+where ``<k>`` is an index of the displacement specified by ``kind`` (the first element of each ``CF`` tag) in the real space temperature Green's function input file,
+and ``<t>`` is an index of the discretized imaginary time.
 
-波数表示温度グリーン関数出力ファイル
-****************************************
-波数表示温度グリーン関数出力ファイルは, 入力パラメータファイルの ``ckoutfile`` キーワードで指定した名前で出力されます.
-このファイルには温度グリーン関数
+Momentum space temperature Green's function output
+**************************************************
+Momentum space temperature Green's function is written into a file with name specified by ``ckoutfile`` keyword in the input file.
+Momentum space temperature Green's function is defined as the following:
 
 .. math::
   G(\vec{k}, \tau) \equiv \left\langle M^+(\vec{k},  \tau) M^-(-\vec{k}, 0) \right\rangle
 
-が出力されます.
-波数 :math:`\vec{k}` や虚時間 :math:`\tau` の値は構造因子と同様に, 
-``C<k>t<t>`` という形で物理量名によって区別されます.
-ここで ``<k>`` は波数表示温度グリーン関数入力ファイルの ``kindex`` (``SF`` タグの最終要素) で指定される変位のインデックスで, 
-``<t>`` は離散化した虚時間のインデックス.
+Wave vector :math:`\vec{r}_{ij}` and imaginary time :math:`\tau` are specified by the name ``C<k>t<t>`` as the same way of structure factor,
+where ``<k>`` is an index of the displacement specified by ``kind`` (the last element of each ``SF`` tag) in the momentum space temperature Green's function input file,
+and ``<t>`` is an index of the discretized imaginary time.

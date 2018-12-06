@@ -1,12 +1,12 @@
 .. _chap_dla_usermanual:
 
 **********************************
-DSQSS/DLAのユーザーマニュアル
+User's manual of DSQSS/DLA
 **********************************
 
 .. figure:: ../../../image/dla/users-manual/dla_flow.*
 
-  DSQSS/DLA のワークフロー
+  Work-flow of DSQSS/DLA
 
 .. toctree::
   :maxdepth: 2

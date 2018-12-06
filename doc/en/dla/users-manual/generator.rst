@@ -1,216 +1,201 @@
 .. highlight:: none
 
-DLA の入力ファイル生成ツール
-=============================
+Utility tools to generate the input files of DSQSS/DLA
+=======================================================
 
-DLA は入力ファイルとして格子定義ファイル,アルゴリズム定義ファイル,
-構造因子定義ファイル,実空間表示温度グリーン関数定義ファイル,波数空間表示温度グリーン関数定義ファイルを,それぞれXML 形式ファイルとして受け取ります.
-これらをうまく定義することで,計算機資源の許す範囲で任意の格子や模型を計算できますが,
-手で定義するには複雑になっています.
-そのため,超立方格子やハイゼンベルグ模型などのよく使われるような格子・模型については生成ツールが用意されています.
+DSQSS/DLA needs several XML-formatted input files:
+lattice file, algorithm file, structure file, real space temperature Green's function file, and momentum space temperature Green's function file.
+By writing these files, you can simulate any model on any lattice.
+Since they are a little complicated, DSQSS/DLA prepares utility tools for generating them.
 
-超立方格子生成ツール ``lattgene_C``
-************************************
-``lattgene_C`` は周期境界条件を持つ :math:`D` 次元超立方格子を表す格子定義ファイルを生成するためのツールです. ::
+Hypercubic lattice generator ``lattgene_C``
+*******************************************
+``lattgene_C`` is an utility tool to generate a lattice file describing a :math:`D` dimensional hypercubic lattice with the periodic boundary condition.::
 
   $ lattgene_C [-o filename] D L1 L2 ... LD BETA
 
-パラメータは以下の通り.
+The meaning of parameters are following:
 
 ``D``
-  格子の次元.
+  Dimension of lattice
 
 ``L1 L2 ... LD``
-  格子のサイズ. ``D`` 個の整数をスペース区切りで入力します.
+  Linear length of lattice in each dimension.
 
 ``BETA``
-  逆温度. 浮動小数点数で入力.
+  Inversed temperature.
 
 ``filename``
-  出力ファイル名.デフォルトは ``lattice.xml`` です.
+  Name of lattice file (default: ``lattice.xml`` ).
 
-実行すると filename で指定した名前の格子定義ファイルが生成されます.
+Example::
 
-実行例
-::
-
-  ## 8 サイトの一次元鎖で,逆温度は 10.0
+  ## Chain with 8 sites. Inversed temperature is 10.0.
   $ lattgene_C 1 8 10.0
 
-  ## 6x6 サイトの正方格子で,逆温度は 10.0, ファイル名は lat.xml
+  ## Square lattice with 6x6 sites. Inversed temperature is 10.0
+  ## Name of the generated file is lat.xml
   $ lattgene_C -o lat.xml 2 6 6 10.0
 
-三角格子生成ツール ``lattgene_T``
-************************************
-``lattgene_T`` は周期境界条件を持つ三角格子を表す格子定義ファイルを生成するためのツールです. ::
+Triangular lattice generator ``lattgene_T``
+*******************************************
+``lattgene_T`` is an utility tool to generate a lattice file describing a triangular lattice with the periodic boundary condition. ::
 
   $ lattgene_T [-o filename] L1 L2 BETA
 
-パラメータは以下の通り.
+The meaning of parameters are following:
 
 ``L1 L2``
-  格子のサイズ.
+  Linear length of lattice in each dimension.
 
 ``BETA``
-  逆温度. 浮動小数点数で入力.
+
+  Inversed temperature.
 
 ``filename``
-  出力ファイル名.デフォルトは ``lattice.xml`` です.
+  Name of lattice file (default: ``lattice.xml`` ).
 
-実行すると filename で指定した名前の格子定義ファイルが生成されます.
+Example::
 
-実行例
-::
-
-  ## 6x6 サイトの三角格子で,逆温度は 10.0
+  ## Triangular lattice with 6x6 sites. Inversed temperature is 10.0
   $ lattgene_T 1 8 10.0
 
-ハイゼンベルグスピンハミルトニアン生成ツール ``hamgen_H``
-**********************************************************
 
-``hamgen_H`` はハイゼンベルグスピン模型
+Heisenberg spin Hamiltonian generator ``hamgen_H``
+***************************************************
+
+``hamgen_H`` is an utility tool generating a hamiltonian file describing Heisenberg spin model
 
 .. math:
    \mathcal{H} = -J  \sum_{\langle i, j \rangle} S_i \cdot S_j - h \sum_i S_i^z
 
-を表すハミルトニアンファイルを生成するツールです.
 ::
 
   $ hamgen_H [-o filename] M J F
 
-パラメータは以下の通り.
+The meaning of parameters are following:
 
 ``M``
-  局在スピンの大きさ :math:`S` の2倍に等しい整数.
+  Twice as the length of the local spin, :math:`2S`
 
 ``J``
-  交換相互作用.正で強磁性,負で反強磁性.
+  Coupling constant. Positive for ferromagnetic and negative for antiferromagnetic.
 
 ``F``
-  サイトにかかる,ボンドあたりの磁場 :math:`F = h/z` .
-  :math:`z` はサイトの配位数で,たとえば正方格子なら :math:`z=4` です.
+  Magnetic field on a site per a bond connected to the site, :math:`F = h/z` ,
+  where :math:`z` is the coordination number, for example, :math:`z=4` for the square lattice.
 
 ``filename``
-  出力ファイル名.デフォルトは ``hamiltonian.xml`` です.
+  Name of hamiltonian file (default: ``hamiltonian.xml`` ).
 
-実行すると filename で指定した名前を持つファイルが生成されます.
+Example::
 
-実行例
-::
-
-  ## 磁場なしの反強磁性 S=1/2 ハイゼンベルグ模型
+  ## S=1/2 antiferromagnetic Heisenberg model without magnetic field.
   $ hamgen_H 1 -1.0 0.0
 
-  ## 磁場ありの強磁性 S=1 ハイゼンベルグ模型, ファイル名は ham.xml
+  ## S=1 ferromagnetic Heisenberg model with magnetic field.
+  ## Name of the generated file ham.xml
   $ hamgen_H -o ham.xml 2 1.0 1.0
 
 
-ボーズハバードハミルトニアン生成ツール ``hamgen_B``
-**********************************************************
+Bose-Hubbard model generator ``hamgen_B``
+******************************************
 
-``hamgen_B`` はボーズハバード模型
+``hamgen_B`` is an utility tool generating a hamiltonian file describing Bose-Hubbard model
 
 .. math:
    \mathcal{H} = \sum_{\langle i, j \rangle} \left[ -t b_i^\dagger \cdot b_j + V n_i n_j \right] + \sum_i \left[ \frac{U}{2} n_i(n_i-1) - \mu n_i \right]
 
-を表すハミルトニアンファイルを生成するツールです.
 ::
 
   $ hamgen_B [-o filename] M t V U F
 
-パラメータは以下の通り.
+The meaning of parameters are following:
 
 ``M``
-  サイトあたりに占めることのできる粒子数の最大値.
+  Maximum number of sites on a site
 
 ``t``
-  粒子のホッピングパラメータ.
+  Hopping parameter
 
 ``V``
-  最近接二体相互作用.正が斥力です.
+  Nearest neighbor interaction. Positive for repulsive potential and negative for attractive.
 
 ``U``
-  サイト内二体相互作用.正が斥力です.
+  Onsite interaction. Positive for repulsive potential and negative for attractive.
 
 ``F``
-  サイトにかかる,ボンドあたりの化学ポテンシャル :math:`F = \mu/z` .
-  :math:`z` はサイトの配位数で,たとえば正方格子なら :math:`z=4` です.
+  Chemical potential on a site per a bond connected to the site, :math:`F = h/z` ,
+  where :math:`z` is the coordination number, for example, :math:`z=4` for the square lattice.
 
 ``filename``
-  出力ファイル名.デフォルトは ``hamiltonian.xml`` です.
+  Name of hamiltonian file (default: ``hamiltonian.xml`` ).
 
-実行すると filename で指定した名前を持つファイルが生成されます.
-
-アルゴリズム生成ツール ``dla_alg``
+Algorithm file generator ``dla_alg``
 *************************************
-``dla_alg`` はハミルトニアン生成ツールで生成したハミルトニアンファイルからアルゴリズム定義ファイルを生成するツールです. ::
+``dla_alg`` is an utility tool to convert a hamiltonian file to an algorithm file.::
 
   $ dla_alg HFILE AFILE
 
-パラメータは以下の通り.
+The meaning of parameters are following:
 
 ``HFILE``
-  読み込むハミルトニアンファイル.省略した場合は ``hamiltonian.xml`` が指定されます.
+  Hamiltonian file to be loaded (default: ``hamiltonian.xml`` ).
 
 ``AFILE``
-  書き出されるアルゴリズム定義ファイル.省略した場合は ``algorithm.xml`` が指定されます.
+  Algorithm file to be generated (default: ``algorithm.xml`` ).
 
-構造因子定義ファイル生成ツール ``sfgene``
+Structure factor file generator ``sfgene``
 *********************************************
-``sfgene`` は超立方格子における構造因子定義ファイルを生成するツールです.
-::
+``sfgene`` is an utility tool generating a structure factor file for a hypercubic lattice::
 
   $ sfgene [-o filename] D L_1 ... L_D Ntau Ntau_cutoff KTYPE
 
-パラメータは以下の通り.
+The meaning of parameters are following:
 
 ``D``
-  格子の次元.
+  Dimension of lattice
 
 ``L_1 ... L_D``
-  格子のサイズ. ``D`` 個の整数をスペース区切りで入力します.
+  Linear length of lattice in each dimension.
 
 ``Ntau``
-  虚時間軸の分割数.
+  The number of discretization of imaginary time
 
 ``Ntau_cutoff``
-  虚時間方向の距離 :math:`d\tau` の最大値.
+  Maximum number of distance in imaginary time :math:`d\tau`
 
 ``KTYPE``
-  計算する波数 :math:`k` のパターンを指定します.
+  Pattern of wave vectors :math:`k`
 
-  - ``KTYPE==0`` の場合
+  - ``KTYPE==0``
     
-    :math:`k_x = n\pi/L_x, n = 0, 2, \dots, L` となります. :math:`k_y` や :math:`k_z` はすべてゼロです.
+    Wave vectors with :math:`k_x = n\pi/L_x, n = 0, 2, \dots, L` are calculated (:math:`k_y` and :math:`k_z` are zero for all wave vectors).
 
-  - ``KTYPE==1`` の場合
+  - ``KTYPE==1``
 
-    たとえば3次元では, :math:`k/\pi = (0,0,0), (1,0,0), (0,1,0), (1,1,0), \dots, (1,1,1)` となります.
+    :math:`k/\pi = (0,0,0), (1,0,0), (0,1,0), (1,1,0), \dots, (1,1,1)` for three dimensional case.
 
 ``filename``
-  出力ファイル名.デフォルトは ``sf.xml`` です.
+  Name of generated file (default: ``sf.xml`` ).
 
-実行すると filename で指定した名前の構造因子定義ファイルが生成されます.
-
-実空間表示温度グリーン関数定義ファイル生成ツール ``cfgene``
-****************************************************************
-``cfgene`` は実空間表示温度グリーン関数定義ファイルを生成するツールです.
-::
+Real space temperature Green's function file generator ``cfgene``
+*******************************************************************
+``cfgene`` is an utility tool generating a real space temperature Green's function file for a hypercubic lattice::
 
   $ cfgene [-o filename] D L_1 ... L_D Ntau
 
-パラメータは以下の通り.
+The meaning of parameters are following:
 
 ``D``
-  格子の次元.
+  Dimension of lattice
 
 ``L_1 ... L_D``
-  格子のサイズ. ``D`` 個の整数をスペース区切りで入力します.
+  Linear length of lattice in each dimension.
 
 ``Ntau``
-  虚時間軸の分割数.
+  The number of discretization of imaginary time
 
 ``filename``
-  出力ファイル名.デフォルトは ``sf.xml`` です.
+  Name of generated file (default: ``sf.xml`` ).
 
-実行すると filename で指定した名前の実空間表示温度グリーン関数定義ファイルが生成されます.

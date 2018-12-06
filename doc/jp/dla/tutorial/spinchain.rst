@@ -36,7 +36,7 @@ DSQSS/DLA によるスピン鎖の帯磁率計算
       ntherm = 1000
       ndecor = 1000
       nmcs = 1000
-             ''')
+      ''')
               f.write('M = {}\n'.format(M))
               f.write('beta = {}\n'.format(1.0/T))
               f.write('outfile = res_{}_{}.dat\n'.format(M,i))

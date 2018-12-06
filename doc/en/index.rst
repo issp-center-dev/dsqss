@@ -7,6 +7,7 @@ DSQSS -- Discrete Space Quantum Systems Solver
 
   dsqss/index
   dla/tutorial/index.rst
+  dla/users-manual/index.rst
   pmwa/tutorial/tutorial
   
   Indices and tables

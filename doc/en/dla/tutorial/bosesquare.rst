@@ -34,7 +34,7 @@ The following Python script (sample/dla/03_bosesquare/exec.py) performs DSQSS/DL
   ntherm = 100
   ndecor = 100
   nmcs = 100
-         ''')
+  ''')
           f.write('F = {}\n'.format(mu/4))
           f.write('algfile = algorithm_{}.xml\n'.format(i))
           f.write('outfile = res_{}.dat\n'.format(i))
