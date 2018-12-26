@@ -1,0 +1,2 @@
+export PATH=@CMAKE_INSTALL_PREFIX@/bin:$PATH
+export PYTHONPATH=@CMAKE_INSTALL_PREFIX@/share/dsqss/@DSQSS_VERSION@/lib/site-packages:$PYTHONPATH
