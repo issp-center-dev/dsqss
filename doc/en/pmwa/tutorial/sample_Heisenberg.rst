@@ -9,7 +9,7 @@ The calculation by DSQSS / PMWA is done in the following three stages:
 
 1. Make an input file,
 2. Perform calculation,
-3. Interpretation of calculation result.
+3. Analyze calculation results.
 
 
 
@@ -74,7 +74,7 @@ Random numbers parallel computation is possible by using MPI (it is also possibl
 
 Calculation can be done independently for parallel number (4 for the above example), and the accuracy can be improved by increasing the number of Monte Carlo samples.
 
-Interpretation of calculation result
+Analyze calculation results
 ************************************
 
 The calculation result is written to the output file ``sample.log``.

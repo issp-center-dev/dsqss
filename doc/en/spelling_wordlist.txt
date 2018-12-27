@@ -16,6 +16,7 @@ Masaki
 Motoyama
 NBdiv
 NBody
+neighbour
 NIType
 NLdiv
 NSType
