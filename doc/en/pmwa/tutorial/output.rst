@@ -27,35 +27,36 @@ Here, the parameters specific to PMWA for one result file and two temporary file
      :header-rows: 1
      :widths: 1,1,4
 
-     Kind, Name, Description
-     P, L, Information for three-dimensional lattice.
+     Type, Name, Description
+     P, L, The size of the lattice.
      P, DOML, The size of the domain divided by parallelization
      P, DOMBETA, The size of the inverse temperature divided by parallelization
      P, NDIVL, The number of lattice divisions
-     P, NTEST, "Number of samples to be tested (For details, see the description of Monte Carlo calculation)"
-     R, nver, Number of kinks and worms
-     R, nkin, Number of kinks
-     R, wndx, Expected value of square of winding number in :math:`x` direction
-     R, wndy, Expected value of square of winding number in :math:`y` direction
-     R, wndz, Expected value of square of winding number in :math:`z` direction
-     R, wnd2, Total number of squares of winding number(wndx+wndy+wndz)
-     R, bmxu, Expected value of :math:`S_x` (uniform :math:`\tau` integral)
-     R, bmpu, Expected value of :math:`S_+` (uniform :math:`\tau` integral)
-     R, bmmu, Expected value of :math:`S_-` (uniform :math:`\tau` integral)
-     R, comp, Compressibility
-     R, lxmx, Local worm number fluctuation at each site
-     I, the maximum number of vertices, Maximum number of vertices
-     I, the maximum number of worms, Maximum number of worms
+     P, NTEST, "Number of samples to be tested (for details, see the description of Monte Carlo calculation)"
+     R, nver, The number of kinks and worms
+     R, nkin, The number of kinks
+     R, wndx, The expected value of square of winding number in :math:`x` direction
+     R, wndy, The expected value of square of winding number in :math:`y` direction
+     R, wndz, The expected value of square of winding number in :math:`z` direction
+     R, wnd2, The total number of squares of winding number(wndx+wndy+wndz)
+     R, bmxu, The expected value of :math:`S_x` (uniform :math:`\tau` integral)
+     R, bmpu, The expected value of :math:`S_+` (uniform :math:`\tau` integral)
+     R, bmmu, The expected value of :math:`S_-` (uniform :math:`\tau` integral)
+     R, comp, The compressibility
+     R, lxmx, The local worm number fluctuation at each site
+     I, the maximum number of vertices, The maximum number of vertices
+     I, the maximum number of worms, The maximum number of worms
 
-Here, the type is the letter given to the beginning of each line of output, P, R, I indicate Parameter, Result, Information respectively.
+Here, the type is the letter given to the beginning of each line of output. P, R, I indicate Parameter, Result, Information respectively.
 
 - Output files for restart mode
 	
 PMWA implements the restart function, and if there are two files below, a restart is automatically performed. Below, a brief description of the output contents of each file is described.
 	
   1. evout_sample.log
-  Files outputted for the number of cycles at the end of computation, world lines information, and vertex information.
-  For restart calculation, calculations are performed with the loaded arrangement as the initial condition.
+     
+      Files outputted for the number of cycles at the end of computation, world lines information, and vertex information.
+      For restart calculation, calculations are performed with the loaded arrangement as the initial condition.
   ::
   
     26 : Number of cycles at the end of calculation
@@ -88,5 +89,6 @@ PMWA implements the restart function, and if there are two files below, a restar
     7, Marker(for imaginary time correlation function measurement).
   
   2. RNDevout_sample.log
-     Files that output binary format for objects generating random numbers. At recalculation, calculations are performed with the random number information which is read as the initial condition.
+     
+     The output binary file for objects generating random numbers. At recalculation, calculations are performed with the random number information which is read as the initial condition.
 

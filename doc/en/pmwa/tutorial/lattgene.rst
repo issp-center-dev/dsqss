@@ -15,17 +15,17 @@ The parameters to be specified are as follows.
      :widths: 1,1,4
 
      Parameter, type, Remarks
-     D, int, Dimensions
-     L, int, Size of the lattice (specified for each dimension consecutively)
-     B, double, Inverse temperature
-     NLdiv, int, Number of divisions of L (divide NLdiv for each dimension)
-     NBdiv, int, Number of divisions of L
-     NFIELD, int, Type of magnetic field (basically set to 0)
+     D, int, The dimensions
+     L, int, The size of the lattice (specified for each dimension consecutively)
+     B, double, The inverse temperature
+     NLdiv, int, The number of divisions of L (divide NLdiv for each dimension)
+     NBdiv, int, The number of divisions of L
+     NFIELD, int, The type of magnetic field (basically set to 0)
 
 
 Examples of use are described below.
 
-1. One dimensional 8 sites chain, reverse temperature 10.0, definition of lattice file when division number is 1:
+1. One-dimensional 8-sites chain, inverse temperature 10.0, definition of lattice file when division number is 1:
 
    ``$ lattgene 1 8 10.0 1 1 0``
 

@@ -9,36 +9,35 @@ DSQSS/PMWA outputs one result file and two temporary files for restart calculati
 - Result file
 
   Many parameters are common to DSQSS/DLA. In this section, the parameters which are not included in DSQSS/DLA or where the usage is different from DSQSS/DLA are explained.
-  
-  .. csv-table::
+    .. csv-table::
      :header-rows: 1
      :widths: 1,1,4
 
-     Kind, Name, Description
-     P, L, Three-dimensional lattice information
-     P, DOML, The domain size divided by parallelization
-     P, DOMBETA, The domain size of inverse temperature divided by parallelization
-     P, NDIVL, Number of grid divisions
-     P, NTEST, Number of samples to be tested
-     R, nver, Number of kinks and worms
-     R, nkin, Number of kinks
-     R, wndx, Expected value of square of winding number in x direction
-     R, wndy, Expected value of square of winding number in y direction
-     R, wndz, Expected value of square of winding number in z direction
-     R, wnd2, Total number of squares of winding number(wndx+wndy+wndz)
-     R, bmxu, Expected value of :math:`S_x` (uniform :math:`\tau` integral)
-     R, bmpu, Expected value of :math:`S_+` (uniform :math:`\tau` integral)
-     R, bmmu, Expected value of :math:`S_-` (uniform :math:`\tau` integral)
-     R, comp, Compressibility
-     R, lxmx, Local fluctuation about worms at each site
-     I, the maximum number of vertices, Maximum number of vertices
-     I, the maximum number of worms, Maximum number of worms
+     Type, Name, Description
+     P, L, The size of the lattice.
+     P, DOML, The size of the domain divided by parallelization
+     P, DOMBETA, The size of the inverse temperature divided by parallelization
+     P, NDIVL, The number of lattice divisions
+     P, NTEST, "Number of samples to be tested (for details, see the description of Monte Carlo calculation)"
+     R, nver, The number of kinks and worms
+     R, nkin, The number of kinks
+     R, wndx, The expected value of square of winding number in :math:`x` direction
+     R, wndy, The expected value of square of winding number in :math:`y` direction
+     R, wndz, The expected value of square of winding number in :math:`z` direction
+     R, wnd2, The total number of squares of winding number(wndx+wndy+wndz)
+     R, bmxu, The expected value of :math:`S_x` (uniform :math:`\tau` integral)
+     R, bmpu, The expected value of :math:`S_+` (uniform :math:`\tau` integral)
+     R, bmmu, The expected value of :math:`S_-` (uniform :math:`\tau` integral)
+     R, comp, The compressibility
+     R, lxmx, The local worm number fluctuation at each site
+     I, the maximum number of vertices, The maximum number of vertices
+     I, the maximum number of worms, The maximum number of worms
 
-  Here, the type means the letter given to the beginning of each line of output, P, R, I indicate Parameter, Result, Information, respectively.
+  Here, the type means the letter given to the beginning of each line of output. P, R, I indicate Parameter, Result, Information, respectively.
 
 - File for restart calculation
 
-  The PMWA implements the restart function, and if there are two files ``evout_sample.log`` and ``RNDevout_sample.log``, a restart is forcibly performed.
+  PMWA implements the restart function, and if there are two files ``evout_sample.log`` and ``RNDevout_sample.log``, a restart is forcibly performed.
   In the following, the output contents of each file are briefly described.
 	
   1. evout_sample.log
@@ -59,26 +58,43 @@ DSQSS/PMWA outputs one result file and two temporary files for restart calculati
     44 0.28066013 2 1 3
 
   
-  Here, the types of vertexes are defined as follows:
+PMWA implements the restart function, and if there are two files below, a restart is automatically performed. Below, a brief description of the output contents of each file is described.
+	
+  1. evout_sample.log
+     
+      Files outputted for the number of cycles at the end of computation, world lines information, and vertex information.
+      For restart calculation, calculations are performed with the loaded arrangement as the initial condition.
+  ::
+  
+    26 : Number of cycles at the end of calculation
+    0 1 : Information on the world line at site :math:`0` in the domain.
+    i/N beta, (i+1)/N beta Information on the world line of the section : 0: down, 1: up
+    0 0 :Information on the world line 1 at the site 1 in the domain.
+    1 1  :Information on the world line 2 at the site 2 in the domain.
+    ...
+    8 0.056997107 2 1 4  Vertex label, tau, type of vertex, number of world lines, bond number
+    9 0.056997107 2 0 5
+    44 0.28066013 2 1 3
+
+  Here, the types of vertexes are defined as follows.
 
   .. csv-table::
-     :header-rows: 1
-     :widths: 1,4
+    :header-rows: 1
+    :widths: 1,4
   
-     Kind of vertex, Description
-     -5, Start or end points in the imaginary time direction in each domain (valid even without domain division)
-     "-2(left) , -4(right)", Diagonal vertex that crosses domains (valid even without domain division)
-     "-1(left) , -3(right)", Off-diagonal vertex that crosses domains(kink) (valid even without domain division)
-     0, On-site vertex (without worms)
-     1, 2-site vertex
-     2, Kink
-     3, 2-site vertex (next nearest neighbour)(It is left for compatibility)
-     4, A worm that moves at that time (annihilation operator (the number of world lines is larger on the side where :math:`\tau`  is larger than this worm))
-     5, A worm that moves at that time (creation operator (the number of world lines is larger on the side where :math:`\tau`  is larger than this worm))
-     6, "A worm that stops at that time (both creation and annihilation operators, bidirectional list is connected) or an unnecessary vertex (bidirectional list is unconnected)."
-     7, A marker (for measuring imaginary-time correlation function)
- 
+    The type of vertex, Description
+    -5, The start and end points in the imaginary time direction in each domain. It does not need to split domain.
+    "-4(right), -2(left)", Vertex diagonally across domains. It does not need to split domain.
+    "-3(right), -1(left)", Vertex off-diagonally across domains. It does not need to split domain.
+    0, On site vertex (except worms).
+    1, Two site vertex
+    2, Kink.
+    3, Two site vertex (next nearest) (it is left for compatibility).
+    4, The worm moving at that time (annihilation operator).
+    5, The worm stopping at that time (creation operator).
+    6, "The worm stopping at that time (not related to neither annihilation or creation operators) or needless vertex."
+    7, Marker(for imaginary time correlation function measurement).
+  
   2. RNDevout_sample.log
-	    
-     A file in which an object that generates a random number is written as the binary format.
-     For recalculation mode, the initial condition is set by reading the above file.
+     
+     The output binary file for objects generating random numbers. At recalculation, calculations are performed with the random number information which is read as the initial condition.
