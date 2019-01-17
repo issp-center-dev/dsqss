@@ -6,6 +6,7 @@ import re
 import warnings
 import os.path
 import sys
+import dsqss
 
 class param:
     def __init__(self):
@@ -115,6 +116,8 @@ class info:
         return os.path.join(self.gendir, lattgene_name)
             
     def _get_info(self, inputfile):
+        tmp_dict = dsqss.read_keyvalues(inputfile)
+        '''
         if inputfile is sys.stdin:
             print('Waiting for standard input...')
         data_list = inputfile.readlines()
@@ -130,6 +133,7 @@ class info:
                 d_re = re.search(pattern,data)
                 key = d_re.group(1).strip().lower()
                 tmp_dict[key] = d_re.group(2).strip()
+        '''
 
         if tmp_dict["solver"] == "DLA":
             self.prm.info_dict.update(self.prm.info_dict_dla)
@@ -190,23 +194,28 @@ class info:
     def make_xml(self):
         LatticeInfo=self._get_latticeinfo()
         genpath = self._get_lattgene()
-        if not os.path.exists(genpath):
-            raise RuntimeError('{0} is not found: use correct --generator_dir.'.format(genpath))
-        cmd = [genpath, '-o', self.prm.param_dict["latfile"]]
-        for l in LatticeInfo:
-            cmd.append(str(l))
-        cmd.append(str(self.prm.info_dict["beta"]))
-
         if self.prm.info_dict["solver"] == "PMWA":
+            if not os.path.exists(genpath):
+                raise RuntimeError('{0} is not found: use correct --generator_dir.'.format(genpath))
+            cmd = [genpath, '-o', self.prm.param_dict["latfile"]]
+            for l in LatticeInfo:
+                cmd.append(str(l))
+            cmd.append(str(self.prm.info_dict["beta"]))
+
             cmd +=[str(self.prm.info_dict["nldiv"]),
                         str(self.prm.info_dict["nbdiv"]),
                         str(self.prm.info_dict["nfield"])]
-        print("\n " + ' '.join(cmd) )
-        subprocess.call(cmd)
+            print("\n " + ' '.join(cmd) )
+            subprocess.call(cmd)
+        else:
+            dsqss.generate_lattice(self.prm.info_dict, self.prm.param_dict['latfile'])
 
         #Genelate Hamiltonian and Algorithm xml files (only used for DLA) 
         if self.prm.info_dict["solver"] == "DLA":
             hfile = self.args.hfile
+            dsqss.generate_hamiltonian(self.prm.info_dict, hfile)
+
+            '''
             model_type = self.prm.info_dict["model_type"]
             genpath = os.path.join(self.gendir, self.dict_hamgen[model_type])
             if not os.path.exists(genpath):
@@ -233,6 +242,7 @@ class info:
             cmd = [genpath, hfile, self.prm.param_dict["algfile"]]
             print("\n" + ' '.join(cmd))
             subprocess.call(cmd)
+            '''
 
             if len(self.prm.param_dict["sfinpfile"]) > 0:
                 genpath = os.path.join(self.gendir, 'sfgene')
