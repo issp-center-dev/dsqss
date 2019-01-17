@@ -13,11 +13,11 @@ In the input file of DSQSS/DLA and DSQSS/PMWA, there are many common parameters.
      :widths: 2,1,1,4
 
      Parameter, type, default, description
-     RUNTYPE, int, , "Calculation mode (0: from scratch ,1: restart)"
-     CB, int , 0, "Initial pattern (0: Vacuum,1: Checker-Board,2: Random)"
+     RUNTYPE, int, , "Calculation mode (0: from scratch, 1: restart)"
+     CB, int , 0, "Initial pattern (0: Vacuum, 1: Checker-Board, 2: Random)"
      NWORMAX, int, 1000, "The maximum number of worms. When the value is equal to be -1, the upper limit becomes infinity."
-     Step_x, int, 1, "The spatial width in calculating correlation functions."
-     Step_k, int, 1, "The width of wave-number space in calculating correlation functions of wave-number representation."
+     Step_x, int, 1, "The spatial width in calculating the correlation functions."
+     Step_k, int, 1, "The width of the wave-number space in calculating correlation functions of wave-number representation."
 
 - Parameters related to the model
 

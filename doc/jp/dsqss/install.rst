@@ -42,6 +42,7 @@ DSQSSのダウンロード後にzipファイルを解凍すると, ファイル�
   │   ├── en
   │   └── jp
   ├── sample
+  │   ├── CMakeLists.txt
   │   ├── dla
   │   └── pmwa
   ├── src
@@ -56,6 +57,7 @@ DSQSSのダウンロード後にzipファイルを解凍すると, ファイル�
   │   ├── pmwa
   │   └── tool
   └── tool
+       ├── CMakeLists.txt
        └── dsqss_pre.py
 
 

@@ -39,16 +39,16 @@ An example of the input file is shown below.
  outfile = sample.log
  
 In the input file, specify the parameters that are divided into four categories.
-It is specified in the form ``keyword = parameter``.
+Each parameter is specified in the form ``keyword = parameter``.
 
 1. System section
 
-Set various solvers with ``solver`` as the keyword.
-Solvers can be selected from ``DLA`` or ``PMWA``.
+    Set solvers with ``solver`` as the keyword.
+    Solvers can be selected from ``DLA`` or ``PMWA``.
  
 2. Hamiltonian section
 
-Specify the system type (spin or boson) and the parameters to struct the Hamiltonian.
+    Specify the system type (spin or boson) and the parameters to construct the Hamiltonian.
  
  .. csv-table::
    :header-rows: 1
@@ -69,8 +69,8 @@ Specify the system type (spin or boson) and the parameters to struct the Hamilto
    ``J`` , DLA, double, 1.0, "The coupling constant :math:`J` (positive for ferromagnets, negative for anti-magnets)."
    ``Jxy``, PMWA, double, 0.0, "The coupling constant :math:`J_{xy}` (positive for ferromagnets, negative for anti-magnets)."
    ``Jz``, PMWA, double, 0.0, "The coupling constant :math:`J_{z}` (positive for ferromagnets, negative for anti-magnets)."
-   ``h``, PMWA, double, 0.0, "The longitudinal magnetic field (positive for ferromagnets, negative for anti-magnets)."
-   ``Gamma`` , PMWA, double, 0.0, "The transverse magnetic field (positive for ferromagnets, negative for anti-magnets)."
+   ``h``, PMWA, double, 0.0, "The longitudinal magnetic field (not depend on :math:`z`)."
+   ``Gamma`` , PMWA, double, 0.0, "The transverse magnetic field (not depend on :math:`z`)."
  
  - ``model_type = boson``
  
@@ -83,7 +83,7 @@ Specify the system type (spin or boson) and the parameters to struct the Hamilto
    ``U`` , Common, double, 0.0, "The on-site interaction (positive for repulsive)."
    ``V`` , Common, double, 0.0, "The nearest neighbor interaction (positive for repulsive)."
    ``M`` , DLA, int, 1, "The maximum number of bosons on each site."
-   ``F`` , DLA, double, 0.0, "The chemical potential in the pair Hamiltonian ( = H/z if the field H is the field per site and H is shared equally by all pairs, e.g., F = H/4 for a square lattice. )"
+   ``F`` , DLA, double, 0.0, "The chemical potential in the pair Hamiltonian ( = :math:`H/z` if the field :math:`H` is the field per site and :math:`H` is shared equally by all pairs, e.g., :math:`F = H/4` for a square lattice. )"
    ``mu``, PMWA, double, 0.0, "The chemical potential."
    ``Gamma`` , PMWA, double, 0.0, "The source term ( the coefficient of :math:`b_i^{\dagger}+b_i` )."
 
@@ -102,15 +102,15 @@ For ``DSQSS/PMWA`` , see the section for input file.
    Parameter, Type, Default, Remarks
    ``lattice_type`` , str, square, "Select ``square`` or ``triangular`` for ``DLA``. For ``PMWA``, only  ``square``  can be selected."
    ``D`` , int, , "The number of dimension. "
-   ``L`` , int, , "The liner size of the lattice. Specify the size of the ``D`` dimensional space, separated by , for example, in the case of a lattice of 2D :math:`2 \ times 4`, specify it as` `L = 2, 4``."
+   ``L`` , int, , "The liner size of the lattice. Specify the size of the ``D`` dimensional space, separated by , for example, in the case of a lattice of 2D :math:`2 \times 4`, specify it as ``L = 2, 4``."
    ``Beta`` , double, 10.0, "Inverse temperature"
    ``NLdiv`` , int, 1, "( for ``DSQSS/PMWA`` ): The devision number for the lattice."
    ``NBdiv``, int, 1, "( for ``DSQSS/PMWA`` ): The devision number for ``Beta`` ."
 
 4. Parameter section
 
- In this section, the calculation condition are specified.
- Set the parameters using keywords common to the input files of `` DSQSS / DLA`` and `` DSQSS / PMWA``.
+ In this section, the calculation condition is specified.
+ Set the parameters using keywords common to the input files of ``DSQSS / DLA`` and ``DSQSS / PMWA``.
  Please refer to the input file of each solver for details of defined parameters.   
 
 Execution
@@ -130,8 +130,8 @@ To execute the solver, see the end line of standard output of ``dsqss_pre.py``
 
  Please type: xxxxxx
 
-, where ``xxxxxx`` is the command for the execution (for example, ``DLA_H param.in``).
-To use MPI, add ``mpirun -np 8`` in the front of ``xxxxxx``.
+where ``xxxxxx`` is the command for the execution (for example, ``DLA_H param.in``).
+To use MPI, add ``mpirun -np 8`` in the front of ``xxxxxx`` (``8`` is the number of the processes to be used for parallelization).
 
 ``DSQSS/DLA`` specifies the number of parallel random numbers,
 ``DSQSS/PMWA`` specifies the product of the number of parallel random numbers

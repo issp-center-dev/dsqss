@@ -40,6 +40,7 @@ Directory structure
   |   |── jp
   |
   |── sample
+  |   |── CMakeLists.txt
   |   |── dla
   |   |── pmwa
   |
@@ -57,13 +58,14 @@ Directory structure
   |   |── tool
   |
   |── tool
-       |── dsqss_pre.py
+      |── CMakeLists.txt
+      |── dsqss_pre.py
 
 Install
 ********************
 
 The installation of DSQSS can be done by the following procedures.
-In the following, we assume the current directory is `dsqss.src`.
+In the following, we assume the current directory is ``dsqss.src``.
 
 ::
    
