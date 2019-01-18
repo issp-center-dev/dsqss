@@ -73,6 +73,7 @@ public:
   Array<int> STYPE;
   Array<double> VertexDensity;
   Array<double> AverageInterval;
+  Array<double> Sign;
 
   InteractionProperty() : _VP(0) {
     STYPE.setLabel("InteractionProperty::STYPE");
@@ -82,6 +83,9 @@ public:
 
   void setVertexProperty(VertexProperty& vp) { _VP = &vp; };
   VertexProperty& getVertexProperty() { return *_VP; };
+
+  double sign(int *x) {return Sign(x);}
+  double sign(std::vector<int> const& x) {return Sign(x);}
 
   int id() { return ITYPE; };
   void initialize(XML::Block& X);
@@ -542,6 +546,8 @@ void InteractionProperty::initialize(XML::Block& X) {
   VertexDensity.set_all(0.0);
   AverageInterval.init(NBODY, NXMAX, ARRAY::EOL);
   AverageInterval.set_all(-1.0);
+  Sign.init(2*NBODY, NXMAX, ARRAY::EOL);
+  Sign.set_all(1.0);
 
   for (int i = 0; i < X.NumberOfBlocks(); i++) {
     XML::Block& B = X[i];
@@ -555,6 +561,14 @@ void InteractionProperty::initialize(XML::Block& X) {
       // AverageInterval val[n] = 1/d  (n:1-n)
       VertexDensity(x) = d;
       AverageInterval(x) = 1.0 / d;
+    }
+    if (B.getName() == "Phase") {
+      std::vector<int> x(2*NBODY);
+      for (int ii = 0; ii < 2*NBODY; ii++) {
+        x[ii] = B.getInteger(ii);
+      }
+      double sgn = B.getDouble(2*NBODY);
+      Sign(x) = sgn;
     }
   }
 }

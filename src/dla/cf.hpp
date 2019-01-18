@@ -22,6 +22,7 @@ private:
   std::vector<int> DCF;
   std::vector<std::vector<int> > ICF;
 
+  Accumulator SIGN;
   std::vector<std::vector<Accumulator> > ACC;
   std::vector<std::vector<Accumulator> > PHY;
 
@@ -33,7 +34,7 @@ public:
   void setinit();
   void reset();
   void count(double tT, double bT, int head_site, int tail_site, double tail_tau);
-  void accumulate(int NCYC);
+  void accumulate(int NCYC, double sgn);
   void setsummary();
   void summary();
 #ifdef MULTI
@@ -64,6 +65,7 @@ CF::CF(Parameter const& param, Lattice& lat, Algorithm& alg)
     int Nline = X["NumberOfElements"].getInteger();
     dtau = LAT.BETA / Ntau;
 
+    SIGN.reset();
     NCF = X["NumberOfKinds"].getInteger();
     for (int i = 0; i < NCF; i++) {
       ACC.push_back(std::vector<Accumulator>(Ntau));
@@ -110,6 +112,7 @@ CF::CF(Parameter const& param, Lattice& lat, Algorithm& alg)
 inline void CF::setinit() {
   if (!to_be_calc) { return; }
   AutoDebugDump("CF::setinit");
+  SIGN.reset();
   for (int i = 0; i < NCF; i++)
     for (int itau = 0; itau < Ntau; itau++)
       ACC[i][itau].reset();
@@ -127,13 +130,14 @@ inline void CF::show(FILE* F) {
 
 };
 
-inline void CF::accumulate(int NCYC) {
+inline void CF::accumulate(int NCYC, double sgn) {
   if (!to_be_calc) { return; }
   AutoDebugDump("CF::accumulate");
+  SIGN.accumulate(sgn);
   const double invNCYC = 1.0 / NCYC;
   for (int icf = 0; icf < NCF; icf++)
     for (int it = 0; it < Ntau; it++)
-      ACC[icf][it].accumulate(invNCYC * counter[icf][it]);
+      ACC[icf][it].accumulate(sgn * invNCYC * counter[icf][it]);
 };
 
 inline void CF::summary() {
@@ -189,11 +193,13 @@ void CF::setsummary() {
   AutoDebugDump("CF::setsummary");
   const double V        = LAT.NSITE;
   const double testDIAG = ALG.getBlock("WDIAG", (double)1.0);  //ALG.X["General"]["WDIAG" ].getDouble(); // 0.25
+  SIGN.average();
+  const double invsign = 1.0 / SIGN.mean();
   for (int icf = 0; icf < NCF; icf++) {
     const double factor = 2 * testDIAG * V / ((double)DCF[icf]);
     for (int it = 0; it < Ntau; it++) {
       ACC[icf][it].average();
-      PHY[icf][it].accumulate(ACC[icf][it].mean() * factor);
+      PHY[icf][it].accumulate(invsign * ACC[icf][it].mean() * factor);
     }
   }
 }
@@ -209,11 +215,13 @@ void CF::allreduce(MPI_Comm comm) {
 #endif
 
 void CF::save(std::ofstream& F) const {
+  Serialize::save(F, SIGN);
   Serialize::save(F, ACC);
   Serialize::save(F, PHY);
 }
 
 void CF::load(std::ifstream& F) {
+  Serialize::load(F, SIGN);
   Serialize::load(F, ACC);
   const int ncf = ACC.size();
   if(ncf != NCF){

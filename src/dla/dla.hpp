@@ -91,6 +91,7 @@ public:
   double UP_ONESTEP(bool thermalized);
   double DOWN_ONESTEP(bool thermalized);
 
+  double calculate_sign();
 
   double tail_tau;
   int tail_site;

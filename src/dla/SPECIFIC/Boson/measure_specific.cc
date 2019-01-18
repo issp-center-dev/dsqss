@@ -1,6 +1,6 @@
 #include "../../util.hpp"
 
-void Measurement::measure() {
+void Measurement::measure(double sgn) {
   using namespace Specific;
   int NV = LAT.countVertices();
 
@@ -47,15 +47,6 @@ void Measurement::measure() {
   MZUB *= T;
   MZSB *= T;
 
-  ACC[MZUA1].accumulate(MZUA);
-  ACC[MZUA2].accumulate(MZUA * MZUA);
-  ACC[MZUB1].accumulate(MZUB);
-  ACC[MZUB2].accumulate(MZUB * MZUB);
-  ACC[MZSA1].accumulate(MZSA);
-  ACC[MZSA2].accumulate(MZSA * MZSA);
-  ACC[MZSB1].accumulate(MZSB);
-  ACC[MZSB2].accumulate(MZSB * MZSB);
-
   double EBSAMP = -(double)NV;
 
   for (int b = 0; b < LAT.NINT; b++) {
@@ -70,7 +61,7 @@ void Measurement::measure() {
     for (int i = 0; i < NBODY; i++) {
       Site& S = I.site(i);
       p[i].init(S);
-      p[i]++;
+      ++p[i];
       tau[i] = p[i]->topTime();
       x[i]   = p[i]->X();
     }
@@ -83,15 +74,26 @@ void Measurement::measure() {
 
       if (p[it]->top().isTerminal()) break;
       t = tau[it];
-      p[it]++;
+      ++p[it];
       tau[it] = p[it]->topTime();
       x[it]   = p[it]->X();
     }
   }
 
-  ACC[EB1].accumulate(EBSAMP);
-  ACC[EB2].accumulate(EBSAMP * EBSAMP);
-  ACC[NH1].accumulate(MZUA * EBSAMP);
+  ACC[SGN].accumulate(sgn);
+
+  ACC[MZUA1].accumulate(sgn * MZUA);
+  ACC[MZUA2].accumulate(sgn * MZUA * MZUA);
+  ACC[MZUB1].accumulate(sgn * MZUB);
+  ACC[MZUB2].accumulate(sgn * MZUB * MZUB);
+  ACC[MZSA1].accumulate(sgn * MZSA);
+  ACC[MZSA2].accumulate(sgn * MZSA * MZSA);
+  ACC[MZSB1].accumulate(sgn * MZSB);
+  ACC[MZSB2].accumulate(sgn * MZSB * MZSB);
+
+  ACC[EB1].accumulate(sgn * EBSAMP);
+  ACC[EB2].accumulate(sgn * EBSAMP * EBSAMP);
+  ACC[NH1].accumulate(sgn * MZUA * EBSAMP);
 
   // WINDING NUMBER
   const int Dim = LAT.BD;
@@ -131,7 +133,7 @@ void Measurement::measure() {
       }
       wind2 += W * W;
     }
-    ACC[Wxy2].accumulate(wind2);
+    ACC[Wxy2].accumulate(sgn * wind2);
   }  // end of if(Dim)
 }
 
@@ -152,28 +154,32 @@ void Measurement::setsummary() {
   double invV = 1.0 / V;
   double D    = LAT.D;
 
-  Q[ANV] = X[NV1] * invV;
-  Q[ENE] = (EBASE + X[EB1] * T) * invV;
+  double invsign = 1.0 / X[SGN];
 
-  Q[SPE] = (X[EB2] - X[EB1] * X[EB1] - X[NV1]) * invV;
+  Q[SIGN] = X[SGN];
 
-  Q[LEN] = X[LE1];
-  Q[XMX] = WDIAG * X[LE1] / B;
+  Q[ANV] = invsign * X[NV1] * invV;
+  Q[ENE] = invsign * (EBASE + X[EB1] * T) * invV;
 
-  Q[AMZU] = X[MZUA1];
-  Q[BMZU] = X[MZUB1];
-  Q[SMZU] = (X[MZUA2] - X[MZUA1] * X[MZUA1]) * V;
-  Q[XMZU] = (X[MZUB2] - X[MZUB1] * X[MZUB1]) * B * V;
+  Q[SPE] = invsign * (X[EB2] - X[EB1] * X[EB1] - X[NV1]) * invV;
 
-  Q[AMZS] = X[MZSA1];
-  Q[BMZS] = X[MZSB1];
-  Q[SMZS] = (X[MZSA2] - X[MZSA1] * X[MZSA1]) * V;
-  Q[XMZS] = (X[MZSB2] - X[MZSB1] * X[MZSB1]) * B * V;
+  Q[LEN] = invsign * X[LE1];
+  Q[XMX] = invsign * WDIAG * X[LE1] / B;
 
-  Q[DS1]  = B * (X[NH1] - X[MZUA1] * X[EB1]) / V;
-  Q[W2]   = X[Wxy2];
-  Q[RHOS] = X[Wxy2] * 0.5 / D / V / B;
-  Q[COMP] = Q[XMZU] / (X[MZUB1] * X[MZUB1]);
+  Q[AMZU] = invsign * X[MZUA1];
+  Q[BMZU] = invsign * X[MZUB1];
+  Q[SMZU] = invsign * (X[MZUA2] - X[MZUA1] * X[MZUA1]) * V;
+  Q[XMZU] = invsign * (X[MZUB2] - X[MZUB1] * X[MZUB1]) * B * V;
+
+  Q[AMZS] = invsign * X[MZSA1];
+  Q[BMZS] = invsign * X[MZSB1];
+  Q[SMZS] = invsign * (X[MZSA2] - X[MZSA1] * X[MZSA1]) * V;
+  Q[XMZS] = invsign * (X[MZSB2] - X[MZSB1] * X[MZSB1]) * B * V;
+
+  Q[DS1]  = invsign * B * (X[NH1] - X[MZUA1] * X[EB1]) / V;
+  Q[W2]   = invsign * X[Wxy2];
+  Q[RHOS] = invsign * X[Wxy2] * 0.5 / D / V / B;
+  Q[COMP] = invsign * Q[XMZU] / (X[MZUB1] * X[MZUB1]);
 
   for (int i = 0; i < NPHY; i++) {
     PHY[i].accumulate(Q[i]);
