@@ -144,11 +144,7 @@ void Lattice::read() {
       S(id).init(ALG.getSiteProperty(st), mt);
       NSMTYPE = std::max(NSMTYPE, mt);
 
-#ifdef NORM
-      S(id).setBeta(1.0);
-#else
       S(id).setBeta(BETA);
-#endif
     }
     if (B.getName() == "I") {
       int id = B.getInteger(0);
@@ -294,11 +290,7 @@ void Lattice::setBeta(double beta) {
   }
   BETA = beta;
   for(int i=0;i<NSITE; ++i){
-#ifdef NORM
-      S(i).setBeta(1.0);
-#else
       S(i).setBeta(BETA);
-#endif
   }
 }
 

@@ -74,11 +74,7 @@ SF::SF(Parameter const& param, Lattice& lat, Algorithm& alg)
     XML::Block X(param.SFINPFILE.c_str());
     NtauAll   = X["Ntau"].getInteger();
     int Nline = X["NumberOfElements"].getInteger();
-#ifdef NORM
-    dtau = 1.0 / ((double)NtauAll);
-#else
     dtau = LAT.BETA / ((double)NtauAll);
-#endif
 
     Ntau  = X["CutoffOfNtau"].getInteger();
     NKMAX = X["NumberOfInverseLattice"].getInteger();

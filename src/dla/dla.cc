@@ -196,7 +196,7 @@ void Simulation::reset_counters() {
 
 void Simulation::set_NCYC() {
   AutoDebugDump("Simulation::set_NCYC");
-  double vol = LAT.BETA * LAT.NSITE;
+  double vol = LAT.NSITE;
 
   double path;
   int ncyc  = 1;
@@ -308,9 +308,9 @@ bool Simulation::PlaceWorm() {
 
   // timespace where worm will be inserted
   int s    = RND.Int(LAT.NSITE);
-  double t = (double)LAT.BETA * RND.Uniform();
-
   Site& ST = LAT.S(s);
+  double t = ST.getBeta() * RND.Uniform();
+
   SiteProperty& SP = ST.Property();
   VertexProperty& VP = SP.getVertexProperty();
   Vorg.BareVertex::init(t, VP);
@@ -407,6 +407,7 @@ double Simulation::UP_ONESTEP(bool thermalized) {
 
   Ring<RegVInfo> RingRVI;
   RingRVI.ROOT.V_x     = &V4REF;
+
   const double n_Vtime = n_V.isTerminal() ? LAT.BETA : n_V.time();
   const double c_time  = c_V.isTerminal() ? 0.0 : c_V.time();
   const double n_time  = n_Vtime - c_time;

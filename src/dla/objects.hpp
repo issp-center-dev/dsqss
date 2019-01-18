@@ -329,6 +329,7 @@ public:
 
   SiteProperty& Property() { return *_SP; };
 
+  double getBeta() const { return _vterm->time(); }
   void setBeta(double b) { _vterm->setTime(b); };
 
   Segment& findS(double t);
