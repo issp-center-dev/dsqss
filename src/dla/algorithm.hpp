@@ -346,7 +346,7 @@ void Algorithm::initialize() {
       int xinc = IC.XINC;
       int st;
       bool isKink = false;
-      int* xx     = new int[nl / 2];
+      std::vector<int> xx(nl/2);
 
       for (int il = 0; il < nl; il += 2) {
         if (x[il] != x[il + 1])
@@ -365,7 +365,6 @@ void Algorithm::initialize() {
       }
 
       VP._IC(st, inc, xinc) = &IC;  // generate INDEX using st,inc,xinc
-      delete[] xx;
     }  //end VP.NICloop
   }
 
@@ -384,7 +383,7 @@ void Algorithm::initialize() {
       VertexInitialConfiguration& IC = VP.IC[j];
 
       bool isKink = false;
-      int* x      = new int[VP.NBODY];
+      std::vector<int> x(VP.NBODY);
       for (int ileg = 0; ileg < IC.NLEG; ileg += 2) {
         if (IC.State[ileg] != IC.State[ileg + 1]) { isKink = true; }
         x[ileg / 2] = IC.State[ileg];
@@ -442,7 +441,6 @@ void Algorithm::initialize() {
       } else {
         IC.dRHO = 0.0;
       }
-      delete[] x;
     }
   }
 }
@@ -548,7 +546,7 @@ void InteractionProperty::initialize(XML::Block& X) {
   for (int i = 0; i < X.NumberOfBlocks(); i++) {
     XML::Block& B = X[i];
     if (B.getName() == "VertexDensity") {
-      int* x = new int[NBODY];
+      std::vector<int> x(NBODY);
       for (int ii = 0; ii < NBODY; ii++) {
         x[ii] = B.getInteger(ii);
       }
@@ -557,7 +555,6 @@ void InteractionProperty::initialize(XML::Block& X) {
       // AverageInterval val[n] = 1/d  (n:1-n)
       VertexDensity(x) = d;
       AverageInterval(x) = 1.0 / d;
-      delete[] x;
     }
   }
 }
@@ -572,10 +569,10 @@ inline void InteractionProperty::dump() {
   printf(", NXMAX= %2d", NXMAX);
   printf(", EBASE= %24.16f\n", EBASE);
   IndexSystem& I = VertexDensity.index_system();
-  int* x         = new int[I.dimension()];
+  std::vector<int> x(I.dimension());
 
   for (int i = 0; i < I.size(); i++) {
-    I.coord(i, x);
+    I.coord(i, &(x[0]));
     printf("     (");
     for (int j = 0; j < I.dimension(); j++) {
       printf(" %1d", x[j]);
@@ -584,7 +581,6 @@ inline void InteractionProperty::dump() {
            AverageInterval(x));
   }
   printf("</InteractionProperty>\n");
-  delete[] x;
 }
 
 
@@ -675,10 +671,10 @@ void VertexProperty::dump() {
   for (int i = 0; i < NLEG; i++)
     printf(" %d", STYPE[i]);
   printf("\n");
-  int* x         = new int[NLEG];
+  std::vector<int> x(NLEG);
   IndexSystem& I = StateCode.index_system();
   for (int i = 0; i < I.size(); i++) {
-    I.coord(i, x);
+    I.coord(i, &(x)[0]);
     int sc = StateCode[i];
     printf("  StateCode");
     for (int j = 0; j < I.dimension(); j++) {
@@ -688,7 +684,7 @@ void VertexProperty::dump() {
   }
   IndexSystem& I2 = SCNK.index_system();
   for (int i = 0; i < I2.size(); i++) {
-    I2.coord(i, x);
+    I2.coord(i,&(x[0]));
     int sc = SCNK[i];
     printf("  StateCode4NON-KINK");
     for (int j = 0; j < I2.dimension(); j++) {
@@ -709,7 +705,6 @@ void VertexProperty::dump() {
   for (int i = 0; i < NIC; i++)
     IC[i].dump();
   printf("</VertexProperty>\n");
-  delete[] x;
 }
 
 void VertexInitialConfiguration::initialize(XML::Block& X) {  //<initialconfig>
