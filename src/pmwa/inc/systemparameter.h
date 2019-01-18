@@ -52,11 +52,12 @@ struct Parallel {
 
   int x, y, z, V;  // the coordinate number.
 
-  // process 番号
-  int np; // 乱数並列の番号
+  // process numbers
+  int np; // index for random number parallelization
   int Rpara; // the number of replica (random system)
-  int nq; // ランダム系の番号（乱数並列）
-  int nr; // ランダム系の番号（レプリカ）
+  int nq; // index for random system (random number parallelization)
+  int nr; // index for random system (replica)
+
   /*
   // a random potential number (one of trivial parallelization)
     PR.nr = PR.np % PR.Rpara; 
@@ -64,25 +65,25 @@ struct Parallel {
     PR.nq = PR.np / PR.Rpara;  
         */
 
-  // 自分が受け持つドメインのインデックス
-  int nst; // ドメインのインデックス
-  int nt; // 虚時間方向インデックス
-  int ns; // 実空間方向インデックス
-  int nx; // x 座標
+  // domain information
+  int nst; // domain index
+  int nt; // along imaginary time
+  int ns; // along space
+  int nx; // x
   int ny; // y
   int nz; // z
 
-  // 時空間の原点を受け持つプロセス番号
-  int nst0; // 同じnpを持つプロセスのうち、nst=0 のもの
-  int nt0;  // 同じnp, ns を持つプロセスのうち、 nt=0 のもの
-  int ns0;
+  // process id for origin domain
+  int nst0; // sharing np
+  int nt0;  // sharing np, ns
+  int ns0;  // sharing np, nt
   int nx0;
 
-  // 隣のドメインを受け持つプロセス番号
-  int upper; // tau 方向上
-  int lower; // tau 方向下
-  int right[3]; // 空間方向右 (x,y,z)
-  int left[3];  // 空間方向下 (x,y,z)
+  // process id for neighbor domains
+  int upper;
+  int lower;
+  int right[3];
+  int left[3];
 };
 
 #endif

@@ -25,10 +25,8 @@ Dla::Dla(int NP, char **PLIST) {
   MPI_Barrier(MPI_COMM_WORLD);
   allstart = MPI_Wtime();
 
-  // 時間の初期化
   pstart = pend = tstart = tend = ostart = oend = 0.0;
 
-  // 入力ファイルの読み込み
   ReadParameterfile(p_num, my_rank, NP, PLIST);
 }
 
@@ -83,8 +81,7 @@ double Dla::PMWA() {
     MPI_Barrier(MPI_COMM_WORLD);
     pstart = MPI_Wtime();
 
-    // NCyc の決定
-    CS.DeterminationNworm(MC.Ntest, &MR, &QNT);
+    CS.DeterminationNworm(MC.Ntest, &MR, &QNT); // NCyc
 
     MPI_Barrier(MPI_COMM_WORLD);
     pend = MPI_Wtime();
@@ -131,7 +128,7 @@ double Dla::PMWA() {
   MPI_Barrier(MPI_COMM_WORLD);
   ostart = MPI_Wtime();
 
-  // この中でsweep とか全部やっている
+  // this function includes all (e.g., sweep)
   CS.measurement(&QNT, &MR);
 
   if (PR.nst == 0) QNT.show(ftest, FOUT4SF);

@@ -536,14 +536,14 @@ void GraphSpace::Assign_TwoSiteVertex(My_rdm *MR) {
 
     ////////////////////////////////////////////////////////////////////////
 
-    if (LT->frame[d][xl]) {  //bond がドメインをつないでいる時
+    if (LT->frame[d][xl]) {  // interbond
 
       xnum = LT->frame_rnum[d][xr];
       while (BoxSpace_t_th1[d][f(d, xnum, wf[d][xnum] + 1)] < targ_time) {
         wf[d][xnum]++;
       }
 
-      pl = w[xl]->p;  //対角項なので、1つ前の粒子数と同じ
+      pl = w[xl]->p;  // same as previous one since this is diagonal term
       pr = BoxSpace_p_th1[d][f(d, xnum, wf[d][xnum])];
 
       if (MR->rdm() < P->at[pl][pr][0] / rt_i) {
@@ -554,7 +554,7 @@ void GraphSpace::Assign_TwoSiteVertex(My_rdm *MR) {
         Nv++;
       }
 
-    } else {  //境界じゃない時
+    } else {  // innerbond 
 
       while (w[xr]->next[1] != &(worldB[xr])) {
         if (targ_time < w[xr]->next[1]->t) break;
@@ -562,7 +562,7 @@ void GraphSpace::Assign_TwoSiteVertex(My_rdm *MR) {
       }
       if (targ_time == w[xr]->t) continue;
 
-      pl = w[xl]->p;  //対角項なので、1つ前の粒子数と同じ
+      pl = w[xl]->p;  // same as previous one since this is diagonal term
       pr = w[xr]->p;
       if (MR->rdm() < P->at[pl][pr][0] / rt_i) {
         insert(w[xl], w[xr], 1, targ_time, xl, xr, pl, pr, d);
@@ -698,10 +698,8 @@ void GraphSpace::connect_before(Vertex *wl, Vertex *new_event) {
   new_event->next[0] = wl;
 }
 
-//################################## パリティチェックとワームの削除 ##################################
-
+// check parity and remove worm
 void GraphSpace::worm_release(My_rdm *MR) {
-  //  Vertex new_event; //代入用
 
   int parity;
   Vertex *dw;
@@ -711,8 +709,7 @@ void GraphSpace::worm_release(My_rdm *MR) {
     dw     = &(world[site]);
 
     if (INmax[site] == 1) {
-      //バーテックスが無いとき(ワームだけ、もしくはワームもないとき)
-      //vertex がないときはBhに挿入
+      // No vertex exists (only worm)
 
       Bh = B * MR->rdm();
       if (Bh < NMIN)
@@ -734,13 +731,14 @@ void GraphSpace::worm_release(My_rdm *MR) {
       dw = dw->next[1];
 
       while (dw->type == 4 || dw->type == 5) {
-        //古いワームをほどく
+        // release old worm
         parity++;
         dw = dw->next[1];
         release(dw->next[0]);
       }
 
-      dw->dir = parity % 2;  //下にくっついてる区間の番号を収容
+      // index of the below segment
+      dw->dir = parity % 2;
 
       parity = 0;
     }
@@ -750,13 +748,12 @@ void GraphSpace::worm_release(My_rdm *MR) {
 //#################################################################################################
 
 void GraphSpace::Assign_Worm(My_rdm *MR) {
-  //  Vertex new_event; //代入用
   Vertex *dw;
-  int j;  //区間内のワームの数
+  int j;  // the number of worms in a segment
   bool n0;
 
   for (int site = 0; site < V; site++) {
-    for (Vertex *wl = world[site].next[1]; wl != &(world[site]); wl = wl->next[1]) {  //worldBまでやる
+    for (Vertex *wl = world[site].next[1]; wl != &(world[site]); wl = wl->next[1]) {  // until worldB
 
       j      = 0;
       dw     = wl->next[0];
@@ -786,8 +783,8 @@ void GraphSpace::Assign_Worm(My_rdm *MR) {
 }
 
 void GraphSpace::parity_check(My_rdm *MR, int py, double *x, int &j, double topt, double bottomt) {
-  //j:区間内のワームの数
-  //py:パリティ
+  //j: # of worms in a segment
+  //py: parity
   double Il = topt - bottomt;
   double dt, dtmin = NMIN;
   double Ia = Il * P->rh_even;
@@ -861,7 +858,7 @@ void GraphSpace::SpatialDomainBoundary(My_rdm *MR) {
     for (int i = 0; i < LT->Fx[d]; i++) {
       right = LT->frame_rsite[d][i];
       k     = 0;
-      for (Vertex *wl = world[right].next[1]; wl != &(world[right]); wl = wl->next[1]) {  //worldBまでやる
+      for (Vertex *wl = world[right].next[1]; wl != &(world[right]); wl = wl->next[1]) {  //until worldB
 
         if (((wl->i) / V == d && wl->type <= -3 && wl->type >= -4) || next) {
           BoxSpace_t_th0[d][f(d, i, k)] = wl->t - wl->next[0]->t;
@@ -899,7 +896,7 @@ void GraphSpace::SpatialDomainBoundary(My_rdm *MR) {
       left = LT->frame_lsite[d][i];
 
       for (Vertex *wl = world[left].next[1]; wl != &(worldB[left]); wl = wl->next[1]) {
-        if ((wl->i) / V == d && (wl->type == -1 || wl->type == -2)) {  //左で判断
+        if ((wl->i) / V == d && (wl->type == -1 || wl->type == -2)) {  // judge by the left
 
           while (BoxSpace_type_th1[f(d, i, rnum)] == 7) {
             rnum++;
@@ -956,7 +953,7 @@ void GraphSpace::SpatialDomainBoundary(My_rdm *MR) {
     for (int i = 0; i < LT->Fx[d]; i++) {
       right = LT->frame_rsite[d][i];
       k     = 0;
-      for (Vertex *wl = world[right].next[1]; wl != &(world[right]); wl = wl->next[1]) {  //worldBまでやる
+      for (Vertex *wl = world[right].next[1]; wl != &(world[right]); wl = wl->next[1]) {  // until worldB
 
         if (((wl->i) / V == d && wl->type <= -3 && wl->type >= -4) || next) {
           wl->dir = BoxSpace_py_th0[f(d, i, k)];

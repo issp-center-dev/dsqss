@@ -263,7 +263,7 @@ void Algorithm::read() {
     if (name == "Site") {
       int id = B["STYPE"].getInteger();  //id=0
       SPROP(id).initialize(B);  //  SitePropertyClass setting is finished at this point
-      //SPROP(0) returns SiteProperty& val[0]を
+      //SPROP(0) returns SiteProperty& val[0]
     }
 
     if (name == "Interaction") {
@@ -338,7 +338,7 @@ void Algorithm::initialize() {
     int nst = 0;
 
     for (int ic = 0; ic < VP.NIC; ic++) {
-      VertexInitialConfiguration& IC = VP.IC[ic];  //tomo
+      VertexInitialConfiguration& IC = VP.IC[ic];
 
       int nl   = VP.NLEG;
       int* x   = IC.State;
@@ -375,8 +375,8 @@ void Algorithm::initialize() {
     I.setVertexProperty(VPROP(I.VTYPE));
   }
 
-  // 散乱確率の積算と ScatteringChannel::PROB の再々定義
-  // NOT KINK のバーテックスに対してはPROB = [vertexdensity]*[probablity]とする
+  // cumprod scattering rate and re-re-definition of ScatteringChannel::PROB
+  // Vertex representing NOT KINK has PROB = [vertexdensity]*[probablity]
   for (int i = 0; i < NVTYPE; i++) {
     VertexProperty& VP = VPROP(i);
 
@@ -384,8 +384,7 @@ void Algorithm::initialize() {
       VertexInitialConfiguration& IC = VP.IC[j];
 
       bool isKink = false;
-      int* x      = new int[VP.NBODY];  //edit sakakura
-      //      int x[VP.NBODY];
+      int* x      = new int[VP.NBODY];
       for (int ileg = 0; ileg < IC.NLEG; ileg += 2) {
         if (IC.State[ileg] != IC.State[ileg + 1]) { isKink = true; }
         x[ileg / 2] = IC.State[ileg];
@@ -448,14 +447,9 @@ void Algorithm::initialize() {
   }
 }
 
-//======================================================================
 
 inline Algorithm::~Algorithm() {
 }
-
-//######################################################################
-//######################################################################
-//######################################################################
 
 void SiteProperty::initialize(XML::Block& X) {  //<Site>
   AutoDebugDump("SiteProperty::initialize");
@@ -476,8 +470,6 @@ void SiteProperty::initialize(XML::Block& X) {  //<Site>
   }
 }
 
-//======================================================================
-
 void SiteProperty::dump() {
   AutoDebugDump("SiteProperty::dump");
   printf("\n");
@@ -491,7 +483,6 @@ void SiteProperty::dump() {
   printf("</SiteProperty>\n");
 }
 
-//#######################################################################
 
 void SiteInitialConfiguration::initialize(XML::Block& X) {
   AutoDebugDump("SiteInitialConfiguration::initialize");
@@ -513,8 +504,6 @@ void SiteInitialConfiguration::initialize(XML::Block& X) {
   }
 }
 
-//======================================================================
-
 void SiteInitialConfiguration::dump() {
   AutoDebugDump("SiteInitialConfiguration::dump");
   printf("\n");
@@ -526,15 +515,12 @@ void SiteInitialConfiguration::dump() {
   printf("</SiteInitialConfiguration>\n");
 }
 
-//#######################################################################
 
 void ScatteringChannel::initialize(XML::Block& X) {
   OUT  = X.getInteger(0);
   XOUT = X.getInteger(1);
   PROB = X.getDouble(2);
 }
-
-//======================================================================
 
 void ScatteringChannel::dump() {
   AutoDebugDump("ScatteringChannel::dump");
@@ -545,9 +531,8 @@ void ScatteringChannel::dump() {
   printf("\n");
 }
 
-//#######################################################################
 
-void InteractionProperty::initialize(XML::Block& X) {  //<interaction> son
+void InteractionProperty::initialize(XML::Block& X) {
   AutoDebugDump("InteractionProperty::initialize");
   ITYPE = X["ITYPE"].getInteger();
   VTYPE = X["VTYPE"].getInteger();
@@ -563,23 +548,19 @@ void InteractionProperty::initialize(XML::Block& X) {  //<interaction> son
   for (int i = 0; i < X.NumberOfBlocks(); i++) {
     XML::Block& B = X[i];
     if (B.getName() == "VertexDensity") {
-      int* x = new int[NBODY];  //edit sakakura
-      //    int x[NBODY];
+      int* x = new int[NBODY];
       for (int ii = 0; ii < NBODY; ii++) {
         x[ii] = B.getInteger(ii);
       }
       double d = B.getDouble(NBODY);
-      // VertexDensity   val[n] = d    を格納(n:1-n)
-      // AverageInterval val[n] = 1/d  を格納(n:1-n)
-      VertexDensity(x) = d;  //x[0],x[1]分が処理される return C* val[id]
+      // VertexDensity   val[n] = d    (n:1-n)
+      // AverageInterval val[n] = 1/d  (n:1-n)
+      VertexDensity(x) = d;
       AverageInterval(x) = 1.0 / d;
       delete[] x;
     }
   }
-  //  Numberofblocksは/Interaction の行数
 }
-
-//======================================================================
 
 inline void InteractionProperty::dump() {
   AutoDebugDump("InteractionProperty::dump");
@@ -600,15 +581,15 @@ inline void InteractionProperty::dump() {
       printf(" %1d", x[j]);
     }
     printf(") --> %8.3f, %8.3f\n", VertexDensity(x),
-           AverageInterval(x));  //kota averagei=1/vd
+           AverageInterval(x));
   }
   printf("</InteractionProperty>\n");
   delete[] x;
 }
 
-//#######################################################################
 
-void VertexProperty::initialize(XML::Block& X, int mx) {  //<vertex> //mayu
+
+void VertexProperty::initialize(XML::Block& X, int mx) {
   AutoDebugDump("VertexProperty::initialize");
   VTYPE = X["VTYPE"].getInteger();
   VCAT  = X["VCATEGORY"].getInteger();
@@ -616,22 +597,20 @@ void VertexProperty::initialize(XML::Block& X, int mx) {  //<vertex> //mayu
   NIC   = X["NumberOfInitialConfigurations"].getInteger();
   NLEG  = 2 * NBODY;
 
-  STYPE.init(1, NLEG);          //array(int) STYPE //size 2,4
-  STYPE.set_all(STYPE::UNDEF);  //val[i]に(size()個分)-1をセット
+  STYPE.init(1, NLEG);
+  STYPE.set_all(STYPE::UNDEF);
 
-  StateCode.init(NLEG, NXMAX, ARRAY::EOL);  //array(int) StateCode -1をセット
-  StateCode.set_all(STATE::UNDEF);          //2^2,4^2
+  StateCode.init(NLEG, NXMAX, ARRAY::EOL);
+  StateCode.set_all(STATE::UNDEF);
 
-  SCNK.init(NBODY, NXMAX, ARRAY::EOL);  //array(int) scnk
-  SCNK.set_all(STATE::UNDEF);           //-1 //size=2,4
+  SCNK.init(NBODY, NXMAX, ARRAY::EOL);
+  SCNK.set_all(STATE::UNDEF);
 
-  NST = StateCode.size();         //4,16
-  _IC.init(3, NST, NLEG, NXMAX);  //index用の数値用意[4,2,2],[16,4,2]
-  _IC.set_all(0);                 //size 16,128
+  NST = StateCode.size();
+  _IC.init(3, NST, NLEG, NXMAX);
+  _IC.set_all(0);
 
-  // === edit sakakura ===
-  //  if ( RUNTYPE == 1 ) {
-  int id = X["VTYPE"].getInteger();  //id=0,1
+  int id = X["VTYPE"].getInteger();
 
   if (id == 0) {
     IC.init(1, NIC);
@@ -641,11 +620,9 @@ void VertexProperty::initialize(XML::Block& X, int mx) {  //<vertex> //mayu
     if (mx > NIC) MIC = mx;
     IC.init(1, MIC);
   }
-  //   }
-  // === edit sakakura ===
 
   int ic = 0;
-  for (int i = 0; i < X.NumberOfBlocks(); i++) {  //2番目のtag
+  for (int i = 0; i < X.NumberOfBlocks(); i++) {
     XML::Block& B = X[i];
     if (B.getName() == "InitialConfiguration") {
       IC[ic].setID(ic);
@@ -655,18 +632,15 @@ void VertexProperty::initialize(XML::Block& X, int mx) {  //<vertex> //mayu
     }
   }
 
-  // == edit sakakura ==
   if (id == 1) {
     for (int i = NIC; i < MIC; i++) {
       IC[i].setID(i);
-      IC[i].NLEG = NLEG;   //NLEG;
-      IC[i].initialize();  //mai
+      IC[i].NLEG = NLEG;
+      IC[i].initialize();
     }
   }
-  // == edit sakakura ==
 }
 
-//======================================================================
 
 inline int VertexProperty::getSiteType(int out) {
 #ifdef DEB
@@ -680,7 +654,7 @@ inline int VertexProperty::getSiteType(int out) {
   return STYPE[out];
 }
 
-//======================================================================
+
 
 inline VertexInitialConfiguration& VertexProperty::getIC(int st, int inc,
                                                          int xinc) {
@@ -756,11 +730,8 @@ void VertexInitialConfiguration::initialize(XML::Block& X) {  //<initialconfig>
   XINC = X["NewState"].getInteger();
   NCH  = X["NumberOfChannels"].getInteger();
 
-  // -- edit sakakura --
   MCH = 4;
   CH.init("VCH", 1, MCH);
-  //CH.init("VCH",1,NCH);//org
-  // -- edit sakakura --
 
   int ch = 0;
   for (int i = 0; i < X.NumberOfBlocks(); i++) {
@@ -775,13 +746,9 @@ void VertexInitialConfiguration::initialize(XML::Block& X) {  //<initialconfig>
   }
 }
 
-//======================================================================
-//###edit sakakura######################################################mai
 
 void VertexInitialConfiguration::initialize() {  //<initialconfig>
   AutoDebugDump("VertexInitialConfiguration::initialize");
-
-  //printf("VertexInitialConfiguration::initialize> Start.\n");
 
   if (NLEG == 0) {
     printf("VertexInitialConfiguration::read> Error.\n");
@@ -795,7 +762,6 @@ void VertexInitialConfiguration::initialize() {  //<initialconfig>
   CH.init("VCH", 1, NCH);
 }
 
-//====edit sakakura========================================================
 
 inline ScatteringChannel& VertexInitialConfiguration::getScatteringChannel() {
   double p;
@@ -816,7 +782,6 @@ inline ScatteringChannel& VertexInitialConfiguration::getScatteringChannel() {
   return CH[ch];
 }
 
-//======================================================================
 inline ScatteringChannel& VertexInitialConfiguration::getScatteringChannel(
     double drho) {
   if (NCH == 1) return CH[0];
@@ -836,7 +801,6 @@ inline ScatteringChannel& VertexInitialConfiguration::getScatteringChannel(
   return CH[ch];
 }
 
-//======================================================================
 
 void VertexInitialConfiguration::dump() {
   AutoDebugDump("VertexInitialConfiguration::dump");

@@ -508,7 +508,8 @@ inline Segment& Segment::cut(Vertex& V, int side) {
   int leg_above = leg_below + 1;
   V.setS(leg_below, S0);
   V.setS(leg_above, S1);
-  // S1 は V1 の必ず下側なので０，２，４，．．．だけ調べればよい．
+
+  // Since S1 is always below we need investigate only even V1
   for (int l = 0; l < V1.NLEG(); l += 2) {
     if (V1.S(l) == S0) {
       //printf(" gotcha!\n");
@@ -698,7 +699,7 @@ inline void Vertex::erase() {
 
 inline Worm::Worm() {
   Vertex& V = TheVertexPool.pop();
-  V.init_WORM();  // ２本足なので初期化は TERM と同じでよい．
+  V.init_WORM();  // initialization is the same as TERM, since Worm is a two leg vertex
   _vorg = &V;
   _vcur = 0;
   _scur = 0;
@@ -895,9 +896,5 @@ inline void RegVInfo::erase() {
   Linked<RegisteredVertexInfo>::remove();
   TheRVIPool.push(*this);
 }
-
-//##########################katou#######################################
-
-//##########################katou#######################################
 
 #endif

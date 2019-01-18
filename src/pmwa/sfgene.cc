@@ -99,9 +99,7 @@ void WriteXML(int D, int L[], int Ntau, int CutoffOfNtau, int KTYPE) {
     for (int q = 0; q < KMAX; q++) {
       int rx = i % L[0];
       double phase;
-      //+++++++++++++++++++++++
       if (KTYPE == 0) phase = rx * ksite[q] * PI / (double)L[0];  // r_x * q_x
-                                                                  //+++++++++++++++++++++++
       else if (KTYPE == 1) {
         int ry = (i / L[0]) % L[1];
         double qx;
@@ -122,7 +120,6 @@ void WriteXML(int D, int L[], int Ntau, int CutoffOfNtau, int KTYPE) {
 
         phase = rx * qx * PI + ry * qy * PI;  // r_x * q_x
       }
-      //+++++++++++++++++++++++
       else if (KTYPE == 2) {
         int ry = (i / L[0]) % L[1];
         double qx;
@@ -140,7 +137,6 @@ void WriteXML(int D, int L[], int Ntau, int CutoffOfNtau, int KTYPE) {
 
         phase = rx * qx * PI + ry * qy * PI;  // r_x * q_x
       }
-      //+++++++++++++++++++++++
       else if (KTYPE == 3) {
         int ry = (i / L[0]) % L[1];
         double qx;
@@ -174,7 +170,6 @@ void WriteXML(int D, int L[], int Ntau, int CutoffOfNtau, int KTYPE) {
   delete[] x;
   delete[] ksite;
 }
-//--------------------------------------------------------------
 
 int main(int argc, char **argv) {
   int NARG = 3;

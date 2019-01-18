@@ -16,25 +16,6 @@
 //####
 //######################################################################
 
-/*! \mainpage DSQSS-1.1 プログラムドキュメント
- *
- * \section intro Introduction
- *
- * DSQSSは、連続虚数時間向き付きループアルゴリズムに基づく量子モンテカルロ法によって離散空間上で定義された量子多体問題を解くためのプログラムです。。単位格子の情報、２体相互作用ハミルトニアンの行列要素などを入力ファイルとして広い範囲のモデルに対応しています。例えば、次元、格子の１辺の長さ、相互作用の異方性、スピンの大きさ、磁場の大きさ、温度などのパラメータを任意にとって、ＸＸＺハイゼンベルクモデルの計算を行うことができます。また、ボーズ系のシミュレーションも可能です。
-
- * \section install Program Document
- *
- * DSQSSは、C++でプログラミングされています。ここでは、クラス階層、構成メンバなどのプログラム構造について説明しています。  
- *  
- *  
- * \section release Release 
- *  
- * 2011.3.31 DSQSSバージョン1.0 リリース
- *  
- * 2011.9.30 DSQSSバージョン1.1 リリース
- *
- */
-
 #define DSQSS_VERSION "1.2.0"
 
 #include <cmath>
@@ -224,9 +205,7 @@ void Simulation::set_NCYC() {
   for (IMCSE = 0; IMCSE < P.NPRE; IMCSE++) {
     path = 0.0;
     ncyc = 0;
-    // 次の行の LAT.NSITE == 2 && ncyc%2 == 0 の指定は
-    // S=1/2 反強磁性ハイゼンベルクモデルの特殊な非エルゴード性
-    // を排除するため
+    // To recover ergodicity of S=1/2 antiferromagnetic Heisenberg model
     while (path < vol || (LAT.NSITE == 2 && ncyc % 2 == 0)) {
       double p = Cycle(false);
       path += p;
@@ -322,63 +301,46 @@ double Simulation::Cycle(bool thermalized) {
  */
 bool Simulation::PlaceWorm() {
   AutoDebugDump("Simulation::PlaceWorm");
-  // ワーム初期バーテックスの設定
 
   Vertex& Vorg = W.origin();
   W.setCurrentVertex(Vorg);
 
-  // ワーム初期位置の決定
+  // timespace where worm will be inserted
   int s    = RND.Int(LAT.NSITE);
   double t = (double)LAT.BETA * RND.Uniform();
 
-  // end edit Suzuki
-  //kota//  乱数を用いて初期位置（サイト番号、位置）を決定
-
-  // ワームテールの初期化
   Site& ST = LAT.S(s);
-
   SiteProperty& SP = ST.Property();
-
   VertexProperty& VP = SP.getVertexProperty();
-  //サイト、サイトプロパティ、バーテックスプロパティの各オブジェクトの設定
   Vorg.BareVertex::init(t, VP);
 
-  //バーテックス初期化
   Vorg.setTime(t);
-  //tをセット
-
-  // セグメントを探す
   Segment& S0 = ST.findS(t);
-  // 初期方向
+
   int x = S0.X();
 
   SiteInitialConfiguration& IC = SP.getInitialConfiguration(x);
 
-  int NCH = IC.NCH;  //Mに依存 when M=1,NCH=2
+  int NCH = IC.NCH;
   int c;
   double r = RND.Uniform();
   for (c = 0; c < NCH; c++) {
     if (r < IC.CH[c].PROB) break;
-  }  //初期状態の選択 alg.xmlの<Site>から
-
+  }
   ScatteringChannel& CH = IC.CH[c];
-
   int out  = CH.OUT;
   int xout = CH.XOUT;
 
+  // fail to insert
   if (out == DIR::UNDEF) { return false; }
-  // セグメントをワームテールで切断 "UNDEF=-1"
-  Segment& S1 = S0.cut(Vorg, 0);
 
-  // 方向に応じて初期セグメントを選ぶ
+  Segment& S1 = S0.cut(Vorg, 0);
 
   if (out == UORD::DOWN) {
     W.setCurrentSegment(S0);
-  } else {  // moving up initially
+  } else {
     W.setCurrentSegment(S1);
   }
-
-  // 初期タイプの設定
 
   W.setXBEHIND(xout);
 

@@ -85,7 +85,7 @@ void Probability::look(Size *N, System *sp) {
   rh_odd  = sp->Htr;
   rh_even = sp->Htr;
 
-  //************at代入**************
+  //************ at **************
   for (int i = 0; i <= nmax; i++)
     for (int j = 0; j <= nmax; j++)
       for (int x = 0; x < XMAX; x++)
@@ -93,7 +93,8 @@ void Probability::look(Size *N, System *sp) {
   for (int i = 0; i <= nmax; i++)
     for (int x = 0; x < PR->V; x++)
       ru[i][x] = au_make(i, x);
-  //*******************romax決定******************
+
+  //************ romax ******************
   rtmax = rmin;
   for (int i = 0; i <= nmax; i++)
     for (int j = 0; j <= nmax; j++)
@@ -103,7 +104,8 @@ void Probability::look(Size *N, System *sp) {
   for (int i = 0; i <= nmax; i++)
     for (int x = 0; x < PR->V; x++)
       if (rumax[x] < ru[i][x]) rumax[x] = ru[i][x];
-  //*******************uとの散乱確率******************
+
+  //******************* scattering prob against u ******************
   for (int i = 0; i <= nmax; i++)
     for (int x = 0; x < PR->V; x++)
       ru[i][x] /= rumax[x];
@@ -120,23 +122,22 @@ void Probability::look(Size *N, System *sp) {
           u[b][i][x] = Tuab(i, j, x);  //when i is larger(L), if L->S then P = S/L, if L->L then 1.0 - S/L.
       }
 
-  //*****************************************************
-  //***********************tとの散乱確率*********************************
+  //****************** scattering prob against t  *********************************
 
   int flaver = 4;
   for (int x = 0; x < XMAX; x++) {
-    for (h = 0; h < 2; h++) {  //ヘッドの演算子
+    for (h = 0; h < 2; h++) {  // head operator
 
       oh = h * 2 - 1;
 
-      for (int i = 0; i <= nmax; i++) {  //左のサイトの粒子数
+      for (int i = 0; i <= nmax; i++) {  // # of particles on the left site
 
         sql = sqrt(i - h + 1.0);
 
-        for (int j = 0; j <= nmax; j++) {  //右のサイトの粒子数
+        for (int j = 0; j <= nmax; j++) {  // # of particles on the right site
 
           if (h == i)
-            type = 5;  //決まり
+            type = 5;
           else {
             type      = 0;
             Om[0].val = at[i][j][x];
@@ -146,19 +147,18 @@ void Probability::look(Size *N, System *sp) {
           }
 
           for (int k = 0; k < 4; k++)
-            Om[k].num = k;  //ほんとの番号を記録
+            Om[k].num = k;
           qsort(Om, 4, sizeof(Omega), Pcomp);
           for (int k = 0; k < 4; k++)
-            Tr[Om[k].num] = k;  //ほんとの番号を入れると大きい順での番号を返す
+            Tr[Om[k].num] = k;  // sorted
 
           if (type != 5) SolveWeightEquation(flaver);  //
           //if(type!=5) Color(flaver);
 
-          //	for(int x=0;x<N->V;x++){//右のサイト番号(次元で通し)
-          for (int b = 0; b < 4; b++)      //更新前の配置
-            for (int a = 0; a < 4; a++) {  //更新後の配置
+          for (int b = 0; b < 4; b++)      // before update
+            for (int a = 0; a < 4; a++) {  // after update
 
-              //*******************tとの散乱確率******************
+              //******************* scattering against t ******************
               if (type == 5)
                 t[h][a][b][i][j][x] = 0.0;
               else if (Om[Tr[b]].val != 0.0)
@@ -181,7 +181,7 @@ void Probability::look(Size *N, System *sp) {
 void Probability::Color(int cmax) {
   for (int i = 0; i < cmax; i++) {
     ex_Wall[i] = ex_Penki[i] = Om[i].val;
-  }  //壁の塗り残し、ペンキの残り、重み
+  }
   for (int i = 0; i < cmax; i++)
     for (int p = 0; p < cmax; p++)
       Wall[i][p] = 0.0;
@@ -195,10 +195,11 @@ void Probability::Color(int cmax) {
       total_Penki += Om[kabe].val;
     for (int kabe = penki + 1; kabe < cmax; kabe++) {
       paint             = ex_Wall[penki] * (Om[kabe].val / total_Penki);
-      Wall[kabe][penki] = paint;  //penki番目のペンキでkabe番目の壁を塗る。//これでpenki番目のペンキを使い果たした。
-      Wall[penki][kabe] =
-          paint;  //kabe番めのペンキでpenki番目の壁を自分が塗られた分量と同じだけ塗り替えす。//これでpenki番目の壁を塗り終えた。
-      ex_Wall[kabe] -= paint;  //kabe番目の壁の塗り残し
+      // paint `kabe` wall by `penki` penki.
+      Wall[kabe][penki] = paint;
+      // paint `penki` wall by `kabe` penki.
+      Wall[penki][kabe] = paint;
+      ex_Wall[kabe] -= paint;
     }
   }
 
@@ -214,7 +215,7 @@ void Probability::Color(int cmax) {
 void Probability::SolveWeightEquation(int cmax) {
   for (int i = 0; i < cmax; i++) {
     ex_Wall[cmax - 1 - i] = ex_Penki[cmax - 1 - i] = Om[i].val;
-  }  //壁の塗り残し、ペンキの残り、重み
+  }
   for (int i = 0; i < cmax; i++)
     for (int p = 0; p < cmax; p++)
       Wall[i][p] = 0.0;
@@ -228,7 +229,7 @@ void Probability::SolveWeightEquation(int cmax) {
   int N_first;   // the number of the largest elements
   int N_second;  // the number of the second largest
 
-  // 重複をはぶいて最初から３つの重みとその番号を取得．
+  // First three (unique) weights and indices
   while (ex_Wall[1] > EPS) {
     V_first = ex_Wall[0];
     for (p = 0; p < cmax; p++)
@@ -250,24 +251,22 @@ void Probability::SolveWeightEquation(int cmax) {
       N_second = q - p;
     }
 
-    //以下では，ex_Wall[i] <= w_i から出発して，Wall(i,j) = w_{ij} を順次増加させながら，
-    //その分，ex_Wall[i] を下げていく．すべての ex_Wall[i] が０になったら終了．
+    // Calculation w_{ij} from V_i
 
     double dw1;  // decrement of the first largest element
     double dw2;  // decrement of the second largest element
     if (N_first == 1) {
-      //最大ウェイトが単独の状態のとき，最大ウェイトと第２ウェイトの間の遷移を
-      //導入してそれらを下げる．
+      // When the maximum weight state is unique
+      // introduce a transition between the max state and the second
+      // and reduce weights of these states
       double x = V_first - V_second;
       double y = (double)(N_second - 1) * (V_second - V_third);
       if (x < y) {
-        //最大ウェイトが大きくないとき，最大ウェイトが第２ウェイトに等しくなるまで下げる．
         dw1          = (V_first - V_second) / (1.0 - 1.0 / (double)(N_second));
         dw2          = dw1 / (double)N_second;
         V_second_new = V_second - dw2;
         V_first_new  = V_second_new;
       } else {
-        // 最大ウェイトが大きいとき，第２ウェイトが第３ウェイトと等しくなるまで下げる．
         dw2          = V_second - V_third;
         dw1          = dw2 * (double)N_second;
         V_second_new = V_third;
@@ -280,8 +279,9 @@ void Probability::SolveWeightEquation(int cmax) {
         ex_Wall[i] = V_second_new;
       }
     } else {
-      //複数の状態が最大ウェイトをとるとき，相互に移り変わる遷移確率を導入して，
-      //それらを第２ウェイトと同じになるまで下げる．
+      // When the maximum weight state is degenerated
+      // introduce a transition between these states
+      // and reduce weights of these states to the weight of the second largest.
       dw1 = (V_first - V_second) / (double)(N_first - 1);
       for (int i = 0; i < N_first; i++) {
         ex_Wall[i] = V_second;
@@ -303,15 +303,15 @@ double Probability::Tuab(int p, int q, int x) {  // p(L)->q(S)
   return au_make(q, x) / au_make(p, x);
 }
 
-double Probability::at_make(int p, int q, int x) {  //tバーテックス密度を返す
+// return t vertex density
+double Probability::at_make(int p, int q, int x) {
   double Ht = -V1 * (double)(p * q);
   return (Ht + local_Et);
 }
 
-double Probability::au_make(int p, int x) {  //uバーテックス密度を返す
-
+// return u vertex density
+double Probability::au_make(int p, int x) {
   double Hu = -Ubb / 2.0 * p * (p - 1) - ep[x] * p;
-
   return Hu + local_Eu[x];
 }
 

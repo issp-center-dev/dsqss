@@ -5,7 +5,6 @@ int EOL = -1;
 }
 using namespace XML;
 using namespace ARRAY;
-//////////////////////////////
 
 inline void FileReader::getWordList(int &NW, std::string *&W) {
   NW = 0;
@@ -49,7 +48,6 @@ void IndexSystem::init(const int d, const int *l, const std::string &LBL0) {
   };
 }
 
-//#####################################################################
 template <class C>
 void Array<C>::reset() {
   if (val != 0) {
@@ -88,8 +86,6 @@ void Array<C>::init(va_list &ap) {
   delete[] L;
 }
 
-//======================================================================
-
 template <class C>
 void Array<C>::init(const std::string &s, int d, ...) {
   LBL = s;
@@ -100,15 +96,11 @@ void Array<C>::init(const std::string &s, int d, ...) {
   va_end(ap);
 }
 
-//======================================================================
-
 template <class C>
 Array<C>::~Array() {
   //  printf("*** Destroying Array (%s)\n", LBL.c_str());
   reset();
 }
-
-//######################################################################
 
 inline Block &Block::getElement(const std::string &name) {
   int ib;
@@ -146,7 +138,6 @@ inline void Block::initialize(std::string *word, const std::string &name) {
   read();
 }
 
-//======================================================================
 void Block::initialize(const std::string &FNAME, const std::string &name) {
   //    printf("Block::initialize> Pass 2\n"); // koko
 
@@ -155,14 +146,11 @@ void Block::initialize(const std::string &FNAME, const std::string &name) {
   F.open(FNAME.c_str());
   int NW;
   std::string *W;
-  F.getWordList(NW, W);  //単語の数、最初の括弧<algorithm>
+  F.getWordList(NW, W);  // # of words, the first name
   initialize(W, name);
   delete[] W;
 }
 
-//======================================================================
-
-//koko m
 inline bool isCommentOpening(const std::string &key) {
   std::string sopen = "<!--";
   int n        = key.length();
@@ -171,7 +159,6 @@ inline bool isCommentOpening(const std::string &key) {
   return false;
 }
 
-//======================================================================
 
 inline bool isOpening(const std::string &key) {
   int n = key.length();
@@ -181,7 +168,6 @@ inline bool isOpening(const std::string &key) {
   return true;
 }
 
-//======================================================================
 
 inline bool isClosing(const std::string &key) {
   int n = key.length();
@@ -191,7 +177,6 @@ inline bool isClosing(const std::string &key) {
   return true;
 }
 
-//======================================================================
 
 inline const std::string getOpeningName(const std::string &key) {
   if (!isOpening(key)) exit(0);
@@ -200,7 +185,6 @@ inline const std::string getOpeningName(const std::string &key) {
   return ans;
 }
 
-//======================================================================
 
 inline const std::string getClosingName(const std::string &key) {
   if (!isClosing(key)) exit(0);
@@ -279,9 +263,6 @@ inline bool Block::syntax_error() {
   return false;
 }
 
-//======================================================================
-
-//#######################################################################
 
 void Block::read() {
   //  printf("Block::read> Pass 1\n");
@@ -326,7 +307,6 @@ void Block::read() {
   }
 }
 
-//#####################################################################
 
 Lattice::Lattice(const std::string &FNAME) {
 #ifdef DEBUG
@@ -341,7 +321,6 @@ Lattice::Lattice(const std::string &FNAME) {
 #endif
 }
 
-//======================================================================
 
 void Lattice::read() {
   D = X["Dimension"].getInteger();
@@ -388,7 +367,6 @@ void Lattice::read() {
   newcall(Fx, lc);
   newcall(lx, V);
 
-  /////////////
   for (int l = 0; l < lc; l++) {
     if (l == 0)
       bond_vec[l][0] = 1.0;
@@ -400,7 +378,6 @@ void Lattice::read() {
 
   Pd = lc;
 
-  /////////////
   for (int i = 0; i < X.NumberOfBlocks(); i++) {
     XML::Block &B = X[i];
 
@@ -441,7 +418,6 @@ void Lattice::read() {
   }
 }
 
-//======================================================================
 #include <set>
 
 void Lattice::make_Size(Size *_Nsize) {
@@ -533,7 +509,6 @@ void Lattice::make_Parallel(Parallel *_PR) {
       + PR->np * PR->Ntdiv * PR->Nsdiv;  //the left side process number for the z direction.
 }
 
-//======================================================================
 
 Lattice::~Lattice() {
   delcall(bond_vec, lc);

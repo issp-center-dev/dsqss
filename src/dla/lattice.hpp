@@ -204,7 +204,6 @@ void Lattice::read() {
 void Lattice::initialize() {
   AutoDebugDump("Lattice::initialize");
 
-  //---// サイトに相互作用が働くサイトを登録する．//
   //set<Interaction*> InteractionOnEachSite[NSITE];
   std::set<Interaction*>* InteractionOnEachSite;
   InteractionOnEachSite = new std::set<Interaction*>[NSITE];

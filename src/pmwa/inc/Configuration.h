@@ -29,7 +29,6 @@ using namespace XML;
 
 #include <lattice.hpp>
 
-//************************************GraphSpaceクラスここから***********************************************************
 
 class Quantities;
 
@@ -53,7 +52,7 @@ public:
 
   int my_rank;
 
-  //ワームはonsiteバーテックスとして扱い、双方向リストをつなぎ変えながら動く
+  // worm, an onsite vertex, moves with reconnection of bidirectional list
   class Vertex {
   public:
     double t;  //imaginary time
@@ -70,12 +69,14 @@ public:
 
   Parallel *PR;
 
-  Vertex *world, *worldB;  //t=0での各サイトの粒子数
+  Vertex *world, *worldB;  // the number of particles on each site at t=0
   std::vector<Vertex> ev;
   std::stack<Vertex *> VertexPool;
   std::vector<Vertex *> WORM;
 
-  int *W;  //ワームのイベント番号を保管 //ただし0番目はワームの個数
+  // Indecies of worm events
+  // W[0] stores the number of worms
+  int *W;
 
   int **After, **Switch;
   int **op;
@@ -91,7 +92,7 @@ public:
   Lattice *LT;
   Probability *P;
   int EVmax;
-  bool For_Nworm;  //ワームの数を決めるために長さを測る
+  bool For_Nworm;  // count worms or not
 
   double B, Bh;
   double BetaOrg;
@@ -152,14 +153,16 @@ private:
   short *BoxSpace_type_th1;
 
   double *ver_time;
-  int *INmax;  //サイトiでの区間の数
+  int *INmax;  // the number of segments at site i
 
-  double *I, *t, tA;  //  t[1]|    |t[2]
+  double *I, *t, tA;  
+  //  t[1]|    |t[2]
   //      |----|
-  //   t[0]|    |t[3]
+  //  t[0]|    |t[3]
 
   inline int f(int d, int i, int j) { return i + j * LT->Fx[d]; }
-  //world->(x座標,y座標)、Box->(1次元的座標,バーテックス)
+  // world: (x coordinate , y coordinate)
+  // Box: (coordinate, vertex)
 
   //worm
   bool Next_event(My_rdm *MR);
@@ -237,7 +240,6 @@ private:
 
   void initial_functions();
 
-  //###################################################
 
   void (GraphSpace::*Parity_Update[6][6])(Vertex *wl, int d, int i, int rnum);
 
@@ -294,10 +296,6 @@ private:
   void SpatialDomainBoundary();
 };
 
-//************************************GraphSpaceクラスおわり***********************************************************
-
-//************************************Configurationクラスここから***********************************************************
-
 #include "Quantities.h"
 
 class Configuration : public GraphSpace {
@@ -329,7 +327,5 @@ public:
   void DeterminationNworm(int MCS, My_rdm *MR, Quantities *QNT);
   //  void update( int MCS, My_rdm *MR, int &Wnum );
 };
-
-//************************************Configurationクラスおわり***********************************************************
 
 #endif

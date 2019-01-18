@@ -1,17 +1,5 @@
-//
-// Array
-//
-// 今後の改良点：
-//   A[i][j][k]...[z]
-// のような参照の仕方を許すこと．
-// そのためには，A[i] を自分自身より次元が１小さい
-// Array への参照を返す関数として定義する．
-// コンストラクタは再帰的に呼び出す．
-
 #ifndef ARRAY_H
 #define ARRAY_H
-
-//######################################################################
 
 #include <stdarg.h>
 #include <cstdio>
@@ -22,8 +10,6 @@
 namespace ARRAY {
 int EOL = -1;
 }
-
-//######################################################################
 
 class IndexSystem {
 private:
@@ -103,8 +89,6 @@ public:
   };
 };
 
-//======================================================================
-
 void IndexSystem::init(const int d, const int* l, const std::string& LBL0) {
   if (initialized()) delete[] L;
   if (d == 0) {
@@ -127,8 +111,6 @@ void IndexSystem::init(const int d, const int* l, const std::string& LBL0) {
     exit(0);
   };
 }
-
-//======================================================================
 
 int IndexSystem::coord(const int ist, const int d) {
   if (!initialized()) {
@@ -156,8 +138,6 @@ int IndexSystem::coord(const int ist, const int d) {
   return ans;
 }
 
-//======================================================================
-
 void IndexSystem::coord(const int ist, int* x) {
   if (!initialized()) {
     printf("IndexSystem::coord> Error. Not yet initialized.\n");
@@ -176,8 +156,6 @@ void IndexSystem::coord(const int ist, int* x) {
     I /= L[j];
   }
 }
-
-//======================================================================
 
 int IndexSystem::operator()(const int* x) {
   if (!initialized()) {
@@ -225,8 +203,6 @@ int IndexSystem::operator()(std::vector<int> const& x) {
   return ans;
 }
 
-//======================================================================
-
 int IndexSystem::operator()(const int M, va_list& ap) {
   if (!initialized()) {
     printf("IndexSystem::operator()> Error. Not yet initialized.\n");
@@ -240,8 +216,6 @@ int IndexSystem::operator()(const int M, va_list& ap) {
   return (*this)(x);
 }
 
-//======================================================================
-
 int IndexSystem::operator()(const int M, ...) {
   if (!initialized()) {
     printf("IndexSystem::operator()> Error. Not yet initialized.\n");
@@ -254,7 +228,6 @@ int IndexSystem::operator()(const int M, ...) {
   return i;
 }
 
-//######################################################################
 
 template <class C>
 class Array {
@@ -282,9 +255,7 @@ public:
   //Array(int d, ...);
   ~Array();
   void set_all(C v);
-  // == edit sakakura ==
   void set_value(double* v);
-  // == edit sakakura ==
   void setLabel(const char* label) { LBL = label; };
   int index(int i, int d);
   C& operator()(const int M, ...);
@@ -297,22 +268,16 @@ public:
   void dump(char* fmt);
 };
 
-//======================================================================
-
 template <class C>
 bool Array<C>::isDefined() {
   if (val != 0) return true;
   return false;
 }
 
-//======================================================================
-
 template <class C>
 IndexSystem& Array<C>::index_system() {
   return ID;
 }
-
-//======================================================================
 
 template <class C>
 void Array<C>::init(va_list& ap) {
@@ -344,8 +309,6 @@ void Array<C>::init(va_list& ap) {
   delete[] L;
 }
 
-//======================================================================
-
 template <class C>
 void Array<C>::init(int d, ...) {
   //  printf("Array<C>::init (1)> d= %d\n",d);
@@ -355,8 +318,6 @@ void Array<C>::init(int d, ...) {
   init(ap);
   va_end(ap);
 }
-
-//======================================================================
 
 template <class C>
 void Array<C>::init(const std::string& s, int d, ...) {
@@ -368,20 +329,6 @@ void Array<C>::init(const std::string& s, int d, ...) {
   va_end(ap);
 }
 
-//======================================================================
-/*
-  template<class C>
-  Array<C>::Array(int d, ...) {
-  LBL = "";
-  D = d;
-  va_list ap;
-  va_start( ap , d );
-  init( ap );
-  va_end( ap );
-  };
-*/
-//======================================================================
-
 template <class C>
 void Array<C>::reset() {
   if (val != 0) {
@@ -390,15 +337,11 @@ void Array<C>::reset() {
   }
 }
 
-//======================================================================
-
 template <class C>
 Array<C>::~Array() {
   //  printf("*** Destroying Array (%s)\n", LBL.c_str());
   reset();
 }
-
-//======================================================================
 
 template <class C>
 void Array<C>::set_all(C v) {
@@ -407,9 +350,6 @@ void Array<C>::set_all(C v) {
   }
 }
 
-// == edit sakakura == //
-//======================================================================
-
 template <class C>
 void Array<C>::set_value(double* v) {
   for (int i = 0; i < size(); i++) {
@@ -417,17 +357,10 @@ void Array<C>::set_value(double* v) {
   }
 }
 
-//======================================================================
-// == edit sakakura == //
-
-//======================================================================
-
 template <class C>
 int Array<C>::index(int i, int d) {
   return ID.coord(i, d);
 }
-
-//======================================================================
 
 template <class C>
 C& Array<C>::operator()(const int M, ...) {
@@ -437,8 +370,6 @@ C& Array<C>::operator()(const int M, ...) {
   va_end(ap);
   return val[i];
 }
-
-//======================================================================
 
 template <class C>
 C& Array<C>::operator[](const int i) {
@@ -451,8 +382,6 @@ C& Array<C>::operator[](const int i) {
 #endif
   return val[i];
 }
-
-//======================================================================
 
 template <class C>
 C& Array<C>::operator()(int* x) {
@@ -480,22 +409,15 @@ C& Array<C>::operator()(std::vector<int> const& x) {
   return val[id];
 }
 
-
-//======================================================================
-
 template <class C>
 int Array<C>::size() {
   return ID.size();
 }
 
-//======================================================================
-
 template <class C>
 int Array<C>::dimension() {
   return ID.dimension();
 }
-
-//======================================================================
 
 template <class C>
 void Array<C>::dump(char* fmt) {

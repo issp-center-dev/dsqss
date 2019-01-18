@@ -63,11 +63,11 @@ void GraphSpace::transition(My_rdm *MR) {
 
   short next_type = vertex[0]->type;
 
-  //a,b
-  //0:次のバーテックスの下にワームがいる（左右は関係ない）
-  //1:次のバーテックスの上にワームがいる（左右は関係ない）
-  //2:次のキンクの上にワームがいる（左右は関係ない）
-  //3:次のキンクの下にワームがいる（左右は関係ない）
+  //a,b : worm position
+  //0: below the next vertex
+  //1: above the next vertex
+  //2: above the next kink
+  //3: below the next kink
 
   switch (next_type) {
   case 0:  //Onsite
@@ -164,7 +164,7 @@ void GraphSpace::hop(bool oh, bool dir, int b, int a, double dla) {
 }
 
 void GraphSpace::turn(bool oh, bool dir, int b, int a, double dla) {
-  if (!dir) {  //b=1,2は下向きで入る
+  if (!dir) {  // b=1,2 are downward
     vertex[!oh]->p--;
     vertex[oh]->p++;
   }
@@ -180,10 +180,10 @@ void GraphSpace::turn(bool oh, bool dir, int b, int a, double dla) {
 
 void GraphSpace::k_neibor() {
   vertex[0]->type = vertex[1]->type = 1;
-  worm->i                           = vertex[1]->i % V;  //飛び移るときにしか使わないからoside
+  worm->i                           = vertex[1]->i % V;
 }
 
-void GraphSpace::k_neibor_dir() {  //向き変える
+void GraphSpace::k_neibor_dir() {  // w/ changing direction
 
   worm->dir = !(worm->dir);
   k_neibor();
@@ -207,7 +207,7 @@ void GraphSpace::Newtime(int a, double dla) {
   tb = tA;
   ta = dla + dir * tA + (!dir) * t[a];
 
-  worm->t = ta;  //新しい時間
+  worm->t = ta;
 
   if (For_Nworm) Wlen += LengthofWalk(ta, tb, dir);
 }
@@ -233,12 +233,11 @@ bool GraphSpace::update_selection(My_rdm *MR, bool dir, short type) {
   vertex[0] = worm->next[dir];
   vertex[1] = worm->next[dir]->nleg;
 
-  tA = vertex[0]->t;  //次のバーテックスの時間
-  double tc = worm->next[!dir]->t;  //自分のうしろのバーテックスの時間
+  tA = vertex[0]->t;  // time of the next vertex
+  double tc = worm->next[!dir]->t;  // time of the previous vertex
   double Ic = (1.0 - 2.0 * dir) * (tc - tA);
 
-  // type やdir に応じてうまいこと回転させることで
-  // 同じ形に帰着させる
+  // ratate vertex 
   
   // cnum(type,dir):
   // cnum(1,0) = 1
@@ -278,9 +277,9 @@ bool GraphSpace::update_selection(My_rdm *MR, bool dir) {
 
   vertex[0] = worm->next[dir];
 
-  tA = vertex[0]->t;  //次のバーテックスの時間
+  tA = vertex[0]->t;  // time of the next vertex
 
-  tc = worm->next[!dir]->t;  //自分のうしろのバーテックスの時間
+  tc = worm->next[!dir]->t;  // time of the previous vertex
 
   Ic = (1.0 - 2.0 * dir) * (tc - tA);
 

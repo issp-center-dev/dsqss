@@ -163,11 +163,11 @@ inline Parameter::Parameter(int NP, char** PLIST) {
   if (RUNTYPE >= 3) {  // runtype == 3 --> each processor must read its own parameter file
     char FILENAME[128];
     sprintf(FILENAME, "%s.%03d", PLIST[1], I_PROC);
-    printf("[%2d] input file name = %s\n", I_PROC, FILENAME);  // koko
+    printf("[%2d] input file name = %s\n", I_PROC, FILENAME);
     std::ifstream ifs2(FILENAME);
     if (ifs2.fail()) {
       printf("no such File: %s\n", FILENAME);
-      exit(1);  //ファイルIOエラー
+      exit(1);
     }
     readfile(FILENAME);
   }

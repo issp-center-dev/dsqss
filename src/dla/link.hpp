@@ -253,7 +253,7 @@ inline void Linked<C>::insert_after(Linked<C>& x) {
 template <class C>
 inline void Linked<C>::insert_before(Linked<C>& x) {
   x.set_prev(prev());
-  x.set_next(*this);  //thisは、ROOTインスタンスを指す。
+  x.set_next(*this);  // `this` points the ROOT instance
   prev().set_next(x);
   set_prev(x);
 }
