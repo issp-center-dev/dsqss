@@ -16,9 +16,10 @@
 //####
 //######################################################################
 
-#define DSQSS_VERSION "1.2.0"
 
 #include <cmath>
+
+#include "../common/version.h"
 
 #include "dla.hpp"
 #include "debug.hpp"

@@ -1,5 +1,7 @@
 #include <boost/lexical_cast.hpp>
 
+#include "../common/version.h"
+
 #include <PMWA.h>
 
 #include "../common/read_keyvalues.h"
