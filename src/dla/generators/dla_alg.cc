@@ -1,5 +1,14 @@
 #include "dla_alg.h"
 
+bool isdiagonal(int *x, int NBODY){
+  for(int i=0; i<NBODY; ++i){
+    if (x[2*i] != x[2*i+1]){
+      return false;
+    }
+  }
+  return true;
+}
+
 int main(int argc, char** argv) {
   HFILE = "hamiltonian.xml";
   AFILE = "algorithm.xml";
@@ -119,7 +128,7 @@ void GENERAL::write() {
   fprintf(FALG, "    <NITYPE> %2d </NITYPE>\n", NITYPE);
   fprintf(FALG, "    <NVTYPE> %2d </NVTYPE>\n", NVTYPE);
   fprintf(FALG, "    <NXMAX>  %2d </NXMAX>\n", NXMAX);
-  fprintf(FALG, "    <WDIAG>  %24.16f </WDIAG>\n", WeightDiagonal);
+  fprintf(FALG, "    <WDIAG>  %24.16lf </WDIAG>\n", WeightDiagonal);
   fprintf(FALG, "  </General>\n");
 }
 
@@ -188,7 +197,7 @@ void SITE::write() {
       int xnew = WormCreationNewState(x0, c);
       double p = WormCreationProbability(x0, c);
       if (p == 0.0) continue;
-      fprintf(FALG, "      <Channel> %4d %4d %24.16f </Channel>\n", diri, xnew,
+      fprintf(FALG, "      <Channel> %4d %4d %24.16lf </Channel>\n", diri, xnew,
               p);
     }
     fprintf(FALG, "    </InitialConfiguration>\n");
@@ -209,7 +218,7 @@ void SITE::dump() {
       int NCH = NumberOfChannels[x];
       printf("  NCH= %d\n", NCH);
       for (int c = 0; c < NCH; c++) {
-        printf("   %2d %2d %8.3f\n", WormCreationDirection(x, c),
+        printf("   %2d %2d %8.3lf\n", WormCreationDirection(x, c),
                WormCreationNewState(x, c), WormCreationProbability(x, c));
       }
     }
@@ -282,7 +291,7 @@ void INTERACTION::write() {
   fprintf(FALG, "    <ITYPE> %d </ITYPE>\n", ID);
   fprintf(FALG, "    <VTYPE> %d </VTYPE>\n", VTYPE);
   fprintf(FALG, "    <NBODY> %d </NBODY>\n", NBODY);
-  fprintf(FALG, "    <EBASE> %24.16f </EBASE>\n", V().EBASE);
+  fprintf(FALG, "    <EBASE> %24.16lf </EBASE>\n", V().EBASE);
   if (VertexDensity.isDefined()) {
     IndexSystem& I = VertexDensity.index_system();
     int* x = new int[NBODY];
@@ -293,13 +302,33 @@ void INTERACTION::write() {
         fprintf(FALG, "    <VertexDensity> ");
         for (int j = 0; j < NBODY; j++)
           fprintf(FALG, " %2d", x[j]);
-        fprintf(FALG, " %24.16f </VertexDensity>\n", d);
+        fprintf(FALG, " %24.16lf </VertexDensity>\n", d);
       }
     }
     delete[] x;
   } else {
     //  fprintf(FALG,"  VertexDensity is not defined.\n");
   }
+
+  int NLEG = 2*NBODY;
+  Array<double> & Weight = V().Weight;
+  IndexSystem& I = Weight.index_system();
+  int* x = new int[2*NBODY];
+  for (int i=0; i<I.size(); ++i){
+    if(Weight[i] != 0.0){
+      I.coord(i,x);
+      if(!isdiagonal(x,NBODY)){
+        double sgn = Weight[i] > 0.0 ? 1.0 : -1.0;
+        fprintf(FALG, "    <Sign> ");
+        for (int j = 0; j<2*NBODY; ++j){
+          fprintf(FALG, " %2d", x[j]);
+        }
+        fprintf(FALG, " %24.16lf </Sign>\n", sgn);
+      }
+    }
+  }
+  delete[] x;
+
   fprintf(FALG, "  </Interaction>\n");
 }
 
@@ -352,7 +381,11 @@ void VERTEX::load(XML::Block& X) {
     if (name == "Weight") {
       for (int i = 0; i < NLEG; i++)
         x[i] = B.getInteger(i);
-      Weight(x) = B.getDouble(NLEG);
+      double w = B.getDouble(NLEG);
+      if (w < 0.0 && !isdiagonal(x,NBODY)){
+        w *= -1.0;
+      }
+      Weight(x) = w;
     }
   }
   EBASE = 0.0;
@@ -1018,7 +1051,7 @@ void InitialConfiguration::write() {
     int out  = FinalDirection[ch];
     int xout = FinalState[ch];
     double p = ScatteringProbability[ch];
-    fprintf(FALG, "      <Channel> %4d %4d %24.16f </Channel>\n", out, xout, p);
+    fprintf(FALG, "      <Channel> %4d %4d %24.16lf </Channel>\n", out, xout, p);
   }
   fprintf(FALG, "    </InitialConfiguration>\n");
 }
@@ -1054,7 +1087,7 @@ void QUANTITY::write() {
   for (int st = 0; st < NSTYPE; st++) {
     for (int x = 0; x < NXMAX; x++) {
       if (isDefined(st, x)) {
-        fprintf(FALG, "    <Value> %d %d %24.16f </Value>\n", st, x,
+        fprintf(FALG, "    <Value> %d %d %24.16lf </Value>\n", st, x,
                 Value(st, x));
       }
     }

@@ -132,7 +132,7 @@ void WriteXML(int M, dgematrix& Q, dgematrix& H, std::string const& filename) {
       int j1   = j / D;
       double x = -H(i, j);
       if (abs(x) > 1.0e-8) {
-        if (i != j) x = abs(x);
+        // if (i != j) x = abs(x);
         fprintf(FOUT, "    <Weight> %d %d %d %d %24.16f </Weight>\n", i0, j0,
                 i1, j1, x);
       }
