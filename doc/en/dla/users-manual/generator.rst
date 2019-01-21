@@ -10,7 +10,7 @@ Since they are a little complicated, DSQSS/DLA prepares utility tools for genera
 
 Hypercubic lattice generator ``lattgene_C``
 *******************************************
-``lattgene_C`` is an utility tool to generate a lattice file describing a :math:`D` dimensional hypercubic lattice with the periodic boundary condition.::
+``lattgene_C`` is a utility tool to generate a lattice file describing a :math:`D` dimensional hypercubic lattice with the periodic boundary condition.::
 
   $ lattgene_C [-o filename] D L1 L2 ... LD BETA
 
@@ -39,7 +39,7 @@ Example::
 
 Triangular lattice generator ``lattgene_T``
 *******************************************
-``lattgene_T`` is an utility tool to generate a lattice file describing a triangular lattice with the periodic boundary condition. ::
+``lattgene_T`` is a utility tool to generate a lattice file describing a triangular lattice with the periodic boundary condition. ::
 
   $ lattgene_T [-o filename] L1 L2 BETA
 
@@ -64,7 +64,7 @@ Example::
 Heisenberg spin Hamiltonian generator ``hamgen_H``
 ***************************************************
 
-``hamgen_H`` is an utility tool generating a hamiltonian file describing Heisenberg spin model
+``hamgen_H`` is a utility tool generating a hamiltonian file describing Heisenberg spin model
 
 .. math:
    \mathcal{H} = -J  \sum_{\langle i, j \rangle} S_i \cdot S_j - h \sum_i S_i^z
@@ -73,16 +73,16 @@ Heisenberg spin Hamiltonian generator ``hamgen_H``
 
   $ hamgen_H [-o filename] M J F
 
-The meaning of parameters are following:
+The meaning of parameters is following:
 
 ``M``
   Twice as the length of the local spin, :math:`2S`
 
 ``J``
-  Coupling constant. Positive for ferromagnetic and negative for antiferromagnetic.
+  The exchange interaction. Positive for ferromagnetic and negative for antiferromagnetic.
 
 ``F``
-  Magnetic field on a site per a bond connected to the site, :math:`F = h/z` ,
+  The magnetic field on a site per a bond connected to the site, :math:`F = h/z` ,
   where :math:`z` is the coordination number, for example, :math:`z=4` for the square lattice.
 
 ``filename``
@@ -101,7 +101,7 @@ Example::
 Bose-Hubbard model generator ``hamgen_B``
 ******************************************
 
-``hamgen_B`` is an utility tool generating a hamiltonian file describing Bose-Hubbard model
+``hamgen_B`` is a utility tool generating a hamiltonian file describing Bose-Hubbard model
 
 .. math:
    \mathcal{H} = \sum_{\langle i, j \rangle} \left[ -t b_i^\dagger \cdot b_j + V n_i n_j \right] + \sum_i \left[ \frac{U}{2} n_i(n_i-1) - \mu n_i \right]
@@ -110,26 +110,26 @@ Bose-Hubbard model generator ``hamgen_B``
 
   $ hamgen_B [-o filename] M t V U F
 
-The meaning of parameters are following:
+The meaning of parameters is following:
 
 ``M``
-  Maximum number of sites on a site
+  The maximum number of sites on a site
 
 ``t``
-  Hopping parameter
+  The hopping parameter
 
 ``V``
-  Nearest neighbor interaction. Positive for repulsive potential and negative for attractive.
+  The nearest neighbor interaction. Positive for repulsive potential and negative for attractive.
 
 ``U``
-  Onsite interaction. Positive for repulsive potential and negative for attractive.
+  The onsite interaction. Positive for repulsive potential and negative for attractive.
 
 ``F``
-  Chemical potential on a site per a bond connected to the site, :math:`F = h/z` ,
+  The chemical potential on a site per a bond connected to the site, :math:`F = h/z` ,
   where :math:`z` is the coordination number, for example, :math:`z=4` for the square lattice.
 
 ``filename``
-  Name of hamiltonian file (default: ``hamiltonian.xml`` ).
+  Name of the Hamiltonian file (default: ``hamiltonian.xml`` ).
 
 Algorithm file generator ``dla_alg``
 *************************************
@@ -140,14 +140,14 @@ Algorithm file generator ``dla_alg``
 The meaning of parameters are following:
 
 ``HFILE``
-  Hamiltonian file to be loaded (default: ``hamiltonian.xml`` ).
+  The Hamiltonian file to be loaded (default: ``hamiltonian.xml`` ).
 
 ``AFILE``
-  Algorithm file to be generated (default: ``algorithm.xml`` ).
+  The algorithm file to be generated (default: ``algorithm.xml`` ).
 
 Structure factor file generator ``sfgene``
 *********************************************
-``sfgene`` is an utility tool generating a structure factor file for a hypercubic lattice::
+``sfgene`` is a utility tool generating a structure factor file for a hypercubic lattice::
 
   $ sfgene [-o filename] D L_1 ... L_D Ntau Ntau_cutoff KTYPE
 
@@ -163,7 +163,7 @@ The meaning of parameters are following:
   The number of discretization of imaginary time
 
 ``Ntau_cutoff``
-  Maximum number of distance in imaginary time :math:`d\tau`
+  The maximum number of distance in imaginary time :math:`d\tau`
 
 ``KTYPE``
   Pattern of wave vectors :math:`k`
@@ -177,25 +177,25 @@ The meaning of parameters are following:
     :math:`k/\pi = (0,0,0), (1,0,0), (0,1,0), (1,1,0), \dots, (1,1,1)` for three dimensional case.
 
 ``filename``
-  Name of generated file (default: ``sf.xml`` ).
+  The structure factor file to be generated (default: ``sf.xml`` ).
 
 Real space temperature Green's function file generator ``cfgene``
 *******************************************************************
-``cfgene`` is an utility tool generating a real space temperature Green's function file for a hypercubic lattice::
+``cfgene`` is a utility tool generating a real space temperature Green's function file for a hypercubic lattice::
 
   $ cfgene [-o filename] D L_1 ... L_D Ntau
 
-The meaning of parameters are following:
+The meaning of parameters is following:
 
 ``D``
-  Dimension of lattice
+  The dimension of lattice
 
 ``L_1 ... L_D``
-  Linear length of lattice in each dimension.
+  The linear lengths of lattice in each dimension.
 
 ``Ntau``
   The number of discretization of imaginary time
 
 ``filename``
-  Name of generated file (default: ``sf.xml`` ).
+  The real space temperature Green's function file to be generated (default: ``sf.xml`` ).
 

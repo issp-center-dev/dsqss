@@ -15,8 +15,8 @@ The list of input files
     qmc.inp, "Parameter list for the simulation, e.g., the number of Monte Carlo sets."
     lattice.xml, "Definition of the lattice."
     algorithm.xml, "Definition of the algorithm (e.g., scattering rate of a worm)."
-    sf.xml, "Indication of wave vectors for structure factors."
-    cf.xml, "Indexing directions between all the sites."
+    sf.xml, "Indication of wave vectors for structure factors. (optional)"
+    cf.xml, "Indexing directions between all the sites. (optional)"
 
 Parameter file ``qmc.inp``
 **********************************
@@ -35,16 +35,16 @@ The list of parameters are the following,
 
     name, type, default, description
     beta, double, --, "Inverse temperature. Overwrite a setting in lattice.xml."
-    npre, int, 1000, "The number of Monte Carlo steps in the pre calculation phase where the number of creation trials of a pair of worms in one Monte Carlo sweep is defined."
+    npre, int, 1000, "The number of Monte Carlo steps in the pre-calculation phase where the number of creation trials of a pair of worms in one Monte Carlo sweep is defined."
     ntherm, int, 1000, "The number of Monte Carlo sweeps to thermalize the system."
     ndecor, int, 1000, "The number of Monte Carlo sweeps to reduce autocorrelation time between two preceding sets."
     nmcs, int, 1000, "The number of Monte Carlo sweeps to calculate mean values of observables."
     nset, int, 10, "The number of Monte Carlo sets."
-    simulationtime, int,  0.0, "Simulation time in second."
+    simulationtime, double,  0.0, "Simulation time in second."
     seed, int, 198212240, "The seed of the random number generator."
     nvermax, int,  10000, "The maximum number of vertices."
     nsegmax, int,  10000, "The maximum number of world-line segments."
-    algfile, int,  algorithm.xml, "The filename of an algorithm file."
+    algfile, string,  algorithm.xml, "The filename of an algorithm file."
     latfile, string, lattice.xml, "The filename of a lattice file."
     sfinpfile, string, --,  "A structure factor file. If it is an empty string, structure factors will not be calculated."
     cfinpfile, string,  --, "A real space temperature Green's function file. If it is an empty string, real space temperature Green's functions will not be calculated."
@@ -328,7 +328,6 @@ Algorithm/Vertex/VType
   The index of the vertex.
 
 Algorithm/Vertex/VCategory
-  
   0. Boundary of imaginary time. Users need not define this.
   1. Worm tail.
   2. Interaction.
@@ -369,13 +368,13 @@ Algorithm/Vertex/InitialConfiguration
 
 Algorithm/Vertex/InitialConfiguration/State
   The initial states of the legs of the vertex.
-  Since the number of the legs is as twice as the number specified by "Algorithm/Vertex/NBody", say m,
-  this takes 2m integers.
+  Since the number of the legs is as twice as the number specified by "Algorithm/Vertex/NBody", say :math:`m`,
+  this takes :math:`2m` integers.
   Legs are in the same order as the corresponding sites.
   For two legs on the same site, the leg with the smaller imaginary time comes first.
 
 Algorithm/Vertex/InitialConfiguration/IncomingDirection
-  The index of the leg which a worm head comes from.
+  The index of the leg from which a worm head comes.
 
 Algorithm/Vertex/InitialConfiguration/NewState
   The state of the "Algorithm/Vertex/InitialConfiguration/IncomingDirection" leg after a worm head comes.
@@ -387,8 +386,8 @@ Algorithm/Vertex/InitialConfiguration/Channel
   A scattering channel.
   This takes two integers and one floating number.
 
-  - First figure denotes the index of the leg where the scattered worm head goes.
-  - Second figure denotes the state of the leg where the scattered worm head goes.
+  - First figure denotes the **index** of the leg where the scattered worm head goes out.
+  - Second figure denotes the **state** of the leg where the scattered worm head goes out after the scattering.
   - Last figure denotes the probability of this channel.
 
   For the special case, the pair-annihilation of worm heads, let both the first and the second integer be -1.
@@ -403,7 +402,7 @@ This defines wave vectors and the discretization of imaginary time to calculate 
     S^{zz}(\vec{k},\tau) \equiv
       \left\langle M^z(\vec{k},\tau)M^z(-\vec{k},0) \right\rangle - \left\langle M^z(\vec{k},\tau)\right\rangle \left\langle M^z(-\vec{k},0)\right\rangle .
 
-DSQSS has an utility tool to generate a structure factor file, ``sfgene``.
+DSQSS has a utility tool to generate a structure factor file, ``sfgene``.
 
 A structure factor file has only one element, "StructureFactor", and the other elements are children of this.
 
@@ -428,7 +427,7 @@ StructureFactor/NumberOfElements
   The number of the combination of wave vectors and sites.
 
 StructureFactor/SF
-  The phase factor :math:`z = \exp{vec{r}\cdot\vec{k}}` for a pair of a wave vector and a site.
+  The phase factor :math:`z = \exp{\vec{r}\cdot\vec{k}}` for a pair of a wave vector and a site.
   This takes four figures, ":math:`\mathrm{Re}z`", ":math:`\mathrm{Im}z`", "the index of the site", "the index of the wave vector".
   "StructureFactor" should has this elements as many as the number specified by "StructureFactor/NumberOfElements".
 
@@ -439,11 +438,11 @@ Real space temperature Green's function file is a textfile written in a XML-like
 This defines relative coordinate between two sites, :math:`\vec{r}_{ij}`, to calculate real space temperature Green's function,
 
 .. math::
-  G(\vec{r},\tau) \equiv \frac{1}{N^2}\sum{i,j}\left\langle M_i^+(\tau) M_j^- \right\rangle \delta(\vec{r}-\vec{r}_{ij}) .
+  G(\vec{r},\tau) \equiv \frac{1}{N^2}\sum_{i,j}\left\langle M_i^+(\tau) M_j^- \right\rangle \delta(\vec{r}-\vec{r}_{ij}) .
 
 More precisely, this groups all the pair of sites by the relative coordinates.
 
-DSQSS has an utility tool to generate a real space temperature Green's function file, ``cfgene``.
+DSQSS has a utility tool to generate a real space temperature Green's function file, ``cfgene``.
 
 A real space temperature Green's function file has only one element, "CorrelationFunction", and the other elements belong to this as children.
 
@@ -461,7 +460,7 @@ CorrelationFunction/NumberOfKinds
   The number of relative coordinates.
 
 CorrelationFunction/CF
-  This takes three integers, "the index of the relative coordinate", "the index of the site i", and "the index of the site j".
+  This takes three integers, "the index of the relative coordinate", "the index of the site :math:`i`", and "the index of the site :math:`j`".
   "CorrelationFunction" should has this elements as many as the number specified by "CorrelationFunction/NumberOfKinds".
 
 
