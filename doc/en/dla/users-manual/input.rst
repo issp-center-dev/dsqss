@@ -407,7 +407,7 @@ Hamiltonian
   This has children, "General", "Site", "Source", and "Interaction".
 
 Hamiltonian/General
-  GEneral parameters such as the number of site types.
+  General parameters such as the number of site types.
   This has children, "NSTYPE", "NITYPE", "NXMAX", and "Comment".
   ::
 
@@ -453,14 +453,14 @@ Hamiltonian/Site/STYPE
   The index of site type.
 
 Hamiltonian/Site/TTYPE
-  The index of the source type (type of pair creation/annihilation of wormheads.)
+  The index of the source type (type of pair creation/annihilation of worm-heads.)
 
 Hamiltonian/Site/NX
   The number of states of the site.
 
 
 Hamiltonian/Source
-  This defines a source type, that is, the pair-creation/annihilation of wormheads.
+  This defines a source type, that is, the pair-creation/annihilation of worm-heads.
   This has children "TTYPE", "STYPE", and "Weight".
   ::
 
@@ -509,7 +509,7 @@ Hamiltonian/Interaction
 Hamiltonian/Interaction/ITYPE
   The index of the interaction type.
 
-Algorihtn/Interaction/NBODY
+Hamiltonian/Interaction/NBODY
   The number of sites involved in this interaction.
   An onebody interaction such as the Zeeman term has 1 and a twobody interaction such as the exchange coupling has 2.
   Three or higher body interaction can be treated.
@@ -523,8 +523,8 @@ Hamiltonian/Interaction/Weight
 
   This takes integers as many as :math:`2\times` NBODY and one preceding floating number.
   The integers denote the states of sites before and after applying the local Hamiltonian.
-  The last floating number denotes the matrix element producted by :math:`-1`.
-  For offdiagonal elements, this value should be positive [#fn_reweighting]_.
+  The last floating number denotes the matrix element multiplied by :math:`-1`.
+  For off-diagonal elements, this value should be positive [#fn_reweighting]_.
 
   For example, ``0 0 1 1 0.25`` means :math:`\langle 0 1 | \mathcal{H} | 0 1 \rangle = -0.25`
   and ``0 1 1 0 0.5`` means :math:`\left| \langle 1 0 | \mathcal{H} | 0 1 \rangle \right| = 0.5`.
