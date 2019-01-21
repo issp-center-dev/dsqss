@@ -74,7 +74,7 @@ Lattice file ``lattice.xml``
 
 A lattice file is a textfile written in XML format.
 This defines timespace to be simulation, for example, the number of sites, the connections between sites, the inverse temperature, and so on.
-This file can be very complicated, so DSQSS has an utility tool ``lattgene`` to generate lattice files describing common lattices, such as a hypercubic lattice.
+This file can be very complicated, so DSQSS has a utility tool ``lattgene`` to generate lattice files describing common lattices, such as a hypercubic lattice.
 
 The lattice file has a unique element named "Lattice". The other elements belong to "Lattice" as children.
 
@@ -149,7 +149,7 @@ Algorithm file ``algorithm.xml``
 
 An algorithm file is a textfile written in XML format.
 This defines the details of interactions, for example, the scattering probability of a worm head.
-This file can be very complicated, so DSQSS has an utility tools ``hamgen_H``, ``hamgen_B`` and ``dla_alg`` to generate algorithm files describing common models, such as Heisenberg model.
+This file can be very complicated, so DSQSS has a utility tool ``dla_alg`` to generate algorithm files from more simple file, the Hamiltonian file introduced later.
 
 The algorithm file has a unique element named "Algorithm". The other elements belong to "Algorithm" as children.
 
@@ -392,6 +392,143 @@ Algorithm/Vertex/InitialConfiguration/Channel
 
   For the special case, the pair-annihilation of worm heads, let both the first and the second integer be -1.
 
+Hamiltonian file ``hamiltonian.xml``
+************************************************
+
+A Hamiltonian file is a textfile written in XML format.
+This defines the local Hamiltonians, e.g., a bond Hamiltonian.
+This file is used as an input of ``dla_alg`` in order to generate ``algorithm.xml`` .
+DSQSS has utility tools ``hamgen_H`` and ``hamgen_B`` to generate hamiltonian files describing the Heisenberg spin model and the Bose-Hubbard model.
+
+The Hamiltonian file has a unique element named "Hamiltonian". The other elements belong to "Hamiltonian" as children.
+
+Hamiltonian
+  The root element.
+  This has children, "General", "Site", "Source", and "Interaction".
+
+Hamiltonian/General
+  GEneral parameters such as the number of site types.
+  This has children, "NSTYPE", "NITYPE", "NXMAX", and "Comment".
+  ::
+
+     <Hamiltonian>
+        <General>
+          <Comment> SU(2) Heisenberg model with S=1/2 </Comment>
+          <NSTYPE> 1 </NSTYPE>
+          <NITYPE> 1 </NITYPE>
+          <NXMAX>  2 </NXMAX>
+        </General>
+       ...
+     </Hamiltonian>
+
+Hamiltonian/General/Comment
+  (Optional) Comment. DSQSS ignores this.
+
+Hamiltonian/General/NSTYPE
+  The number of site types.
+
+Hamiltonian/General/NITYPE
+  The number of interaction types.
+
+Hamiltonian/General/NXMAX
+  The maximum number of states on a site.
+  For example, :math:`2S+1` for a spin system with local spin :math:`S`.
+
+Hamiltonian/Site
+  This defines a site type, for example, the number of states.
+  This has children "STYPE", "TTYPE", and "NX".
+  ::
+
+    <Hamiltonian>
+      ...
+      <Site>
+        <STYPE> 0 </STYPE>
+        <TTYPE> 0 </TTYPE>
+        <NX>   2 </NX>
+      </Site>
+      ...
+    </Hamiltonian>
+
+Hamiltonian/Site/STYPE
+  The index of site type.
+
+Hamiltonian/Site/TTYPE
+  The index of the source type (type of pair creation/annihilation of wormheads.)
+
+Hamiltonian/Site/NX
+  The number of states of the site.
+
+
+Hamiltonian/Source
+  This defines a source type, that is, the pair-creation/annihilation of wormheads.
+  This has children "TTYPE", "STYPE", and "Weight".
+  ::
+
+      <Source>
+        <TTYPE> 0 </TTYPE>
+        <STYPE> 0 </STYPE>
+        <Weight> 0 1       0.5000000000000000 </Weight>
+        <Weight> 1 0       0.5000000000000000 </Weight>
+      </Source>
+   
+Hamiltonian/Source/TTYPE
+   The index of the source type.
+
+Hamiltonian/Source/STYPE
+   The index of the site type.
+
+Hamiltonian/Source/Weight
+  The weight of the creation/annihilation operator.
+  This takes two integers and one floating number.
+  The integers denote the states of the site before and after applying the operator, respectively.
+  The floating number denotes the matrix element.
+
+  For example, ``0 1 0.5`` means :math:`\langle 1 | \mathcal{H} | 0 \rangle = 0.5`.
+
+Hamiltonian/Interaction
+  This defines an interaction type.
+  This has children "ITYPE", "STYPE", "NBODY", and "Weight".
+  ::
+
+    <Hamiltonian>
+      ...
+      <Interaction>
+        <ITYPE> 0 </ITYPE>
+        <NBODY> 2 </NBODY>
+        <STYPE> 0 0 </STYPE>
+        <Weight> 0 0 0 0      -0.2500000000000000 </Weight>
+        <Weight> 1 1 0 0       0.2500000000000000 </Weight>
+        <Weight> 1 0 0 1       0.5000000000000000 </Weight>
+        <Weight> 0 1 1 0       0.5000000000000000 </Weight>
+        <Weight> 0 0 1 1       0.2500000000000000 </Weight>
+        <Weight> 1 1 1 1      -0.2500000000000000 </Weight>
+      </Interaction>
+      ...
+    </Hamiltonian>
+
+Hamiltonian/Interaction/ITYPE
+  The index of the interaction type.
+
+Algorihtn/Interaction/NBODY
+  The number of sites involved in this interaction.
+  An onebody interaction such as the Zeeman term has 1 and a twobody interaction such as the exchange coupling has 2.
+  Three or higher body interaction can be treated.
+
+Hamiltonian/Interaction/ITYPE
+  The indices of sites involved in this interaction.
+  This takes NBODY integers.
+
+Hamiltonian/Interaction/Weight
+  The matrix elements of the local Hamiltonian.
+
+  This takes integers as many as :math:`2\times` NBODY and one preceding floating number.
+  The integers denote the states of sites before and after applying the local Hamiltonian.
+  The last floating number denotes the matrix element producted by :math:`-1`.
+  For offdiagonal elements, this value should be positive [#fn_reweighting]_.
+
+  For example, ``0 0 1 1 0.25`` means :math:`\langle 0 1 | \mathcal{H} | 0 1 \rangle = -0.25`
+  and ``0 1 1 0 0.5`` means :math:`\left| \langle 1 0 | \mathcal{H} | 0 1 \rangle \right| = 0.5`.
+
 Structure factor file ``sf.xml``
 *********************************
 
@@ -475,3 +612,14 @@ This defines wave vectors and the discretization of imaginary time to calculate 
 
 Since this file has the format as same as that of the structure factor file including the names of elements,
 users can use the same file.
+
+
+
+.. only:: html
+
+   .. rubric:: Footnote
+
+.. [#fn_reweighting]
+  In other words, we always perform a simulation of the "absolute" system.
+  We plans to implement the negative-sign reweighting and remove this limitation in DSQSS v2.
+

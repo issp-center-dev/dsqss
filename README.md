@@ -55,3 +55,5 @@ DSQSS is distributed under the GNU GPL v3.
 ### License of the bundled libs
 - Boost C++ library is redistributed under the Boost software license.
 
+## Acknowledgement
+DSQSS v1.3 and v2.0 is developed under the support of "Project for advancement of software usability in materials science" in fiscal year 2018 by The Institute for Solid State Physics, The University of Tokyo.

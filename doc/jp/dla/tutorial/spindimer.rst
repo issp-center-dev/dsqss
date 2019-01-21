@@ -92,6 +92,6 @@ DSQSS/DLA を実行するには,
 
 .. only:: html
 
-   .. rubric:: 注
+   .. rubric:: 脚注
 
 .. [#fn_ompi_macos] macOS 上のOpenMPI を使う場合, プログラム終了時にエラーメッセージが出ることがあります（ ``No such file or directory (errno 2)`` ）. DSQSS/DLA の実行自体に影響はありませんが, これを抑制したい場合は,  ``--mca shmem posix`` オプションを ``mpiexec`` に付与してください.

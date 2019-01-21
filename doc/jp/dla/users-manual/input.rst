@@ -147,10 +147,9 @@ Lattice/I
 
 アルゴリズム定義ファイルは相互作用ごとのワームの散乱確率などを定義する,  
 XML ライクな形式で記述されるテキストファイルです.
-これは一般に複雑になりえるので,  ハイゼンベルグ模型などのよく用いられる模型については,  
-アルゴリズム定義ファイル作成のための補助ツール ``hamgen_H``, ``hamgen_B`` や ``dla_alg`` が用意されています.
+これは一般に複雑になりえるので, より簡単なハミルトニアン定義ファイルから自動生成するためのツール ``dla_alg`` が用意されています.
 
-格子ファイルはただ一つの要素 Algorithm を持ち, すべての情報は Algorithm 要素の内容として含まれます.
+アルゴリズム定義ファイルはただ一つの要素 Algorithm を持ち, すべての情報は Algorithm 要素の内容として含まれます.
 
 Algorithm
   ファイル全体の要素名.サブ要素として,  General,  Site,  Interaction,  Vertex があります.
@@ -389,6 +388,140 @@ Algorithm/Vertex/InitialConfiguration/Channel
 
   特別な場合として, ワームヘッドがテールに衝突して消滅する場合があり, この場合は 第1引数と第2引数に -1 を指定します.
 
+ハミルトニアン定義ファイル ``hamiltonian.xml``
+************************************************
+
+ハミルトニアン定義ファイルは局所ハミルトニアン, 例えばボンドハミルトニアン, を指定する,
+XML ライクな形式で記述されるテキストファイルです.
+``dla_alg`` の入力として, アルゴリズム定義ファイルを作成するために用いる補助入力ファイルとなっています.
+ハイゼンベルグ模型などのよく用いられる模型については,  
+補助ツール ``hamgen_H``, ``hamgen_B`` が用意されています.
+
+ハミルトニアン定義ファイルはただ一つの要素 Hamiltonian を持ち, すべての情報は Hamiltonian 要素の内容として含まれます.
+
+Hamiltonian
+  ファイル全体の要素名. サブ要素として,  General,  Site,  Source, Interaction があります.
+  局所ハミルトニアンを定義します.
+
+Hamiltonian/General
+  サブ要素として,  NSTYPE,  NITYPE,  NXMAX, Comment があります.
+  サイトの種類数や相互作用の種類数など, ハミルトニアン定義の基本パラメータを設定します.
+  ::
+
+     <Hamiltonian>
+        <General>
+          <Comment> SU(2) Heisenberg model with S=1/2 </Comment>
+          <NSTYPE> 1 </NSTYPE>
+          <NITYPE> 1 </NITYPE>
+          <NXMAX>  2 </NXMAX>
+        </General>
+       ...
+     </Hamiltonian>
+
+Hamiltonian/General/Comment
+  省略可能. コメント文を示し, 計算には使用されません.
+
+Hamiltonian/General/NSTYPE
+  異なるサイト型の個数を指定する整数値.
+
+Hamiltonian/General/NITYPE
+  異なる相互作用型の個数を指定する整数値.
+
+Hamiltonian/General/NXMAX
+  各サイトが取りうる状態の数の最大値.
+  例えば大きさ :math:`S` のスピン系ならば :math:`2S+1` .
+
+Hamiltonian/Site
+  1つのサイト型を定義します.具体的には, このサイトの状態数などを指定します.
+  サブ要素として,  STYPE,  TTYPE,  NX があります.
+  ::
+
+    <Hamiltonian>
+      ...
+      <Site>
+        <STYPE> 0 </STYPE>
+        <TTYPE> 0 </TTYPE>
+        <NX>   2 </NX>
+      </Site>
+      ...
+    </Hamiltonian>
+
+Hamiltonian/Site/STYPE
+  定義されるサイト型の識別番号.
+
+Hamiltonian/Site/TTYPE
+  定義されるサイト型における, Hamiltonian/Source で記述される ワームの生成・消滅演算の識別番号.
+
+Hamiltonian/Site/NX
+  サイトが取りうる状態の数.
+
+
+Hamiltonian/Source
+   1つのソース型, つまり、ワームの生成・消滅演算を定義します.
+   サブ要素として, TTYPE, STYPE, Weight があります.
+   ::
+
+      <Source>
+        <TTYPE> 0 </TTYPE>
+        <STYPE> 0 </STYPE>
+        <Weight> 0 1       0.5000000000000000 </Weight>
+        <Weight> 1 0       0.5000000000000000 </Weight>
+      </Source>
+   
+Hamiltonian/Source/TTYPE
+   定義されるソース型の識別番号.
+
+Hamiltonian/Source/STYPE
+   定義されるソース型が適用されるサイト型の識別番号.
+
+Hamiltonian/Source/Weight
+   生成・消滅演算子の重み.
+   2個の整数値と1個の浮動小数点数の組み合わせで指定.
+   2個の整数はそれぞれ演算子を適用する前と後の状態を示す状態番号で,
+   浮動小数点数は行列要素.
+   たとえば, ``0 1 0.5`` は :math:`\langle 1 | \mathcal{H} | 0 \rangle = 0.5` を示します.
+
+Hamiltonian/Interaction
+  1つの相互作用型を定義します.
+  サブ要素として ITYPE, STYPE, NBODY, Weight があります.
+  ::
+
+    <Hamiltonian>
+      ...
+      <Interaction>
+        <ITYPE> 0 </ITYPE>
+        <NBODY> 2 </NBODY>
+        <STYPE> 0 0 </STYPE>
+        <Weight> 0 0 0 0      -0.2500000000000000 </Weight>
+        <Weight> 1 1 0 0       0.2500000000000000 </Weight>
+        <Weight> 1 0 0 1       0.5000000000000000 </Weight>
+        <Weight> 0 1 1 0       0.5000000000000000 </Weight>
+        <Weight> 0 0 1 1       0.2500000000000000 </Weight>
+        <Weight> 1 1 1 1      -0.2500000000000000 </Weight>
+      </Interaction>
+      ...
+    </Hamiltonian>
+
+Hamiltonian/Interaction/ITYPE
+  相互作用の型の識別番号.
+
+Algorihtn/Interaction/NBODY
+  相互作用に関与するサイトの数（ゼーマン項のような1体相互作用であれば1 で, 交換相互作用のような2体相互作用であれば2. 3以上を指定することも可能）.
+
+Hamiltonian/Interaction/ITYPE
+  相互作用が適用されるサイト型の識別番号.
+  NBODY 個の整数値で指定します.
+
+Hamiltonian/Interaction/Weight
+  局所ハミルトニアンの行列要素を指定します.
+  :math:`2\times` NBODY 個の整数値と, 1個の浮動小数点値の並びで指定.
+  整数値は, 関与する各サイトのそれぞれについて, 相互作用演算子が適用される前と後の状態で,
+  浮動小数点値は行列要素の大きさ.
+  ただし, 対角成分の場合には -1 をかけて, 非対角成分の場合は, 絶対値を取ります [#fn_reweighting]_.
+
+  たとえば, ``0 0 1 1 0.25`` は :math:`\langle 0 1 | \mathcal{H} | 0 1 \rangle = -0.25` を,
+  ``0 1 1 0 0.5`` は :math:`\left| \langle 1 0 | \mathcal{H} | 0 1 \rangle \right| = 0.5` を示します.
+
 構造因子定義ファイル ``sf.xml``
 ************************************************
 
@@ -466,6 +599,7 @@ CorrelationFunction/CF
   内容として,
   「相対座標のインデックス」, 「サイト i のインデックス」, 「サイト j のインデックス」 の3つの整数をスペース区切りで持ちます.
 
+
 波数表示温度グリーン関数定義ファイル ``ck.xml``
 ************************************************
 
@@ -477,3 +611,14 @@ CorrelationFunction/CF
 を計算するための波数や虚時間刻みの情報がXML ライクな形式で記述されるテキストファイルです.
 
 要素名を含めて, 動的構造因子定義ファイルと全く同じ構造を持つため, 流用が可能です.
+
+
+
+.. only:: html
+
+   .. rubric:: 脚注
+
+.. [#fn_reweighting]
+   これは, DSQSS/DLA は「絶対値系」を計算することを意味しています.
+   DSQSS v2 では, 符号リウェイティングを実装することで, この制限を取り除くことが予定されています.
+
