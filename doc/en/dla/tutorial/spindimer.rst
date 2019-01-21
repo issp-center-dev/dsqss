@@ -1,7 +1,7 @@
 Energy calculation of the antiferromagnetic Heisenberg dimer by DSQSS/DLA
 ==========================================================================
 
-This tutorial gives how to use DSQSS/DLA through a calculation the energy of the :math:`S=1/2` antiferromagnetic Heisenberg dimer :math:`\mathcal{H} = J \vec{S}_1 \cdot \vec{S}_2` .
+This tutorial gives how to use DSQSS/DLA through a calculation the energy of the :math:`S=1/2` antiferromagnetic Heisenberg dimer :math:`\mathcal{H} = -J \vec{S}_1 \cdot \vec{S}_2` .
 
 DSQSS/DLA calculation has the following three parts:
 
@@ -19,7 +19,7 @@ DSQSS/DLA requires the following input files:
 #. lattice file
 #. algorithm file
 
-``dsqss_pre.py`` is a utility tool to generate these file from one textfile such as the following (sample/dla/01_spindimer/std.in)
+``dsqss_pre.py`` is a utility tool to generate these files from one textfile such as the following (sample/dla/01_spindimer/std.in)
 ::
 
   [System]
