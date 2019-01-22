@@ -1,0 +1,203 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>2. インストール &#8212; DSQSS 1.2.0 ドキュメント</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="3. 使用方法" href="usage.html" />
+    <link rel="prev" title="1. DSQSSとは？" href="about_dsqss.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>2. インストール<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id2">
+<h2>2.1. 必要なライブラリ<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>DSQSSの使用には以下のプログラム・ライブラリが必要です.</p>
+<ul class="simple">
+<li>BLAS</li>
+<li>LAPACK</li>
+<li>(Optional) MPI (PMWAを使用する場合には必須)</li>
+<li>python 2.7 or 3.x</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>2.2. ダウンロード<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul>
+<li><p class="first">zipファイルをダウンロードする場合</p>
+<p>DSQSSの最新版は <a class="reference external" href="https://github.com/issp-center-dev/dsqss/releases">https://github.com/issp-center-dev/dsqss/releases</a> からダウンロードできます.</p>
+</li>
+<li><p class="first">gitを利用する場合</p>
+<p>Gitを利用されている方は, 端末から以下のコマンドを打つことで直接ダウンロードできます.</p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/issp-center-dev/dsqss.git</span></code></p>
+</li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h2>2.3. フォルダ構成<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>DSQSSのダウンロード後にzipファイルを解凍すると, ファイルが展開されます(gitを利用された方は, cloneを行ったファイル直下のフォルダ構成になります).
+以下, 重要なファイル・フォルダについてその構成を記載します.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>├── CMakeLists.txt
+├── LICENSE
+├── README.md
+├── config
+│   ├── gcc.cmake
+│   └── intel.cmake
+├── doc
+│   ├── en
+│   └── jp
+├── sample
+│   ├── CMakeLists.txt
+│   ├── dla
+│   └── pmwa
+├── src
+│   ├── common
+│   ├── dla
+│   ├── pmwa
+│   └── third-party
+│       └── boost
+├── test
+│   ├── CMakeLists.txt
+│   ├── dla
+│   ├── pmwa
+│   └── tool
+└── tool
+     ├── CMakeLists.txt
+     └── dsqss_pre.py
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>2.4. インストール<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>インストールは以下の手順で行うことが出来ます.
+以下, ダウンロードしたファイルの直下にいることを想定しています.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ mkdir dsqss.build &amp;&amp; cd dsqss.build
+$ cmake ../ -DCMAKE_INSTALL_PREFIX=/path/to/install/to
+$ make
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">/path/to/install/to</span></code> をインストールしたい先のパスに設定してください.
+指定しなかった場合のデフォルト値は <code class="docutils literal notranslate"><span class="pre">/usr/local</span></code> です.
+なお, cmakeがうまくいかない場合にも, コンパイラを直接指定するとうまくいくことがあります.
+詳細については <a class="reference external" href="https://github.com/issp-center-dev/HPhi/wiki/FAQ">https://github.com/issp-center-dev/HPhi/wiki/FAQ</a> をご覧ください.</p>
+<p>これにより各実行ファイルが <code class="docutils literal notranslate"><span class="pre">dsqss.build/src</span></code> フォルダ以下に作成されます.
+次に作成された実行ファイルが正常に動作するかテストするため, 以下のコマンドを打ちます.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ make test
+</pre></div>
+</div>
+<p>テストが100%通過したことが確認できた後, 以下のコマンドを入力しインストールします.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ make install
+</pre></div>
+</div>
+<p>実行バイナリが先に指定したインストールパスにある <code class="docutils literal notranslate"><span class="pre">bin</span></code> ディレクトリに,
+サンプルが <code class="docutils literal notranslate"><span class="pre">share/dsqss/VERSION/samples</span></code> にインストールされます.
+なお, インストール先のパスを変更した場合には, 変更先のパスをexportすることでその場で実行できるようになります.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>ナビゲーション</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about_dsqss.html">1. DSQSSとは？</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. インストール</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">2.1. 必要なライブラリ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">2.2. ダウンロード</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">2.3. フォルダ構成</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">2.4. インストール</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">3. 使用方法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dla/tutorial/index.html">4. DLAのチュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dla/users-manual/index.html">5. DSQSS/DLAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pmwa/tutorial/tutorial.html">6. DSQSS/PMWAのチュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pmwa/tutorial/tu-index.html">7. DSQSS/PMWAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="algorithm.html">8. アルゴリズム</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">&lt;no title&gt;</a><ul>
+      <li>Previous: <a href="about_dsqss.html" title="前の章へ">1. DSQSSとは？</a></li>
+      <li>Next: <a href="usage.html" title="次の章へ">3. 使用方法</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="検索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/dsqss/install.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

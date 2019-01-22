@@ -1,0 +1,283 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>6.2.2. Make an input file for DSQSS/PMWA &#8212; DSQSS 1.2.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="6.2.3. Run DSQSS/PMWA" href="output.html" />
+    <link rel="prev" title="6.2.1. Make an input file for a lattice" href="lattgene.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="make-an-input-file-for-dsqss-pmwa">
+<h1>6.2.2. Make an input file for DSQSS/PMWA<a class="headerlink" href="#make-an-input-file-for-dsqss-pmwa" title="Permalink to this headline">¶</a></h1>
+<p>To execute PMWA, a text format input file is required.
+There are two kinds of parameters in the input file: parameters specifying calculation conditions and parameters specifying a Hamiltonian.</p>
+<p>An example of the input file is shown below:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>RUNTYPE = 0
+NSET   = 10
+NMCS   = 10000
+NPRE   = 10000
+NTHERM = 10000
+NDECOR = 10000
+SEED  = 31415
+NC    = 0
+NVERMAX = 10000000
+NWORMAX = 1000
+latfile   = lattice.xml
+outfile   = sample.log
+CB      = 2
+G       = 0.3
+U       = 0
+V       = 3
+t       = 1
+MU      = 2
+NMAX    = 1
+</pre></div>
+</div>
+<p>The meaning of each parameter is as follows.</p>
+<ul>
+<li><p class="first">Parameter of calculation conditions</p>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="29%" />
+<col width="14%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">type</th>
+<th class="head">Remarks</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>RUNTYPE</td>
+<td>int</td>
+<td>Calculation mode (0: normal calculation, 1: restart calculation)</td>
+</tr>
+<tr class="row-odd"><td>CB</td>
+<td>int</td>
+<td>Initial arrangement (0: Vacuum, 1: Checker-Board, 2: Random)</td>
+</tr>
+<tr class="row-even"><td>NSET</td>
+<td>int</td>
+<td>The repetition number of Monte Carlo calculation</td>
+</tr>
+<tr class="row-odd"><td>NMCS</td>
+<td>int</td>
+<td>The number of Monte Carlo sweeps used for physical quantity calculation</td>
+</tr>
+<tr class="row-even"><td>NPRE</td>
+<td>int</td>
+<td>The number of Monte Carlo steps used for precalculation to determine the number of trials to generate worms per sweep</td>
+</tr>
+<tr class="row-odd"><td>NMCSE</td>
+<td>int</td>
+<td>The number of Monte Carlo sweeps used for initial relaxation</td>
+</tr>
+<tr class="row-even"><td>NMCSD</td>
+<td>int</td>
+<td>The number of Monte Carlo sweeps between measurements</td>
+</tr>
+<tr class="row-odd"><td>SEED</td>
+<td>int</td>
+<td>If it is 0 or more, seed is actually used, if negative, seed is given with random number.</td>
+</tr>
+<tr class="row-even"><td>NVERMAX</td>
+<td>int</td>
+<td>The maximum number of vertexes (default is <span class="math notranslate nohighlight">\(10^8\)</span> ). There is no upper limit when -1.</td>
+</tr>
+<tr class="row-odd"><td>NWORMAX</td>
+<td>int</td>
+<td>The maximum number of worms (default is <span class="math notranslate nohighlight">\(10^3\)</span> ). There is no upper limit when -1.</td>
+</tr>
+<tr class="row-even"><td>SFINPFILE</td>
+<td>str</td>
+<td>If this file name is given, calculate structure factors specified in this file.</td>
+</tr>
+<tr class="row-odd"><td>SFOUTFILE</td>
+<td>str</td>
+<td>If SFINPFILE is given, output structure factors to the specified file (default is sf.out).</td>
+</tr>
+<tr class="row-even"><td>Step_x</td>
+<td>int</td>
+<td>Give the spatial width when computing the correlation function (default: 1).</td>
+</tr>
+<tr class="row-odd"><td>Step_k</td>
+<td>int</td>
+<td>Give the width of wavenumber when computing correlation function of wavenumber representation (default: 1).</td>
+</tr>
+<tr class="row-even"><td>CFOUTFILE</td>
+<td>str</td>
+<td>When it is input, it outputs the correlation function to the specified file (default is cf.out).</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<p>Here, NVERMAX and NWORMAX are automatically resized and determined (implemented in ver. 1.2.0).</p>
+<ul class="simple">
+<li>Parameter of interactions</li>
+</ul>
+<p>PMWA can treat the models for hard-core boson and <span class="math notranslate nohighlight">\(S=1/2\)</span> XXZ system.
+The Hamiltonian for hard-core boson system is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}{\cal H} &amp;= -t_{b} \sum_{\langle i, j\rangle}b_i^{\dagger} b_j + U_{BB}\sum_i n_i(n_i -1)
++V_{B1}\sum_{\langle i, j\rangle} n_i n_j \\
+&amp;+\mu\sum_i n_i-\Gamma\sum_i(b_i^{\dagger}+b_i),\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\langle i,j \rangle\)</span> indicates a nearest-neighbor pair.
+For <span class="math notranslate nohighlight">\(S=1/2\)</span> XXZ model, the hamiltonian is given by</p>
+<div class="math notranslate nohighlight">
+\[{\cal H}^{XXZ} = -J_{xy} \sum_{\langle i, j\rangle}(S_i^x S_j^x + S_i^y S_j^y)-J_z\sum_{\langle i, j\rangle}S_i^zS_j^z-H \sum_{i}S_{i}^z -\Gamma \sum_i S_i^x.\]</div>
+<p>The parameters specified in the input file and the parameters in the above expression correspond as follows.</p>
+<blockquote>
+<div><table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Boson</th>
+<th class="head">Spin</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>t</td>
+<td><span class="math notranslate nohighlight">\(t_b\)</span></td>
+<td><span class="math notranslate nohighlight">\(J_{xy}\)</span></td>
+</tr>
+<tr class="row-odd"><td>U</td>
+<td><span class="math notranslate nohighlight">\(U_{BB}\)</span></td>
+<td><cite>-</cite></td>
+</tr>
+<tr class="row-even"><td>V</td>
+<td><span class="math notranslate nohighlight">\(V_{B1}\)</span></td>
+<td><span class="math notranslate nohighlight">\(J_{z}\)</span></td>
+</tr>
+<tr class="row-odd"><td>MU</td>
+<td><span class="math notranslate nohighlight">\(\mu\)</span></td>
+<td><span class="math notranslate nohighlight">\(H\)</span></td>
+</tr>
+<tr class="row-even"><td>G</td>
+<td><span class="math notranslate nohighlight">\(\Gamma\)</span></td>
+<td><span class="math notranslate nohighlight">\(\Gamma/2\)</span></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>Each parameter is specified as double type.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. About DSQSS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/usage.html">3. Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dla/tutorial/index.html">4. Tutorial of DSQSS/DLA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dla/users-manual/index.html">5. User’s manual of DSQSS/DLA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tutorial.html">6. Tutorial of DSQSS/PMWA</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">6.1. About DSQSS/PMWA</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="usage.html">6.2. Usage</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="lattgene.html">6.2.1. Make an input file for a lattice</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">6.2.2. Make an input file for DSQSS/PMWA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="output.html">6.2.3. Run DSQSS/PMWA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="output.html#output-files">6.2.4. Output files</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sample_Heisenberg.html">6.3. Calculation of the energy on spin chain by DSQSS/PMWA</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tu-index.html">7. User’s manual for DSQSS/PMWA</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="tutorial.html">6. Tutorial of DSQSS/PMWA</a><ul>
+  <li><a href="usage.html">6.2. Usage</a><ul>
+      <li>Previous: <a href="lattgene.html" title="previous chapter">6.2.1. Make an input file for a lattice</a></li>
+      <li>Next: <a href="output.html" title="next chapter">6.2.3. Run DSQSS/PMWA</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../../_sources/pmwa/tutorial/model.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

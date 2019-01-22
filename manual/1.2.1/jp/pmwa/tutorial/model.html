@@ -1,0 +1,286 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>6.2.2. DSQSS/PMWAの入力ファイルの作成 &#8212; DSQSS 1.2.0 ドキュメント</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="検索" href="../../search.html" />
+    <link rel="next" title="6.2.3. 計算実行" href="output.html" />
+    <link rel="prev" title="6.2.1. 格子定義ファイルの作成" href="lattgene.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="dsqss-pmwa">
+<h1>6.2.2. DSQSS/PMWAの入力ファイルの作成<a class="headerlink" href="#dsqss-pmwa" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>PMWAを実行するには,テキスト形式の入力ファイルが必要です.
+入力ファイルでは計算条件を指定するパラメータと
+ハミルトニアンを指定するパラメータの二種類があります.</p>
+<p>以下, 入力ファイル例を記載します</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>RUNTYPE = 0
+NSET   = 10
+NMCS   = 10000
+NPRE   = 10000
+NTHERM = 10000
+NDECOR = 10000
+SEED  = 31415
+NC    = 0
+NVERMAX = 10000000
+NWORMAX = 1000
+latfile   = lattice.xml
+outfile   = sample.log
+CB      = 2
+G       = 0.3
+U       = 0
+V       = 3
+t       = 1
+MU      = 2
+NMAX    = 1
+</pre></div>
+</div>
+<p>各パラメータの意味は下記の通りです.</p>
+<ul>
+<li><p class="first">計算条件のパラメータ</p>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="29%" />
+<col width="14%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">type</th>
+<th class="head">備考</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>RUNTYPE</td>
+<td>int</td>
+<td>計算モード(0: 通常計算,1: リスタート計算)</td>
+</tr>
+<tr class="row-odd"><td>CB</td>
+<td>int</td>
+<td>初期配置 (0: Vacuum,1: Checker-Board,2: Random)</td>
+</tr>
+<tr class="row-even"><td>NSET</td>
+<td>int</td>
+<td>モンテカルロ計算の繰り返し数</td>
+</tr>
+<tr class="row-odd"><td>NMCS</td>
+<td>int</td>
+<td>物理量計算に用いるモンテカルロスイープ数</td>
+</tr>
+<tr class="row-even"><td>NPRE</td>
+<td>int</td>
+<td>1スイープあたりのワーム生成試行回数を決めるための事前計算につかうモンテカルロステップ数</td>
+</tr>
+<tr class="row-odd"><td>NMCSE</td>
+<td>int</td>
+<td>初期緩和に用いるモンテカルロスイープ数</td>
+</tr>
+<tr class="row-even"><td>NMCSD</td>
+<td>int</td>
+<td>測定間のモンテカルロスイープ数</td>
+</tr>
+<tr class="row-odd"><td>SEED</td>
+<td>int</td>
+<td>0以上の場合は実際に使用するシード,負の場合は乱数でシードを与える.</td>
+</tr>
+<tr class="row-even"><td>NVERMAX</td>
+<td>int</td>
+<td>バーテックスの最大数 (デフォルト数 <span class="math notranslate nohighlight">\(10^8\)</span> ),-1の場合は上限なし.</td>
+</tr>
+<tr class="row-odd"><td>NWORMAX</td>
+<td>int</td>
+<td>ワームの最大数 (デフォルト数 <span class="math notranslate nohighlight">\(10^3\)</span> ),-1の場合は上限なし.</td>
+</tr>
+<tr class="row-even"><td>SFINPFILE</td>
+<td>str</td>
+<td>入力された場合,本ファイルで指定されたStructure Factorsを計算する.</td>
+</tr>
+<tr class="row-odd"><td>SFOUTFILE</td>
+<td>str</td>
+<td>入力された場合,Structure Factorsを指定したファイルに出力する(デフォルトはsf.out).</td>
+</tr>
+<tr class="row-even"><td>Step_x</td>
+<td>int</td>
+<td>相関関数を計算する場合の空間幅を与える(デフォルト:1).</td>
+</tr>
+<tr class="row-odd"><td>Step_k</td>
+<td>int</td>
+<td>波数表示の相関関数を計算する場合の波数空間幅を与える(デフォルト:1).</td>
+</tr>
+<tr class="row-even"><td>CFOUTFILE</td>
+<td>str</td>
+<td>入力された場合,相関関数を指定したファイルに出力する(デフォルトはcf.out).</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<p>ここで,NVERMAX,NWORMAXについては自動でリサイズして決定します(ver. 1.2.0で実装).</p>
+<ul class="simple">
+<li>相互作用関連のパラメータ</li>
+</ul>
+<p>PMWAではハードコアボソン系(サイトに最大1つのボソン)とS=1/2のXXZ模型について計算可能です.ハードコアボソン系のハミルトニアンは</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}{\cal H} &amp;= -t_{b} \sum_{\langle i, j\rangle}b_i^{\dagger} b_j + U_{BB}\sum_i n_i(n_i -1)
++V_{B1}\sum_{\langle i, j\rangle} n_i n_j \\
+&amp;+\mu\sum_i n_i-\Gamma\sum_i(b_i^{\dagger}+b_i),\end{split}\]</div>
+<p>で与えられます.ここで <span class="math notranslate nohighlight">\(\langle i,j \rangle\)</span> は最近接のペアを表します.
+S=1/2のXXZ模型は</p>
+<div class="math notranslate nohighlight">
+\[{\cal H}^{XXZ} = -J_{xy} \sum_{\langle i, j\rangle}(S_i^x S_j^x + S_i^y S_j^y)-J_z\sum_{\langle i, j\rangle}S_i^zS_j^z-H \sum_{i}S_{i}^z -\Gamma \sum_i S_i^x,\]</div>
+<p>で与えられます.
+入力ファイルで指定するパラメータと上記式のパラメータは以下のように対応しています.</p>
+<blockquote>
+<div><table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Boson</th>
+<th class="head">Spin</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>t</td>
+<td><span class="math notranslate nohighlight">\(t_b\)</span></td>
+<td><span class="math notranslate nohighlight">\(J_{xy}\)</span></td>
+</tr>
+<tr class="row-odd"><td>U</td>
+<td><span class="math notranslate nohighlight">\(U_{BB}\)</span></td>
+<td><cite>-</cite></td>
+</tr>
+<tr class="row-even"><td>V</td>
+<td><span class="math notranslate nohighlight">\(V_{B1}\)</span></td>
+<td><span class="math notranslate nohighlight">\(J_{z}\)</span></td>
+</tr>
+<tr class="row-odd"><td>MU</td>
+<td><span class="math notranslate nohighlight">\(\mu\)</span></td>
+<td><span class="math notranslate nohighlight">\(H\)</span></td>
+</tr>
+<tr class="row-even"><td>G</td>
+<td><span class="math notranslate nohighlight">\(\Gamma\)</span></td>
+<td><span class="math notranslate nohighlight">\(\Gamma/2\)</span></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>各パラメータはdouble型で指定します.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>ナビゲーション</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. DSQSSとは？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. インストール</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/usage.html">3. 使用方法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dla/tutorial/index.html">4. DLAのチュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dla/users-manual/index.html">5. DSQSS/DLAのユーザーマニュアル</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tutorial.html">6. DSQSS/PMWAのチュートリアル</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">6.1. DSQSS/PMWAとは？</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="usage.html">6.2. 使用方法</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="lattgene.html">6.2.1. 格子定義ファイルの作成</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">6.2.2. DSQSS/PMWAの入力ファイルの作成</a></li>
+<li class="toctree-l3"><a class="reference internal" href="output.html">6.2.3. 計算実行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="output.html#id2">6.2.4. 出力ファイル</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sample_Heisenberg.html">6.3. DSQSS/PMWAによるスピン鎖のエネルギー計算</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tu-index.html">7. DSQSS/PMWAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/algorithm.html">8. アルゴリズム</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="tutorial.html">6. DSQSS/PMWAのチュートリアル</a><ul>
+  <li><a href="usage.html">6.2. 使用方法</a><ul>
+      <li>Previous: <a href="lattgene.html" title="前の章へ">6.2.1. 格子定義ファイルの作成</a></li>
+      <li>Next: <a href="output.html" title="次の章へ">6.2.3. 計算実行</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="検索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../../_sources/pmwa/tutorial/model.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

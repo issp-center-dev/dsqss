@@ -1,0 +1,256 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>8. アルゴリズム &#8212; DSQSS 1.2.0 ドキュメント</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="prev" title="7.2. DSQSS/PMWAの出力ファイル" href="../pmwa/tutorial/output_file.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>8. アルゴリズム<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id2">
+<h2>8.1. 経路積分サンプリング<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>DSQSSでは, 分配関数を</p>
+<div class="math notranslate nohighlight">
+\[Z \equiv \text{Tr} e^{-\beta H} =\sum_S W(S)\]</div>
+<p>と経路積分表示したのち, マルコフ過程によって状態 <span class="math notranslate nohighlight">\(S\)</span> を確率的時系列的に発生し, これをサンプリングします（経路積分モンテカルロ法）.
+ここで <span class="math notranslate nohighlight">\(H\)</span> は系を記述するハミルトニアンで, 「状態」とは <span class="math notranslate nohighlight">\(d+1\)</span> 次元時空上で定義された古典変数の場です
+（モデルが定義されている空間次元を <span class="math notranslate nohighlight">\(d\)</span> として, これに虚数時間軸を加えたものを <span class="math notranslate nohighlight">\(d+1\)</span> 次元時空と呼びます).
+また c-数 <span class="math notranslate nohighlight">\(W(S)\)</span> は状態 <span class="math notranslate nohighlight">\(S\)</span> のボルツマン重みです.
+「状態」をひとつ定めることは, スピンや粒子の空間的な配置が虚数時間の増加に伴って変化する経路をひとつ定めることと等価であるため,
+状態 <span class="math notranslate nohighlight">\(S\)</span> は「経路」とも呼ばれます.
+ボーズ粒子系のように局所的な粒子数保存則が成立する場合に,
+状態を粒子の存在位置を実線でつないだ軌跡（＝世界線）の集まりとして視覚化することが多いため,
+経路積分モンテカルロ法は「世界線モンテカルロ法」とも呼ばれます.
+マルコフ過程の遷移確率は, 定常分布において状態の出現頻度が重み <span class="math notranslate nohighlight">\(W(S)\)</span> に比例するように定義されます.
+マルコフ過程で順次出現する状態を <span class="math notranslate nohighlight">\(S_t (t=1, 2, 3....)\)</span> とした時, 演算子 <span class="math notranslate nohighlight">\(Q\)</span> の期待値</p>
+<div class="math notranslate nohighlight">
+\[\langle Q \rangle \equiv \mathrm{Tr}( Q e^{-\beta H} ) /\mathrm{Tr}( e^{-\beta H} )\]</div>
+<p>は <span class="math notranslate nohighlight">\(Q\)</span> に対応する観測量 <span class="math notranslate nohighlight">\(Q(S)\)</span> の統計的期待値</p>
+<div class="math notranslate nohighlight">
+\[\langle Q \rangle_\text{MC} \equiv \frac{1}{N_\text{MCS}}\sum_{t = N_\text{therm}+1}^{N_\text{MCS}+N_\text{therm}} Q(S_t)\]</div>
+<p>によって近似されます.
+この近似は初期条件の影響による系統誤差と, サンプリングによる統計誤差を含みます.
+系統誤差が無視できるためには, 空回し数 <span class="math notranslate nohighlight">\(N_\text{therm}\)</span> が初期緩和時間よりも大きいことが必要で,
+その限りでは指数関数的に速やかに収束します.
+一方統計誤差はサンプル数 <span class="math notranslate nohighlight">\(N_\text{MCS}\)</span> を大きくしたときに,
+この <span class="math notranslate nohighlight">\(1/2\)</span> 乗に逆比例して小さくなることが期待されます.</p>
+</div>
+<div class="section" id="id3">
+<h2>8.2. ワーム更新法<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>マルコフ過程の遷移確率の構成方法, すなわち状態更新方法にはいろいろな種類があり,
+それぞれ利点・欠点があります.
+スピン系, ボーズ系のシミュレーションで用いられる代表的な更新方法はループ更新とワーム更新です.
+ループ更新は全系をループと呼ばれるクラスターに分割してループごとに状態更新するもので,
+高速な更新が可能だが, 一様磁場中での反強磁性体やボーズ系では効率が著しく低下してしまいます.
+一方ワーム更新は, 全系に保存則を破る点（ワーム）を2つ導入して,
+これらの点を移動させることで状態を更新する方法です.
+ワームは非対角成分のみをもつ演算子に対応します.
+たとえば, 各点での粒子数が対角化されている表示を用いたボーズ系のシミュレーションでは,
+ワーム演算子として生成消滅演算子を用います.
+このとき, ワームの前後の虚数時刻では粒子数が1だけ異なっていて,
+このワームが移動すると, ワームが通過した部分の粒子数は通過前から1だけ変化し,
+ワームの移動によって状態が更新されていきます.
+ワーム更新法は, 上記のループ更新に比べると広い範囲のモデルで有効です.</p>
+<p>オリジナルのワーム更新法では, ワームは虚時間方向および実空間方向にランダムウォークしていました.
+一方, ワームの空間方向での移動が起きる候補であるバーテックスを,
+ループ更新と同様にしてあらかじめ作り,
+ワームはバーテックスにぶつかるまで虚時間方向で直進するようにしたものが向き付きループアルゴリズム(DLA)です.
+DSQSS/DLA はDLA を実装したプログラムです.</p>
+</div>
+<div class="section" id="id4">
+<h2>8.3. マルチワームアルゴリズム<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>DLAではただひとつのワームヘッドを動かすことで状態を更新しているため, 時空間分割などの非自明並列が行えません.
+この問題を解決するために提案されたアルゴリズムが, ワーム対の個数制限を取り除いたマルチワームアルゴリズム (MWA) および
+その時空間並列版アルゴリズムである PMWA です.
+DSQSS/PMWA はPMWA を実装したプログラムです.</p>
+</div>
+<div class="section" id="on-the-fly">
+<h2>8.4. on-the-fly バーテックス法<a class="headerlink" href="#on-the-fly" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ワーム更新法では,
+ワームの生成, ワームの時間方向の移動, ワームの空間方向の移動（散乱）, ワームの消滅などからなるサイクルが更新の時間的単位となっていて,
+このサイクルを繰り返すことで逐次的に状態が更新されます.
+このうちワームの空間方向の移動を実現する仕方として,
+移動の起こる場所（バーテックス）をあらかじめ全系に配置しておくやり方(固定バーテックス法)と,
+ワームの進行方向に必要に応じて配置するやり方(on-the-fly バーテックス法)とがあります.
+固定バーテックス法では, 状態更新の基本的単位（1モンテカルロステップ）は,</p>
+<ol class="arabic simple">
+<li>バーテックスの配置</li>
+<li>ワームの生成から消滅までの（複数）サイクル</li>
+</ol>
+<p>のふたつのフェーズからなりますが, on-the-flyバーテックス法ではこのうちの2のみを行います.</p>
+<p>DSQSS/DLA では, on-the-fly バーテックス法を, DSQSS/PMWA では固定バーテックス法を採用します.</p>
+</div>
+<div class="section" id="id5">
+<h2>8.5. バーテックス配置<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>分配関数に現れる重み <span class="math notranslate nohighlight">\(W(S)\)</span> は格子点 <span class="math notranslate nohighlight">\(i, j\)</span> 間の相互作用を <span class="math notranslate nohighlight">\(H_{ij}\)</span> として,</p>
+<div class="math notranslate nohighlight">
+\[W(S) = \prod_{(ij), \tau} \langle S_i (\tau + \Delta \tau) S_j(\tau + \Delta \tau)| e^{-\Delta \tau H_{ij}}| S_i (\tau) S_j(\tau)\rangle\]</div>
+<p>と書けます.
+ここで, 虚数時間 <span class="math notranslate nohighlight">\(\tau\)</span> に関する積は <span class="math notranslate nohighlight">\(\Delta \tau\)</span> を単位として離散化されているとしました
+（これは説明のためであり, 実際の計算では連続虚数時間で行われます）.
+<span class="math notranslate nohighlight">\(H_{ij}\)</span> で相互作用する実空間の2点 <span class="math notranslate nohighlight">\(i, j\)</span> に関して,
+虚数時間区間 <span class="math notranslate nohighlight">\([0, \beta)\)</span> は状態 <span class="math notranslate nohighlight">\(S_i (\tau)\)</span> か <span class="math notranslate nohighlight">\(S_j(\tau)\)</span> に不連続変化がある時刻によって有限個の区間に分割されます.
+各区間内では, 2点の状態は <span class="math notranslate nohighlight">\(S_i (\tau), S_j (\tau)\)</span> は一定であり, 密度</p>
+<div class="math notranslate nohighlight">
+\[\langle S_i S_j | E_0 - H_{ij} | S_i S_j \rangle\]</div>
+<p>でバーテックスが一様ランダムに確率的に配置されます.
+ここで, エネルギーシフト <span class="math notranslate nohighlight">\(E_0\)</span> はある定数であり, 上記の密度が正である限り任意にとることができます.
+状態一定の区間に配置されるこれらのバーテックスに加えて,
+状態変化（キンク）のある虚数時刻に対しては,
+確率1でその時刻にバーテックスが配置されます.
+バーテックスはファインマンダイアグラムを用いた分配関数の展開における相互作用グラフに対応します.</p>
+</div>
+<div class="section" id="id6">
+<h2>8.6. ワームの生成・消滅<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ワームの生成にあたっては, まず状態遷移先の候補として,
+時空から一様ランダムに時空点 <span class="math notranslate nohighlight">\(i, \tau\)</span> とワーム対を表す非対角演算子対 <span class="math notranslate nohighlight">\(Q, Q'\)</span> を選びます.
+次に確率 <span class="math notranslate nohighlight">\(p_\text{create}\)</span> で実際にワーム対を生成します.
+消滅はこの逆過程であり, ワーム対が同じ時空点に来た時に一定の確率 <span class="math notranslate nohighlight">\(p_\text{annihilate}\)</span> で消滅します.
+これらの確率は次の式で表される詳細つり合い条件</p>
+<div class="math notranslate nohighlight">
+\[\frac{\Delta \tau}{\beta N_\text{site} N_Q} \times p_\text{create} = p_\text{annihilate} \times (\eta \Delta \tau)^2 \langle S_i (\tau) | Q_i | S_i'(\tau) \rangle \langle S_i' (\tau) | Q_i' | S_i(\tau) \rangle\]</div>
+<p>が成り立つように定められます.
+ここで, <span class="math notranslate nohighlight">\(N_Q\)</span> は取りうる <span class="math notranslate nohighlight">\(Q\)</span> の数で, <span class="math notranslate nohighlight">\(S'\)</span> は <span class="math notranslate nohighlight">\(\langle S | Q | S' \rangle\)</span> が非ゼロの値を取る（普通は <span class="math notranslate nohighlight">\(S, Q\)</span> の組に対して一意に定まる）状態です.
+また, <span class="math notranslate nohighlight">\(\eta\)</span> はワーム演算子に共役な場の量で, 例えばスピン系でワーム演算子を昇降演算子にとったときは横磁場（の半分）です.
+DLAでは, <span class="math notranslate nohighlight">\(\eta\)</span> の値は任意にとれるので,
+DSQSS/DLA の補助ツール <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> では <span class="math notranslate nohighlight">\(\eta^{-2} = \beta N_\text{site} N_Q \Delta\tau \max_{S, Q} |\langle S | Q_i |S' \rangle|^2\)</span>
+とすることで</p>
+<div class="math notranslate nohighlight">
+\[p_{\rm create} = |\langle S_i (\tau) | Q_i | S_i'(\tau) \rangle|^2/\max_{S, Q} |\langle S | Q_i | S' \rangle|^2\]</div>
+<p>かつ <span class="math notranslate nohighlight">\(p_\text{annihilate}=1\)</span> としています.
+<code class="docutils literal notranslate"><span class="pre">algorithm.xml</span></code> をユーザが独自に編集することで,
+ユーザの指定した生成消滅確率でシミュレーションを行うことも可能です.</p>
+</div>
+<div class="section" id="id7">
+<h2>8.7. ワームの散乱<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>バーテックスにおけるワームの散乱は, バーテックス自体の重みとワームの持つ重みとの間に詳細つり合いが成立するように決定されます.
+たとえば, 虚数時刻が増加する方向にサイト <span class="math notranslate nohighlight">\(i\)</span> 上を移動してきたワームが虚数時刻 <span class="math notranslate nohighlight">\(\tau\)</span> にあるバーテックスに当たり,
+サイト <span class="math notranslate nohighlight">\(j\)</span> を虚数時刻が減少する方向に出ていく過程を考えると,
+このような衝突が選ばれる確率 <span class="math notranslate nohighlight">\(P\)</span> と, 逆向きの衝突が選ばれる確率 <span class="math notranslate nohighlight">\(P'\)</span> との間には</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp; P \times \langle S_i (\tau+0) S_j (\tau+0) | E_0 -H_{ij} |S_i (\tau) S_j (\tau) \rangle \langle S_i (\tau) | Q_i | S_i'\rangle \\
+&amp; = P' \times \langle S_i (\tau+0) S_j (\tau+0) | E_0 -H_{ij} |S_i' (\tau) S_j' (\tau) \rangle \langle S_j' (\tau) | Q_j | S_j\rangle\end{split}\]</div>
+<p>の関係が満たされる必要があります.
+ここで <span class="math notranslate nohighlight">\(Q_i, Q_j\)</span> はワームを表す非対角演算子, <span class="math notranslate nohighlight">\(S'_i (\tau), S'_j (\tau)\)</span> はワームが通過した後のそれぞれのサイト, 時刻の状態です.
+DSQSS/DLAでは, <code class="docutils literal notranslate"><span class="pre">algorithm.xml</span></code> ファイルをユーザが直接編集することによって, 任意の散乱確率を指定できるほか,
+ハミルトニアンを指定したときに, このような条件を満たす散乱確率を自動的に計算する補助ツール <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> を持っています.</p>
+</div>
+<div class="section" id="id8">
+<h2>8.8. 参考文献<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://journals.jps.jp/doi/abs/10.1143/JPSJ.73.1379">N. Kawashima and K. Harada, &quot;Recent Developments of World-line Monte Carlo Methods&quot;, Journal of the Physical Society of Japan, Vol. 73, 1379-1414 (2004)</a>.</li>
+<li><a class="reference external" href="http://www.cambridge.org/gb/academic/subjects/physics/condensed-matter-physics-nanoscience-and-mesoscopic-physics/quantum-monte-carlo-methods-algorithms-lattice-models?format=HB">J. Gubernatis, N. Kawashima, and P. Werner, &quot;Quantum Monte Carlo Methods; Algorithms for Lattice Models&quot;, Cambridge University Press (2016)</a>.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>ナビゲーション</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about_dsqss.html">1. DSQSSとは？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">2. インストール</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">3. 使用方法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dla/tutorial/index.html">4. DLAのチュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dla/users-manual/index.html">5. DSQSS/DLAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pmwa/tutorial/tutorial.html">6. DSQSS/PMWAのチュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pmwa/tutorial/tu-index.html">7. DSQSS/PMWAのユーザーマニュアル</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">8. アルゴリズム</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">8.1. 経路積分サンプリング</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">8.2. ワーム更新法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">8.3. マルチワームアルゴリズム</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#on-the-fly">8.4. on-the-fly バーテックス法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">8.5. バーテックス配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">8.6. ワームの生成・消滅</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">8.7. ワームの散乱</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">8.8. 参考文献</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../pmwa/tutorial/output_file.html" title="前の章へ">7.2. DSQSS/PMWAの出力ファイル</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="検索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/dsqss/algorithm.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
