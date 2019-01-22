@@ -1,7 +1,8 @@
 # dsqss
 
 [![Build Status](https://travis-ci.org/issp-center-dev/dsqss.svg?branch=master)](https://travis-ci.org/issp-center-dev/dsqss)
-
+[![doc latest stable](https://img.shields.io/badge/doc-v1.2.1-blue.svg)](https://issp-center-dev.github.io/dsqss/manual/1.2.1/en/index.html)
+[![doc latest stable](https://img.shields.io/badge/doc--jp-v1.2.1-blue.svg)](https://issp-center-dev.github.io/dsqss/manual/1.2.1/jp/index.html)
 
 ## Build
 
@@ -56,4 +57,4 @@ DSQSS is distributed under the GNU GPL v3.
 - Boost C++ library is redistributed under the Boost software license.
 
 ## Acknowledgement
-DSQSS v1.3 and v2.0 is developed under the support of "Project for advancement of software usability in materials science" in fiscal year 2018 by The Institute for Solid State Physics, The University of Tokyo.
+DSQSS v1.2 and v2.0 are developed under the support of "Project for advancement of software usability in materials science" in fiscal year 2018 by The Institute for Solid State Physics, The University of Tokyo.
