@@ -249,6 +249,27 @@ void INTERACTION::load(XML::Block& X) {
   VTYPE        = ID + NSTYPE;
   _V           = &(Vertex[VTYPE]);
   NBODY        = X["NBODY"].getInteger();
+
+  int NLEG = 2*NBODY;
+
+  Sign.init("Weight", NLEG, NXMAX, ARRAY::EOL);
+  Sign.set_all(0.0);
+  
+  int* x = new int[NLEG];
+  for (int i = 0; i < X.NumberOfBlocks(); i++) {
+    XML::Block& B      = X[i];
+    const std::string& name = B.getName();
+    if (name == "Weight") {
+      for (int i = 0; i < NLEG; i++)
+        x[i] = B.getInteger(i);
+      double w = B.getDouble(NLEG);
+      if (w < 0.0 && !isdiagonal(x,NBODY)){
+        Sign(x) = -1.0;
+      }
+    }
+  }
+  delete[] x;
+
   V().ID       = VTYPE;
   V().NBODY    = NBODY;
   V().CATEGORY = VCAT::INT;
@@ -366,6 +387,7 @@ void VERTEX::load(XML::Block& X) {
   Weight.init("Weight", NLEG, NXMAX, ARRAY::EOL);
   setINDX(Weight.index_system());
   Weight.set_all(0.0);
+
   NST = Weight.size();
   SiteTypeOfLeg.init("STYPE", 1, NLEG);
   SiteTypeOfLeg.set_all(STYPE::UNDEF);

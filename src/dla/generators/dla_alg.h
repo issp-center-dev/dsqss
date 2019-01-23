@@ -168,6 +168,7 @@ public:
   VERTEX* _V;
   VERTEX& V() { return *_V; };
   Array<double> VertexDensity;
+  Array<double> Sign;
 
   INTERACTION() {
     ID    = ITYPE::UNDEF;
