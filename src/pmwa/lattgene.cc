@@ -169,7 +169,7 @@ int main(int argc, char **argv) {
   }
   const int D = atoi(argv[1]);
   //  int        L[D] ;
-  int *L   = new int[D];  //edit sakakura
+  int *L   = new int[D];
   double B = 0.0;
   int NLD  = 1;
   int NBD  = 1;

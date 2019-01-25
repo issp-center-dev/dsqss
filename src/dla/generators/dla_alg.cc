@@ -1,7 +1,4 @@
-
 #include "dla_alg.h"
-
-//######################################################################
 
 int main(int argc, char** argv) {
   HFILE = "hamiltonian.xml";
@@ -10,8 +7,6 @@ int main(int argc, char** argv) {
   if (argc > 2) { AFILE = argv[2]; }
   printf("HFILE= %s\n", HFILE);
   printf("AFILE= %s\n", AFILE);
-
-  // ファイルを XML オブジェクトに読み込む
 
   XML::Block X(HFILE, "Hamiltonian");
   FALG = fopen(AFILE, "w");
@@ -23,8 +18,6 @@ int main(int argc, char** argv) {
   Source      = new SOURCE[NSTYPE];
   Interaction = new INTERACTION[NITYPE];
   Vertex      = new VERTEX[NVTYPE];
-
-  // 各属性オブジェクトのセット
 
   for (int i = 0; i < X.NumberOfBlocks(); i++) {
     XML::Block& B      = X[i];
@@ -46,12 +39,12 @@ int main(int argc, char** argv) {
     }
   }
 
-  // 散乱確率の計算
+  // Scattering probs
 
   for (int i = 0; i < NVTYPE; i++) {
     Vertex[i].Grouping();
   }
-  // ワームの生成消滅に対応するバーテックスでは共通の EBASE を使う．
+  // Worm vertex has the shared EBASE
   G.WeightDiagonal = -INF;
 
   for (int i = 0; i < NSTYPE; i++) {
@@ -65,7 +58,7 @@ int main(int argc, char** argv) {
     V.EBASE   = 2.0 * G.WeightDiagonal;
   }
 
-  // 相互作用に対応するバーテックスではそれぞれ個別の EBASE を使う．
+  // Interaction vertex has the own EBASE
 
   for (int i = 0; i < NITYPE; i++) {
     VERTEX& V = Interaction[i].V();
@@ -83,7 +76,6 @@ int main(int argc, char** argv) {
     Interaction[i].SetVertexDensity();
   }
 
-  // ファイルへの書き出し
 
   fprintf(FALG, "<Algorithm>\n");
   G.write();
@@ -259,11 +251,9 @@ void INTERACTION::load(XML::Block& X) {
 void INTERACTION::SetVertexDensity() {
   VERTEX& V      = Vertex[VTYPE];
   IndexSystem& I = V.Weight.index_system();
-  int* x         = new int[I.dimension()];  //edit sakakura
-                                            //  int x[I.dimension()];
+  int* x         = new int[I.dimension()];
   VertexDensity.init(NBODY, NXMAX, ARRAY::EOL);
   IndexSystem& J = VertexDensity.index_system();
-  //  int y[J.dimension()];
   int* y = new int[J.dimension()];  //edit sakakura
   VertexDensity.set_all(0.0);
   for (int g = 0; g < V.NICG; g++) {
@@ -295,8 +285,7 @@ void INTERACTION::write() {
   fprintf(FALG, "    <EBASE> %24.16f </EBASE>\n", V().EBASE);
   if (VertexDensity.isDefined()) {
     IndexSystem& I = VertexDensity.index_system();
-    //    int x[NBODY];
-    int* x = new int[NBODY];  //edit sakakura
+    int* x = new int[NBODY];
     for (int i = 0; i < I.size(); i++) {
       double d = VertexDensity[i];
       if (d > 0.0) {
@@ -323,8 +312,7 @@ void INTERACTION::dump() {
   printf("\n");
   if (VertexDensity.isDefined()) {
     IndexSystem& I = VertexDensity.index_system();
-    //    int x[NBODY];
-    int* x = new int[NBODY];  //edit sakakura
+    int* x = new int[NBODY];
     for (int i = 0; i < I.size(); i++) {
       if (VertexDensity[i] > 0.0) {
         I.coord(i, x);
@@ -390,7 +378,6 @@ void VERTEX::Grouping() {
   //printf("VERTEX::Grouping> Pass 1\n");
 
   int NICmax = 2 * NBODY * NXMAX + 1;
-  //ICG.init( 1, (NST+1)*NXMAX ); // 大きめにとってある．
   checked.init(3, NST, NLEG, NXMAX);
   checked.set_all(0);
   int* x = new int[NLEG];
@@ -419,11 +406,6 @@ void VERTEX::Grouping() {
         for (int xinc = 0; xinc < NXMAX; xinc++) {
           //W.V().Weight.index_system().dump();
           double ww = W.Weight(xinc_old, xinc);
-          /*
-printf(" sti= %d =(", sti);
-for (int i=0; i<NLEG; i++) printf(" %d", x[i]);
-printf("), inc= %d, xinc= %d --> %d, ww= %8.3f\n", inc, xinc_old, xinc, ww);
-	  */
           if (ww == 0.0) continue;
           if (checked(sti, inc, xinc) == 1) continue;
 
@@ -443,27 +425,18 @@ printf("), inc= %d, xinc= %d --> %d, ww= %8.3f\n", inc, xinc_old, xinc, ww);
 //======================================================================
 
 double VERTEX::ComputeEBASE() {
-  // ここで計算する EBASE は非対角状態でのバウンス確率が０
-  // となるための必要な反転ハミルトニアン（ = -H ）への
-  // 付加項の最小値である．直接シミュレートされる
-  // ペアハミルトニアンを H' とすると -H' = -H + ebase
-  // であるから，H = H' + ebase となり，
-  // 計算後に１interaction あたり， EBASE を全エネルギーに
-  // 足し戻すことでもとのハミルトニアンで
-  // 計算したエネルギーが得られる．
   //
-  // EBASE のとり方は任意性があるが，とり方によって，
-  // バウンスが発生したりしなかたりする．ここでのポリシーは，
+  // Calculate EBASE as the minimum additional term to
+  // make probability of offdiagonal bounce of negative Hamiltonian (-H)
+  // be zero.
   //
-  // 　（１）ワーム生成，消滅に関しては，たとえ対角バウンス
-  // 　　　　が発生しても，非対角状態間の直接遷移をさける．
-  // 　　　　つまり，EBASE を必要なだけ大きくとって，
-  //         ワーム生成確率が１より小さくなっても，消滅は
-  //         確率１で起きるようにする．
-  // 　（２）通常の相互作用バーテックスについては，非対角
-  // 　　　　バウンスがない範囲で対角重みを最小にとる．
+  // - For worm creation/annihilation, avoid direct transition
+  //   between offdiagonal states.
+  //   In other words, let EBASE be so large that
+  //   the probability of a worm annihilation is 1.
+  // - For interaction vertex, minimize diagonal weights
+  //   as long as no offdiagonal bounce occurs.
   //
-  // である．
 
   for (int icg = 0; icg < NICG; icg++)
     ICG(icg).ResetWeight();
@@ -625,10 +598,9 @@ printf("), hti= %d, inc= %d\n", hti, inc);
   int sitei = inc / 2;
   int diri  = inc % 2;
 
-  // 最初にグループに属する状態数をカウントする
 
   NIC = 0;
-  if (inc == DIR::UNDEF) NIC = 1;  // ワーム生成の場合
+  if (inc == DIR::UNDEF) NIC = 1;  // generate worm
   for (int out = 0; out < NLEG; out++) {
     for (int xout = 0; xout < NXMAX; xout++) {
       // xout is the new local state on the outgoing leg
@@ -651,7 +623,7 @@ printf("), hti= %d, inc= %d\n", hti, inc);
   IC.init(1, NIC);
 
   int ic = 0;
-  if (inc == DIR::UNDEF) {  // ワーム生成の場合
+  if (inc == DIR::UNDEF) {  // generate worm
     IC[ic].init(V(), sti, inc, xinc, NIC);
     ic++;
   }
@@ -783,15 +755,15 @@ double InitialConfigurationGroup::ebase() {
   int nd = number_of_diagonal_states();
   int no = NIC - nd;
   if (nd == 0) {
-    eb = -INF;  // 対角項がなければ ebase は関係ないので，いつでもＯＫ．
+    eb = -INF;
   } else {
     double dmax = maximum_diagonal_weight();
     double dmin = minimum_diagonal_weight();
     double omax = maximum_offdiagonal_weight();
     double sum  = sum_of_all_weights();
-    // eb0 ... 最低これだけは足さないと負の対角項がでてしまう．
-    // eb1 ... 最低これだけは足さないと非対角状態でのバウンスが発生してしまう．
-    // eb2 ... 最低これだけは足さないと非対角状態間の直接遷移が発生してしまう．
+    // eb0 ... minimum EBASE to avoid negative diagonal elements
+    // eb1 ... minimum EBASE to avoid offdiagonal bounce
+    // eb2 ... minimum EBASE to avoid direct transition between offdiagonal states
     eb0 = -dmin;
     eb1 = (2.0 * omax - sum) / (double)nd;
     //  eb2 = -INF;
@@ -802,6 +774,7 @@ double InitialConfigurationGroup::ebase() {
       eb = eb1;
     }
 
+    // Above we calculate EBASE from Hamilonian weights producted by worm weights
     double ww = 0.0;
     for (int i = 0; i < NIC; i++) {
       if (!IC[i].isKink()) {
@@ -815,9 +788,6 @@ double InitialConfigurationGroup::ebase() {
         ww = IC[i].worm_weight();
       }
     }
-    // ここまでハミルトニアン重みにワーム重みをかけたものに基づいて eb を
-    // 計算してきたが，EBASE は最終的にはハミルトニアンへの付加項
-    // だからワーム重みをかけるまえの大きさに戻さないといけない．
     eb /= ww;
   }
 
@@ -853,7 +823,9 @@ void InitialConfigurationGroup::ScatteringProbability() {
   //printf("\nInitialConfigurationGroup::ScatteringProbability> Start. ICG= %d\n", ID);
   //if (MON) dump();
 
-  // NIC は始状態の数．U は始状態の重み．UP は大きさ順に並べ替えた重み．
+  // NIC : # of initial state
+  // U   : weights of initial states
+  // UP  : weights of initial states (sorted)
   Array<int> PERM("PERM");
   PERM.init(1, NIC);
   bubble_sort(NIC, U, PERM);
@@ -1112,7 +1084,7 @@ void SolveWeightEquation(int N, Array<double>& V, Array<double>& W) {
   int N_first;   // the number of the largest elements
   int N_second;  // the number of the second largest
 
-  // 重複をはぶいて最初から３つの重みとその番号を取得．
+  // First three (unique) weights and indices
   while (V[1] > EPS) {
     V_first = V[0];
     for (p = 0; p < N; p++)
@@ -1134,24 +1106,22 @@ void SolveWeightEquation(int N, Array<double>& V, Array<double>& W) {
       N_second = q - p;
     }
 
-    //以下では，V[i] <= w_i から出発して，W(i,j) = w_{ij} を順次増加させながら，
-    //その分，V[i] を下げていく．すべての V[i] が０になったら終了．
+    // Calculation w_{ij} from V_i
 
     double dw1;  // decrement of the first largest element
     double dw2;  // decrement of the second largest element
     if (N_first == 1) {
-      //最大ウェイトが単独の状態のとき，最大ウェイトと第２ウェイトの間の遷移を
-      //導入してそれらを下げる．
+      // When the maximum weight state is unique
+      // introduce a transition between the max state and the second
+      // and reduce weights of these states
       double x = V_first - V_second;
       double y = (double)(N_second - 1) * (V_second - V_third);
       if (x < y) {
-        //最大ウェイトが大きくないとき，最大ウェイトが第２ウェイトに等しくなるまで下げる．
         dw1          = (V_first - V_second) / (1.0 - 1.0 / (double)(N_second));
         dw2          = dw1 / (double)N_second;
         V_second_new = V_second - dw2;
         V_first_new  = V_second_new;
       } else {
-        // 最大ウェイトが大きいとき，第２ウェイトが第３ウェイトと等しくなるまで下げる．
         dw2          = V_second - V_third;
         dw1          = dw2 * (double)N_second;
         V_second_new = V_third;
@@ -1164,8 +1134,9 @@ void SolveWeightEquation(int N, Array<double>& V, Array<double>& W) {
         V[i] = V_second_new;
       }
     } else {
-      //複数の状態が最大ウェイトをとるとき，相互に移り変わる遷移確率を導入して，
-      //それらを第２ウェイトと同じになるまで下げる．
+      // When the maximum weight state is degenerated
+      // introduce a transition between these states
+      // and reduce weights of these states to the weight of the second largest.
       dw1 = (V_first - V_second) / (double)(N_first - 1);
       for (int i = 0; i < N_first; i++) {
         V[i] = V_second;

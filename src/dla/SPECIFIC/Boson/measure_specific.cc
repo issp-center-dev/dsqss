@@ -44,10 +44,8 @@ void Measurement::measure() {
   MZSA *= invV;
   MZUB *= invV;
   MZSB *= invV;
-#ifndef NORM
   MZUB *= T;
   MZSB *= T;
-#endif
 
   ACC[MZUA1].accumulate(MZUA);
   ACC[MZUA2].accumulate(MZUA * MZUA);
@@ -79,17 +77,9 @@ void Measurement::measure() {
 
     double t = 0.0;
 
-#ifdef NORM
-    while (t < 1.0) {
-#else
     while (t < LAT.BETA) {
-#endif
       int it = util::min_index(tau);
-#ifdef NORM
-      EBSAMP -= (tau[it] - t) * IP.VertexDensity(x) * LAT.BETA;
-#else
       EBSAMP -= (tau[it] - t) * IP.VertexDensity(x);
-#endif
 
       if (p[it]->top().isTerminal()) break;
       t = tau[it];
@@ -167,13 +157,8 @@ void Measurement::setsummary() {
 
   Q[SPE] = (X[EB2] - X[EB1] * X[EB1] - X[NV1]) * invV;
 
-#ifdef NORM
-  Q[LEN] = X[LE1] * B;
-  Q[XMX] = WDIAG * X[LE1];
-#else
   Q[LEN] = X[LE1];
   Q[XMX] = WDIAG * X[LE1] / B;
-#endif
 
   Q[AMZU] = X[MZUA1];
   Q[BMZU] = X[MZUB1];

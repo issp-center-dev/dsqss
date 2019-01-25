@@ -62,11 +62,7 @@ CF::CF(Parameter const& param, Lattice& lat, Algorithm& alg)
     XML::Block X(param.CFINPFILE.c_str());
     Ntau      = X["Ntau"].getInteger();
     int Nline = X["NumberOfElements"].getInteger();
-#ifdef NORM
-    dtau = 1.0 / Ntau;
-#else
     dtau = LAT.BETA / Ntau;
-#endif
 
     NCF = X["NumberOfKinds"].getInteger();
     for (int i = 0; i < NCF; i++) {
@@ -156,13 +152,8 @@ void CF::count(double tT, double bT, int head_site, int tail_site, double tail_t
   double bTr = tail_tau - tT;
   double tTr = tail_tau - bT;
 
-#ifdef NORM
-  bTr += bTr < 0.0 ? 1.0 : 0.0;   // [0,1)
-  tTr += tTr <= 0.0 ? 1.0 : 0.0;  // (0,1]
-#else
   bTr += bTr < 0.0 ? LAT.BETA : 0.0;   // [0,B)
   tTr += tTr <= 0.0 ? LAT.BETA : 0.0;  // (0,B]
-#endif
 
   int bTri = bTr/dtau + 1;
   int tTri = tTr/dtau;

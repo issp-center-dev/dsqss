@@ -62,11 +62,7 @@ CK::CK(Parameter const& param, Lattice& lat, Algorithm& alg)
     XML::Block X(param.CKINPFILE.c_str());
     NtauAll   = X["Ntau"].getInteger();
     int Nline = X["NumberOfElements"].getInteger();
-#ifdef NORM
-    dtau = 1.0 / ((double)NtauAll);
-#else
     dtau = LAT.BETA / ((double)NtauAll);
-#endif
 
     Ntau  = X["CutoffOfNtau"].getInteger();
     NKMAX = X["NumberOfInverseLattice"].getInteger();
@@ -160,13 +156,8 @@ void CK::count(int s, double tT, double bT, double tail_tau) {
 
   bTr = tail_tau - tT;
   tTr = tail_tau - bT;
-#ifdef NORM
-  bTr += bTr < 0.0 ? 1.0 : 0.0;   // [0,1)
-  tTr += tTr <= 0.0 ? 1.0 : 0.0;  // (0,1]
-#else
   bTr += bTr < 0.0 ? LAT.BETA : 0.0;  // [0,BETA)
   tTr += tTr <= 0.0 ? LAT.BETA : 0.0;  // (0,BETA]
-#endif
   int bTri = bTr / dtau + 1;
   int tTri = tTr / dtau;  //Relative bottom (top) time integer
 

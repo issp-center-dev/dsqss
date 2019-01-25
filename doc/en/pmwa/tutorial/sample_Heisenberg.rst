@@ -3,13 +3,13 @@
 
 Calculation of the energy on spin chain by DSQSS/PMWA
 ======================================================
-In this tutorial, you learn how to use DSQSS / PMWA by calculating the ground state energy of antiferromagnetic Heisenberg chain of S = 1/2.
+In this tutorial, you learn how to use DSQSS / PMWA by calculating the ground state energy of antiferromagnetic Heisenberg chain of :math:`S = 1/2`.
 
 The calculation by DSQSS / PMWA is done in the following three stages:
 
 1. Make an input file,
 2. Perform calculation,
-3. Interpretation of calculation result.
+3. Analyze calculation results.
 
 
 
@@ -28,33 +28,33 @@ First of all, prepare a text file ``std.in`` with the following contents as an i
 
 ::
 
-  [System]
-  solver = PMWA
-  [Hamiltonian]
-  model_type = spin
-  Jxy = -1.0
-  Jz = -1.0
-  Gamma = 0.1
-  [Lattice]
-  lattice_type = square
-  D = 1
-  L = 16
-  Beta = 100
-  [Parameter]
-  CB = 1
-  SEED = 31415
-  NSET = 10
-  NMCS = 100
-  NPRE = 100
-  NTHERM = 100
-  NDECOR = 100
+   [System]
+   solver = PMWA
+   [Hamiltonian]
+   model_type = spin
+   Jxy = -1.0
+   Jz = -1.0
+   Gamma = 0.1
+   [Lattice]
+   lattice_type = square
+   D = 1
+   L = 16
+   Beta = 100
+   [Parameter]
+   CB = 1
+   SEED = 31415
+   NSET = 10
+   NMCS = 100
+   NPRE = 100
+   NTHERM = 100
+   NDECOR = 100
 
 This file is located in ``sample/pmwa/1DDimer`` directory.
 Next, type the following command:
 
 ::
 
-  $ $DSQSS_ROOT/bin/dsqss_pre.py -i std.in
+   $ $DSQSS_ROOT/bin/dsqss_pre.py -i std.in
 
 Then, input files ``param.in`` and ``lattice.xml`` are generated.
 
@@ -74,7 +74,7 @@ Random numbers parallel computation is possible by using MPI (it is also possibl
 
 Calculation can be done independently for parallel number (4 for the above example), and the accuracy can be improved by increasing the number of Monte Carlo samples.
 
-Interpretation of calculation result
+Analyze calculation results
 ************************************
 
 The calculation result is written to the output file ``sample.log``.

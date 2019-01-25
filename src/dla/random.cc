@@ -23,6 +23,8 @@
 #include <ctime>
 double Random::Dicex(void) { return (double)rand() / RAND_MAX; }
 void Random::InitRand() { srand((unsigned)time(NULL)); }
+
+// Uniform [0,1)
 double Random::Uniform(void) {
   if (navr == 0) {
     Rint i;
@@ -36,8 +38,6 @@ double Random::Uniform(void) {
   navr--;
   return runit * iri[iptr++];
 }
-//: 一様分布 [0,1)
-// 戻り値に 0以上、１未満の乱数(実数値)を返す。
 
 Rint Random::Int(Rint ilimit) {
   if (navr == 0) {
@@ -53,6 +53,7 @@ Rint Random::Int(Rint ilimit) {
   return (Rint)(ilimit * runit * iri[iptr++]);
 }
 
+// Uniform Integer (0, 1, ..., 2**nrbit0-1)
 Rint Random::Int(void) {
   if (navr == 0) {
     Rint i;
@@ -66,9 +67,8 @@ Rint Random::Int(void) {
   navr--;
   return (Rint)iri[iptr++];
 }
-//: 離散一様分布 (0, 1, .. ,2**nrbit0-1)
-// 戻り値に 0以上、2**nrbit0未満の乱数(整数)を返す。
 
+// Random Permutation
 void Random::Perm(Rint N, int *Index) {
   for (Rint i = 0; i < N; i++)
     Index[i] = i;
@@ -92,7 +92,6 @@ void Random::Perm(Rint N, int *Index) {
     }
     */
 }
-//: Permutation生成
 
 void Random::Scramble(Rint N, int *Index) {
   for (Rint i = 0; (i + 1) < N; i++) {

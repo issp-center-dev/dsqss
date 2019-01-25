@@ -303,7 +303,7 @@ inline void Quantities::show4SF(FILE *F) {
 }
 #endif
 
-void Quantities::show_L() {  //ÄÌ¾ï
+void Quantities::show_L() {
 
   int k;
   long R, R_, Ry;
@@ -457,7 +457,7 @@ void Quantities::show(ofstream &F, FILE *SFF) {
 }
 
 //////
-void Quantities::Output(std::string const & fname, double g) {  //¥¨¥é¡¼¥Ð¡¼¤Ê¤·
+void Quantities::Output(std::string const & fname, double g) {
 
   std::ofstream file(fname.c_str(), std::ios::app);
   file << sp->Htr << " " << sp->mu << " " << sp->Vb1 << " " << sp->tb << " " << N->B << " " << g << std::endl;
@@ -500,8 +500,6 @@ void Quantities::WindingNumber2() {
   MCmean_S[wnd2 * 2 + 1] = ww * ww;
 }
 
-//*******************Ì©ÅÙ************************
-
 void Quantities::Density(GraphSpace::Vertex *world, GraphSpace::Vertex *worldB) {
   double atot = 0.0, btot = 0.0, stot = 0.0, xtot = 0.0;
 
@@ -536,14 +534,10 @@ void Quantities::Compressibility() {
   MCmean_S[comp * 2 + 1] = MCmean_S[comp * 2] * MCmean_S[comp * 2];
 }
 
-//*******************¥¨¥Í¥ë¥®¡¼************************
-
 void Quantities::Energy() {
   MCmean_S[ene * 2]     = (sp->Eu + sp->Et - MCmean_S[nver * 2] / N->B) / (double)N->V;
   MCmean_S[ene * 2 + 1] = MCmean_S[ene * 2] * MCmean_S[ene * 2];
 }
-
-//*******************´¶¼õÎ¨************************
 
 void Quantities::NumberOfVertices(int countv, int mcs) {
   values_S[nver] = countv;
@@ -554,8 +548,6 @@ void Quantities::SpecificHeat() {
       (MCmean_S[nver * 2 + 1] - MCmean_S[nver * 2] * MCmean_S[nver * 2] - MCmean_S[nver * 2]) / (double)N->V;
   MCmean_S[spe * 2 + 1] = MCmean_S[spe * 2] * MCmean_S[spe * 2];
 }
-
-//*******************¥ï¡¼¥à¿ô************************
 
 void Quantities::NumberOfWorms(vector<GraphSpace::Vertex> &ev, int mcs) {
   for (int i = 0; i < V; i++)
@@ -575,13 +567,9 @@ void Quantities::NumberOfWorms(vector<GraphSpace::Vertex> &ev, int mcs) {
 
   values_S[nwor] = Nw;
 }
-//*******************¥ï¡¼¥à¿ô************************
-
 void Quantities::NumberOfKinks(int Nk, int mcs) {
   values_S[nkin] = Nk;
 }
-
-//*******************´¶¼õÎ¨************************
 
 void Quantities::Susceptibility() {
   double lx = 0.0;
@@ -600,8 +588,6 @@ void Quantities::Susceptibility() {
 
   MCmean_S[xmx * 2 + 1] = MCmean_S[xmx * 2] * MCmean_S[xmx * 2];
 }
-
-//*******************Ä¶Î®Æ°OP¡¢¥°¥ê¡¼¥ó´Ø¿ô************************
 
 void Quantities::CondensateFraction(int mcs, GraphSpace::Vertex *world) {
   double atot = 0.0, ctot = 0.0;

@@ -1,29 +1,15 @@
 .. -*- coding: utf-8 -*-
 .. highlight:: none
 
-Run DSQSS/PMWA
+Output files for DSQSS/PMWA
 ==============================
-After generating the input file, PMWA runs by typing the following command (the name of the input file is assumed as ``param.in``).
-Execution file is different depending on the system, i.e. the spin system or the hard core boson system.
 
-1. Spin system
-
-  ``$pmwa_H param.in``
-  
-2. Hard core boson system
-
-  ``$pmwa_B param.in``
-
-After calculation, one result file and two temporary files for restart mode (evout_sample.log, RND_evout_sample.log) are outputted.
-
-  
-Output files
-==============================
-Here, the parameters specific to PMWA for one result file and two temporary files for restart mode are described.
+DSQSS/PMWA outputs one result file and two temporary files for restart calculation (evout_sample.log, RND_evout_sample.log).
 
 - Result file
-  
-  .. csv-table::
+
+  Many parameters are common to DSQSS/DLA. In this section, the parameters which are not included in DSQSS/DLA or where the usage is different from DSQSS/DLA are explained.
+    .. csv-table::
      :header-rows: 1
      :widths: 1,1,4
 
@@ -47,10 +33,31 @@ Here, the parameters specific to PMWA for one result file and two temporary file
      I, the maximum number of vertices, The maximum number of vertices
      I, the maximum number of worms, The maximum number of worms
 
-Here, the type is the letter given to the beginning of each line of output. P, R, I indicate Parameter, Result, Information respectively.
+  Here, the type means the letter given to the beginning of each line of output. P, R, I indicate Parameter, Result, Information, respectively.
 
-- Output files for restart mode
+- File for restart calculation
+
+  PMWA implements the restart function, and if there are two files ``evout_sample.log`` and ``RNDevout_sample.log``, a restart is forcibly performed.
+  In the following, the output contents of each file are briefly described.
 	
+  1. evout_sample.log
+    
+  In this file, the number of cycles at the end of computation, information on world lines, and vertex information are outputted.
+  In restart calculation, the loaded arrangement is set as the starting condition.
+
+  ::
+  
+    26 : Number of cycles at the end of calculation.
+    0 1 : Information on the world line at 0-th site in the domain.
+    Information on the world line of the section between i/N beta, (i+1)/N beta; 0: down, 1: up
+    0 0 : Information on the world line at the 1st site in the domain.
+    1 1 : Information on the world line at the 2nd site in the domain.
+    ...
+    8 0.056997107 2 1 4 :lavel for vertex, tau, kind of vertex, Number of world lines, Bond number
+    9 0.056997107 2 0 5
+    44 0.28066013 2 1 3
+
+  
 PMWA implements the restart function, and if there are two files below, a restart is automatically performed. Below, a brief description of the output contents of each file is described.
 	
   1. evout_sample.log
@@ -91,4 +98,3 @@ PMWA implements the restart function, and if there are two files below, a restar
   2. RNDevout_sample.log
      
      The output binary file for objects generating random numbers. At recalculation, calculations are performed with the random number information which is read as the initial condition.
-

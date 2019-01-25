@@ -6,25 +6,24 @@ About DSQSS
 
 Overview
 ****************
-DSQSS is a program package for solving quantum many-body problems defined on lattices. It is based on the quantum Monte Carlo method in Feynman's path integral representation. It covers a broad range of problems taking input files that define arbitrary unit cells in arbitrary dimensions, and arbitrary matrix elements of the interactions among arbitrary number of degrees of freedom.
+DSQSS is a program package for solving quantum many-body problems defined on lattices. It is based on the quantum Monte Carlo method in Feynman's path integral representation. It covers a broad range of problems written by flexible input files that define arbitrary unit cells in arbitrary dimensions, and arbitrary matrix elements of the interactions among arbitrary number of degrees of freedom.
 
-For example, you can perform finite temperature calculation of XXZ spin model by specifying parameters such as dimension, size of lattice, anisotropic coupling constants, length of spin, strength of magnetic field, temperature. You can calculate Bose-Hubbard model as well as quantum spin model. PMWA (Parallel Multi Worm Algorithm) suits for large-scale non-trivial parallel calculation by domain parallelization.
+For example, you can perform finite temperature calculation of XXZ spin model by specifying parameters such as dimension, size of lattice, anisotropic coupling constants, length of spin, strength of magnetic field, and temperature. You can calculate Bose-Hubbard model as well as quantum spin model. PMWA (Parallel Multi Worm Algorithm) suits for large-scale non-trivial parallel calculation by domain parallelization.
 
-DSQSS consists of the following sub packages.
+DSQSS consists of the following subpackages.
 
 - serial (/dsqss)
-
     1. Hamiltonian file generators: ``hamgen_H`` (Spin system), ``hamgen_B`` (Boson system)
-    2. Lattice file generators: ``lattgene``
+    2. Lattice file generator: ``lattgene``
     3. Algorithm file generator:  ``dla_alg``
-    4. QMC engine (directed loop algorithm): ``dla_H`` (Spin system), ``dla_B`` (Boson system)
+    4. QMC engines (directed loop algorithm): ``dla_H`` (Spin system), ``dla_B`` (Boson system)
 
 - non-trivial parallel (/pmwa)
-    1. Lattice file generators: ``lattgene_P``
-    2. QMC engine (multiworm): ``pmwa_H`` ( XXZ spin model), ``pmwa_B`` (Hard core Boson)
+    1. Lattice file generator: ``lattgene_P``
+    2. QMC engines (multiworm): ``pmwa_H`` ( XXZ spin model), ``pmwa_B`` (Hard core Boson)
 
 - tools (/tool)
-    1. Generate input files: ``dsqss_pre.py``
+    1. Input files generator: ``dsqss_pre.py``
 
 
 Developers

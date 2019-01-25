@@ -131,7 +131,7 @@ void Block::initialize(const std::string& FNAME, const std::string& name) {
   FileReader F(FNAME.c_str());
   int NW;
   std::string* W;
-  F.getWordList(NW, W);  //単語の数、最初の括弧<algorithm>
+  F.getWordList(NW, W);  // The number of words and the first name
   initialize(W, name);
   delete[] W;
 }

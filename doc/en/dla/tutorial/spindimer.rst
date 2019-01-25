@@ -1,7 +1,7 @@
 Energy calculation of the antiferromagnetic Heisenberg dimer by DSQSS/DLA
 ==========================================================================
 
-This tutorial gives how to use DSQSS/DLA through a calculation the energy of the :math:`S=1/2` antiferromagnetic Heisenberg dimer :math:`\mathcal{H} = J \vec{S}_1 \cdot \vec{S}_2` .
+This tutorial gives how to use DSQSS/DLA through a calculation the energy of the :math:`S=1/2` antiferromagnetic Heisenberg dimer :math:`\mathcal{H} = -J \vec{S}_1 \cdot \vec{S}_2` .
 
 DSQSS/DLA calculation has the following three parts:
 
@@ -19,7 +19,7 @@ DSQSS/DLA requires the following input files:
 #. lattice file
 #. algorithm file
 
-``dsqss_pre.py`` is a utility tool to generate these file from one textfile such as the following (sample/dla/01_spindimer/std.in)
+``dsqss_pre.py`` is a utility tool to generate these files from one textfile such as the following (sample/dla/01_spindimer/std.in)
 ::
 
   [System]
@@ -61,7 +61,7 @@ Once input files are prepared, you can perform a quantum Monte Carlo calculation
 
 ``dla_H`` is a dla solver for spin systems. If you want to deal with Bose-Hubbard models, please use ``dla_B``.
 
-You can perform random number parallelization by using MPI.
+You can perform random number parallelization by using MPI. [#fn_ompi_macos]_
 ::
 
   $ mpiexec -np 4 $DSQSS_ROOT/bin/dla_H param.in
@@ -82,3 +82,11 @@ you can for example draw this by the ``grep`` command by the following.
 
 The two figures stand for the expectation value and the statistical error, respectively.
 The result value is compatible with the exact solution, :math:`-3|J|/8 = -0.375|J|`, within the statistical error.
+
+.. only:: html
+
+   .. rubric:: Footnote
+
+.. [#fn_ompi_macos] After finishing DSQSS/DLA, the OpenMPI on macOS may say an error message, ``No such file or directory (errno 2)``. 
+   You can ignore this error safely.
+   If you're annoyed by it, please put an extra option ``--mca shmem posix`` to ``mpiexec``.

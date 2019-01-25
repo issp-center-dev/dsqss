@@ -15,8 +15,8 @@ The list of input files
     qmc.inp, "Parameter list for the simulation, e.g., the number of Monte Carlo sets."
     lattice.xml, "Definition of the lattice."
     algorithm.xml, "Definition of the algorithm (e.g., scattering rate of a worm)."
-    sf.xml, "Indication of wave vectors for structure factors."
-    cf.xml, "Indexing directions between all the sites."
+    sf.xml, "Indication of wave vectors for structure factors. (optional)"
+    cf.xml, "Indexing directions between all the sites. (optional)"
 
 Parameter file ``qmc.inp``
 **********************************
@@ -35,16 +35,16 @@ The list of parameters are the following,
 
     name, type, default, description
     beta, double, --, "Inverse temperature. Overwrite a setting in lattice.xml."
-    npre, int, 1000, "The number of Monte Carlo steps in the pre calculation phase where the number of creation trials of a pair of worms in one Monte Carlo sweep is defined."
+    npre, int, 1000, "The number of Monte Carlo steps in the pre-calculation phase where the number of creation trials of a pair of worms in one Monte Carlo sweep is defined."
     ntherm, int, 1000, "The number of Monte Carlo sweeps to thermalize the system."
     ndecor, int, 1000, "The number of Monte Carlo sweeps to reduce autocorrelation time between two preceding sets."
     nmcs, int, 1000, "The number of Monte Carlo sweeps to calculate mean values of observables."
     nset, int, 10, "The number of Monte Carlo sets."
-    simulationtime, int,  0.0, "Simulation time in second."
+    simulationtime, double,  0.0, "Simulation time in second."
     seed, int, 198212240, "The seed of the random number generator."
     nvermax, int,  10000, "The maximum number of vertices."
     nsegmax, int,  10000, "The maximum number of world-line segments."
-    algfile, int,  algorithm.xml, "The filename of an algorithm file."
+    algfile, string,  algorithm.xml, "The filename of an algorithm file."
     latfile, string, lattice.xml, "The filename of a lattice file."
     sfinpfile, string, --,  "A structure factor file. If it is an empty string, structure factors will not be calculated."
     cfinpfile, string,  --, "A real space temperature Green's function file. If it is an empty string, real space temperature Green's functions will not be calculated."
@@ -74,7 +74,7 @@ Lattice file ``lattice.xml``
 
 A lattice file is a textfile written in XML format.
 This defines timespace to be simulation, for example, the number of sites, the connections between sites, the inverse temperature, and so on.
-This file can be very complicated, so DSQSS has an utility tool ``lattgene`` to generate lattice files describing common lattices, such as a hypercubic lattice.
+This file can be very complicated, so DSQSS has a utility tool ``lattgene`` to generate lattice files describing common lattices, such as a hypercubic lattice.
 
 The lattice file has a unique element named "Lattice". The other elements belong to "Lattice" as children.
 
@@ -149,7 +149,7 @@ Algorithm file ``algorithm.xml``
 
 An algorithm file is a textfile written in XML format.
 This defines the details of interactions, for example, the scattering probability of a worm head.
-This file can be very complicated, so DSQSS has an utility tools ``hamgen_H``, ``hamgen_B`` and ``dla_alg`` to generate algorithm files describing common models, such as Heisenberg model.
+This file can be very complicated, so DSQSS has a utility tool ``dla_alg`` to generate algorithm files from more simple file, the Hamiltonian file introduced later.
 
 The algorithm file has a unique element named "Algorithm". The other elements belong to "Algorithm" as children.
 
@@ -328,7 +328,6 @@ Algorithm/Vertex/VType
   The index of the vertex.
 
 Algorithm/Vertex/VCategory
-  
   0. Boundary of imaginary time. Users need not define this.
   1. Worm tail.
   2. Interaction.
@@ -369,13 +368,13 @@ Algorithm/Vertex/InitialConfiguration
 
 Algorithm/Vertex/InitialConfiguration/State
   The initial states of the legs of the vertex.
-  Since the number of the legs is as twice as the number specified by "Algorithm/Vertex/NBody", say m,
-  this takes 2m integers.
+  Since the number of the legs is as twice as the number specified by "Algorithm/Vertex/NBody", say :math:`m`,
+  this takes :math:`2m` integers.
   Legs are in the same order as the corresponding sites.
   For two legs on the same site, the leg with the smaller imaginary time comes first.
 
 Algorithm/Vertex/InitialConfiguration/IncomingDirection
-  The index of the leg which a worm head comes from.
+  The index of the leg from which a worm head comes.
 
 Algorithm/Vertex/InitialConfiguration/NewState
   The state of the "Algorithm/Vertex/InitialConfiguration/IncomingDirection" leg after a worm head comes.
@@ -387,11 +386,148 @@ Algorithm/Vertex/InitialConfiguration/Channel
   A scattering channel.
   This takes two integers and one floating number.
 
-  - First figure denotes the index of the leg where the scattered worm head goes.
-  - Second figure denotes the state of the leg where the scattered worm head goes.
+  - First figure denotes the **index** of the leg where the scattered worm head goes out.
+  - Second figure denotes the **state** of the leg where the scattered worm head goes out after the scattering.
   - Last figure denotes the probability of this channel.
 
   For the special case, the pair-annihilation of worm heads, let both the first and the second integer be -1.
+
+Hamiltonian file ``hamiltonian.xml``
+************************************************
+
+A Hamiltonian file is a textfile written in XML format.
+This defines the local Hamiltonians, e.g., a bond Hamiltonian.
+This file is used as an input of ``dla_alg`` in order to generate ``algorithm.xml`` .
+DSQSS has utility tools ``hamgen_H`` and ``hamgen_B`` to generate hamiltonian files describing the Heisenberg spin model and the Bose-Hubbard model.
+
+The Hamiltonian file has a unique element named "Hamiltonian". The other elements belong to "Hamiltonian" as children.
+
+Hamiltonian
+  The root element.
+  This has children, "General", "Site", "Source", and "Interaction".
+
+Hamiltonian/General
+  General parameters such as the number of site types.
+  This has children, "NSTYPE", "NITYPE", "NXMAX", and "Comment".
+  ::
+
+     <Hamiltonian>
+        <General>
+          <Comment> SU(2) Heisenberg model with S=1/2 </Comment>
+          <NSTYPE> 1 </NSTYPE>
+          <NITYPE> 1 </NITYPE>
+          <NXMAX>  2 </NXMAX>
+        </General>
+       ...
+     </Hamiltonian>
+
+Hamiltonian/General/Comment
+  (Optional) Comment. DSQSS ignores this.
+
+Hamiltonian/General/NSTYPE
+  The number of site types.
+
+Hamiltonian/General/NITYPE
+  The number of interaction types.
+
+Hamiltonian/General/NXMAX
+  The maximum number of states on a site.
+  For example, :math:`2S+1` for a spin system with local spin :math:`S`.
+
+Hamiltonian/Site
+  This defines a site type, for example, the number of states.
+  This has children "STYPE", "TTYPE", and "NX".
+  ::
+
+    <Hamiltonian>
+      ...
+      <Site>
+        <STYPE> 0 </STYPE>
+        <TTYPE> 0 </TTYPE>
+        <NX>   2 </NX>
+      </Site>
+      ...
+    </Hamiltonian>
+
+Hamiltonian/Site/STYPE
+  The index of site type.
+
+Hamiltonian/Site/TTYPE
+  The index of the source type (type of pair creation/annihilation of worm-heads.)
+
+Hamiltonian/Site/NX
+  The number of states of the site.
+
+
+Hamiltonian/Source
+  This defines a source type, that is, the pair-creation/annihilation of worm-heads.
+  This has children "TTYPE", "STYPE", and "Weight".
+  ::
+
+      <Source>
+        <TTYPE> 0 </TTYPE>
+        <STYPE> 0 </STYPE>
+        <Weight> 0 1       0.5000000000000000 </Weight>
+        <Weight> 1 0       0.5000000000000000 </Weight>
+      </Source>
+   
+Hamiltonian/Source/TTYPE
+   The index of the source type.
+
+Hamiltonian/Source/STYPE
+   The index of the site type.
+
+Hamiltonian/Source/Weight
+  The weight of the creation/annihilation operator.
+  This takes two integers and one floating number.
+  The integers denote the states of the site before and after applying the operator, respectively.
+  The floating number denotes the matrix element.
+
+  For example, ``0 1 0.5`` means :math:`\langle 1 | \mathcal{H} | 0 \rangle = 0.5`.
+
+Hamiltonian/Interaction
+  This defines an interaction type.
+  This has children "ITYPE", "STYPE", "NBODY", and "Weight".
+  ::
+
+    <Hamiltonian>
+      ...
+      <Interaction>
+        <ITYPE> 0 </ITYPE>
+        <NBODY> 2 </NBODY>
+        <STYPE> 0 0 </STYPE>
+        <Weight> 0 0 0 0      -0.2500000000000000 </Weight>
+        <Weight> 1 1 0 0       0.2500000000000000 </Weight>
+        <Weight> 1 0 0 1       0.5000000000000000 </Weight>
+        <Weight> 0 1 1 0       0.5000000000000000 </Weight>
+        <Weight> 0 0 1 1       0.2500000000000000 </Weight>
+        <Weight> 1 1 1 1      -0.2500000000000000 </Weight>
+      </Interaction>
+      ...
+    </Hamiltonian>
+
+Hamiltonian/Interaction/ITYPE
+  The index of the interaction type.
+
+Hamiltonian/Interaction/NBODY
+  The number of sites involved in this interaction.
+  An onebody interaction such as the Zeeman term has 1 and a twobody interaction such as the exchange coupling has 2.
+  Three or higher body interaction can be treated.
+
+Hamiltonian/Interaction/ITYPE
+  The indices of sites involved in this interaction.
+  This takes NBODY integers.
+
+Hamiltonian/Interaction/Weight
+  The matrix elements of the local Hamiltonian.
+
+  This takes integers as many as :math:`2\times` NBODY and one preceding floating number.
+  The integers denote the states of sites before and after applying the local Hamiltonian.
+  The last floating number denotes the matrix element multiplied by :math:`-1`.
+  For off-diagonal elements, this value should be positive [#fn_reweighting]_.
+
+  For example, ``0 0 1 1 0.25`` means :math:`\langle 0 1 | \mathcal{H} | 0 1 \rangle = -0.25`
+  and ``0 1 1 0 0.5`` means :math:`\left| \langle 1 0 | \mathcal{H} | 0 1 \rangle \right| = 0.5`.
 
 Structure factor file ``sf.xml``
 *********************************
@@ -403,7 +539,7 @@ This defines wave vectors and the discretization of imaginary time to calculate 
     S^{zz}(\vec{k},\tau) \equiv
       \left\langle M^z(\vec{k},\tau)M^z(-\vec{k},0) \right\rangle - \left\langle M^z(\vec{k},\tau)\right\rangle \left\langle M^z(-\vec{k},0)\right\rangle .
 
-DSQSS has an utility tool to generate a structure factor file, ``sfgene``.
+DSQSS has a utility tool to generate a structure factor file, ``sfgene``.
 
 A structure factor file has only one element, "StructureFactor", and the other elements are children of this.
 
@@ -428,7 +564,7 @@ StructureFactor/NumberOfElements
   The number of the combination of wave vectors and sites.
 
 StructureFactor/SF
-  The phase factor :math:`z = \exp{vec{r}\cdot\vec{k}}` for a pair of a wave vector and a site.
+  The phase factor :math:`z = \exp{\vec{r}\cdot\vec{k}}` for a pair of a wave vector and a site.
   This takes four figures, ":math:`\mathrm{Re}z`", ":math:`\mathrm{Im}z`", "the index of the site", "the index of the wave vector".
   "StructureFactor" should has this elements as many as the number specified by "StructureFactor/NumberOfElements".
 
@@ -439,11 +575,11 @@ Real space temperature Green's function file is a textfile written in a XML-like
 This defines relative coordinate between two sites, :math:`\vec{r}_{ij}`, to calculate real space temperature Green's function,
 
 .. math::
-  G(\vec{r},\tau) \equiv \frac{1}{N^2}\sum{i,j}\left\langle M_i^+(\tau) M_j^- \right\rangle \delta(\vec{r}-\vec{r}_{ij}) .
+  G(\vec{r},\tau) \equiv \frac{1}{N^2}\sum_{i,j}\left\langle M_i^+(\tau) M_j^- \right\rangle \delta(\vec{r}-\vec{r}_{ij}) .
 
 More precisely, this groups all the pair of sites by the relative coordinates.
 
-DSQSS has an utility tool to generate a real space temperature Green's function file, ``cfgene``.
+DSQSS has a utility tool to generate a real space temperature Green's function file, ``cfgene``.
 
 A real space temperature Green's function file has only one element, "CorrelationFunction", and the other elements belong to this as children.
 
@@ -461,7 +597,7 @@ CorrelationFunction/NumberOfKinds
   The number of relative coordinates.
 
 CorrelationFunction/CF
-  This takes three integers, "the index of the relative coordinate", "the index of the site i", and "the index of the site j".
+  This takes three integers, "the index of the relative coordinate", "the index of the site :math:`i`", and "the index of the site :math:`j`".
   "CorrelationFunction" should has this elements as many as the number specified by "CorrelationFunction/NumberOfKinds".
 
 
@@ -476,3 +612,14 @@ This defines wave vectors and the discretization of imaginary time to calculate 
 
 Since this file has the format as same as that of the structure factor file including the names of elements,
 users can use the same file.
+
+
+
+.. only:: html
+
+   .. rubric:: Footnote
+
+.. [#fn_reweighting]
+  In other words, we always perform a simulation of the "absolute" system.
+  We plans to implement the negative-sign reweighting and remove this limitation in DSQSS v2.
+

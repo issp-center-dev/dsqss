@@ -144,11 +144,7 @@ void Lattice::read() {
       S(id).init(ALG.getSiteProperty(st), mt);
       NSMTYPE = std::max(NSMTYPE, mt);
 
-#ifdef NORM
-      S(id).setBeta(1.0);
-#else
       S(id).setBeta(BETA);
-#endif
     }
     if (B.getName() == "I") {
       int id = B.getInteger(0);
@@ -204,7 +200,6 @@ void Lattice::read() {
 void Lattice::initialize() {
   AutoDebugDump("Lattice::initialize");
 
-  //---// サイトに相互作用が働くサイトを登録する．//
   //set<Interaction*> InteractionOnEachSite[NSITE];
   std::set<Interaction*>* InteractionOnEachSite;
   InteractionOnEachSite = new std::set<Interaction*>[NSITE];
@@ -295,11 +290,7 @@ void Lattice::setBeta(double beta) {
   }
   BETA = beta;
   for(int i=0;i<NSITE; ++i){
-#ifdef NORM
-      S(i).setBeta(1.0);
-#else
       S(i).setBeta(BETA);
-#endif
   }
 }
 

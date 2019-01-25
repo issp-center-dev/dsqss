@@ -5,7 +5,6 @@
 
 #include "../common/timer.hpp"
 
-//************************************Configurationクラスここから***********************************************************
 //#define Bcheck
 //#include "graphspace.cpp"
 
@@ -32,7 +31,7 @@ void Configuration::DeterminationNworm(int MCS, My_rdm *MR, Quantities *QNT) {
 }
 
 /*
- * 全ワームの総合移動距離が時空間体積とおなじになるような更新回数を調べてNCycle にする
+ * Determine NCycle so that total distance of all the worms during NCycle updates is about V*beta
  */
 void Configuration::updateAnner(int MCS, My_rdm *MR, Quantities *QNT) {
   MPI_Status status;
@@ -146,7 +145,6 @@ void Configuration::updateAnner(int MCS, My_rdm *MR, Quantities *QNT) {
 }
 
 void Configuration::sweep(int MCS, My_rdm *MR, Quantities *QNT) {
-  // worm 数を測るかどうかのフラグ
   For_Nworm = false;
   Wlen      = 0.0;
   while (MCS--) {
@@ -168,7 +166,6 @@ void Configuration::measurement(Quantities *QNT, My_rdm *MR) {
     QNT->Init();
 
     for (int i = 0; i < MC->Nsample; i++) {
-      // worm 数を測るかどうかのフラグ
       For_Nworm = true;
       Wlen      = 0.0;
       if (Diagonal_Update(MR, QNT)) Worm_Update(MR);
@@ -176,7 +173,8 @@ void Configuration::measurement(Quantities *QNT, My_rdm *MR) {
       QNT->Measure(Nv, Nk, ev, WORM, world, worldB, Wlen, W[0], i);
     }
 
-    // 期待値の関数の計算（圧縮率など）
+    // calculate observables as functions of expectation value of other observables,
+    // e.g., compressibility
     QNT->Measure();
 
     QNT->BINsum(bin);
