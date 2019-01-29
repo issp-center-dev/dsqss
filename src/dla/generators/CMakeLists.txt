@@ -5,9 +5,6 @@ if(${CMAKE_PROJECT_NAME} STREQUAL "Project")
 endif(${CMAKE_PROJECT_NAME} STREQUAL "Project")
 
 include_directories(.)
-include_directories(LATTICE/HyperCubic)
-include_directories(LATTICE/OpenCubic)
-include_directories(LATTICE/Triangular)
 
 set(dla_alg_SOURCES dla_alg.cc)
 set(cfgene_SOURCES cfgene.cc)
