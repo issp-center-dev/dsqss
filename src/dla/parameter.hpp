@@ -1,6 +1,7 @@
 #ifndef PARAMETER_H
 #define PARAMETER_H
 
+#include <cmath>
 #include <string>
 #include <cstring>
 #include <algorithm>
@@ -14,6 +15,7 @@
 #include <boost/lexical_cast.hpp>
 
 #include "debug.hpp"
+#include "util.hpp"
 #include "../common/read_keyvalues.h"
 
 #define PNUM 22
@@ -30,9 +32,9 @@ public:
     if (CFINPFILE.length() > 0) {
       FOUT4CF = fopen(CFOUTFILE.c_str(), "w");
       if (!FOUT4CF) {
-        std::string msg("ERROR: cannot open cfoutfile: ");
+        std::string msg("cannot open cfoutfile: ");
         msg += CFOUTFILE;
-        throw std::runtime_error(msg);
+        util::ERROR(msg.c_str());
       }
     } else {
       FOUT4CF = NULL;
@@ -40,9 +42,9 @@ public:
     if (SFINPFILE.length() > 0) {
       FOUT4SF = fopen(SFOUTFILE.c_str(), "w");
       if (!FOUT4SF) {
-        std::string msg("ERROR: cannot open sfoutfile: ");
+        std::string msg("cannot open sfoutfile: ");
         msg += SFOUTFILE;
-        throw std::runtime_error(msg);
+        util::ERROR(msg.c_str());
       }
     } else {
       FOUT4SF = NULL;
@@ -50,9 +52,9 @@ public:
     if (CKINPFILE.length() > 0) {
       FOUT4CK = fopen(CKOUTFILE.c_str(), "w");
       if (!FOUT4CK) {
-        std::string msg("ERROR: cannot open ckoutfile: ");
+        std::string msg("cannot open ckoutfile: ");
         msg += CKOUTFILE;
-        throw std::runtime_error(msg);
+        util::ERROR(msg.c_str());
       }
     } else {
       FOUT4CK = NULL;
@@ -116,6 +118,9 @@ void Parameter::readfile(std::string const& filename) {
   deprecated_parameter(dict, "ntherm", "nmcsd");
 
   BETA = lexical_cast<double>(dict["beta"]);
+  if(std::isinf(BETA) || BETA <= 0.0){
+    util::ERROR("\"beta\" is not specified or invalid.");
+  }
 
   NMCS = lexical_cast<int>(dict["nmcs"]);
   NTHERM = lexical_cast<int>(dict["ntherm"]);
@@ -148,15 +153,15 @@ inline Parameter::Parameter(int NP, char** PLIST) {
   AutoDebugDump("Parameter::Parameter");
 
   if (NP < 2) {
-    std::string msg("ERROR: no parameter file");
-    throw std::runtime_error(msg);
+    std::string msg("no parameter file");
+    util::ERROR(msg.c_str());
   }
 
   readfile(PLIST[1]);
 
   if (RUNTYPE == 1 || RUNTYPE == 2) {
-    std::string msg("ERROR: replica exchange method is disabled in this version.");
-    throw std::runtime_error(msg);
+    std::string msg("replica exchange method is disabled in this version.");
+    util::ERROR(msg.c_str());
   }
 
 #ifdef MULTI
@@ -183,7 +188,7 @@ inline Parameter::Parameter(int NP, char** PLIST) {
 
 void Parameter::init(std::map<std::string, std::string>& dict) {
   dict.clear();
-  dict["beta"]           = "INF";
+  dict["beta"]           = "inf";
   dict["nmcs"]           = "1000";
   dict["nset"]           = "10";
   dict["npre"]           = "1000";

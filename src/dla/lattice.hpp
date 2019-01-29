@@ -114,7 +114,7 @@ void Lattice::read() {
   for (int i = 0; i < D; i++) {
     L[i] = X["LinearSize"].getInteger(i);
   }
-  BETA = X["Beta"].getDouble();
+  BETA = 1.0;
 
   NSITE  = X["NumberOfSites"].getInteger();
   NINT   = X["NumberOfInteractions"].getInteger();
@@ -283,7 +283,7 @@ void Lattice::setBeta(double beta) {
   if(beta < 0.0){
     std::string msg("ERROR: invalid BETA, ");
     msg += tostring(beta);
-    throw std::runtime_error(msg);
+    util::ERROR(msg.c_str());
   }
   BETA = beta;
   for(int i=0;i<NSITE; ++i){

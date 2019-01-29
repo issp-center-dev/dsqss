@@ -12,7 +12,7 @@ Hypercubic lattice generator ``lattgene_C``
 *******************************************
 ``lattgene_C`` is a utility tool to generate a lattice file describing a :math:`D` dimensional hypercubic lattice with the periodic boundary condition.::
 
-  $ lattgene_C [-o filename] D L1 L2 ... LD BETA
+  $ lattgene_C [-o filename] D L1 L2 ... LD
 
 The meaning of parameters are following:
 
@@ -22,43 +22,36 @@ The meaning of parameters are following:
 ``L1 L2 ... LD``
   Linear length of lattice in each dimension.
 
-``BETA``
-  Inversed temperature.
-
 ``filename``
   Name of lattice file (default: ``lattice.xml`` ).
 
 Example::
 
-  ## Chain with 8 sites. Inversed temperature is 10.0.
-  $ lattgene_C 1 8 10.0
+  ## Chain with 8 sites.
+  $ lattgene_C 1 8
 
-  ## Square lattice with 6x6 sites. Inversed temperature is 10.0
+  ## Square lattice with 6x6 sites.
   ## Name of the generated file is lat.xml
-  $ lattgene_C -o lat.xml 2 6 6 10.0
+  $ lattgene_C -o lat.xml 2 6 6
 
 Triangular lattice generator ``lattgene_T``
 *******************************************
 ``lattgene_T`` is a utility tool to generate a lattice file describing a triangular lattice with the periodic boundary condition. ::
 
-  $ lattgene_T [-o filename] L1 L2 BETA
+  $ lattgene_T [-o filename] L1 L2
 
 The meaning of parameters are following:
 
 ``L1 L2``
   Linear length of lattice in each dimension.
 
-``BETA``
-
-  Inversed temperature.
-
 ``filename``
   Name of lattice file (default: ``lattice.xml`` ).
 
 Example::
 
-  ## Triangular lattice with 6x6 sites. Inversed temperature is 10.0
-  $ lattgene_T 1 8 10.0
+  ## Triangular lattice with 6x6 sites.
+  $ lattgene_T 1 6
 
 
 Heisenberg spin Hamiltonian generator ``hamgen_H``

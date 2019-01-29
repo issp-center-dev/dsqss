@@ -15,14 +15,16 @@
 #include <vector>
 #include <stdexcept>
 
+#include "../util.hpp"
+
 using namespace std;
 
 std::vector<int> index2coord(int i, std::vector<int> L){
   if(i < 0){
     std::stringstream ss;
-    ss << "ERROR: invalid index i=";
+    ss << "invalid index i=";
     ss << i;
-    throw std::runtime_error(ss.str());
+    util::ERROR(ss.str().c_str());
   }
   const int D = L.size();
   int N = 1;
@@ -36,7 +38,7 @@ std::vector<int> index2coord(int i, std::vector<int> L){
     std::stringstream ss;
     ss << "ERROR: invalid index i=";
     ss << i;
-    throw std::runtime_error(ss.str());
+    util::ERROR(ss.str().c_str());
   }
   return r;
 }

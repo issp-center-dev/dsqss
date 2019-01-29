@@ -18,6 +18,7 @@
 
 
 #include <cmath>
+#include <string>
 
 #include "../common/version.h"
 
@@ -74,9 +75,7 @@ Simulation::Simulation(Parameter& P0)
       ck(P, LAT, ALG) {
   AutoDebugDump("Simulation::Simulation");
 
-  if(!std::isinf(P.BETA)){
-    LAT.setBeta(P.BETA);
-  }
+  LAT.setBeta(P.BETA);
 
   reset_counters();
 

@@ -43,7 +43,6 @@ class Lattice:
         self.nitypes = 0
         self.nboundary = 0
         self.latvecs = []
-        self.beta = 1.0
 
     def write_xml(self, filename):
         with codecs.open(filename, 'w', 'utf_8') as f:
@@ -61,7 +60,6 @@ class Lattice:
             for L in self.Ls:
                 f.write('{0} '.format(L))
             f.write('</LinearSize>\n')
-            f.write('<Beta> {0} </Beta>\n'.format(self.beta))
             f.write('<NumberOfCells> {0} </NumberOfCells>\n'.format(len(self.sites)))
             f.write('<NumberOfSites> {0} </NumberOfSites>\n'.format(len(self.sites)))
             f.write('<NumberOfInteractions> {0} </NumberOfInteractions>\n'.format(len(self.interactions)))
@@ -102,7 +100,6 @@ class HyperCubicLattice(Lattice):
         self.Ls = parse_list(param['l'], self.dim, int)
         self.sites = []
         self.interactions = []
-        self.beta = float(param.get('beta', 1.0))
         bc = parse_list(param.get('boundarycondition', 1), self.dim, int)
         bondalt = False
         N = 1

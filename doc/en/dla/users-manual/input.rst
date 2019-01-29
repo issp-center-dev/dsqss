@@ -34,7 +34,7 @@ The list of parameters are the following,
     :widths: 1,1,1,4
 
     name, type, default, description
-    beta, double, --, "Inverse temperature. Overwrite a setting in lattice.xml."
+    beta, double, --, "Inverse temperature."
     npre, int, 1000, "The number of Monte Carlo steps in the pre-calculation phase where the number of creation trials of a pair of worms in one Monte Carlo sweep is defined."
     ntherm, int, 1000, "The number of Monte Carlo sweeps to thermalize the system."
     ndecor, int, 1000, "The number of Monte Carlo sweeps to reduce autocorrelation time between two preceding sets."
@@ -86,10 +86,6 @@ Lattice/Comment
 
 Lattice/Dimension
   The dimension of the lattice.
-
-Lattice/Beta
-  The inverse temperature.
-  This is overwritten by the parameter file.
 
 Lattice/LinearSize
   The size of the lattice in units of the unitcell.

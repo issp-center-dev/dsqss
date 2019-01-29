@@ -15,6 +15,7 @@
 
 #include <boost/lexical_cast.hpp>
 
+#include "util.hpp"
 #include "array.h"
 #include "../common/tostring.h"
 
@@ -119,9 +120,9 @@ public:
     strcpy(NAME, name);
     INS.open(NAME);
     if (!INS) {
-      std::string msg("FileReader::open> Error. Unable to open ");
+      std::string msg("cannot open ");
       msg += NAME;
-      throw std::runtime_error(msg);
+      util::ERROR(msg.c_str());
     }
     top = INS.tellg();
     IL = 0;
@@ -160,7 +161,7 @@ public:
     if (i < 0 && i >= NW) {
       std::string msg("FileReader::word> Invalid index ");
       msg += tostring(i);
-      throw std::out_of_range(msg);
+      throw std::runtime_error(msg);
     }
     return WORD[i];
   };

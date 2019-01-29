@@ -34,7 +34,7 @@ DLA の入力ファイル
     :widths: 1,1,1,4
 
     パラメータ名, 型, デフォルト値, 説明
-    beta, double, --, "逆温度. lattice.xml での指定を上書きする."
+    beta, double, --, "逆温度."
     npre, int, 1000, "モンテカルロスイープ中のワーム対生成回数を求める事前計算のためのモンテカルロ試行回数."
     ntherm, int, 1000, "熱平衡化のためのモンテカルロスイープ数."
     ndecor, int, 1000, "セット間の自己相関を取り除くためのモンテカルロスイープ数."
@@ -87,9 +87,6 @@ Lattice/Comment
 
 Lattice/Dimension
   格子の次元.
-
-Lattice/Beta
-  逆温度. パラメータファイルでの指定が優先されます.
 
 Lattice/LinearSize
   ユニットセルを単位とした, 各次元の格子の長さ.
