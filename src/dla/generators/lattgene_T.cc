@@ -36,7 +36,6 @@ void WriteXML(std::vector<int> const& L, double B, std::string const& filename) 
 
   int BD = 3;  //Triangular
 
-  int NumberOfCells            = N;
   int NumberOfInteractions     = N * BD;
   int NumberOfSiteTypes        = 1;
   int NumberOfInteractionTypes = 1;
@@ -70,7 +69,6 @@ void WriteXML(std::vector<int> const& L, double B, std::string const& filename) 
   }
   fout << "</LinearSize>" << endl;
   fout << "<Beta> " << B << " </Beta>" << endl;
-  fout << "<NumberOfCells> " << NumberOfCells << " </NumberOfCells>" << endl;
   fout << "<NumberOfSites> " << N << " </NumberOfSites>" << endl;
   fout << "<NumberOfInteractions> " << NumberOfInteractions << " </NumberOfInteractions>" << endl;
   fout << "<NumberOfSiteTypes> " << NumberOfSiteTypes << " </NumberOfSiteTypes>" << endl;

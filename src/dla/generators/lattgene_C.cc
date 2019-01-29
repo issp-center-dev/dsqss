@@ -35,7 +35,6 @@ void WriteXML(int D, int L[], double B, std::string const& filename) {
     N *= L[i];
   }
 
-  int NumberOfCells            = N;
   int NumberOfInteractions     = N * D;
   int NumberOfSiteTypes        = 1;
   int NumberOfInteractionTypes = 1;
@@ -69,7 +68,6 @@ void WriteXML(int D, int L[], double B, std::string const& filename) {
   }
   fout << "</LinearSize>" << endl;
   fout << "<Beta> " << B << " </Beta>" << endl;
-  fout << "<NumberOfCells> " << NumberOfCells << " </NumberOfCells>" << endl;
   fout << "<NumberOfSites> " << N << " </NumberOfSites>" << endl;
   fout << "<NumberOfInteractions> " << NumberOfInteractions
        << " </NumberOfInteractions>" << endl;

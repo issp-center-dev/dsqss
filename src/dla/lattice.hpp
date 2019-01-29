@@ -42,7 +42,6 @@ public:
   int BD;       // bond dimension
   int* L;       // linear size
   double BETA;  // inverse temperature
-  int NCELL;    // total number of cells
   int NSITE;    // total number of sites
   int NINT;     // total number of interactions
   int NSTYPE;   // number of site types
@@ -117,7 +116,6 @@ void Lattice::read() {
   }
   BETA = X["Beta"].getDouble();
 
-  NCELL  = X["NumberOfCells"].getInteger();
   NSITE  = X["NumberOfSites"].getInteger();
   NINT   = X["NumberOfInteractions"].getInteger();
   NSTYPE = X["NumberOfSiteTypes"].getInteger();
@@ -266,7 +264,6 @@ inline void Lattice::dump() {
   }
   printf("\n");
   printf("  BETA   = %24.16f\n", BETA);
-  printf("  NCELL  = %d\n", NCELL);
   printf("  NSITE  = %d\n", NSITE);
   printf("  NINT   = %d\n", NINT);
   printf("  NSTYPE = %d\n", NSTYPE);
