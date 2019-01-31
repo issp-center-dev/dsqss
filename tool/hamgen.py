@@ -5,9 +5,10 @@ import argparse
 import sys
 
 import dsqss
+import dsqss.hamgen
 
 parser = argparse.ArgumentParser(
-    description='Generate hamiltonian file for dsqss',
+    description='Generate hamiltonian XML file for dsqss',
     add_help=True,
 )
 
@@ -16,19 +17,12 @@ parser.add_argument('-o', '--output', dest='out',
                     default='hamiltonian.xml',
                     help='Output filename',
                     )
-parser.add_argument('--nstypes',
-                    default=1,
-                    type=int,
-                    help='the number of site types',
-                    )
-parser.add_argument('--nitypes',
-                    default=1,
-                    type=int,
-                    help='the number of interaction types',
+parser.add_argument('-l', '--lattice', dest='lat',
+                    default='lattice.dat',
+                    help='Lattice file',
                     )
 
 args = parser.parse_args()
 
-param = dsqss.read_keyvalues(args.input)
-dsqss.generate_hamiltonian(param, outputfile=args.out,
-                           nstypes=args.nstypes, nitypes=args.nitypes)
+ham = dsqss.hamgen.Hamiltonian(args.input, args.lat)
+ham.write_xml(args.out)
