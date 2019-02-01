@@ -7,10 +7,13 @@ import toml
 import dsqss.latgen as latgen
 
 class MatElem:
-    def __init__(self, istate=None, fstate=None, value=None, param=None):
+    def __init__(self, state=None, istate=None, fstate=None, value=None, param=None):
         if param is None:
-            self.istate = istate
-            self.fstate = fstate
+            if istate is not None:
+                self.istate = istate
+                self.fstate = fstate
+            else:
+                self.istate = self.fstate = state
             self.value = value
         else:
             if 'istate' in param:
@@ -20,20 +23,52 @@ class MatElem:
                 self.istate = self.fstate = param['state']
             self.value = param['value']
 
+            if type(self.istate) is not list:
+                self.istate = [self.istate]
+            if type(self.fstate) is not list:
+                self.fstate = [self.fstate]
+
+    def to_dict(self):
+        return {'istate' : self.istate,
+                'fstate' : self.fstate,
+                'value' : self.value}
+
 class Site:
-    def __init__(self, param):
-        self.id = param['id']
-        self.N = param['N']
-        self.elements = [MatElem(param=x) for x in param['elements']]
-        self.sources = [MatElem(param=x) for x in param['sources']]
+    def __init__(self, param=None, id=None, N=None, elements=None, sources=None):
+        if param is not None:
+            self.id = param['id']
+            self.N = param['N']
+            self.elements = [MatElem(param=x) for x in param['elements']]
+            self.sources = [MatElem(param=x) for x in param['sources']]
+        else:
+            self.id = id
+            self.N = N
+            self.elements = elements
+            self.sources = sources
+
+    def to_dict(self):
+        return {'id' : self.id, 'N' : self.N,
+                'elements' : list(map(lambda x: x.to_dict(), self.elements)),
+                'sources' : list(map(lambda x: x.to_dict(), self.sources)),
+                }
 
 class Interaction:
-    def __init__(self, param):
-        self.id = param['id']
-        self.nbody = param['nbody']
-        self.Ns = param['N']
-        self.elements = [MatElem(param=x) for x in param['elements']]
+    def __init__(self, param=None, id=None, nbody=None, Ns=None, elements=None):
+        if param is not None:
+            self.id = param['id']
+            self.nbody = param['nbody']
+            self.Ns = param['N']
+            self.elements = [MatElem(param=x) for x in param['elements']]
+        else:
+            self.id = id
+            self.nbody = nbody
+            self.Ns = Ns
+            self.elements = elements
 
+    def to_dict(self):
+        return {'id' : self.id, 'nbody' : self.nbody, 'N' : self.Ns,
+                'elements' : list(map(lambda x: x.to_dict(), self.elements)),
+                }
 
 class IndeedInteraction:
     def __init__(self, sites, ints, v):
@@ -48,7 +83,7 @@ class IndeedInteraction:
 
         site_elems = []
         for stype in self.stypes:
-            site_elems.append({ siteelem.istate : siteelem.value
+            site_elems.append({ siteelem.istate[0] : siteelem.value
                                 for siteelem in sites[stype].elements})
 
         for state in itertools.product(*map(range, inter.Ns)):
@@ -88,6 +123,16 @@ class Hamiltonian:
             self.interactions[I.id] = I
 
         self.indeed_interactions = [IndeedInteraction(self.sites, self.interactions, v) for v in lat.vertices]
+
+    def to_dict(self):
+        return {'name' : self.name,
+                'sites' : list(map(lambda x: x.to_dict(), self.sites)),
+                'interactions' : list(map(lambda x: x.to_dict(), self.interactions)),
+                }
+
+    def write_toml(self, filename):
+        with codecs.open(filename, 'w', 'utf_8') as f:
+            toml.dump(self.to_dict(), f)
 
     def write_xml(self, filename):
         with codecs.open(filename, 'w', 'utf_8') as f:

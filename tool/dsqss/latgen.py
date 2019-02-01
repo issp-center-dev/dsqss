@@ -4,10 +4,7 @@ import sys
 import re
 import codecs
 
-def ERROR(msg, to_be_continued=False):
-    print('ERROR: {0}\n'.format(msg), file=sys.stderr)
-    if not to_be_continued:
-        sys.exit(1)
+from dsqss.util import ERROR
 
 class Site:
     def __init__(self, site_id, site_type, measure_type, coordinate):
@@ -17,9 +14,15 @@ class Site:
         self.coord = coordinate
         self.z = 0
 
+    def __str__(self):
+        s = '{0} {1} {2}'.format(self.id, self.stype, self.mtype)
+        for c in self.coord:
+            s += (' {0}'.format(c))
+        return s
+
 class Interaction:
     def __init__(self, int_id, int_type, nbody, 
-                 site_indices, direction, edge_flag):
+                 site_indices, edge_flag, direction):
         self.id = int_id
         self.itype = int_type
         self.nbody = nbody,
@@ -27,6 +30,14 @@ class Interaction:
         self.edge  = edge_flag
         self.dir   = direction
         self.vtype = -1
+
+    def __str__(self):
+        s = '{0} {1} {2}'.format(self.id, self.itype, self.nbody)
+        for site in self.sites:
+            s += ' {0}'.format(site)
+        s += ' {0} {1}'.format(self.edge_flag, self.direction)
+        return s
+
 
 class Vertex:
     def __init__(self, v_id,
@@ -39,6 +50,50 @@ class Vertex:
 class Lattice:
     def __init__(self, inp):
         self.load(inp)
+
+    def save(self, out):
+        if type(out) is str:
+            with codecs.open(out, 'w', 'utf-8') as f:
+                self.save(f)
+                return
+
+        out.write('name\n')
+        out.write('{0}\n'.format(self.name))
+        out.write('\n')
+
+        out.write('lattice\n')
+        out.write('{0} # dim\n'.format(self.dim))
+        for x in self.size:
+            out.write('{0} '.format(x))
+        out.write('# size\n')
+        for d in self.dim:
+            out.write('{0} '.format(d))
+            for x in self.latvec[d]:
+                out.write('{0} '.format(x))
+            out.write('# latvec_{0}\n'.format(d))
+        out.write('\n')
+
+        out.write('directions\n')
+        out.write('{0} # ndirections\n'.format(self.ndir))
+        for i, dir in enumerate(self.directions):
+            out.write('{0} '.format(i))
+            for x in dir:
+                out.write('{0} '.format(x))
+            out.write('# direction_{0}\n'.format(i))
+        out.write('\n')
+
+        out.write('sites\n')
+        out.write('{0} # nsites\n'.format(self.nsites))
+        for i, site in enumerate(self.sites):
+            out.write('{0} {1}'.format(i, site))
+            out.write(' # id, type, mtype, coord...\n')
+        out.write('\n')
+
+        out.write('interactions\n')
+        out.write('{0} # nints\n'.format(self.nints))
+        for i, inter in enumerate(self.ints):
+            out.write('{0} {1}'.format(i, inter))
+            out.write(' # id, type, nbody, sites..., edge_flag, direction\n')
 
     def load(self, inp):
         if type(inp) is str:
@@ -178,8 +233,9 @@ class Lattice:
                                               int_type = int(elem[1]),
                                               nbody = nbody,
                                               site_indices = list(map(int, elem[3:(3+nbody)])),
-                                              direction = int(elem[-2]),
-                                              edge_flag = int(elem[-1]))
+                                              edge_flag = int(elem[-2]),
+                                              direction = int(elem[-1]),
+                                              )
 
     def check_all(self):
         self.check_latvec()

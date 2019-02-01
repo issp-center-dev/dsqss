@@ -6,4 +6,6 @@
 import dsqss
 import dsqss.hamgen
 import dsqss.latgen
+import dsqss.hamiltonian
+import dsqss.lattice
 

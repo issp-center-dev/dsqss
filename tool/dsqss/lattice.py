@@ -1,116 +1,46 @@
 import codecs
-from dsqss import parse_list
+from dsqss.latgen import Lattice, Site, Interaction
+from dsqss.util import ERROR, get_as_list, extend_list
 
-def index2coord(index, Ls):
-    D = len(Ls)
+def index2coord(index, size):
+    D = len(size)
     i = 0
     r = [0 for d in range(D)]
     while index > 0:
-        r[i] = index%Ls[i]
-        index //= Ls[i]
+        r[i] = index%size[i]
+        index //= size[i]
         i += 1
     return r
 
-def coord2index(r, Ls):
+def coord2index(r, size):
     index = 0
-    D = len(Ls)
+    D = len(size)
     block = 1
-    for x,L in zip(r,Ls):
+    for x,L in zip(r,size):
         index += block*x
         block *= L
     return index
 
-class Site:
-    def __init__(self, stype, mtype):
-        self.type = stype
-        self.mtype = mtype
-
-class Interaction:
-    def __init__(self, itype, sites, edim, eid=-1):
-        self.type = itype
-        self.sites = sites
-        self.edim = edim
-        self.eid = eid
-
-class Lattice:
-    def __init__(self):
-        self.name = ''
-        self.dim = 0
-        self.sites = []
-        self.Ls = []
-        self.nstypes = 0
-        self.interactions = []
-        self.nitypes = 0
-        self.nboundary = 0
-        self.latvecs = []
-
-    def write_xml(self, filename):
-        with codecs.open(filename, 'w', 'utf_8') as f:
-            f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
-            f.write('<Lattice>\n')
-
-            f.write('<Comment>\n')
-            f.write(self.name + '\n')
-            f.write('</Comment>\n')
-            f.write('\n')
-
-            f.write('<Dimension> {0} </Dimension>\n'.format(self.dim))
-            f.write('<BondDimension> {0} </BondDimension>\n'.format(self.dim))
-            f.write('<LinearSize> ')
-            for L in self.Ls:
-                f.write('{0} '.format(L))
-            f.write('</LinearSize>\n')
-            f.write('<NumberOfCells> {0} </NumberOfCells>\n'.format(len(self.sites)))
-            f.write('<NumberOfSites> {0} </NumberOfSites>\n'.format(len(self.sites)))
-            f.write('<NumberOfInteractions> {0} </NumberOfInteractions>\n'.format(len(self.interactions)))
-            f.write('<NumberOfSiteTypes> {0} </NumberOfSiteTypes>\n'.format(self.nstypes))
-            f.write('<NumberOfInteractionTypes> {0} </NumberOfInteractionTypes>\n'.format(self.nitypes))
-            f.write('<NumberOfEdgeInteractions> {0} </NumberOfEdgeInteractions>\n'.format(self.nboundary))
-            f.write('\n')
-
-            f.write('<!-- <S> site_index site_type measure_type </S> -->\n')
-            for i, site in enumerate(self.sites):
-                f.write('<S> {0} {1} {2} </S>\n'.format(i, site.type, site.mtype))
-            f.write('\n')
-
-            f.write('<!-- <I> int_index int_type nbody site_index... edge_index direction_index </I> -->\n')
-            for i, interaction in enumerate(self.interactions):
-                f.write('<I> {0} '.format(i))
-                f.write('{0} {1} '.format(interaction.type, len(interaction.sites)))
-                for s in interaction.sites:
-                    f.write('{0} '.format(s))
-                f.write('{0} '.format(interaction.eid))
-                f.write('{0} '.format(interaction.edim))
-                f.write('</I>\n')
-            f.write('\n')
-
-            f.write('<!-- <V> direction_index direction... </V> -->\n')
-            for i, bond in enumerate(self.latvecs):
-                f.write('<V> {0} '.format(i))
-                for b in bond:
-                    f.write('{0} '.format(b))
-                f.write('</V>\n')
-
-            f.write('</Lattice>\n')
-
 class HyperCubicLattice(Lattice):
     def __init__(self, param):
-        self.dim = int(param['d'])
+        self.dim = param['dim']
         self.name = '{0} dimensional hypercubic lattice'.format(self.dim)
-        self.Ls = parse_list(param['l'], self.dim, int)
+        self.size = get_as_list(param, 'L', extendto=self.dim)
         self.sites = []
-        self.interactions = []
-        bc = parse_list(param.get('boundarycondition', 1), self.dim, int)
+        self.ints = []
+
+        pbc = get_as_list(param, 'periodic', default=True, extendto=self.dim)
         bondalt = False
+
         N = 1
-        for L in self.Ls:
+        for L in self.size:
             N *= L
         P = [2]*self.dim
         nboundary = 0
         nstype = 0
         nitype = 0
         for i in range(N):
-            ir = index2coord(i, self.Ls)
+            ir = index2coord(i, self.size)
             parities = [x%2 for x in ir]
             p = sum(parities)%2
             if bondalt:
@@ -118,40 +48,46 @@ class HyperCubicLattice(Lattice):
             else:
                 stype = 0
             nstype = max(nstype, stype)
-            self.sites.append(Site(stype, p))
+            self.sites.append(Site(i,stype,p,ir))
 
             for d in range(self.dim):
                 jr = ir[:]
                 jr[d] += 1
-                if jr[d] == self.Ls[d]:
-                    if bc[d]==0:
+                if jr[d] == self.size[d]:
+                    if not pbc[d]:
                         continue
                     jr[d] = 0
-                    eid = nboundary
-                    nboundary += 1
+                    eid = 1
                 else:
-                    eid = -1
-                j = coord2index(jr,self.Ls)
+                    eid = 0
+                j = coord2index(jr,self.size)
                 
                 if bondalt:
                     itype = stype*self.dim + d
                 else:
                     itype=0
                 nitype = max(nitype, itype)
-                I = Interaction(itype=itype,
-                                sites=[i,j],
-                                edim=d,
-                                eid=eid)
-                self.interactions.append(I)
-        self.latvecs = []
+                I = Interaction(int_id = len(self.ints),
+                                int_type=itype,
+                                nbody=2,
+                                site_indices=[i,j],
+                                edge_flag=eid,
+                                direction=d,
+                                )
+                self.ints.append(I)
+        self.latvec = []
+        self.directions = []
         for d in range(self.dim):
             latvec = [0]*self.dim
             latvec[d] = 1
-            self.latvecs.append(latvec)
+            self.latvec.append(latvec)
+            self.directions.append(latvec)
+        self.ndir = len(self.directions)
+        self.nsites = len(self.sites)
+        self.nints = len(self.ints)
         self.nstypes = nstype+1
         self.nitypes = nitype+1
         self.nboundary = nboundary
 
-def generate_lattice(params, outputfile='lattice.xml'):
-    lat = HyperCubicLattice(params)
-    lat.write_xml(outputfile)
+        self.update()
+
