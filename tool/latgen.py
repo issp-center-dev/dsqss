@@ -4,7 +4,7 @@ from __future__ import print_function
 import argparse
 import sys
 
-import dsqss.latgen
+from dsqss.lattice import Lattice
 
 parser = argparse.ArgumentParser(
     description='Generate lattice XML file for dsqss',
@@ -19,5 +19,5 @@ parser.add_argument('-o', '--output', dest='out',
 
 args = parser.parse_args()
 
-lat = dsqss.latgen.Lattice(args.input)
+lat = Lattice(args.input)
 lat.write_xml(args.out)

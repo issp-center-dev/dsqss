@@ -1,187 +1,208 @@
 from math import sqrt
+import itertools
 import codecs
 
-import dsqss.hamgen
-from dsqss.hamgen import Site, Interaction, MatElem
+import toml
 
-from dsqss.util import ERROR, get_as_list, extend_list
+import dsqss.lattice as lattice
+from dsqss.util import tagged
 
-def Splus(S,m):
-    return sqrt((S-m)*(S+m+1.0))
-def Sminus(S,m):
-    return sqrt((S+m)*(S-m+1.0))
-def creator_boson(n):
-    return sqrt(n+1.0)
-def annihilator_boson(n):
-    return sqrt(n)
-
-class SpinSite(Site):
-    def __init__(self, id, M, D, h):
-        '''
-        M: 2S+1
-        D: Sz^2
-        h: -Sz
-        '''
-        S = 0.5*M
-        NX = M+1
-        sources = []
-        elements = []
-        for st in range(NX):
-            m = st-0.5*M
-            elements.append(MatElem(state = st, value = -h*m + D*m*m))
-            if st > 0:
-                # annihilator
-                sources.append(MatElem(istate = st, fstate = st-1,
-                                       value = 0.5*Sminus(S,m)))
-            if st < M:
-                # creator
-                sources.append(MatElem(istate = st, fstate = st+1,
-                                       value = 0.5*Splus(S,m)))
-        super().__init__(id=id, N=NX, elements=elements, sources=sources)
-
-class BoseSite:
-    def __init__(self, id, M, U, mu):
-        '''
-        M: max n
-        U: n_i (n_i - 1)/2
-        mu: -n_i
-        '''
-        M = int(M)
-        NX = M+1
-
-        sources = []
-        elements = []
-        for n in range(NX):
-            elements.append(MatElem(state = n, value = -mu*n + 0.5*U*n*(n-1)))
-            if n > 0:
-                # annihilator
-                sources.append(MatElem(istate = n, fstate = n-1,
-                                       value = annihilator_boson(n)))
-            if n < M:
-                # creator
-                sources.append(MatElem(istate = n, fstate = n+1,
-                                       value = creator_boson(n)))
-        super().__init__(id=id, N=NX, elements=elements, sources=sources)
-
-
-class XXZBond(Interaction):
-    def __init__(self, id, M, z, x):
-        '''
-        M: 2S+1
-        z: Sz_1 Sz_2
-        x: Sx_1 Sx_2 + Sy_1 Sy_2
-        '''
-
-        nbody = 2
-        nx = M+1
-        Ns = [nx,nx]
-        S = 0.5*M
-        Sz = [i-0.5*M for i in range(nx)]
-        Sp = [Splus(S,m) for m in Sz]
-        Sm = [Sminus(S,m) for m in Sz]
-        elements = []
-        for i in range(nx):
-            for j in range(nx):
-                # diagonal
-                w = -z*Sz[i]*Sz[j]
-                if w != 0.0:
-                    elements.append(MatElem(state=[i,j], value=w))
-
-                # offdiagnal
-                w = -0.5*x*Sp[i]*Sm[j]
-                if w != 0.0:
-                    elements.append(MatElem(istate=[i,j],
-                                            fstate=[i+1,j-1],
-                                            value=w))
-                w = -0.5*x*Sm[i]*Sp[j]
-                if w != 0.0:
-                    elements.append(MatElem(istate=[i,j],
-                                            fstate=[i-1,j+1],
-                                            value=w))
-        super().__init__(id=id, nbody=nbody, Ns=Ns, elements=elements)
-
-class BoseBond:
-    def __init__(self, id, M, t, V):
-        '''
-        M: max N
-        t: c_1 a_2 + c_2 a_1
-        V: n_1 n_2
-        '''
-
-        nbody = 2
-        nx = M+1
-        Ns = [nx,nx]
-
-        N = [1.0*n for n in range(nx)]
-        c = [creator_boson(n) for n in N]
-        c[-1] = 0.0
-        a = [annihilator_boson(n) for n in N]
-        elements = []
-        for i in range(self.nx):
-            for j in range(self.nx):
-                # diagonal
-                w = V*i*j
-                if w != 0.0:
-                    elements.append(MatElem(state=[i,j], value=w))
-                # offdiagonal
-                w = -t*c[i]*a[j]
-                if w != 0.0:
-                    elements.append(MatElem(istate=[i,j],
-                                            fstate=[i+1,j-1],
-                                            value=w))
-                w = -t*a[i]*c[j]
-                if w != 0.0:
-                    elements.append(MatElem(istate=[i,j],
-                                            fstate=[i-1,j+1],
-                                            value=w))
-        super().__init__(id=id, nbody=nbody, Ns=Ns, elements=elements)
-
-class HamGen:
-    def __init__(self, param):
-        if param['model'].lower() == 'spin':
-            M = param['M']
-            Ds = get_as_list(param, 'D', 0.0)
-            hs = get_as_list(param, 'h', 0.0)
-            nstypes = max(len(Ds), len(hs))
-            extend_list(Ds, nstypes)
-            extend_list(hs, nstypes)
-            self.sites = [ SpinSite(i,M,D,h)
-                           for i,(D,h) in enumerate(zip(Ds, hs)) ]
-
-            Jzs = get_as_list(param, 'Jz', 0.0)
-            Jxys = get_as_list(param, 'Jxy', 0.0)
-            nitypes = max(len(Jzs), len(Jxys))
-            extend_list(Jzs,  nitypes)
-            extend_list(Jxys, nitypes)
-            self.interactions = [ XXZBond(i, M, Jz, Jx)
-                                  for i,(Jz,Jx) in enumerate(zip(Jzs, Jxys))]
-
-            self.name = 'S={0}/2 XXZ model'.format(M)
-        elif param['model'].lower() == 'boson':
-            M = param['M']
-            Us = get_as_list(param, 'U', 0.0)
-            mus = get_as_list(param, 'mu', 0.0)
-            nstypes = max(len(Us), len(mus))
-            extend_list(Us,  nstypes)
-            extend_list(mus, nstypes)
-            self.sites = [ BoseSite(i,M,U,mu)
-                           for i,(U,mu) in enumerate(zip(Us, mus)) ]
-
-            ts = get_as_list(param, 't', 0.0)
-            Vs = get_as_list(param, 'V', 0.0)
-            nitypes = max(len(ts), len(Vs))
-            extend_list(ts, nitypes)
-            extend_list(Vs, nitypes)
-            self.interactions = [ BoseBond(i, M, t, V)
-                                  for i,(t,V) in enumerate(zip(ts, Vs))]
-            self.name = 'Bose-Hubbard model'
+class MatElem:
+    def __init__(self, state=None, istate=None, fstate=None, value=None, param=None):
+        if param is None:
+            if istate is not None:
+                self.istate = istate
+                self.fstate = fstate
+            else:
+                self.istate = self.fstate = state
+            self.value = value
         else:
-            msg = 'Unknown model: {0}\n'.format(param['model'])
-            msg += 'following are available: spin, boson'
-            raise RuntimeError(msg)
+            if 'istate' in param:
+                self.istate = param['istate']
+                self.fstate = param['fstate']
+            else:
+                self.istate = self.fstate = param['state']
+            self.value = param['value']
+
+            if type(self.istate) is not list:
+                self.istate = [self.istate]
+            if type(self.fstate) is not list:
+                self.fstate = [self.fstate]
+
+    def to_dict(self):
+        return {'istate' : self.istate,
+                'fstate' : self.fstate,
+                'value' : self.value}
+
+class Site:
+    def __init__(self, param=None, id=None, N=None, elements=None, sources=None):
+        if param is not None:
+            self.id = param['id']
+            self.N = param['N']
+            self.elements = [MatElem(param=x) for x in param['elements']]
+            self.sources = [MatElem(param=x) for x in param['sources']]
+        else:
+            self.id = id
+            self.N = N
+            self.elements = elements
+            self.sources = sources
+
+    def to_dict(self):
+        return {'id' : self.id, 'N' : self.N,
+                'elements' : list(map(lambda x: x.to_dict(), self.elements)),
+                'sources' : list(map(lambda x: x.to_dict(), self.sources)),
+                }
+
+class Interaction:
+    def __init__(self, param=None, id=None, nbody=None, Ns=None, elements=None):
+        if param is not None:
+            self.id = param['id']
+            self.nbody = param['nbody']
+            self.Ns = param['N']
+            self.elements = [MatElem(param=x) for x in param['elements']]
+        else:
+            self.id = id
+            self.nbody = nbody
+            self.Ns = Ns
+            self.elements = elements
+
+    def to_dict(self):
+        return {'id' : self.id, 'nbody' : self.nbody, 'N' : self.Ns,
+                'elements' : list(map(lambda x: x.to_dict(), self.elements)),
+                }
+
+class IndeedInteraction:
+    def __init__(self, sites, ints, v):
+        inter = ints[v.int_type]
+        zs = v.zs
+
+        self.itype = v.v_id
+        self.stypes = v.site_types
+        self.nbody = len(self.stypes)
+        elements = {(tuple(elem.istate), tuple(elem.fstate)) : elem.value
+                      for elem in inter.elements}
+
+        site_elems = []
+        for stype in self.stypes:
+            site_elems.append({ siteelem.istate[0] : siteelem.value
+                                for siteelem in sites[stype].elements})
+
+        for state in itertools.product(*map(range, inter.Ns)):
+            val = 0.0
+            for st, els, z in zip(state, site_elems, zs):
+                val += els.get(st, 0.0)/z
+            key = (state, state)
+            if key in elements:
+                elements[key] += val
+            else:
+                elements[key] = val
+
+        self.elements = [MatElem(istate=st[0], fstate=st[1], value=elements[st])
+                         for st in elements]
+
+
+
+class Hamiltonian:
+    def __init__(self, ham_dict, lat):
+        if type(ham_dict) == str:
+            ham_dict = toml.load(ham_dict)
+        if type(lat) == str:
+            lat = lattice.Lattice(lat)
+
+        self.name = ham_dict.get('name', '')
+
+        self.nstypes = len(ham_dict['sites'])
+        self.sites = [None for i in range(self.nstypes)]
+        self.nitypes = len(ham_dict['interactions'])
+        self.interactions = [None for i in range(self.nitypes)]
+
+        for site in ham_dict['sites']:
+            S = Site(site)
+            self.sites[S.id] = S
+        for inter in ham_dict['interactions']:
+            I = Interaction(inter)
+            self.interactions[I.id] = I
+
+        self.indeed_interactions = [IndeedInteraction(self.sites, self.interactions, v) for v in lat.vertices]
 
     def to_dict(self):
         return {'name' : self.name,
                 'sites' : list(map(lambda x: x.to_dict(), self.sites)),
                 'interactions' : list(map(lambda x: x.to_dict(), self.interactions)),
                 }
+
+    def write_toml(self, filename):
+        with codecs.open(filename, 'w', 'utf_8') as f:
+            toml.dump(self.to_dict(), f)
+
+    def write_xml(self, filename):
+        with codecs.open(filename, 'w', 'utf_8') as f:
+            nxmax = 0
+            for site in self.sites:
+                nxmax = max(site.N, nxmax)
+
+            f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+            f.write('<Hamiltonian>\n')
+            indent = '  '
+            level = 1
+            
+            f.write(indent*level + '<General>\n')
+            level += 1
+            f.write(indent*level + tagged('Comment', self.name))
+            f.write(indent*level + tagged('NSTYPE', len(self.sites)))
+            f.write(indent*level + tagged('NITYPE', len(self.indeed_interactions)))
+            f.write(indent*level + tagged('NXMAX', nxmax))
+            level -= 1
+            f.write(indent*level + '</General>\n')
+            f.write('\n')
+
+            for site in self.sites:
+                f.write(indent*level + '<Site>\n')
+                level += 1
+                f.write(indent*level + tagged('STYPE', site.id))
+                f.write(indent*level + tagged('TTYPE', 0))
+                f.write(indent*level + tagged('NX', site.N))
+                level -= 1
+                f.write(indent*level + '</Site>\n')
+                f.write('\n')
+
+            for site in self.sites:
+                f.write(indent*level + '<Source>\n')
+                level += 1
+                f.write(indent*level + tagged('STYPE', site.id))
+                f.write(indent*level + tagged('TTYPE', 0))
+                for elem in site.sources:
+                    if elem.value == 0.0:
+                        continue
+                    f.write(indent*level + tagged('Weight', [elem.istate[0],
+                                                             elem.fstate[0],
+                                                             abs(elem.value)]))
+                level -= 1
+                f.write(indent*level + '</Source>\n')
+                f.write('\n')
+
+            for interaction in self.indeed_interactions:
+                nbody = interaction.nbody
+                f.write(indent*level + '<Interaction>\n')
+                level += 1
+                f.write(indent*level + tagged('ITYPE', interaction.itype))
+                f.write(indent*level + tagged('NBODY', nbody))
+                f.write(indent*level + tagged('STYPE', interaction.stypes))
+
+                for elem in interaction.elements:
+                    f.write(indent*level + '<Weight> ')
+                    for i,j in zip(elem.istate, elem.fstate):
+                        f.write('{0} {1} '.format(i,j))
+                    v = -elem.value
+                    if elem.istate != elem.fstate:
+                        v = abs(v)
+                    f.write('{0:0< 18} '.format(v))
+                    f.write('</Weight>\n')
+
+                level -= 1
+                f.write(indent*level + '</Interaction>\n')
+                f.write('\n')
+
+            level -= 1
+            f.write('</Hamiltonian>\n')
+

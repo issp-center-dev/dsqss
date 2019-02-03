@@ -2,10 +2,8 @@
 from __future__ import print_function
 
 import argparse
-import sys
 
-import dsqss
-import dsqss.hamgen
+from dsqss.hamiltonian import Hamiltonian
 
 parser = argparse.ArgumentParser(
     description='Generate hamiltonian XML file for dsqss',
@@ -24,5 +22,5 @@ parser.add_argument('-l', '--lattice', dest='lat',
 
 args = parser.parse_args()
 
-ham = dsqss.hamgen.Hamiltonian(args.input, args.lat)
+ham = Hamiltonian(args.input, args.lat)
 ham.write_xml(args.out)
