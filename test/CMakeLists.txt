@@ -1,4 +1,3 @@
-find_package(PythonInterp REQUIRED)
 if (MPI_FOUND)
   set(testdirs dla pmwa tool)
 else(MPI_FOUND)
