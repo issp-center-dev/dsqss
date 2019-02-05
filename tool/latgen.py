@@ -4,20 +4,25 @@ from __future__ import print_function
 import argparse
 import sys
 
-from dsqss.lattice import Lattice
+import toml
+
+from dsqss.std_lattice import std_lattice
 
 parser = argparse.ArgumentParser(
-    description='Generate lattice XML file for dsqss',
+    description='Generate lattice file for DSQSS/DLA',
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     add_help=True,
 )
 
 parser.add_argument('input', help='Input filename')
 parser.add_argument('-o', '--output', dest='out',
-                    default='lattice.xml',
+                    default='lattice.dat',
                     help='Output filename',
                     )
 
 args = parser.parse_args()
-
-lat = Lattice(args.input)
-lat.write_xml(args.out)
+inp = toml.load(args.input)
+if 'lattice' in inp:
+    inp = inp['lattice']
+lat = std_lattice(inp)
+lat.save(args.out)

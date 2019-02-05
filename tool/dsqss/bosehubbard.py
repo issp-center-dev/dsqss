@@ -2,7 +2,7 @@ from math import sqrt
 import codecs
 
 import dsqss.hamiltonian
-from dsqss.hamiltonian import Site, Interaction, append_matelem, matelems_todict
+from dsqss.hamiltonian import Site, Interaction, Hamiltonian, append_matelem, matelems_todict
 
 from dsqss.util import ERROR, get_as_list, extend_list
 
@@ -71,7 +71,7 @@ class BoseBond(Interaction):
                                              value=w)
         super(BoseBond, self).__init__(id=id, nbody=nbody, Ns=Ns, elements=elements)
 
-class BoseHubbard_hamiltonian:
+class BoseHubbard_hamiltonian(Hamiltonian):
     def __init__(self, param):
         M = param['M']
         Us = get_as_list(param, 'U', 0.0)
@@ -90,9 +90,3 @@ class BoseHubbard_hamiltonian:
         self.interactions = [ BoseBond(i, M, t, V)
                               for i,(t,V) in enumerate(zip(ts, Vs))]
         self.name = 'Bose-Hubbard model'
-
-    def to_dict(self):
-        return {'name' : self.name,
-                'sites' : list(map(lambda x: x.to_dict(), self.sites)),
-                'interactions' : list(map(lambda x: x.to_dict(), self.interactions)),
-                }

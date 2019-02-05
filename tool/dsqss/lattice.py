@@ -26,7 +26,7 @@ class Interaction:
                  site_indices, edge_flag, direction):
         self.id = int_id
         self.itype = int_type
-        self.nbody = nbody,
+        self.nbody = nbody
         self.sites = site_indices
         self.edge  = edge_flag
         self.dir   = direction
@@ -36,7 +36,7 @@ class Interaction:
         s = '{0} {1} {2}'.format(self.id, self.itype, self.nbody)
         for site in self.sites:
             s += ' {0}'.format(site)
-        s += ' {0} {1}'.format(self.edge_flag, self.direction)
+        s += ' {0} {1}'.format(self.edge, self.dir)
         return s
 
 
@@ -67,7 +67,7 @@ class Lattice:
         for x in self.size:
             out.write('{0} '.format(x))
         out.write('# size\n')
-        for d in self.dim:
+        for d in range(self.dim):
             out.write('{0} '.format(d))
             for x in self.latvec[d]:
                 out.write('{0} '.format(x))
@@ -76,25 +76,28 @@ class Lattice:
 
         out.write('directions\n')
         out.write('{0} # ndirections\n'.format(self.ndir))
+        out.write('# id, coords...\n')
         for i, dir in enumerate(self.directions):
             out.write('{0} '.format(i))
             for x in dir:
                 out.write('{0} '.format(x))
-            out.write('# direction_{0}\n'.format(i))
+            out.write('\n')
         out.write('\n')
 
         out.write('sites\n')
         out.write('{0} # nsites\n'.format(self.nsites))
+        out.write('# id, type, mtype, coord...\n')
         for i, site in enumerate(self.sites):
-            out.write('{0} {1}'.format(i, site))
-            out.write(' # id, type, mtype, coord...\n')
+            out.write('{0}\n'.format(site))
+            # out.write('{0} {1}\n'.format(i, site))
         out.write('\n')
 
         out.write('interactions\n')
         out.write('{0} # nints\n'.format(self.nints))
+        out.write('# id, type, nbody, sites..., edge_flag, direction\n')
         for i, inter in enumerate(self.ints):
-            out.write('{0} {1}'.format(i, inter))
-            out.write(' # id, type, nbody, sites..., edge_flag, direction\n')
+            out.write('{0}\n'.format(inter))
+            # out.write('{0} {1}\n'.format(i, inter))
 
     def load(self, inp):
         if type(inp) is str:
@@ -184,7 +187,7 @@ class Lattice:
             elif state == 'ints':
                 self.load_int(body, count)
                 count += 1
-                if count == self.nsites:
+                if count == self.nints:
                     state = 'waiting'
                     count = 0
         ## end of for line in inp:
@@ -317,12 +320,12 @@ class Lattice:
     def write_xml(self, filename):
         with codecs.open(filename, 'w', 'utf_8') as f:
             f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
-            f.write('<Lattice>\n')
+            f.write('<LATTICE>\n')
 
             f.write(tagged('Comment', self.name))
 
             f.write(tagged('Dimension', self.dim))
-            f.write(tagged('BondDimenstion', self.dim))
+            f.write(tagged('BondDimension', self.dim))
             f.write(tagged('LinearSize', self.size))
             f.write(tagged('NumberOfSites', self.nsites))
             f.write(tagged('NumberOfInteractions', self.nints))
@@ -351,4 +354,4 @@ class Lattice:
             for i, bond in enumerate(self.latvec):
                 f.write(tagged('V', chain([i],bond)))
 
-            f.write('</Lattice>\n')
+            f.write('</LATTICE>\n')

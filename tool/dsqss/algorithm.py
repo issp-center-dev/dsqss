@@ -4,7 +4,7 @@ from itertools import product, chain
 from copy import deepcopy
 import codecs
 
-from dsqss.hamiltonian import Hamiltonian, keystate, append_matelem
+from dsqss.hamiltonian import keystate, append_matelem
 import dsqss.prob_kernel as kernel
 from dsqss.util import ERROR, INFO, tagged
 
@@ -132,6 +132,7 @@ class AlgInteraction:
         self.intelements = deepcopy(hamint.elements)
         self.ebase_negsign = float('inf')
 
+
         sumw = 0.0
         maxo = -float('inf')
         for elem in self.intelements:
@@ -162,7 +163,7 @@ class AlgInteraction:
             k = (st,st)
             self.intelements[k] += self.ebase_nobounce
 
-        self.intelements = {k:v for k in self.intelements if self.intelements[k]>0.0}
+        self.intelements = {k:v for k,v in self.intelements.items() if v>0.0}
 
         initialconfigurations = []
         for st in self.intelements:

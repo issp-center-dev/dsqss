@@ -109,12 +109,9 @@ class IndeedInteraction(object):
                 self.elements[key] = val
 
 class Hamiltonian(object):
-    def __init__(self, ham_dict, lat):
+    def __init__(self, ham_dict):
         if type(ham_dict) == str:
             ham_dict = toml.load(ham_dict)
-        if type(lat) == str:
-            lat = lattice.Lattice(lat)
-
         self.name = ham_dict.get('name', '')
 
         self.nstypes = len(ham_dict['sites'])
@@ -133,9 +130,6 @@ class Hamiltonian(object):
         for site in self.sites:
             self.nxmax = max(site.N, self.nxmax)
 
-        self.indeed_interactions = [IndeedInteraction(self.sites, self.interactions, v) for v in lat.vertices]
-        self.nitypes = len(self.indeed_interactions)
-
     def to_dict(self):
         return {'name' : self.name,
                 'sites' : list(map(lambda x: x.to_dict(), self.sites)),
@@ -145,6 +139,20 @@ class Hamiltonian(object):
     def write_toml(self, filename):
         with codecs.open(filename, 'w', 'utf_8') as f:
             toml.dump(self.to_dict(), f)
+
+class GraphedHamiltonian(Hamiltonian):
+    def __init__(self, ham, lat):
+        if not isinstance(ham, Hamiltonian):
+            super(GraphedHamiltonian, self).__init__(ham)
+        else:
+            super(GraphedHamiltonian, self).__init__(ham.to_dict())
+        self.load_lattice(lat)
+
+    def load_lattice(self, lat):
+        if type(lat) == str:
+            lat = lattice.Lattice(lat)
+        self.indeed_interactions = [IndeedInteraction(self.sites, self.interactions, v) for v in lat.vertices]
+        self.nitypes = len(self.indeed_interactions)
 
     def write_xml(self, filename):
         with codecs.open(filename, 'w', 'utf_8') as f:

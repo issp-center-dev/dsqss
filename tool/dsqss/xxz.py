@@ -1,7 +1,7 @@
 from math import sqrt
 import codecs
 
-from dsqss.hamiltonian import Site, Interaction, append_matelem, matelems_todict
+from dsqss.hamiltonian import Site, Interaction, Hamiltonian, append_matelem, matelems_todict
 
 from dsqss.util import ERROR, get_as_list, extend_list
 
@@ -72,7 +72,7 @@ class XXZBond(Interaction):
         super(XXZBond, self).__init__(id=id, nbody=nbody, Ns=Ns, elements=elements)
 
 
-class XXZ_hamiltonian:
+class XXZ_hamiltonian(Hamiltonian):
     def __init__(self, param):
         M = param['M']
         Ds = get_as_list(param, 'D', 0.0)
@@ -92,9 +92,3 @@ class XXZ_hamiltonian:
                               for i,(Jz,Jx) in enumerate(zip(Jzs, Jxys))]
 
         self.name = 'S={0}/2 XXZ model'.format(M)
-
-    def to_dict(self):
-        return {'name' : self.name,
-                'sites' : list(map(lambda x: x.to_dict(), self.sites)),
-                'interactions' : list(map(lambda x: x.to_dict(), self.interactions)),
-                }
