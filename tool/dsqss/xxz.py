@@ -1,7 +1,7 @@
 from math import sqrt
 import codecs
 
-from dsqss.hamiltonian import Site, Interaction, MatElem
+from dsqss.hamiltonian import Site, Interaction, append_matelem, matelems_todict
 
 from dsqss.util import ERROR, get_as_list, extend_list
 
@@ -19,20 +19,20 @@ class SpinSite(Site):
         '''
         S = 0.5*M
         NX = M+1
-        sources = []
-        elements = []
+        elements = {}
+        sources = {}
         for st in range(NX):
             m = st-0.5*M
-            elements.append(MatElem(state = st, value = -h*m + D*m*m))
+            append_matelem(elements, state = st, value = -h*m + D*m*m)
             if st > 0:
                 # annihilator
-                sources.append(MatElem(istate = st, fstate = st-1,
-                                       value = 0.5*Sminus(S,m)))
+                append_matelem(sources, istate = st, fstate = st-1,
+                                        value = 0.5*Sminus(S,m))
             if st < M:
                 # creator
-                sources.append(MatElem(istate = st, fstate = st+1,
-                                       value = 0.5*Splus(S,m)))
-        super().__init__(id=id, N=NX, elements=elements, sources=sources)
+                append_matelem(sources, istate = st, fstate = st+1,
+                                        value = 0.5*Splus(S,m))
+        super(SpinSite, self).__init__(id=id, N=NX, elements=elements, sources=sources)
 
 
 class XXZBond(Interaction):
@@ -50,26 +50,26 @@ class XXZBond(Interaction):
         Sz = [i-0.5*M for i in range(nx)]
         Sp = [Splus(S,m) for m in Sz]
         Sm = [Sminus(S,m) for m in Sz]
-        elements = []
+        elements = {}
         for i in range(nx):
             for j in range(nx):
                 # diagonal
                 w = -z*Sz[i]*Sz[j]
                 if w != 0.0:
-                    elements.append(MatElem(state=[i,j], value=w))
+                    append_matelem(elements,state=[i,j], value=w)
 
                 # offdiagnal
                 w = -0.5*x*Sp[i]*Sm[j]
                 if w != 0.0:
-                    elements.append(MatElem(istate=[i,j],
-                                            fstate=[i+1,j-1],
-                                            value=w))
+                    append_matelem(elements, istate=[i,j],
+                                             fstate=[i+1,j-1],
+                                             value=w)
                 w = -0.5*x*Sm[i]*Sp[j]
                 if w != 0.0:
-                    elements.append(MatElem(istate=[i,j],
-                                            fstate=[i-1,j+1],
-                                            value=w))
-        super().__init__(id=id, nbody=nbody, Ns=Ns, elements=elements)
+                    append_matelem(elements, istate=[i,j],
+                                             fstate=[i-1,j+1],
+                                             value=w)
+        super(XXZBond, self).__init__(id=id, nbody=nbody, Ns=Ns, elements=elements)
 
 
 class XXZ_hamiltonian:

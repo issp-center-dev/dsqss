@@ -2,7 +2,7 @@ from math import sqrt
 import codecs
 
 import dsqss.hamiltonian
-from dsqss.hamiltonian import Site, Interaction, MatElem
+from dsqss.hamiltonian import Site, Interaction, append_matelem, matelems_todict
 
 from dsqss.util import ERROR, get_as_list, extend_list
 
@@ -11,7 +11,7 @@ def creator_boson(n):
 def annihilator_boson(n):
     return sqrt(n)
 
-class BoseSite:
+class BoseSite(Site):
     def __init__(self, id, M, U, mu):
         '''
         M: max n
@@ -21,21 +21,21 @@ class BoseSite:
         M = int(M)
         NX = M+1
 
-        sources = []
-        elements = []
+        sources = {}
+        elements = {}
         for n in range(NX):
-            elements.append(MatElem(state = n, value = -mu*n + 0.5*U*n*(n-1)))
+            append_matelem(elements, state = n, value = -mu*n + 0.5*U*n*(n-1))
             if n > 0:
                 # annihilator
-                sources.append(MatElem(istate = n, fstate = n-1,
-                                       value = annihilator_boson(n)))
+                append_matelem(sources, istate = n, fstate = n-1,
+                                        value = annihilator_boson(n))
             if n < M:
                 # creator
-                sources.append(MatElem(istate = n, fstate = n+1,
-                                       value = creator_boson(n)))
-        super().__init__(id=id, N=NX, elements=elements, sources=sources)
+                append_matelem(sources, istate = n, fstate = n+1,
+                                        value = creator_boson(n))
+        super(BoseSite, self).__init__(id=id, N=NX, elements=elements, sources=sources)
 
-class BoseBond:
+class BoseBond(Interaction):
     def __init__(self, id, M, t, V):
         '''
         M: max N
@@ -51,25 +51,25 @@ class BoseBond:
         c = [creator_boson(n) for n in N]
         c[-1] = 0.0
         a = [annihilator_boson(n) for n in N]
-        elements = []
-        for i in range(self.nx):
-            for j in range(self.nx):
+        elements = {}
+        for i in range(nx):
+            for j in range(nx):
                 # diagonal
                 w = V*i*j
                 if w != 0.0:
-                    elements.append(MatElem(state=[i,j], value=w))
+                    append_matelem(elements, state=[i,j], value=w)
                 # offdiagonal
                 w = -t*c[i]*a[j]
                 if w != 0.0:
-                    elements.append(MatElem(istate=[i,j],
-                                            fstate=[i+1,j-1],
-                                            value=w))
+                    append_matelem(elements, istate=[i,j],
+                                             fstate=[i+1,j-1],
+                                             value=w)
                 w = -t*a[i]*c[j]
                 if w != 0.0:
-                    elements.append(MatElem(istate=[i,j],
-                                            fstate=[i-1,j+1],
-                                            value=w))
-        super().__init__(id=id, nbody=nbody, Ns=Ns, elements=elements)
+                    append_matelem(elements, istate=[i,j],
+                                             fstate=[i-1,j+1],
+                                             value=w)
+        super(BoseBond, self).__init__(id=id, nbody=nbody, Ns=Ns, elements=elements)
 
 class BoseHubbard_hamiltonian:
     def __init__(self, param):
