@@ -81,8 +81,9 @@ else:
     exename = 'dla_H'
 
 cleanup(ID)
-genXML(param, BINDIR=BINDIR, name=ID)
-geninp(param['beta'], SEED, nset=nset, nmcs=NMCS, npre=NPRE, ntherm=NTHERM, name=ID)
+geninp(param, SEED, nset=nset, nmcs=NMCS, npre=NPRE, ntherm=NTHERM, name=ID)
+# genXML(param, BINDIR=BINDIR, name=ID)
+# geninp(param['beta'], SEED, nset=nset, nmcs=NMCS, npre=NPRE, ntherm=NTHERM, name=ID)
 run(exename, BINDIR=BINDIR, name=ID)
 evaluate(ref, nset, alpha, name=ID)
 sys.exit(0)

@@ -6,6 +6,8 @@ import subprocess as sub
 import numpy as np
 import scipy.stats as stats
 
+import dsqss
+
 def p_value(X, E, N, Y):
     t = (X-Y)/E
     return 2*stats.t.cdf(-np.abs(t), N-1)
@@ -29,7 +31,29 @@ def cleanup(name=''):
             os.remove(fname)
 
 
-def genXML(param, BINDIR='.', name=''):
+def geninp(param, seed, nset=10, nmcs=1000, ntherm=1000, npre=1000, simtime=0.0, name=''):
+    if name != '':
+        name = '_{0}'.format(name)
+    p = param['parameter']
+    p['latfile'] = 'lattice{0}.xml'.format(name)
+    p['algfile'] = 'algorithm{0}.xml'.format(name)
+    p['outfile'] = 'res{0}.dat'.format(name)
+    p['sfinpfile'] = 'sf{0}.xml'.format(name)
+    p['cfinpfile'] = 'cf{0}.xml'.format(name)
+    p['ckinpfile'] = 'sf{0}.xml'.format(name)
+    p['sfoutfile'] = 'sf{0}.dat'.format(name)
+    p['cfoutfile'] = 'cf{0}.dat'.format(name)
+    p['ckoutfile'] = 'ck{0}.dat'.format(name)
+    p['seed'] = seed
+    p['nset'] = nset
+    p['nmcs'] = nmcs
+    p['ntherm'] = ntherm
+    p['npre'] = npre
+    p['simulationtime'] = simtime
+
+    dsqss.parameter.dla_pre(param, 'qmc{0}.inp'.format(name))
+
+def genXML_old(param, BINDIR='.', name=''):
     if name != '':
         name = '_{0}'.format(name)
 
@@ -98,7 +122,7 @@ def genXML(param, BINDIR='.', name=''):
         sys.exit(retval)
     shutil.move('cf.xml', 'cf{0}.xml'.format(name))
 
-def geninp(beta, seed, nset=10, nmcs=1000, ntherm=1000, npre=1000, simtime=0.0, name=''):
+def geninp_old(beta, seed, nset=10, nmcs=1000, ntherm=1000, npre=1000, simtime=0.0, name=''):
     if name != '':
         name = '_{0}'.format(name)
 

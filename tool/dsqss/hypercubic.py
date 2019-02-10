@@ -1,4 +1,5 @@
 import codecs
+import numpy as np
 from dsqss.lattice import Lattice, Site, Interaction
 from dsqss.util import ERROR, get_as_list, extend_list, index2coord, coord2index
 
@@ -56,12 +57,12 @@ class HyperCubicLattice(Lattice):
                                 direction=d,
                                 )
                 self.ints.append(I)
-        self.latvec = []
+        self.latvec = np.eye(self.dim)
         self.directions = []
         for d in range(self.dim):
             latvec = [0]*self.dim
             latvec[d] = 1
-            self.latvec.append(latvec)
+            self.latvec[:,d] = latvec
             self.directions.append(latvec)
         self.ndir = len(self.directions)
         self.nsites = len(self.sites)

@@ -11,8 +11,8 @@ setup(name='dsqss',
       install_requires=['numpy', 'toml'],
       entry_points={
           'console_scripts':[
-              'dla_hamgen = dsqss.hamgen:main',
-              'dla_latgen = dsqss.latgen:main',
+              'dla_hamgen = dsqss.std_model:main',
+              'dla_latgen = dsqss.std_lattice:main',
               'dla_alg = dsqss.dla_alg:main',
               'dla_pre = dsqss.dla_pre:main',
               ]

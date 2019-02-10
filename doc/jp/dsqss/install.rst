@@ -8,10 +8,13 @@
 ********************
 DSQSSの使用には以下のプログラム・ライブラリが必要です. 
 
-- BLAS
-- LAPACK
 - (Optional) MPI (PMWAを使用する場合には必須)
 - python 2.7 or 3.x
+
+   - NumPy
+   - toml
+   - pip (make install する場合には必須)
+   
 
 ダウンロード
 ********************

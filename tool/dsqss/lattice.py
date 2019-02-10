@@ -5,6 +5,8 @@ import re
 import codecs
 from itertools import chain
 
+import numpy as np
+
 from dsqss.util import ERROR, tagged
 
 class Site:
@@ -34,9 +36,10 @@ class Interaction:
 
     def __str__(self):
         s = '{0} {1} {2}'.format(self.id, self.itype, self.nbody)
+        edgeflag = 1 if self.edge >= 0 else 0
         for site in self.sites:
             s += ' {0}'.format(site)
-        s += ' {0} {1}'.format(self.edge, self.dir)
+        s += ' {0} {1}'.format(edgeflag, self.dir)
         return s
 
 
@@ -50,7 +53,15 @@ class Vertex:
 
 class Lattice:
     def __init__(self, inp):
+        self.recvec = None
         self.load(inp)
+
+    def reciprocal_vectors(self):
+        if self.recvec is None:
+            latvec = np.array(self.latvec).transpose()
+            A = np.diag(v=self.size)
+            self.recvec = 2.0*np.pi*np.linalg.inv(latvec).transpose()
+        return self.recvec
 
     def save(self, out):
         if type(out) is str:
@@ -69,7 +80,7 @@ class Lattice:
         out.write('# size\n')
         for d in range(self.dim):
             out.write('{0} '.format(d))
-            for x in self.latvec[d]:
+            for x in self.latvec[:,d]:
                 out.write('{0} '.format(x))
             out.write('# latvec_{0}\n'.format(d))
         out.write('\n')
@@ -89,7 +100,6 @@ class Lattice:
         out.write('# id, type, mtype, coord...\n')
         for i, site in enumerate(self.sites):
             out.write('{0}\n'.format(site))
-            # out.write('{0} {1}\n'.format(i, site))
         out.write('\n')
 
         out.write('interactions\n')
@@ -97,9 +107,9 @@ class Lattice:
         out.write('# id, type, nbody, sites..., edge_flag, direction\n')
         for i, inter in enumerate(self.ints):
             out.write('{0}\n'.format(inter))
-            # out.write('{0} {1}\n'.format(i, inter))
 
     def load(self, inp):
+        self.recvec = None
         if type(inp) is str:
             with open(inp) as f:
                 self.load(f)
@@ -121,7 +131,7 @@ class Lattice:
             elif state == 'dim':
                 self.dim = int(body)
                 self.size = None
-                self.latvec = [None for i in range(self.dim)]
+                self.latvec = np.eye(self.dim)
                 state = 'size'
             elif state == 'size':
                 self.size = list(map(int, body.split()))
@@ -202,7 +212,7 @@ class Lattice:
                 ERROR('too few elements ({0})'.format(body))
             else:
                 ERROR('too many elements ({0})'.format(body))
-        self.latvec[int(elem[0])] = list(map(float, elem[1:]))
+        self.latvec[:, int(elem[0])] = list(map(float, elem[1:]))
 
     def load_direction(self, body, count):
         elem = body.split()

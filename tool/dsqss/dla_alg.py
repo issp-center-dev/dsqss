@@ -6,6 +6,7 @@ import argparse
 from dsqss.lattice import Lattice
 from dsqss.hamiltonian import GraphedHamiltonian
 from dsqss.algorithm import Algorithm
+from dsqss.wavevector import Wavevector
 
 def main():
 
@@ -41,6 +42,14 @@ def main():
                         action='store_true',
                         help='Never output Algorithm XML file',
                         )
+    parser.add_argument('-k', '--kpoint', dest='kpoint',
+                        default=None,
+                        help='kpoints data file',
+                        )
+    parser.add_argument('--sf', dest='sf',
+                        default='sf.xml',
+                        help='kpoints XML file',
+                        )
 
     args = parser.parse_args()
 
@@ -51,6 +60,10 @@ def main():
         ham = GraphedHamiltonian(args.ham, lat)
         alg = Algorithm(ham)
         alg.write_xml(args.algxml)
+    if args.kpoint is not None:
+        wv = Wavevector(lat)
+        wv.load(args.kpoint)
+        wv.write_xml(args.sf)
 
 if __name__ == '__main__':
     main()
