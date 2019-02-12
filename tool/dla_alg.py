@@ -1,4 +1,4 @@
 #!python
-from dsqss.dla_alg import main
+from dsqss.algorithm import main
 if __name__ == '__main__':
     main()
