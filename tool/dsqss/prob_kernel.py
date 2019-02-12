@@ -60,39 +60,46 @@ def suwa_todo(weights):
                 j = (j+1)%N
     return ret
 
-### breaking ergodicity???
-### e.g.) when w = [5,4,3,2,1],
-###       it returns W[4,:] = [0,0,0,0,1]
-#  def detailed_suwa_todo(weights):
-#      '''
-#      return an array W,
-#      where W[i,j] is the probability of a transition i=>j
-#      calculated by the Suwa-Todo algorithm
-#      under the detailed balance condition
-#      '''
-#      N = len(weights)
-#      ret = np.zeros((N,N))
-#      indices = np.argsort(weights, kind='mergesort')[::-1]
-#      target = deepcopy(weights)
-#      for i in range(N):
-#          print(i, target)
-#          s = target[indices[i]]
-#          if s <= 0.0:
-#              continue
-#          j = (i+1)%N
-#          while target[indices[j]] == 0.0:
-#              j = (j+1)%N
-#          while s > 0.0:
-#              p = min(s, target[indices[j]])
-#              print(i,j,s,target[indices[j]],p)
-#              s -= p
-#              target[indices[j]] -= p
-#              target[indices[i]] -= p
-#              ret[indices[i], indices[j]] = p/weights[indices[i]]
-#              ret[indices[j], indices[i]] = p/weights[indices[j]]
-#              if target[indices[j]] <= 0.0:
-#                  if j == i:
-#                      break
-#                  j = (j+1)%N
-#      return ret
+def reversible_suwa_todo(weights):
+    '''
+    return an array W,
+    where W[i,j] is the probability of a transition i=>j
+    calculated by the Suwa-Todo algorithm
+    under the detailed balance condition
+    '''
+    N = len(weights)
+    ret = np.zeros((N,N))
+    indices = np.argsort(weights, kind='mergesort')[::-1]
+    weights = np.array(weights)
+    W = np.zeros([N,N])
+    for i in range(N):
+        I = indices[i]
+        W[I,I] = weights[I]
 
+    S3 = sum(weights[indices[2:]])
+    wdiff = weights[indices[0]] - weights[indices[1]]
+    if wdiff >= S3:
+        for i in range(1,N):
+            I = indices[i]
+            rst_swap(indices[0], I, weights[I], W)
+    else:
+        w3 = wdiff/S3
+        for i in range(2,N):
+            I = indices[i]
+            v = w3 * weights[I]
+            rst_swap(0, I, v, W)
+        for j in range(N-1, 0, -1):
+            J = indices[j]
+            v = W[J, J] / j
+            for k in range(j-1, -1, -1):
+                rst_swap(J, indices[k], v, W)
+    for i in range(N):
+        for j in range(N):
+            W[i,j] /= weights[i]
+    return W
+
+def rst_swap(i,j,w,W):
+    W[i,i] -= w
+    W[i,j] += w
+    W[j,i] += w
+    W[j,j] -= w
