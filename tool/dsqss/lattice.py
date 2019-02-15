@@ -56,13 +56,6 @@ class Lattice:
         self.recvec = None
         self.load(inp)
 
-    def reciprocal_vectors(self):
-        if self.recvec is None:
-            latvec = np.array(self.latvec).transpose()
-            A = np.diag(v=self.size)
-            self.recvec = 2.0*np.pi*np.linalg.inv(latvec).transpose()
-        return self.recvec
-
     def save(self, out):
         if type(out) is str:
             with codecs.open(out, 'w', 'utf-8') as f:
@@ -78,6 +71,9 @@ class Lattice:
         for x in self.size:
             out.write('{0} '.format(x))
         out.write('# size\n')
+        for x in self.bc:
+            out.write('{0} '.format(x))
+        out.write('# 0:open boundary, 1:periodic boundary\n')
         for d in range(self.dim):
             out.write('{0} '.format(d))
             for x in self.latvec[:,d]:
@@ -131,6 +127,7 @@ class Lattice:
             elif state == 'dim':
                 self.dim = int(body)
                 self.size = None
+                self.bc = [None] * self.dim
                 self.latvec = np.eye(self.dim)
                 state = 'size'
             elif state == 'size':
@@ -140,6 +137,15 @@ class Lattice:
                         ERROR('too few elements ({0})'.format(body))
                     else:
                         ERROR('too many elements ({0})'.format(body))
+                state = 'bc'
+            elif state == 'bc':
+                elem = body.split()
+                if len(elem) != self.dim:
+                    if len(elem) < self.dim:
+                        ERROR('too few elements ({0})'.format(body))
+                    else:
+                        ERROR('too many elements ({0})'.format(body))
+                self.bc[:] = list(map(int, elem))
                 state = 'latvec'
             elif state == 'latvec':
                 self.load_latvec(body, count)
@@ -200,6 +206,7 @@ class Lattice:
                 if count == self.nints:
                     state = 'waiting'
                     count = 0
+
         ## end of for line in inp:
 
         self.check_all()
@@ -337,6 +344,7 @@ class Lattice:
             f.write(tagged('Dimension', self.dim))
             f.write(tagged('BondDimension', self.dim))
             f.write(tagged('LinearSize', self.size))
+            f.write(tagged('BoundaryCondition', self.bc))
             f.write(tagged('NumberOfSites', self.nsites))
             f.write(tagged('NumberOfInteractions', self.nints))
             f.write(tagged('NumberOfSiteTypes', self.nstypes))
@@ -365,3 +373,4 @@ class Lattice:
                 f.write(tagged('V', chain([i],bond)))
 
             f.write('</LATTICE>\n')
+

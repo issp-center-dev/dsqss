@@ -12,6 +12,7 @@ class HyperCubicLattice(Lattice):
         self.ints = []
 
         pbc = get_as_list(param, 'periodic', default=True, extendto=self.dim)
+        self.bc = list(map(int,pbc))
         bondalt = False
 
         N = 1

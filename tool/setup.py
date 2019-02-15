@@ -13,8 +13,9 @@ setup(name='dsqss',
           'console_scripts':[
               'dla_hamgen = dsqss.std_model:main',
               'dla_latgen = dsqss.std_lattice:main',
-              'dla_alg = dsqss.algorithm:main',
-              'dla_pre = dsqss.dla_pre:main',
+              'dla_sfgen = dsqss.wavevector:main',
+              'dla_alg = dsqss.dla_alg:main',
+              'dla_pre = dsqss.parameter:main',
               ]
           },
       zip_safe=False,
