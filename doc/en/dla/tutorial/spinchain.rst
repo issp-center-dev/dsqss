@@ -1,7 +1,7 @@
 Magnetic Susceptibility of antiferromagnetic spin chains
 ============================================================
 
-In this tutorial, we will calculate the temperature dependence of the magnetic susceptibility of two antiferromagnetic spin chain with the local spin length :math:`S=1/2, 1`.
+In this tutorial, we will calculate the temperature dependence of the magnetic susceptibility for two kinds of antiferromagnetic spin chains with the local spin length :math:`S=1/2, 1`.
 
 The following Python script (sample/dla/02_spinchain/exec.py) performs DSQSS/DLA work-flow for each parameter (combination of spin length and temperature) automatically.
 ::
@@ -63,6 +63,6 @@ On the other hand the magnetic susceptibility of the :math:`S=1` chain drops to 
   :name: fig_spinchain
   :alt: magnetic susceptibility curves of antiferromagnetic spin chain
 
-  Temperature v.s. susceptibility curves for :math:`S=1/2: (blue) and :math:`S=1` antiferromagnetic Heisenberg chain.
+  Temperature v.s. susceptibility curves for :math:`S=1/2` (blue) and :math:`S=1` (red) antiferromagnetic Heisenberg chain.
 
 
