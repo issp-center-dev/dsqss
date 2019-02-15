@@ -1,7 +1,7 @@
 from copy import deepcopy
 import numpy as np
 
-def heat_bath(weights):
+def heat_bath(weights, cutoff=1e-10):
     '''
     return an array W,
     where W[i,j] is the probability of a transition i=>j
@@ -11,7 +11,7 @@ def heat_bath(weights):
     ws /= ws.sum()
     return np.array([ws for i in range(len(ws))])
 
-def metropolice(weights):
+def metropolice(weights, cutoff=1e-10):
     '''
     return an array W,
     where W[i,j] is the probability of a transition i=>j
@@ -20,7 +20,7 @@ def metropolice(weights):
     N = len(weights)
     n = np.count_nonzero(weights)
 
-    ret = np.zeros((N,N))
+    W = np.zeros((N,N))
     for i in range(N):
         if weights[i] == 0.0:
             continue
@@ -29,19 +29,22 @@ def metropolice(weights):
             if i==j:
                 continue
             p = min(weights[j]/weights[i], 1.0)/(n-1)
-            ret[i,j] = p
+            if p < cutoff:
+                p = 0.0
+            W[i,j] = p
             acc += p
-        ret[i,i] = 1.0-acc
-    return ret
+        W[i,i] = 1.0-acc
+    return W
 
-def suwa_todo(weights):
+def suwa_todo(weights, cutoff=1e-10):
     '''
     return an array W,
     where W[i,j] is the probability of a transition i=>j
     calculated by the Suwa-Todo algorithm
+    (H. Suwa and S. Todo, Phys. Rev. Lett. 105, 120603 (2010))
     '''
     N = len(weights)
-    ret = np.zeros((N,N))
+    W = np.zeros((N,N))
     indices = np.argsort(weights, kind='mergesort')[::-1]
     target = deepcopy(weights)
     for i in range(N):
@@ -53,19 +56,23 @@ def suwa_todo(weights):
             p = min(s, target[indices[j]])
             s -= p
             target[indices[j]] -= p
-            ret[indices[i], indices[j]] = p/weights[indices[i]]
+            W[indices[i], indices[j]] = p
             if target[indices[j]] <= 0.0:
+                target[indices[j]] = 0.0
                 if j == i:
                     break
                 j = (j+1)%N
-    return ret
+    W /= W.sum(axis=1).reshape(-1,1)
+    W[W<cutoff] = 0.0
+    return W / W.sum(axis=1).reshape(-1,1)
 
-def reversible_suwa_todo(weights):
+def reversible_suwa_todo(weights, cutoff=1e-10):
     '''
     return an array W,
     where W[i,j] is the probability of a transition i=>j
     calculated by the Suwa-Todo algorithm
     under the detailed balance condition
+    (H. Suwa and S. Todo, arXiv:1106.3562)
     '''
     N = len(weights)
     ret = np.zeros((N,N))
@@ -93,10 +100,9 @@ def reversible_suwa_todo(weights):
             v = W[J, J] / j
             for k in range(j-1, -1, -1):
                 rst_swap(J, indices[k], v, W)
-    for i in range(N):
-        for j in range(N):
-            W[i,j] /= weights[i]
-    return W
+    W /= W.sum(axis=1).reshape(-1,1)
+    W[W<cutoff] = 0.0
+    return W / W.sum(axis=1).reshape(-1,1)
 
 def rst_swap(i,j,w,W):
     W[i,i] -= w

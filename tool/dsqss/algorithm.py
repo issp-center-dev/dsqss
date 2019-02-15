@@ -22,13 +22,21 @@ class AlgSite:
         self.vtype = self.id
         self.initialconfigurations = []
         for st in range(self.N):
-            channels = []
+            targets = []
+            weights = []
+            sumw = 0.0
             for source in hamsite.sources:
                 if source[0][0] != st:
                     continue
-                weight = 0.5*hamsite.sources[source]**2
-                channels.append(Channel(0, source[1][0], weight))
-                channels.append(Channel(1, source[1][0], weight))
+                weight = hamsite.sources[source]**2
+                targets.append(source[1][0])
+                weights.append(weight)
+                sumw += weight
+            coeff = 0.5/sumw
+            channels = []
+            for t,w in zip(targets, weights):
+                channels.append(Channel(0, t, coeff*weight))
+                channels.append(Channel(1, t, coeff*weight))
             self.initialconfigurations.append(SiteInitialConfiguration(st,channels))
         self.vertex = WormVertex(hamsite)
 

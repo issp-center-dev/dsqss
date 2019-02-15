@@ -6,7 +6,7 @@ foreach(script_name ${dla_scripts})
   configure_file(cmake/${script_name}.in ${CMAKE_CURRENT_BINARY_DIR}/${script_name} @ONLY)
 endforeach(script_name ${dla_scripts})
 
-configure_file(dist/dsqss-2.0.0-py2.py3-none-any.whl ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+configure_file(cmake/dsqss-2.0.0-py2.py3-none-any.whl ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
 configure_file(cmake/dsqssvars.sh.in ${CMAKE_CURRENT_BINARY_DIR}/dsqssvars-${DSQSS_VERSION}.sh @ONLY)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/dsqssvars-${DSQSS_VERSION}.sh
         DESTINATION share/dsqss
