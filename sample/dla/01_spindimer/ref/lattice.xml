@@ -1,30 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <LATTICE>
-
-<Comment>
-  1-dimension square lattice
-</Comment>
-
+<Comment> 1 dimensional hypercubic lattice </Comment>
 <Dimension> 1 </Dimension>
 <BondDimension> 1 </BondDimension>
 <LinearSize> 2 </LinearSize>
-<Beta> 100 </Beta>
-<NumberOfCells> 2 </NumberOfCells>
+<BoundaryCondition> 0 </BoundaryCondition>
 <NumberOfSites> 2 </NumberOfSites>
-<NumberOfInteractions> 2 </NumberOfInteractions>
+<NumberOfInteractions> 1 </NumberOfInteractions>
 <NumberOfSiteTypes> 1 </NumberOfSiteTypes>
 <NumberOfInteractionTypes> 1 </NumberOfInteractionTypes>
-<NumberOfEdgeInteractions> 1 </NumberOfEdgeInteractions>
+<NumberOfEdgeInteractions> 0 </NumberOfEdgeInteractions>
 
-<!-- <S> [id] [stype] [mtype] </S> -->
+<!-- <S> site_index site_type measure_type </S> -->
 <S> 0 0 0 </S>
 <S> 1 0 1 </S>
 
-<!-- <I> [id] [itype] [nbody] [s0] [s1] ... [eid] [edim] </I> -->
+<!-- <SiteCoordinate> site_index coord... </SiteCoordinate> -->
+<SiteCoordinate> 0 0 </SiteCoordinate>
+<SiteCoordinate> 1 1 </SiteCoordinate>
 
+<!-- <I> int_index int_type nbody site_index... edge_index direction_index </I> -->
 <I> 0 0 2 0 1 -1 0 </I>
-<I> 1 0 2 1 0 0 0 </I>
 
-<!-- <V> [bond dim] [unit vectorx]...  </V> -->
-
-<V> 0 1 </V>
+<!-- <V> direction_index direction... </V> -->
+<V> 0 1.0 </V>
 </LATTICE>
