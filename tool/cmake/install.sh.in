@@ -1,9 +1,15 @@
-set -e
 PYTHONPATH=@DSQSS_PYTHONPATH@
 
 cd @CMAKE_CURRENT_BINARY_DIR@
 
+if ! @PYTHON_EXECUTABLE@ -m pip --version >/dev/null 2>/dev/null ;then
+  set -e
+  wget https://bootstrap.pypa.io/get-pip.py -O get-pip.py
+  @PYTHON_EXECUTABLE@ get-pip.py --prefix=@CMAKE_INSTALL_PREFIX@
+fi
+
+set -e
 @PYTHON_EXECUTABLE@ -m pip install wheel --prefix=@CMAKE_INSTALL_PREFIX@ --no-warn-script-location
-DSQSS_VERSION=$(@PYTHON_EXECUTABLE@ @CMAKE_CURRENT_BINARY_DIR@/setup.py --version)
-@PYTHON_EXECUTABLE@ @CMAKE_CURRENT_BINARY_DIR@/setup.py bdist_wheel --universal
-@PYTHON_EXECUTABLE@ -m pip install @CMAKE_CURRENT_BINARY_DIR@/dist/dsqss-${DSQSS_VERSION}-py2.py3-none-any.whl --prefix=@CMAKE_INSTALL_PREFIX@ --no-warn-script-location
+DSQSS_VERSION=$(@PYTHON_EXECUTABLE@ setup.py --version)
+@PYTHON_EXECUTABLE@ setup.py bdist_wheel --universal
+@PYTHON_EXECUTABLE@ -m pip install dist/dsqss-${DSQSS_VERSION}-py2.py3-none-any.whl --prefix=@CMAKE_INSTALL_PREFIX@ --no-warn-script-location
