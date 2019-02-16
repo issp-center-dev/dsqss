@@ -12,12 +12,12 @@ endforeach()
 
 if(MPI_FOUND)
 set(python_test_src
-  test_dsqss_pre_dla
+  #   test_dsqss_pre_dla
   test_dsqss_pre_pmwa
 )
 else(MPI_FOUND)
 set(python_test_src
-  test_dsqss_pre_dla
+  #   test_dsqss_pre_dla
 )
 endif(MPI_FOUND)
 foreach(test ${python_test_src})

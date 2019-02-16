@@ -7,6 +7,7 @@ import warnings
 import os.path
 import sys
 import dsqss
+from  dsqss.read_keyvalues import read_keyvalues
 
 class param:
     def __init__(self):
@@ -116,7 +117,7 @@ class info:
         return os.path.join(self.gendir, lattgene_name)
             
     def _get_info(self, inputfile):
-        tmp_dict = dsqss.read_keyvalues(inputfile)
+        tmp_dict = read_keyvalues(inputfile)
         '''
         if inputfile is sys.stdin:
             print('Waiting for standard input...')
