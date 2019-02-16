@@ -6,9 +6,10 @@ setup(name='dsqss',
       url='https://github.com/issp-center-dev/dsqss',
       author='DSQSS developers',
       author_email='dsqss-dev@issp.u-tokyo.ac.jp',
+      license='GPLv3',
       packages=['dsqss'],
       python_requires='>=2.7',
-      install_requires=['numpy', 'toml'],
+      install_requires=['numpy', 'scipy', 'toml'],
       entry_points={
           'console_scripts':[
               'dla_hamgen = dsqss.std_model:main',

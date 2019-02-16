@@ -1,1 +1,0 @@
-@PYTHON_EXECUTABLE@ -m pip install @CMAKE_CURRENT_BINARY_DIR@/dsqss-2.0.0-py2.py3-none-any.whl --prefix=@CMAKE_INSTALL_PREFIX@ --no-warn-script-location

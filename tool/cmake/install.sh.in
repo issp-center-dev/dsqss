@@ -1,0 +1,9 @@
+set -e
+PYTHONPATH=@DSQSS_PYTHONPATH@
+
+cd @CMAKE_CURRENT_BINARY_DIR@
+
+@PYTHON_EXECUTABLE@ -m pip install wheel --prefix=@CMAKE_INSTALL_PREFIX@ --no-warn-script-location
+DSQSS_VERSION=$(@PYTHON_EXECUTABLE@ @CMAKE_CURRENT_BINARY_DIR@/setup.py --version)
+@PYTHON_EXECUTABLE@ @CMAKE_CURRENT_BINARY_DIR@/setup.py bdist_wheel --universal
+@PYTHON_EXECUTABLE@ -m pip install @CMAKE_CURRENT_BINARY_DIR@/dist/dsqss-${DSQSS_VERSION}-py2.py3-none-any.whl --prefix=@CMAKE_INSTALL_PREFIX@ --no-warn-script-location
