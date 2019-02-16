@@ -12,6 +12,7 @@ from dsqss.hamiltonian import GraphedHamiltonian
 from dsqss.algorithm import Algorithm
 from dsqss.wavevector import Wavevector
 from dsqss.displacement import CF
+import dsqss.prob_kernel as pk
 
 def set_default_values(param):
     for name, val in (('npre', 1000),
@@ -34,7 +35,8 @@ def set_default_values(param):
                       ('sfoutfile', 'sf.dat'),
                       ('cfoutfile', 'cf.dat'),
                       ('ckoutfile', 'ck.dat'),
-                      ):
+                      ('kernel', 'suwa todo'),
+                     ):
         if name not in param:
             param[name] = val
 
@@ -54,7 +56,18 @@ def dla_pre(param, pfile):
     h = std_model(param['hamiltonian'])
     ham = GraphedHamiltonian(h, lat)
 
-    alg = Algorithm(ham)
+    if p['kernel'] == 'suwa todo':
+        kernel = dsqss.prob_kernel.suwa_todo
+    elif p['kernel'] == 'reversible suwa todo':
+        kernel = dsqss.prob_kernel.reversible_suwa_todo
+    elif p['kernel'] == 'heat bath':
+        kernel = dsqss.prob_kernel.heat_bath
+    elif p['kernel'] == 'metropolice':
+        kernel = dsqss.prob_kernel.metropolice
+    else:
+        ERROR('unknown kernel: {0}'.format(p['kernel']))
+
+    alg = Algorithm(ham, prob_kernel=kernel)
     alg.write_xml(p['algfile'])
 
     if p['sfinpfile'] != '' or p['ckinpfile'] != '':
