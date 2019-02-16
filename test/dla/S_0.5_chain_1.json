@@ -143,8 +143,8 @@
     "hamiltonian": {
       "model": "spin",
       "M": 1,
-      "Jz": 1.0,
-      "Jxy": 1.0,
+      "Jz": -1.0,
+      "Jxy": -1.0,
       "h": 0.0
     },
     "lattice" : {
@@ -157,6 +157,8 @@
     "parameter" : {
       "beta": 3.0,
       "ntau": 5
+    },
+    "kpoints" : {
     }
   }
 }

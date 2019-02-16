@@ -112,17 +112,25 @@
     ]
   },
   "Parameter": {
-    "ntau": 5,
-    "U": 0.0,
-    "M": 2,
-    "t": 1.0,
-    "V": 0.0,
-    "Model": "boson",
-    "D": 1,
-    "L": [
-      6
-    ],
-    "mu": 0.0,
-    "beta": 3.0
+    "hamiltonian" : {
+      "model": "boson",
+      "M": 2,
+      "t": 1.0,
+      "U": 0.0,
+      "V": 0.0,
+      "mu": 0.0
+    },
+    "lattice" : {
+      "lattice": "hypercubic",
+      "dim": 1,
+      "L": [
+        6
+      ]
+    },
+    "parameter": {
+      "ntau": 5,
+      "beta": 3.0
+    },
+    "kpoints": {}
   }
 }

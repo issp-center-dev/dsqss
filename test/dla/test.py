@@ -9,7 +9,7 @@ import scipy.stats as stats
 from common import *
 
 if len(sys.argv) < 3:
-    print('usage: python test.py <path/to/bindir> <jsonfile>')
+    print('usage: python test.py <BINDIR> <jsonfile>')
     sys.exit(1)
 
 test_Green = False
@@ -75,7 +75,7 @@ ID = '.'.join(os.path.basename(JSONFILE).split('.')[0:-1])
 param = data['Parameter']
 ref = data['Result']
 
-if param['Model'] == 'boson':
+if param['hamiltonian']['model'] == 'boson':
     exename = 'dla_B'
 else:
     exename = 'dla_H'

@@ -43,37 +43,45 @@ def evaluate(name=''):
 
 ID = 'checkpoint'
 
-param = {'Model' : 'boson',
-         'D' : 1,
-         'L' : [4],
-         'beta' : 1.0,
-         'M' : 1,
-         't' : 1.0,
-         'V' : 0.0,
-         'U' : 0.0,
-         'mu' : 0.0,
-         'ntau' : 5,
-         }
+param = {}
 
-beta = param['beta']
+param['lattice'] = {'lattice' : 'hypercubic',
+                    'dim' : 1,
+                    'L' : [4],
+                    }
 
-if param['Model'] == 'boson':
+param['hamiltonian'] = {'model' : 'boson',
+                         'M' : 1,
+                         't' : 1.0,
+                         'V' : 0.0,
+                         'U' : 0.0,
+                         'mu' : 0.0,
+                         }
+
+param['parameter'] = {'beta' : 1.0,
+                      'ntau' : 5,
+                     }
+
+param['kpoints'] = {}
+
+if param['hamiltonian']['model'] == 'boson':
     exename = 'dla_B'
 else:
     exename = 'dla_H'
 
 cleanup(ID)
 cleanup('{0}_restarted'.format(ID))
-genXML(param, BINDIR=BINDIR, name=ID)
-geninp(beta, SEED, nset=nset, simtime=simtime, name=ID)
+
+
+geninp(param, SEED, nset=nset, simtime=simtime, name=ID)
 run(exename, BINDIR=BINDIR, name=ID)
-geninp(beta, 2*SEED, nset=nset, simtime='INF', name=ID)
+geninp(param, 2*SEED, nset=nset, simtime='INF', name=ID)
 run(exename, BINDIR=BINDIR, name=ID)
 for nm in ['res','sf','cf','ck']:
     shutil.move('{0}_{1}.dat'.format(nm,ID), '{0}_{1}_restarted.dat'.format(nm,ID))
 os.remove('res_{0}.dat.0.cjob'.format(ID))
 
-geninp(beta, SEED, nset=nset, simtime=0.0, name=ID)
+geninp(param, SEED, nset=nset, simtime=0.0, name=ID)
 run(exename, BINDIR=BINDIR, name=ID)
 
 evaluate(ID)

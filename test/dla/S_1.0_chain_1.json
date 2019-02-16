@@ -112,16 +112,26 @@
     ]
   },
   "Parameter": {
-    "S": 1.0,
-    "Jz": 1.0,
-    "Jxy": 1.0,
-    "Model": "spin",
-    "D": 1,
-    "L": [
-      6
-    ],
-    "h": 0.0,
-    "ntau": 5,
-    "beta": 3.0
+    "hamiltonian" : {
+      "model": "spin",
+      "M": 2,
+      "Jz": -1.0,
+      "Jxy": -1.0,
+      "h": 0.0
+    },
+    "lattice" : {
+      "lattice" : "hypercubic",
+      "dim": 1,
+      "L": [
+        6
+      ]
+    },
+    "parameter" : {
+      "beta": 3.0,
+      "ntau": 5,
+      "kernel": "suwa todo"
+    },
+    "kpoints" : {
+    }
   }
 }
