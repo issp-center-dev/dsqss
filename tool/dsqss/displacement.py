@@ -59,4 +59,4 @@ class CF:
                 for s,t in product(range(self.lat.nsites), range(self.lat.nsites)):
                     f.write(tagged('CF', (self.displacements[s,t], s, t)))
 
-            f.write('<\CorrelationFunction>\n')
+            f.write('</CorrelationFunction>\n')

@@ -93,7 +93,7 @@ class Wavevector:
             f.write(tagged('NumberOfElements', len(lat.sites) * self.nk))
             f.write(tagged('NumberOfInverseLattice', self.nk))
 
-            f.write('<!-- <SF> [phase(cos)] [phase(sin)] [isite] [kindx] </SF> -->')
+            f.write('<!-- <SF> [phase(cos)] [phase(sin)] [isite] [kindx] </SF> -->\n')
             for ik in range(self.nk):
                 k = self.ks[:,ik]
                 for site in lat.sites:
