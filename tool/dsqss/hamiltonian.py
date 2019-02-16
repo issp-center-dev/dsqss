@@ -31,7 +31,7 @@ def append_matelem(matelems, state=None, istate=None, fstate=None, value=None, p
 def matelems_todict(matelems, keepzero=False):
     return [{'istate' : list(key[0]),
              'fstate' : list(key[1]),
-             'value'  : matelems[key]} for key in matelems if keepzero or matelems[key]!=0.0]
+             'value'  : value} for key,value in matelems.items() if keepzero or value!=0.0]
 
 class Site(object):
     def __init__(self, param=None, id=None, N=None, elements=None, sources=None):
@@ -44,10 +44,6 @@ class Site(object):
             self.sources = {}
             for x in param['sources']:
                 append_matelem(self.sources, param=x)
-            '''
-            self.elements = [MatElem(param=x) for x in param['elements']]
-            self.sources = [MatElem(param=x) for x in param['sources']]
-            '''
         else:
             self.id = id
             self.N = N
@@ -59,12 +55,6 @@ class Site(object):
                 'elements' : matelems_todict(self.elements),
                 'sources' : matelems_todict(self.sources),
                 }
-        '''
-        return {'id' : self.id, 'N' : self.N,
-                'elements' : list(map(lambda x: x.to_dict(), self.elements)),
-                'sources' : list(map(lambda x: x.to_dict(), self.sources)),
-                }
-                '''
 
 class Interaction(object):
     def __init__(self, param=None, id=None, nbody=None, Ns=None, elements=None):
@@ -205,8 +195,8 @@ class GraphedHamiltonian(Hamiltonian):
                 f.write(indent*level + tagged('NBODY', nbody))
                 f.write(indent*level + tagged('STYPE', interaction.stypes))
 
-                for elem in interaction.elements:
-                    v = -interaction.elements[elem]
+                for elem,v in interaction.elements.items():
+                    v = -v
                     if v==0.0:
                         continue
                     f.write(indent*level + '<Weight> ')
