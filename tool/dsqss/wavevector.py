@@ -1,6 +1,7 @@
 import codecs
 from itertools import product
 import numpy as np
+import scipy.special as spsp
 
 from dsqss.util import tagged, get_as_list
 
@@ -102,8 +103,8 @@ class Wavevector:
                     phase = 0
                     for d in range(self.dim):
                         phase += coord[d] * k[d] / float(lat.size[d])
-                    c = np.cos(2*np.pi*phase)
-                    s = np.sin(2*np.pi*phase)
+                    c = spsp.cosdg(360*phase)
+                    s = spsp.sindg(360*phase)
                     f.write(tagged('SF', [c, s, sid, ik]))
 
             f.write('</StructureFactor>\n')
