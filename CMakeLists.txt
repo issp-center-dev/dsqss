@@ -60,7 +60,7 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 if(BUILD_NEW_GENERATORS OR Testing)
   if(${CMAKE_VERSION} VERSION_LESS 3.12)
-    find_package(PythonInterp  2.7.9 REQUIRED)
+    find_package(PythonInterp  2.7 REQUIRED)
     set(python_version_mm "${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}")
   else(${CMAKE_VERSION} VERSION_LESS 3.12)
     find_package(Python3 3.4 COMPONENTS Interpreter)
