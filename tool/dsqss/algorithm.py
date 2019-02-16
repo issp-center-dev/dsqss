@@ -4,6 +4,8 @@ from itertools import product, chain
 from copy import deepcopy
 import codecs
 
+import numpy as np
+
 from dsqss.hamiltonian import keystate, append_matelem
 import dsqss.prob_kernel as kernel
 from dsqss.util import ERROR, INFO, tagged
@@ -15,28 +17,32 @@ SiteInitialConfiguration = namedtuple('SiteInitialConfiguration',
 InitialConfiguration = namedtuple('InitialConfiguration',
         ['istate', 'fstate', 'direction', 'newstate', 'channels'])
 
+def num_channels(sources, nx):
+    nchs = np.zeros(nx,dtype=int)
+    for source in sources:
+        st = source[0][0]
+        nchs[st] += 1
+    return nchs
+
 class AlgSite:
-    def __init__(self, hamsite):
+    def __init__(self, hamsite, cutoff=1e-10):
         self.id = hamsite.id
         self.N = hamsite.N
         self.vtype = self.id
         self.initialconfigurations = []
         for st in range(self.N):
-            targets = []
-            weights = []
-            sumw = 0.0
+            channels = []
+            bouncew = 1.0
             for source in hamsite.sources:
                 if source[0][0] != st:
                     continue
                 weight = hamsite.sources[source]**2
-                targets.append(source[1][0])
-                weights.append(weight)
-                sumw += weight
-            coeff = 0.5/sumw
-            channels = []
-            for t,w in zip(targets, weights):
-                channels.append(Channel(0, t, coeff*weight))
-                channels.append(Channel(1, t, coeff*weight))
+                t = source[1][0]
+                bouncew -= weight
+                channels.append(Channel(0, t, 0.5*weight))
+                channels.append(Channel(1, t, 0.5*weight))
+            if bouncew > cutoff:
+                channels.append(Channel(-1, -1, bouncew))
             self.initialconfigurations.append(SiteInitialConfiguration(st,channels))
         self.vertex = WormVertex(hamsite)
 
@@ -262,8 +268,10 @@ class Algorithm:
         hamsites = [deepcopy(hamsite) for hamsite in ham.sites]
         for site in hamsites:
             maxprob = 0.0
+            nchs = num_channels(site.sources, site.N)
             for source in site.sources:
-                maxprob = max(maxprob, site.sources[source]**2)
+                st = source[0][0]
+                maxprob = max(maxprob, nchs[st]*site.sources[source]**2)
             for source in site.sources:
                 site.sources[source] /= math.sqrt(maxprob)
 
