@@ -78,6 +78,10 @@ def main():
                         default='suwa todo',
                         help='transition kernel of Monte Carlo: "suwa todo", "reversible suwa todo", "heat bath", or "metropolice".',
                         )
+    parser.add_argument('--extra-shift', dest='extra_shift',
+                        type=float, default=0.0,
+                        help='extra energy shift',
+                       )
 
     args = parser.parse_args()
 
@@ -97,7 +101,7 @@ def main():
         lat.write_xml(args.latxml)
     if not args.woalg:
         ham = GraphedHamiltonian(args.ham, lat)
-        alg = Algorithm(ham, prob_kernel=kernel)
+        alg = Algorithm(ham, prob_kernel=kernel, ebase_extra=args.extra_shift)
         alg.write_xml(args.algxml)
     if args.kpoint is not None:
         wv = Wavevector()

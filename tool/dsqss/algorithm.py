@@ -133,7 +133,7 @@ class IntVertex(Vertex):
         self.initialconfigurations = ics
 
 class AlgInteraction:
-    def __init__(self, hamint, hamsites, prob_kernel=kernel.suwa_todo):
+    def __init__(self, hamint, hamsites, prob_kernel=kernel.suwa_todo, ebase_extra=0.0):
         self.itype = hamint.itype
         self.vtype = hamint.itype + len(hamsites)
         self.nbody = hamint.nbody
@@ -148,20 +148,23 @@ class AlgInteraction:
 
 
         sumw = 0.0
+        maxd = -float('inf')
         maxo = -float('inf')
-        for elem in self.intelements:
+        for elem,v in self.intelements.items():
             if elem[0] == elem[1]:
-                v = -self.intelements[elem]
+                v = -v
                 self.intelements[elem] = v
                 self.ebase_negsign = min(self.ebase_negsign, v)
+                maxd = max(maxd, v)
             else:
-                v = abs(self.intelements[elem])
+                v = abs(v)
                 self.intelements[elem] = v
                 sumw += v
                 maxo = max(maxo, v)
         self.ebase_negsign *= -1.0
-        ndiag = 0
+        maxd += self.ebase_negsign
 
+        ndiag = 0
         for st in product(*map(lambda site: range(site.N), self.sites)):
             ndiag += 1
             k = (st,st)
@@ -173,9 +176,14 @@ class AlgInteraction:
                 sumw += self.intelements[k]
         self.ebase_nobounce = max((2*maxo - sumw)/ndiag, 0.0)
 
+        self.ebase_extra = ebase_extra
+
+        if self.ebase_extra + maxd + self.ebase_nobounce == 0.0:
+            self.ebase_extra = 0.5*maxo
+
         for st in product(*map(lambda site: range(site.N), self.sites)):
             k = (st,st)
-            self.intelements[k] += self.ebase_nobounce
+            self.intelements[k] += self.ebase_nobounce + self.ebase_extra
 
         self.intelements = {k:v for k,v in self.intelements.items() if v>0.0}
 
@@ -184,7 +192,6 @@ class AlgInteraction:
             for inleg in range(2*self.nbody):
                 insite = inleg//2
                 for instate in range(self.sites[insite].N):
-                    # import pdb; pdb.set_trace()
                     ic = self.make_initialconfiguration(st, inleg, instate)
                     if not ic:
                         continue
@@ -251,7 +258,7 @@ class AlgInteraction:
         f.write(indent*level + tagged('ITYPE', self.itype))
         f.write(indent*level + tagged('VTYPE', self.vtype))
         f.write(indent*level + tagged('NBODY', self.nbody))
-        f.write(indent*level + tagged('EBASE', self.ebase_negsign + self.ebase_nobounce))
+        f.write(indent*level + tagged('EBASE', self.ebase_negsign + self.ebase_nobounce + self.ebase_extra))
         for st in self.intelements:
             if st[0] != st[1]:
                 continue
@@ -260,7 +267,7 @@ class AlgInteraction:
         f.write(indent*level + '</Interaction>\n')
 
 class Algorithm:
-    def __init__(self, ham, prob_kernel=kernel.suwa_todo):
+    def __init__(self, ham, prob_kernel=kernel.suwa_todo, ebase_extra=0.0):
         self.name = ham.name
         self.nstypes = ham.nstypes
         self.nitypes = ham.nitypes
@@ -276,7 +283,7 @@ class Algorithm:
                 site.sources[source] /= math.sqrt(maxprob)
 
         self.sites = [AlgSite(site) for site in hamsites]
-        self.interactions = [AlgInteraction(hamint, hamsites, prob_kernel=prob_kernel)
+        self.interactions = [AlgInteraction(hamint, hamsites, prob_kernel=prob_kernel, ebase_extra=ebase_extra)
                              for hamint in ham.indeed_interactions]
 
     def write_xml(self, filename):
