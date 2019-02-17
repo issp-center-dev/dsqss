@@ -10,7 +10,13 @@ import dsqss
 import dsqss.parameter
 
 def p_value(X, E, N, Y):
-    t = (X-Y)/E
+    if E == 0.0:
+        if X==Y:
+            t = 0.0
+        else:
+            t = float('inf')
+    else:
+        t = (X-Y)/E
     return 2*stats.t.cdf(-np.abs(t), N-1)
 
 def cleanup(name=''):
