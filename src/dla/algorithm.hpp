@@ -562,7 +562,7 @@ void InteractionProperty::initialize(XML::Block& X) {
       VertexDensity(x) = d;
       AverageInterval(x) = 1.0 / d;
     }
-    if (B.getName() == "Phase") {
+    if (B.getName() == "Sign") {
       std::vector<int> x(2*NBODY);
       for (int ii = 0; ii < 2*NBODY; ii++) {
         x[ii] = B.getInteger(ii);
