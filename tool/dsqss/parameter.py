@@ -55,7 +55,7 @@ def dla_pre(param, pfile):
     ham = GraphedHamiltonian(h, lat)
 
     palg = param.get('algorithm', {})
-    extra_shift = palg.get('extra shift', 0.0)
+    extra_shift = palg.get('extra_shift', 0.0)
     kernel = palg.get('kernel', 'suwa todo')
 
     if kernel == 'suwa todo':
