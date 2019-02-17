@@ -129,8 +129,11 @@
     },
     "parameter": {
       "ntau": 5,
-      "beta": 3.0
-    },
-    "kpoints": {}
+      "beta": 3.0,
+      "nset": 10,
+      "nmcs": 5000,
+      "ntherm": 1000,
+      "npre" : 100
+    }
   }
 }

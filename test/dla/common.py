@@ -32,7 +32,7 @@ def cleanup(name=''):
             os.remove(fname)
 
 
-def geninp(param, seed, nset=10, nmcs=1000, ntherm=1000, npre=1000, simtime=0.0, name=''):
+def geninp(param, seed, simtime=0.0, name=''):
     if name != '':
         name = '_{0}'.format(name)
     p = param['parameter']
@@ -46,10 +46,6 @@ def geninp(param, seed, nset=10, nmcs=1000, ntherm=1000, npre=1000, simtime=0.0,
     p['cfoutfile'] = 'cf{0}.dat'.format(name)
     p['ckoutfile'] = 'ck{0}.dat'.format(name)
     p['seed'] = seed
-    p['nset'] = nset
-    p['nmcs'] = nmcs
-    p['ntherm'] = ntherm
-    p['npre'] = npre
     p['simulationtime'] = simtime
 
     dsqss.parameter.dla_pre(param, 'qmc{0}.inp'.format(name))

@@ -129,9 +129,10 @@
     "parameter" : {
       "beta": 3.0,
       "ntau": 5,
-      "kernel": "suwa todo"
-    },
-    "kpoints" : {
+      "nset": 10,
+      "nmcs": 5000,
+      "ntherm": 1000,
+      "npre" : 100
     }
   }
 }

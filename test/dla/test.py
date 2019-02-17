@@ -18,11 +18,7 @@ BINDIR = sys.argv[1]
 JSONFILE = sys.argv[2]
 
 alpha = 0.001
-nset  = 10
-SEED  = 19937
-NMCS  = 5000
-NTHERM = 1000
-NPRE = 1000
+SEED = 19937
 
 def evaluate(ref, nset, alpha, name=''):
     if name != '':
@@ -80,10 +76,9 @@ if param['hamiltonian']['model'] == 'boson':
 else:
     exename = 'dla_H'
 
+nset = param['parameter']['nset']
 cleanup(ID)
-geninp(param, SEED, nset=nset, nmcs=NMCS, npre=NPRE, ntherm=NTHERM, name=ID)
-# genXML(param, BINDIR=BINDIR, name=ID)
-# geninp(param['beta'], SEED, nset=nset, nmcs=NMCS, npre=NPRE, ntherm=NTHERM, name=ID)
+geninp(param, SEED, name=ID)
 run(exename, BINDIR=BINDIR, name=ID)
 evaluate(ref, nset, alpha, name=ID)
 sys.exit(0)

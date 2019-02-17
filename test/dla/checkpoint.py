@@ -11,7 +11,6 @@ if len(sys.argv) < 2:
 
 BINDIR = sys.argv[1]
 
-nset = 100
 SEED = 19937
 simtime = 1.0
 
@@ -60,6 +59,7 @@ param['hamiltonian'] = {'model' : 'boson',
 
 param['parameter'] = {'beta' : 1.0,
                       'ntau' : 5,
+                      'nset' : 100,
                      }
 
 param['kpoints'] = {}
@@ -73,15 +73,15 @@ cleanup(ID)
 cleanup('{0}_restarted'.format(ID))
 
 
-geninp(param, SEED, nset=nset, simtime=simtime, name=ID)
+geninp(param, SEED, simtime=simtime, name=ID)
 run(exename, BINDIR=BINDIR, name=ID)
-geninp(param, 2*SEED, nset=nset, simtime='INF', name=ID)
+geninp(param, 2*SEED, simtime='INF', name=ID)
 run(exename, BINDIR=BINDIR, name=ID)
 for nm in ['res','sf','cf','ck']:
     shutil.move('{0}_{1}.dat'.format(nm,ID), '{0}_{1}_restarted.dat'.format(nm,ID))
 os.remove('res_{0}.dat.0.cjob'.format(ID))
 
-geninp(param, SEED, nset=nset, simtime=0.0, name=ID)
+geninp(param, SEED, simtime=0.0, name=ID)
 run(exename, BINDIR=BINDIR, name=ID)
 
 evaluate(ID)
