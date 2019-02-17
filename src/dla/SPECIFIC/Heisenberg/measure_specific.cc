@@ -4,8 +4,6 @@ void Measurement::measure(double sgn) {
   using namespace Specific;
   int NV = LAT.countVertices();
 
-  ACC[NV1].accumulate(((double)NV));
-
   double MZUA = 0.0;  // uniform,   tau=0
   double MZUB = 0.0;  // uniform,   integrated
   double MZSA = 0.0;  // staggered, tau=0
@@ -83,6 +81,9 @@ void Measurement::measure(double sgn) {
 
   ACC[SGN].accumulate(sgn);
 
+  ACC[NV1].accumulate(sgn*NV);
+
+
   ACC[MZUA1].accumulate(sgn * MZUA);
   ACC[MZUA2].accumulate(sgn * MZUA * MZUA);
   ACC[MZUB1].accumulate(sgn * MZUB);
@@ -114,24 +115,29 @@ void Measurement::setsummary() {
   const double D = LAT.D;
 
   double invsign = 1.0/X[SGN];
+
+  for (int i=0; i<NACC; ++i){
+    X[i] *= invsign;
+  }
+
   Q[SIGN] = X[SGN];
-  Q[ANV] = invsign * X[NV1] * invV;
-  Q[ENE] = invsign * (EBASE + X[EB1] / B) * invV;
+  Q[ANV] = X[NV1] * invV;
+  Q[ENE] = (EBASE + X[EB1] / B) * invV;
 
-  Q[SPE] = invsign * (X[EB2] - X[EB1] * X[EB1] - X[NV1]) * invV;
+  Q[SPE] = (X[EB2] - X[EB1] * X[EB1] - X[NV1]) * invV;
 
-  Q[LEN] = invsign * X[LE1];
-  Q[XMX] = invsign * WDIAG * X[LE1] * T;
+  Q[LEN] = X[LE1];
+  Q[XMX] = WDIAG * X[LE1] * T;
 
-  Q[AMZU] = invsign * X[MZUA1];
-  Q[BMZU] = invsign * X[MZUB1];
-  Q[SMZU] = invsign * (X[MZUA2] - X[MZUA1] * X[MZUA1]) * V;
-  Q[XMZU] = invsign * (X[MZUB2] - X[MZUB1] * X[MZUB1]) * B * V;
+  Q[AMZU] = X[MZUA1];
+  Q[BMZU] = X[MZUB1];
+  Q[SMZU] = (X[MZUA2] - X[MZUA1] * X[MZUA1]) * V;
+  Q[XMZU] = (X[MZUB2] - X[MZUB1] * X[MZUB1]) * B * V;
 
-  Q[AMZS] = invsign * X[MZSA1];
-  Q[BMZS] = invsign * X[MZSB1];
-  Q[SMZS] = invsign * (X[MZSA2] - X[MZSA1] * X[MZSA1]) * V;
-  Q[XMZS] = invsign * (X[MZSB2] - X[MZSB1] * X[MZSB1]) * B * V;
+  Q[AMZS] = X[MZSA1];
+  Q[BMZS] = X[MZSB1];
+  Q[SMZS] = (X[MZSA2] - X[MZSA1] * X[MZSA1]) * V;
+  Q[XMZS] = (X[MZSB2] - X[MZSB1] * X[MZSB1]) * B * V;
 
   for (int i = 0; i < NPHY; i++)
     PHY[i].accumulate(Q[i]);
