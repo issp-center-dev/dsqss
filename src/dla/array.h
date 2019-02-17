@@ -69,10 +69,10 @@ public:
     }
     return L[i];
   };
-  int operator()(const int* x);
-  int operator()(std::vector<int> const& x);
-  int operator()(const int M, va_list& ap);
-  int operator()(const int M, ...);
+  int operator()(const int* x) const ;
+  int operator()(std::vector<int> const& x) const ;
+  int operator()(const int M, va_list& ap) const ;
+  int operator()(const int M, ...) const ;
 
   void dump() const {
     if (!initialized()) {
@@ -157,7 +157,7 @@ void IndexSystem::coord(const int ist, int* x) {
   }
 }
 
-int IndexSystem::operator()(const int* x) {
+int IndexSystem::operator()(const int* x) const {
   if (!initialized()) {
     printf(
         "IndexSystem::operator()(const int*)> Error. Not yet initialized.\n");
@@ -180,7 +180,7 @@ int IndexSystem::operator()(const int* x) {
   return ans;
 }
 
-int IndexSystem::operator()(std::vector<int> const& x) {
+int IndexSystem::operator()(std::vector<int> const& x) const {
   if (!initialized()) {
     printf(
         "IndexSystem::operator()(const int*)> Error. Not yet initialized.\n");
@@ -203,7 +203,7 @@ int IndexSystem::operator()(std::vector<int> const& x) {
   return ans;
 }
 
-int IndexSystem::operator()(const int M, va_list& ap) {
+int IndexSystem::operator()(const int M, va_list& ap) const {
   if (!initialized()) {
     printf("IndexSystem::operator()> Error. Not yet initialized.\n");
     exit(0);
@@ -216,7 +216,7 @@ int IndexSystem::operator()(const int M, va_list& ap) {
   return (*this)(x);
 }
 
-int IndexSystem::operator()(const int M, ...) {
+int IndexSystem::operator()(const int M, ...) const {
   if (!initialized()) {
     printf("IndexSystem::operator()> Error. Not yet initialized.\n");
     exit(0);
@@ -262,6 +262,10 @@ public:
   C& operator()(int* x);
   C& operator()(std::vector<int> const& x);
   C& operator[](const int i);
+  const C& operator()(const int M, ...) const;
+  const C& operator()(int* x) const ;
+  const C& operator()(std::vector<int> const& x) const ;
+  const C& operator[](const int i) const;
   int size();
   int dimension();
   IndexSystem& index_system();
@@ -372,7 +376,28 @@ C& Array<C>::operator()(const int M, ...) {
 }
 
 template <class C>
+const C& Array<C>::operator()(const int M, ...) const {
+  va_list ap;
+  va_start(ap, M);
+  int i = ID(M, ap);
+  va_end(ap);
+  return val[i];
+}
+
+template <class C>
 C& Array<C>::operator[](const int i) {
+#ifdef DEB
+  if (i < 0 || i >= size()) {
+    printf("Array::operator[]> Error in array \"%s\".\n", LBL.c_str());
+    printf("  The index (=%d) is out of the bounds [0,%d).\n", i, size());
+    exit(0);
+  }
+#endif
+  return val[i];
+}
+
+template <class C>
+const C& Array<C>::operator[](const int i) const {
 #ifdef DEB
   if (i < 0 || i >= size()) {
     printf("Array::operator[]> Error in array \"%s\".\n", LBL.c_str());
@@ -397,7 +422,33 @@ C& Array<C>::operator()(int* x) {
 }
 
 template <class C>
+const C& Array<C>::operator()(int* x) const {
+  int id = ID(x);
+#ifdef DEB
+  if (id < 0 || id > size()) {
+    printf("Array::operator()> Error.\n");
+    printf("  Out of bounds.\n");
+    exit(0);
+  }
+#endif
+  return val[id];
+}
+
+template <class C>
 C& Array<C>::operator()(std::vector<int> const& x) {
+  int id = ID(x);
+#ifdef DEB
+  if (id < 0 || id > size()) {
+    printf("Array::operator()> Error.\n");
+    printf("  Out of bounds.\n");
+    exit(0);
+  }
+#endif
+  return val[id];
+}
+
+template <class C>
+const C& Array<C>::operator()(std::vector<int> const& x) const {
   int id = ID(x);
 #ifdef DEB
   if (id < 0 || id > size()) {

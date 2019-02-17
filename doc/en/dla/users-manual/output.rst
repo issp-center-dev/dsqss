@@ -114,6 +114,11 @@ Main results
 *****************
 Main results are written in a file with the name specified by ``outfile`` keyword in the input parameter file.
 
+``sign``
+  The sign of the weights.
+
+  :math:`\sum_i W_i / \sum_i |W_i`
+
 ``anv``
   The mean number of the vertices.
 

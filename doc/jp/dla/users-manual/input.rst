@@ -257,7 +257,7 @@ Algorithm/Site/InitialConfiguration/Channel
 
 Algorithm/Interaction
   １つの相互作用型を定義します.
-  サブ要素として IType, VType, NBody, EBase, VertexDensity があります.
+  サブ要素として IType, VType, NBody, EBase, VertexDensity, Sign があります.
   ::
 
     <Algorithm>
@@ -269,6 +269,8 @@ Algorithm/Interaction
         <EBase> 0.125 </EBase>
         <VertexDensity> 0 0 0.25 </VertexDensity>
         <VertexDensity> 1 1 0.25 </VertexDensity>
+        <Sign> 0 1 1 0 -1.0 </Sign>
+        <Sign> 1 0 0 1 -1.0 </Sign>
       </Interaction>
       ...
     </Algorithm>
@@ -279,7 +281,7 @@ Algorithm/Interaction/IType
 Algorithm/Interaction/VType
   挿入する可能性のあるバーテックスの型の識別番号. バーテックス型の内容は Vertex/Algorithm で定義します.
 
-Algorihtn/Interaction/NBody
+Algorithm/Interaction/NBody
   相互作用に関与するサイトの数（ゼーマン項のような1体相互作用であれば1 で, 交換相互作用のような2体相互作用であれば2. 3以上を指定することも可能）.
 
 Algorithm/Interaction/EBase
@@ -290,6 +292,14 @@ Algorithm/Interaction/VertexDensity
   Algorithm/Interaction/NBody 個の整数値と, 1個の浮動小数点値の並びで指定.
   整数値は, 関与する各サイトの状態（順序は格子定義ファイルの I で指定するサイト番号の順序と対応します）.
   浮動小数点値は密度.
+
+Algorithm/Interaction/Sign
+  その相互作用における局所重みの符号, すなわち :math:`\textrm{Sgn}(\langle f | -\mathcal{H} | i \rangle)` を指定します.
+  :math:`2\times` Algorithm/Interaction/NBody 個の整数値と, 1個の浮動小数点値の並びで指定.
+  整数値は, 関与する各サイトのそれぞれについて, 相互作用演算子が適用される前と後の状態で,
+  浮動小数点値は重みの符号.
+
+  例えば, ``<Sign> 0 1 1 0 -1.0 </Sign>`` は :math:`\langle 1 0 | \left(-\mathcal{H}\right) | 0 1 \rangle < 0` を意味します.
 
 Algorithm/Vertex
   1つのバーテックスの型を定義します. バーテックスとしては, 通常の2体, 3体, ……の相互作用を記述するもの（ ``VCategory=2`` ）と, 
@@ -491,8 +501,8 @@ Hamiltonian/Interaction
         <STYPE> 0 0 </STYPE>
         <Weight> 0 0 0 0      -0.2500000000000000 </Weight>
         <Weight> 1 1 0 0       0.2500000000000000 </Weight>
-        <Weight> 1 0 0 1       0.5000000000000000 </Weight>
-        <Weight> 0 1 1 0       0.5000000000000000 </Weight>
+        <Weight> 1 0 0 1      -0.5000000000000000 </Weight>
+        <Weight> 0 1 1 0      -0.5000000000000000 </Weight>
         <Weight> 0 0 1 1       0.2500000000000000 </Weight>
         <Weight> 1 1 1 1      -0.2500000000000000 </Weight>
       </Interaction>
@@ -502,7 +512,7 @@ Hamiltonian/Interaction
 Hamiltonian/Interaction/ITYPE
   相互作用の型の識別番号.
 
-Algorihtn/Interaction/NBODY
+Hamiltonian/Interaction/NBODY
   相互作用に関与するサイトの数（ゼーマン項のような1体相互作用であれば1 で, 交換相互作用のような2体相互作用であれば2. 3以上を指定することも可能）.
 
 Hamiltonian/Interaction/ITYPE
@@ -513,11 +523,10 @@ Hamiltonian/Interaction/Weight
   局所ハミルトニアンの行列要素を指定します.
   :math:`2\times` NBODY 個の整数値と, 1個の浮動小数点値の並びで指定.
   整数値は, 関与する各サイトのそれぞれについて, 相互作用演算子が適用される前と後の状態で,
-  浮動小数点値は行列要素の大きさ.
-  ただし, 対角成分の場合には -1 をかけて, 非対角成分の場合は, 絶対値を取ります [#fn_reweighting]_.
+  浮動小数点値は行列要素の大きさに :math:`-1` をかけたもの.
 
-  たとえば, ``0 0 1 1 0.25`` は :math:`\langle 0 1 | \mathcal{H} | 0 1 \rangle = -0.25` を,
-  ``0 1 1 0 0.5`` は :math:`\left| \langle 1 0 | \mathcal{H} | 0 1 \rangle \right| = 0.5` を示します.
+  たとえば, ``0 0 1 1 0.25`` は :math:`\langle 0 1 | -\mathcal{H} | 0 1 \rangle = 0.25` を,
+  ``0 1 1 0 -0.5`` は :math:`\langle 1 0 | -\mathcal{H} | 0 1 \rangle = -0.5` を示します.
 
 構造因子定義ファイル ``sf.xml``
 ************************************************
@@ -608,14 +617,4 @@ CorrelationFunction/CF
 を計算するための波数や虚時間刻みの情報がXML ライクな形式で記述されるテキストファイルです.
 
 要素名を含めて, 動的構造因子定義ファイルと全く同じ構造を持つため, 流用が可能です.
-
-
-
-.. only:: html
-
-   .. rubric:: 脚注
-
-.. [#fn_reweighting]
-   これは, DSQSS/DLA は「絶対値系」を計算することを意味しています.
-   DSQSS v2 では, 符号リウェイティングを実装することで, この制限を取り除くことが予定されています.
 

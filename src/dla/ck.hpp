@@ -20,6 +20,7 @@ private:
 
   int NCK;
 
+  Accumulator SIGN;
   std::vector<std::vector<double> > COSrk;
   std::vector<std::vector<double> > SINrk;
   std::vector<std::vector<Accumulator> > ACC;
@@ -33,7 +34,7 @@ public:
   void setinit();
   void reset();
   void count(int s, double tT, double bT, double tail_tau);
-  void accumulate(int NCYC);
+  void accumulate(int NCYC, double sgn);
   void setsummary();
   void summary();
 #ifdef MULTI
@@ -87,6 +88,7 @@ CK::CK(Parameter const& param, Lattice& lat, Algorithm& alg)
       }
     }
 
+    SIGN.reset();
     NCK = NKMAX;
     for (int i = 0; i < NCK; i++) {
       ACC.push_back(std::vector<Accumulator>(Ntau));
@@ -113,6 +115,7 @@ CK::CK(Parameter const& param, Lattice& lat, Algorithm& alg)
 inline void CK::setinit() {
   if (!to_be_calc) { return; }
   AutoDebugDump("CK::setinit");
+  SIGN.reset();
   for (int i = 0; i < NCK; i++)
     for (int itau = 0; itau < Ntau; itau++)
       ACC[i][itau].reset();
@@ -129,14 +132,15 @@ inline void CK::show(FILE* F) {
   }
 };
 
-inline void CK::accumulate(int NCYC) {
+inline void CK::accumulate(int NCYC, double sgn) {
   if (!to_be_calc) { return; }
   AutoDebugDump("CK::accumulate");
   const double invNCYC = 1.0 / NCYC;
 
+  SIGN.accumulate(sgn);
   for (int ick = 0; ick < NCK; ick++)
     for (int it = 0; it < Ntau; it++)
-      ACC[ick][it].accumulate(invNCYC * counterC[ick][it]);
+      ACC[ick][it].accumulate(sgn * invNCYC * counterC[ick][it]);
 };
 
 inline void CK::summary() {
@@ -193,10 +197,12 @@ void CK::setsummary() {
   if (!to_be_calc) { return; }
   AutoDebugDump("CK::setsummary");
   const double factor = 2 * ALG.getBlock("WDIAG", (double)1.0);  //ALG.X["General"]["WDIAG" ].getDouble(); // 0.25
+  SIGN.average();
+  const double invsign = 1.0/SIGN.mean();
   for (int ick = 0; ick < NCK; ick++) {
     for (int it = 0; it < Ntau; it++) {
       ACC[ick][it].average();
-      PHY[ick][it].accumulate(ACC[ick][it].mean() * factor);
+      PHY[ick][it].accumulate(invsign * ACC[ick][it].mean() * factor);
     }
   }
 }
@@ -212,11 +218,13 @@ void CK::allreduce(MPI_Comm comm) {
 #endif
 
 void CK::save(std::ofstream& F) const {
+  Serialize::save(F, SIGN);
   Serialize::save(F, ACC);
   Serialize::save(F, PHY);
 }
 
 void CK::load(std::ifstream& F) {
+  Serialize::load(F, SIGN);
   Serialize::load(F, ACC);
   const int nck = ACC.size();
   if(nck != NCK){
