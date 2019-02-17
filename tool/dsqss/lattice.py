@@ -7,7 +7,7 @@ from itertools import chain
 
 import numpy as np
 
-from dsqss.util import ERROR, tagged
+from .util import ERROR, tagged
 
 class Site:
     def __init__(self, site_id, site_type, measure_type, coordinate):

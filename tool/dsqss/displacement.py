@@ -1,7 +1,8 @@
 import codecs
 from itertools import product
 import numpy as np
-from dsqss.util import tagged, get_as_list
+
+from .util import tagged, get_as_list
 
 class CF:
     def __init__(self, lat, distance_only=False, origin=None):

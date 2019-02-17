@@ -4,15 +4,14 @@ import codecs
 
 import toml
 
-import dsqss
-from dsqss.util import ERROR, INFO
-from dsqss.std_lattice import std_lattice
-from dsqss.std_model import std_model
-from dsqss.hamiltonian import GraphedHamiltonian
-from dsqss.algorithm import Algorithm
-from dsqss.wavevector import Wavevector
-from dsqss.displacement import CF
-import dsqss.prob_kernel as pk
+from .util import ERROR, INFO
+from .std_lattice import std_lattice
+from .std_model import std_model
+from .hamiltonian import GraphedHamiltonian
+from .algorithm import Algorithm
+from .wavevector import Wavevector
+from .displacement import CF
+from .prob_kernel import *
 
 def set_default_values(param):
     for name, val in (('npre', 1000),
@@ -60,13 +59,13 @@ def dla_pre(param, pfile):
     kernel = palg.get('kernel', 'suwa todo')
 
     if kernel == 'suwa todo':
-        kernel = dsqss.prob_kernel.suwa_todo
+        kernel = suwa_todo
     elif kernel == 'reversible suwa todo':
-        kernel = dsqss.prob_kernel.reversible_suwa_todo
+        kernel = reversible_suwa_todo
     elif kernel == 'heat bath':
-        kernel = dsqss.prob_kernel.heat_bath
+        kernel = heat_bath
     elif kernel  == 'metropolice':
-        kernel = dsqss.prob_kernel.metropolice
+        kernel = metropolice
     else:
         ERROR('unknown kernel: {0}'.format(kernel))
 

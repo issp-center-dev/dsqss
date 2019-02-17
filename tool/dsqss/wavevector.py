@@ -3,7 +3,7 @@ from itertools import product
 import numpy as np
 import scipy.special as spsp
 
-from dsqss.util import tagged, get_as_list
+from .util import tagged, get_as_list
 
 class Wavevector:
     def __init__(self):

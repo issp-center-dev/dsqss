@@ -1,9 +1,8 @@
 from math import sqrt
 import codecs
 
-from dsqss.hamiltonian import Site, Interaction, Hamiltonian, append_matelem, matelems_todict
-
-from dsqss.util import ERROR, get_as_list, extend_list
+from .hamiltonian import Site, Interaction, Hamiltonian, append_matelem, matelems_todict
+from .util import ERROR, get_as_list, extend_list
 
 def Splus(S,m):
     return sqrt((S-m)*(S+m+1.0))

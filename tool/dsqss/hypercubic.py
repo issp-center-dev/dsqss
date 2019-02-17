@@ -1,7 +1,8 @@
 import codecs
 import numpy as np
-from dsqss.lattice import Lattice, Site, Interaction
-from dsqss.util import ERROR, get_as_list, extend_list, index2coord, coord2index
+
+from .lattice import Lattice, Site, Interaction
+from .util import ERROR, get_as_list, extend_list, index2coord, coord2index
 
 class HyperCubicLattice(Lattice):
     def __init__(self, param):

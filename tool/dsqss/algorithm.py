@@ -6,9 +6,9 @@ import codecs
 
 import numpy as np
 
-from dsqss.hamiltonian import keystate, append_matelem
-import dsqss.prob_kernel as kernel
-from dsqss.util import ERROR, INFO, tagged
+from .hamiltonian import keystate, append_matelem
+from .prob_kernel import suwa_todo
+from .util import ERROR, INFO, tagged
 
 Channel = namedtuple('Channel', ['outleg', 'state', 'prob'])
 SiteInitialConfiguration = namedtuple('SiteInitialConfiguration',
@@ -133,7 +133,7 @@ class IntVertex(Vertex):
         self.initialconfigurations = ics
 
 class AlgInteraction:
-    def __init__(self, hamint, hamsites, prob_kernel=kernel.suwa_todo, ebase_extra=0.0):
+    def __init__(self, hamint, hamsites, prob_kernel=suwa_todo, ebase_extra=0.0):
         self.itype = hamint.itype
         self.vtype = hamint.itype + len(hamsites)
         self.nbody = hamint.nbody
@@ -271,7 +271,7 @@ class AlgInteraction:
         f.write(indent*level + '</Interaction>\n')
 
 class Algorithm:
-    def __init__(self, ham, prob_kernel=kernel.suwa_todo, ebase_extra=0.0):
+    def __init__(self, ham, prob_kernel=suwa_todo, ebase_extra=0.0):
         self.name = ham.name
         self.nstypes = ham.nstypes
         self.nitypes = ham.nitypes

@@ -5,8 +5,8 @@ from copy import deepcopy
 
 import toml
 
-import dsqss.lattice as lattice
-from dsqss.util import tagged
+from .lattice import Lattice
+from .util import tagged
 
 def keystate(istate, fstate):
     if type(istate) is not tuple:
@@ -149,7 +149,7 @@ class GraphedHamiltonian(Hamiltonian):
 
     def load_lattice(self, lat):
         if type(lat) == str:
-            lat = lattice.Lattice(lat)
+            lat = Lattice(lat)
         self.indeed_interactions = [IndeedInteraction(self.sites, self.interactions, v) for v in lat.vertices]
         self.nitypes = len(self.indeed_interactions)
 

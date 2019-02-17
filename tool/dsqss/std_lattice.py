@@ -1,5 +1,5 @@
-from dsqss.util import ERROR
-from dsqss.hypercubic import HyperCubicLattice
+from .util import ERROR
+from .hypercubic import HyperCubicLattice
 
 def std_lattice(param):
     if param['lattice'] == 'hypercubic':

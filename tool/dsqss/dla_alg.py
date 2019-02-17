@@ -3,13 +3,13 @@ from __future__ import print_function
 
 import argparse
 
-from dsqss.util import ERROR
-from dsqss.lattice import Lattice
-from dsqss.hamiltonian import GraphedHamiltonian
-from dsqss.algorithm import Algorithm
-from dsqss.wavevector import Wavevector
-from dsqss.displacement import CF
-import dsqss.prob_kernel
+from .util import ERROR
+from .lattice import Lattice
+from .hamiltonian import GraphedHamiltonian
+from .algorithm import Algorithm
+from .wavevector import Wavevector
+from .displacement import CF
+from .prob_kernel import *
 
 def main():
 
@@ -86,13 +86,13 @@ def main():
     args = parser.parse_args()
 
     if args.kernel == 'suwa todo':
-        kernel = dsqss.prob_kernel.suwa_todo
+        kernel = suwa_todo
     elif args.kernel == 'reversible suwa todo':
-        kernel = dsqss.prob_kernel.reversible_suwa_todo
+        kernel = reversible_suwa_todo
     elif args.kernel == 'heat bath':
-        kernel = dsqss.prob_kernel.heat_bath
+        kernel = heat_bath
     elif args.kernel == 'metropolice':
-        kernel = dsqss.prob_kernel.metropolice
+        kernel = metropolice
     else:
         ERROR('unknown kernel: {0}'.format(args.kernel))
 

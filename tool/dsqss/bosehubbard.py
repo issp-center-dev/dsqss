@@ -1,10 +1,9 @@
 from math import sqrt
 import codecs
 
-import dsqss.hamiltonian
-from dsqss.hamiltonian import Site, Interaction, Hamiltonian, append_matelem, matelems_todict
+from .hamiltonian import Site, Interaction, Hamiltonian, append_matelem, matelems_todict
 
-from dsqss.util import ERROR, get_as_list, extend_list
+from .util import ERROR, get_as_list, extend_list
 
 def creator_boson(n):
     return sqrt(n+1.0)

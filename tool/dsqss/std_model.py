@@ -1,7 +1,7 @@
-from dsqss.hamiltonian import Hamiltonian
-from dsqss.xxz import XXZ_hamiltonian
-from dsqss.bosehubbard import BoseHubbard_hamiltonian
-from dsqss.util import ERROR
+from .hamiltonian import Hamiltonian
+from .xxz import XXZ_hamiltonian
+from .bosehubbard import BoseHubbard_hamiltonian
+from .util import ERROR
 
 def std_model(param):
     if param['model'].lower() == 'spin':
