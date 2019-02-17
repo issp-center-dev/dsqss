@@ -265,7 +265,10 @@ class AlgInteraction:
                 continue
             f.write(indent*level + tagged('VertexDensity', chain(st[0], [self.intelements[st]])))
         for st,v in self.signs.items():
-            f.write(indent*level + tagged('Sign', chain(*zip(st[0],st[1]), [v])))
+            f.write(indent*level + '<Sign> ')
+            for ini,fin in zip(st[0], st[1]):
+                f.write('{0} {1} '.format(ini,fin))
+            f.write('{0} </Sign>\n'.format(v))
         level -= 1
         f.write(indent*level + '</Interaction>\n')
 
