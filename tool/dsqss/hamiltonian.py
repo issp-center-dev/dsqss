@@ -9,11 +9,20 @@ import dsqss.lattice as lattice
 from dsqss.util import tagged
 
 def keystate(istate, fstate):
-    if type(istate) is not list:
-        istate = [istate]
-    if type(fstate) is not list:
-        fstate = [fstate]
-    return (tuple(istate), tuple(fstate))
+    if type(istate) is not tuple:
+        if type(istate) is not list:
+            istate = [istate]
+        ti = tuple(istate)
+    else:
+        ti = istate
+        
+    if type(fstate) is not tuple:
+        if type(fstate) is not list:
+            fstate = [fstate]
+        tf = tuple(fstate)
+    else:
+        tf = fstate
+    return (ti, tf)
 
 def append_matelem(matelems, state=None, istate=None, fstate=None, value=None, param=None):
     if param is None:
