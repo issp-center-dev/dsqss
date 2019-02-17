@@ -35,7 +35,6 @@ def set_default_values(param):
                       ('sfoutfile', 'sf.dat'),
                       ('cfoutfile', 'cf.dat'),
                       ('ckoutfile', 'ck.dat'),
-                      ('kernel', 'suwa todo'),
                      ):
         if name not in param:
             param[name] = val
@@ -56,23 +55,27 @@ def dla_pre(param, pfile):
     h = std_model(param['hamiltonian'])
     ham = GraphedHamiltonian(h, lat)
 
-    if p['kernel'] == 'suwa todo':
+    palg = param.get('algorithm', {})
+    extra_shift = palg.get('extra shift', 0.0)
+    kernel = palg.get('kernel', 'suwa todo')
+
+    if kernel == 'suwa todo':
         kernel = dsqss.prob_kernel.suwa_todo
-    elif p['kernel'] == 'reversible suwa todo':
+    elif kernel == 'reversible suwa todo':
         kernel = dsqss.prob_kernel.reversible_suwa_todo
-    elif p['kernel'] == 'heat bath':
+    elif kernel == 'heat bath':
         kernel = dsqss.prob_kernel.heat_bath
-    elif p['kernel'] == 'metropolice':
+    elif kernel  == 'metropolice':
         kernel = dsqss.prob_kernel.metropolice
     else:
-        ERROR('unknown kernel: {0}'.format(p['kernel']))
+        ERROR('unknown kernel: {0}'.format(kernel))
 
-    alg = Algorithm(ham, prob_kernel=kernel)
+    alg = Algorithm(ham, prob_kernel=kernel, ebase_extra=extra_shift)
     alg.write_xml(p['algfile'])
 
     if p['sfinpfile'] != '' or p['ckinpfile'] != '':
         sf = Wavevector()
-        sf.generate(param['kpoints'], size=lat.size)
+        sf.generate(param.get('kpoints', {}), size=lat.size)
         if p['sfinpfile'] != '':
             sf.write_xml(p['sfinpfile'], lat, p['ntau'], p['taucutoff'])
         if p['ckinpfile'] != p['sfinpfile']:

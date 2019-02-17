@@ -146,17 +146,19 @@ class AlgInteraction:
         self.intelements = deepcopy(hamint.elements)
         self.ebase_negsign = float('inf')
 
+        self.signs = {}
 
         sumw = 0.0
         maxd = -float('inf')
         maxo = -float('inf')
         for elem,v in self.intelements.items():
+            v = -v
             if elem[0] == elem[1]:
-                v = -v
                 self.intelements[elem] = v
                 self.ebase_negsign = min(self.ebase_negsign, v)
                 maxd = max(maxd, v)
             else:
+                append_matelem(self.signs, istate=elem[0], fstate=elem[1], value=np.sign(v))
                 v = abs(v)
                 self.intelements[elem] = v
                 sumw += v
@@ -263,6 +265,8 @@ class AlgInteraction:
             if st[0] != st[1]:
                 continue
             f.write(indent*level + tagged('VertexDensity', chain(st[0], [self.intelements[st]])))
+        for st,v in self.signs.items():
+            f.write(indent*level + tagged('Sign', chain(*zip(st[0],st[1]), [v])))
         level -= 1
         f.write(indent*level + '</Interaction>\n')
 
