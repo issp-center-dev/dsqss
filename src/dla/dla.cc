@@ -197,7 +197,7 @@ void Simulation::reset_counters() {
 
 void Simulation::set_NCYC() {
   AutoDebugDump("Simulation::set_NCYC");
-  double vol = LAT.NSITE;
+  double vol = P.BETA * LAT.NSITE;
 
   double path;
   int ncyc  = 1;
