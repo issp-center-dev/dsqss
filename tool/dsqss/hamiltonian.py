@@ -100,8 +100,8 @@ class IndeedInteraction(object):
         for state in itertools.product(*map(range, inter.Ns)):
             val = 0.0
             for st, els, z in zip(state, site_elems, zs):
-                val += els.get(st, 0.0)/z
-            key = (state, state)
+                val += els.get(keystate(st,st), 0.0)/z
+            key = keystate(state, state)
             if key in self.elements:
                 self.elements[key] += val
             else:

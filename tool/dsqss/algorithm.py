@@ -139,7 +139,6 @@ class AlgInteraction:
         self.nbody = hamint.nbody
         self.prob_kernel = prob_kernel
 
-
         self.hamint = hamint
         self.sites = [hamsites[stype] for stype in hamint.stypes]
         self.sitesources = [deepcopy(site.sources) for site in self.sites]
