@@ -24,10 +24,12 @@ public:
 #define AutoDebugDump_macroimpl(msg, l) AutoDebugDump_macroimpl2(msg, l)
 #define AutoDebugDump(msg) AutoDebugDump_macroimpl(msg, __LINE__)
 
-#define DebugDumpNV(name)                                      \
+#define DebugDumpNV_macroimpl2(name, f, l)                     \
   do {                                                         \
-    std::cout << #name << " = " << name << "\n" << std::flush; \
+    std::cout << #name << " = " << name << " (" << f << ":" << l << ")\n" << std::flush; \
   } while (false)
+#define DebugDumpNV_macroimpl(msg, f, l) DebugDumpNV_macroimpl2(msg, f, l)
+#define DebugDumpNV(msg) DebugDumpNV_macroimpl(msg, __FILE__, __LINE__)
 
 #else  // DEB
 

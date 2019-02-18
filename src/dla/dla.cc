@@ -378,7 +378,7 @@ double Simulation::MoveHead(bool thermalized) {
   if (!W.atOrigin()) {
     fprintf(FERR, "\nMoveHead> ### Error.\n");
     fprintf(FERR, " ... Hasn't come back to the origin.\n");
-    dump();
+    // dump();
     exit(0);
   }
 #endif

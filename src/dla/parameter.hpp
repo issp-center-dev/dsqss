@@ -85,6 +85,8 @@ public:
 
   double SIMTIME;  // time [sec] to save a snapshot and stop simulation
   // if <= 0, never stop until finish
+  
+  int NTAU;
 
   std::string ALGFILE;  // algorithm file name
   std::string LATFILE;  // lattice file name
@@ -135,6 +137,8 @@ void Parameter::readfile(std::string const& filename) {
   SEED = lexical_cast<int>(dict["seed"]);
   NSEGMAX = lexical_cast<int>(dict["nsegmax"]);
   NVERMAX = lexical_cast<int>(dict["nvermax"]);
+
+  NTAU = lexical_cast<int>(dict["ntau"]);
 
   ALGFILE = dict["algfile"];
   LATFILE = dict["latfile"];
