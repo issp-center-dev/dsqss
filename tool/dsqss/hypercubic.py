@@ -73,5 +73,6 @@ class HyperCubicLattice(Lattice):
         self.nstypes = nstype + 1
         self.nitypes = nitype + 1
         self.nboundary = nboundary
+        self.dirs = np.eye(self.dim).tolist()
 
         self.update()
