@@ -2,11 +2,14 @@ from __future__ import print_function
 
 import codecs
 import sys
+from copy import deepcopy
 from itertools import chain
+
+import toml
 
 import numpy as np
 
-from .util import ERROR, tagged
+from .util import ERROR, coord2index, get_as_list, index2coord, tagged
 
 
 class Site:
@@ -53,7 +56,97 @@ class Vertex:
 
 class Lattice:
     def __init__(self, inp):
-        self.load(inp)
+        if type(inp) is dict:
+            self.load_dict(inp)
+        elif inp.endswith('.toml'):
+            self.load_dict(toml.load(inp))
+        else:
+            self.load(inp)
+
+    def load_dict(self, param):
+        unitcell = param["unitcell"]
+        bravais = param["bravais"]
+
+        self.name = param['parameter']['name']
+        self.dim = unitcell["dim"]
+        self.size = param["parameter"]["L"]
+        self.bc = get_as_list(param["parameter"], "bc", default=True, extendto=self.dim)
+        ncells = np.product(self.size)
+        nsites_cell = len(unitcell["sites"])
+        nbonds_cell = len(unitcell["bonds"])
+        self.nsites = ncells * nsites_cell
+        self.nints = ncells * nbonds_cell
+        self.latvec = np.array(bravais["basis"]).transpose()
+
+        localsitecoords = []
+        for site in unitcell['sites']:
+            localsitecoords.append(np.array(site['coord']))
+
+        directionmap = {}
+        directions = []
+        self.dirs = []
+        for ib, bond in enumerate(unitcell['bonds']):
+            offset = np.array(bond['target']['offset'])
+            offset -= np.array(bond['source']['offset'])
+            offset += localsitecoords[bond['target']['siteid']]
+            offset -= localsitecoords[bond['source']['siteid']]
+            key = tuple(offset)
+            if key not in directionmap:
+                self.dirs.append(np.dot(self.latvec, offset))
+                directionmap[key] = len(directionmap)
+            directions.append(directionmap[key])
+        self.ndir = len(self.dirs)
+
+        def bondsites(center_cellcoord, bond):
+            offset = np.array(bond['source']['offset'])
+            if not all(offset == 0):
+                ERROR("bonds['source'] has nonzero offset")
+                pass
+            ret = []
+            offset = center_cellcoord + np.array(bond['target']['offset'])
+            edge = 0
+            for dim in range(self.dim):
+                if offset[dim] < 0:
+                    if self.bc[dim]:
+                        edge = 1
+                    else:
+                        return False, 0
+                elif offset[dim] >= self.size[dim]:
+                    if self.bc[dim]:
+                        edge = 1
+                    else:
+                        return False, 0
+
+            for site in (bond['source'], bond['target']):
+                cell_coord = center_cellcoord + np.array(site["offset"])
+                for dim in range(self.dim):
+                    if cell_coord[dim] < 0:
+                        cell_coord[dim] += self.size[dim]
+                    elif cell_coord[dim] >= self.size[dim]:
+                        cell_coord[dim] -= self.size[dim]
+                icell = coord2index(cell_coord, self.size)
+                sid = site['siteid'] + icell * nsites_cell
+                ret.append(sid)
+            return ret, edge
+
+        self.sites = []
+        self.ints = []
+        for icell in range(ncells):
+            cell_coord = np.array(index2coord(icell, self.size))
+            for lid, site in enumerate(unitcell["sites"]):
+                sid = site["siteid"] + icell * nsites_cell
+                coord = np.dot(self.latvec, cell_coord + np.array(site["coord"]))
+                S = Site(sid, site["type"], site["mtype"], coord)
+                self.sites.append(S)
+            for ib, bond in enumerate(unitcell["bonds"]):
+                bid = bond["bondid"] + icell * nbonds_cell
+                nbody = 2
+                sites, edge = bondsites(cell_coord, bond)
+                if not sites:
+                    continue
+                INT = Interaction(bid, bond['type'], nbody, sites, edge, directions[ib])
+                self.ints.append(INT)
+        self.update()
 
     def save(self, out):
         if type(out) is str:
@@ -83,7 +176,7 @@ class Lattice:
         out.write("directions\n")
         out.write("{0} # ndirections\n".format(self.ndir))
         out.write("# id, coords...\n")
-        for i, dir in enumerate(self.directions):
+        for i, dir in enumerate(self.dirs):
             out.write("{0} ".format(i))
             for x in dir:
                 out.write("{0} ".format(x))
@@ -382,7 +475,7 @@ class Lattice:
             f.write("\n")
 
             f.write("<!-- <V> direction_index direction... </V> -->\n")
-            for i, bond in enumerate(self.latvec):
+            for i, bond in enumerate(self.dirs):
                 f.write(tagged("V", chain([i], bond)))
 
             f.write("</LATTICE>\n")
