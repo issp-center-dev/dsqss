@@ -10,6 +10,12 @@ def INFO(msg, linebreak=True, file=sys.stderr):
         print("\n", file=file)
 
 
+def WARN(msg, linebreak=True, file=sys.stderr):
+    print("WARN: {0}\n".format(msg), file=file)
+    if linebreak:
+        print("\n", file=file)
+
+
 def ERROR(msg, to_be_continued=False, linebreak=True, file=sys.stderr):
     print("ERROR: {0}".format(msg), file=file)
     if linebreak:
