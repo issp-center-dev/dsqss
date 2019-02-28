@@ -68,13 +68,259 @@ DLA の入力ファイル
     - チェックポイントファイルは無視され, 書き出しも読み込みも行われません.
 
 
-格子定義ファイル ``lattice.xml``
-**************************************
 
-格子ファイルは時空間の情報, たとえばサイトの数やサイト同士のつながりかた, 逆温度の大きさなどを定義するための, 
+格子データファイル ``lattice.dat``
+**************************************
+格子データファイルは空間の情報, たとえばサイトの数やサイト同士のつながりかたなどを定義するための, 
+テキストファイルです.
+``dla_alg`` の入力ファイルとして扱われます。
+
+``#`` から行末まではコメントとして読み飛ばされます。また、空白行も飛ばされます。
+``name``, ``lattice``, ``directions``, ``sites``, ``interactions`` の5つのセクションから構成されます。
+
+``name``
+   格子の名前です。 1行のテキストからなります。 コメントや識別用であり、実際の計算では利用されません。
+
+``lattice``
+   格子の情報を指定するセクションです。
+
+   - 1行目
+      - 格子の次元を表す整数。
+   - 2行目
+      - 格子のサイズを表す、空白区切りで次元の数だけ並べられた整数の組。
+   - 3行目
+      - 格子の境界条件を表す、空白区切りで次元の数だけ並べられた整数の組。
+        1 で周期的境界条件を、 0 で開放端境界条件を示します。
+   - 4行目以降
+      - 格子の基本並進ベクトルを表す、空白区切りで次元の数+1 だけ並べられた数の組。
+        最初の整数はベクトルの番号を、残りの数はベクトルの要素を示します。
+
+``directions``
+   ボンド（二体相互作用）の向きを指定するセクションです。
+
+   - 1行目
+      - ボンドの向きの総数。
+   - 2行目以降
+      - 各向きを表すベクトルを表す、空白区切りで次元の数+1 だけ並べられた数の組。
+        最初の整数は向きの番号を、残りの数はベクトルの要素を示します。
+        ``lattice`` で指定された基本ベクトルを基底とします。
+
+``sites``
+   サイトの情報を指定するセクションです。
+
+   - 1行目
+      - 格子に含まれるサイトの総数を表す整数。
+   - 2行目以降
+      - 各サイトの情報を表す、空白区切りで次元の数+3 だけ並べられた数の組。
+
+        - 1列目
+            - サイト番号
+        - 2列目
+            - サイトタイプ
+        - 3列目
+            - 測定タイプ
+        - 4列目以降
+            - サイトの座標。 ``lattice`` で指定された基本ベクトルを基底とします。
+
+``interactions``
+   相互作用の空間情報を指定するセクションです。
+
+   - 1行目
+      - 格子に含まれる多体相互作用の総数を表す整数。
+   - 2行目以降
+      - 各相互作用の情報を表す、空白区切りで関与サイト数+5=N 個だけ並べられた数の組。
+
+        - 1列目
+            - 相互作用番号
+        - 2列目
+            - 相互作用タイプ
+        - 3列目
+            - 関与サイト数
+        - 4-列目
+            - 関与するサイトの番号
+        - N-1列目
+            - ボンドが周期境界をまたぐ場合には1, そうでない場合には0
+        - N列目
+            - ボンドの方向番号
+
+二次元正方格子の例を示します。 ::
+
+   name
+   2 dimensional hypercubic lattice
+
+   lattice
+   2 # dim
+   4 4 # size
+   1 1 # 0:open boundary, 1:periodic boundary
+   0 1.0 0.0 # latvec_0
+   1 0.0 1.0 # latvec_1
+
+   directions
+   2 # ndirections
+   # id, coords...
+   0 1.0 0.0 
+   1 0.0 1.0 
+
+   sites
+   16 # nsites
+   # id, type, mtype, coord...
+   0 0 0 0 0
+   1 0 1 1 0
+   2 0 0 2 0
+   3 0 1 3 0
+   4 0 1 0 1
+   5 0 0 1 1
+   6 0 1 2 1
+   7 0 0 3 1
+   8 0 0 0 2
+   9 0 1 1 2
+   10 0 0 2 2
+   11 0 1 3 2
+   12 0 1 0 3
+   13 0 0 1 3
+   14 0 1 2 3
+   15 0 0 3 3
+
+   interactions
+   32 # nints
+   # id, type, nbody, sites..., edge_flag, direction
+   0 0 2 0 1 0 0
+   1 0 2 0 4 0 1
+   2 0 2 1 2 0 0
+   3 0 2 1 5 0 1
+   4 0 2 2 3 0 0
+   5 0 2 2 6 0 1
+   6 0 2 3 0 1 0
+   7 0 2 3 7 0 1
+   8 0 2 4 5 0 0
+   9 0 2 4 8 0 1
+   10 0 2 5 6 0 0
+   11 0 2 5 9 0 1
+   12 0 2 6 7 0 0
+   13 0 2 6 10 0 1
+   14 0 2 7 4 1 0
+   15 0 2 7 11 0 1
+   16 0 2 8 9 0 0
+   17 0 2 8 12 0 1
+   18 0 2 9 10 0 0
+   19 0 2 9 13 0 1
+   20 0 2 10 11 0 0
+   21 0 2 10 14 0 1
+   22 0 2 11 8 1 0
+   23 0 2 11 15 0 1
+   24 0 2 12 13 0 0
+   25 0 2 12 0 1 1
+   26 0 2 13 14 0 0
+   27 0 2 13 1 1 1
+   28 0 2 14 15 0 0
+   29 0 2 14 2 1 1
+   30 0 2 15 12 1 0
+   31 0 2 15 3 1 1
+
+格子TOML ファイル ``lattice.toml``
+*************************************
+格子TOML ファイルはユニットセルと基本並進ベクトルを用いて空間の情報を定義するための, 
+`TOML`_ 形式のファイルです.
+``dla_alg`` の入力ファイルとして扱われます。
+
+``parameter`` と ``unitcell`` のふたつのテーブルから構成されます。
+
+``parameter``
+   格子の情報を記述するテーブルです。
+
+   ``parameter.name``
+      格子の名前です。実際の計算には用いられません。
+
+   ``parameter.L``
+      格子の大きさを表す整数配列です。
+
+   ``parameter.bc``
+      格子の境界条件を表すブーリアンの配列です。
+      ``true`` が周期的境界条件を、 ``false`` が開放端境界条件を示します。
+
+   ``parameter.basis``
+      格子の基本並進ベクトルを表す2次元配列（配列の配列）です。
+
+``unitcell``
+   ユニットセルの情報を記述するテーブルです。
+
+   ``unitcell.sites``
+      ユニットセル内のサイトを示すテーブルの配列です。
+
+      ``unitcell.sites.siteid``
+         サイトのユニットセル内での識別番号です。
+
+      ``unitcell.sites.type``
+         サイトタイプを示す整数です。
+
+      ``unitcell.sites.type``
+         測定タイプを示す整数です。
+
+      ``unitcell.sites.coord``
+         ユニットセル内におけるサイトの局所座標を示す配列です。
+
+   ``unitcell.bonds``
+      ユニットセル内のボンドを示すテーブルの配列です。
+
+      ``unitcell.bonds.bondid``
+         ボンドのユニットセル内での識別番号です。
+
+      ``unitcell.bonds.type``
+         ボンドタイプを示す整数です。
+
+      ``unitcell.bonds.source``
+         ボンドの始点サイトの情報を表すテーブルです。
+
+         ``unitcell.bonds.source.siteid``
+            サイトのユニットセル内での識別番号です。
+
+      ``unitcell.bonds.target``
+         ボンドの終点サイトの情報を表すテーブルです。
+
+         ``unitcell.bonds.target.siteid``
+            サイトのユニットセル内での識別番号です。
+
+         ``unitcell.bonds.target.offset``
+            始点サイトの属するユニットセルから見た、
+            終点サイトの属するユニットセルの相対座標です。
+
+
+二次元正方格子の例を示します.
+::
+
+   [parameter]
+   name = "square lattice"
+   dim = 2
+   L = [4,4]
+   bc = [true, true]
+   basis = [[1,0], [0,1]]
+
+   [unitcell]
+
+   [[unitcell.sites]]
+   siteid = 0
+   type = 0
+   mtype = 0
+   coord = [0,0]
+
+   [[unitcell.bonds]]
+   bondid = 0
+   type = 0
+   source = { siteid = 0 }
+   target = { siteid = 0, offset = [1,0] }
+   [[unitcell.bonds]]
+   bondid = 1
+   type = 0
+   source = { siteid = 0 }
+   target = { siteid = 0, offset = [0,1] }
+
+
+格子XMLファイル ``lattice.xml``
+**************************************
+格子ファイルは空間の情報, たとえばサイトの数やサイト同士のつながりかたなどを定義するための, 
 XML ライクな形式で記述されるテキストファイルです.
-これは一般に複雑になりえるので, 正方格子などのよく使われる格子については, 
-格子定義ファイル作成のための補助ツール ``lattgene`` が用意されています.
+これは一般に複雑になりますが, より単純な格子データファイルや格子TOML ファイルから
+``dla_alg`` を用いて生成することができます。
 
 格子ファイルはただ一つの要素 Lattice を持ち, すべての情報は Lattice 要素の内容として含まれます.
 
@@ -137,6 +383,138 @@ Lattice/I
     <I> 5 1 2 8 12 </I>
     # 相互作用番号が5である相互作用は相互作用タイプが1で, 2つのサイトが関与し, 
     # それらのサイト番号は8と12である.
+
+
+ハミルトニアンTOML ファイル ``hamiltonian.toml``
+***************************************************
+ハミルトニアン定義ファイルは局所ハミルトニアン, 例えばボンドハミルトニアン, を指定する,
+`TOML`_ 形式で記述されるテキストファイルです.
+``dla_alg`` の入力として, アルゴリズム定義ファイルを作成するために用いる補助入力ファイルとなっています.
+ハイゼンベルグ模型などのよく用いられる模型については,  
+補助ツール ``dla_hamgen`` が用意されています.
+
+``name``
+   ハミルトニアンの名前です。シミュレーション中で使われることはありません。
+
+``sites``
+   サイトハミルトニアンの情報を記述するテーブルの配列です。
+
+   ``sites.id``
+      サイトタイプを示す整数です。
+
+   ``sites.N``
+      局所自由度が取りうる状態の数を示す整数です。
+      例えば :math:`S=1/2` スピンでは 2 です。
+
+   ``sites.elements``
+      サイトハミルトニアンの行列要素を示すテーブルの配列です。
+
+      ``sites.elements.istate``
+         ハミルトニアンが作用する前の状態番号です。
+
+      ``sites.elements.fstate``
+         ハミルトニアンが作用した後の状態番号です。
+
+      ``sites.elements.value``
+         ハミルトニアンの行列要素の値です。
+
+   ``sites.sources``
+      ワームを導入するためのソースハミルトニアンの行列要素を示すテーブルの配列です。
+
+      ``sites.sources.istate``
+         ハミルトニアンが作用する前の状態番号です。
+
+      ``sites.sources.fstate``
+         ハミルトニアンが作用した後の状態番号です。
+
+      ``sites.sources.value``
+         ハミルトニアンの行列要素の値です。
+
+``interactions``
+   多体相互作用の情報を記述するテーブルの配列です。
+
+   ``interactions.id``
+      相互作用タイプを示す整数です。
+
+   ``interactions.nbody``
+      相互作用に関与するサイトの数を示す整数です。
+
+   ``interactions.N``
+      相互作用に関与するサイトそれぞれで局所自由度が取りうる状態の数です。
+
+   ``interactions.elements``
+      相互作用ハミルトニアンの行列要素を記述するテーブルの配列です。
+
+      ``interactions.elements.istate``
+         相互作用ハミルトニアンが作用する前のサイトの状態を指定する整数の配列です。
+
+      ``interactions.elements.fstate``
+         相互作用ハミルトニアンが作用した後のサイトの状態を指定する整数の配列です。
+
+      ``interactions.elements.value``
+         相互作用ハミルトニアンの行列要素の値です。
+
+:math:`S=1/2` 反強磁性ハイゼンベルグ模型の例を示します。 ::
+
+   name = "S=1/2 XXZ model"
+   [[sites]]
+   id = 0
+   N = 2
+   [[sites.elements]]
+   istate = [ 0,]
+   fstate = [ 0,]
+   value = 0.5
+
+   [[sites.elements]]
+   istate = [ 1,]
+   fstate = [ 1,]
+   value = -0.5
+
+   [[sites.sources]]
+   istate = [ 0,]
+   fstate = [ 1,]
+   value = 0.5
+
+   [[sites.sources]]
+   istate = [ 1,]
+   fstate = [ 0,]
+   value = 0.5
+
+
+   [[interactions]]
+   id = 0
+   nbody = 2
+   N = [ 2, 2,]
+   [[interactions.elements]]
+   istate = [ 0, 0,]
+   fstate = [ 0, 0,]
+   value = 0.25
+
+   [[interactions.elements]]
+   istate = [ 0, 1,]
+   fstate = [ 0, 1,]
+   value = -0.25
+
+   [[interactions.elements]]
+   istate = [ 0, 1,]
+   fstate = [ 1, 0,]
+   value = 0.5
+
+   [[interactions.elements]]
+   istate = [ 1, 0,]
+   fstate = [ 1, 0,]
+   value = -0.25
+
+   [[interactions.elements]]
+   istate = [ 1, 0,]
+   fstate = [ 0, 1,]
+   value = 0.5
+
+   [[interactions.elements]]
+   istate = [ 1, 1,]
+   fstate = [ 1, 1,]
+   value = 0.25
+
 
 
 アルゴリズム定義ファイル ``algorithm.xml``
@@ -395,138 +773,39 @@ Algorithm/Vertex/InitialConfiguration/Channel
 
   特別な場合として, ワームヘッドがテールに衝突して消滅する場合があり, この場合は 第1引数と第2引数に -1 を指定します.
 
-ハミルトニアン定義ファイル ``hamiltonian.xml``
-************************************************
+波数データファイル ``kpoints.dat``
+*******************************************
 
-ハミルトニアン定義ファイルは局所ハミルトニアン, 例えばボンドハミルトニアン, を指定する,
-XML ライクな形式で記述されるテキストファイルです.
-``dla_alg`` の入力として, アルゴリズム定義ファイルを作成するために用いる補助入力ファイルとなっています.
-ハイゼンベルグ模型などのよく用いられる模型については,  
-補助ツール ``hamgen_H``, ``hamgen_B`` が用意されています.
+波数データファイルは, 波数ベクトル
 
-ハミルトニアン定義ファイルはただ一つの要素 Hamiltonian を持ち, すべての情報は Hamiltonian 要素の内容として含まれます.
+.. math::
+   \vec{k}^{(i)} = \sum_{d=1}^{D} n_d^{(i)} \vec{g}_d
 
-Hamiltonian
-  ファイル全体の要素名. サブ要素として,  General,  Site,  Source, Interaction があります.
-  局所ハミルトニアンを定義します.
+の :math:`\vec{n}^{(i)}` を指定するテキストファイルです。
 
-Hamiltonian/General
-  サブ要素として,  NSTYPE,  NITYPE,  NXMAX, Comment があります.
-  サイトの種類数や相互作用の種類数など, ハミルトニアン定義の基本パラメータを設定します.
-  ::
+``dim``
+   格子の次元を示す整数です。
 
-     <Hamiltonian>
-        <General>
-          <Comment> SU(2) Heisenberg model with S=1/2 </Comment>
-          <NSTYPE> 1 </NSTYPE>
-          <NITYPE> 1 </NITYPE>
-          <NXMAX>  2 </NXMAX>
-        </General>
-       ...
-     </Hamiltonian>
+``kpoints``
+   波数ベクトルを指定するセクションです。
 
-Hamiltonian/General/Comment
-  省略可能. コメント文を示し, 計算には使用されません.
+   - 1行目
+      - 波数ベクトルの総数。
+   - 2行目以降
+      - 波数ベクトルを表す、空白区切りで次元の数+1 だけ並べられた数の組。
+        最初の整数は波数ベクトルの番号を、残りの数はベクトルの要素 :math:`n_d` を示します。
 
-Hamiltonian/General/NSTYPE
-  異なるサイト型の個数を指定する整数値.
-
-Hamiltonian/General/NITYPE
-  異なる相互作用型の個数を指定する整数値.
-
-Hamiltonian/General/NXMAX
-  各サイトが取りうる状態の数の最大値.
-  例えば大きさ :math:`S` のスピン系ならば :math:`2S+1` .
-
-Hamiltonian/Site
-  1つのサイト型を定義します.具体的には, このサイトの状態数などを指定します.
-  サブ要素として,  STYPE,  TTYPE,  NX があります.
-  ::
-
-    <Hamiltonian>
-      ...
-      <Site>
-        <STYPE> 0 </STYPE>
-        <TTYPE> 0 </TTYPE>
-        <NX>   2 </NX>
-      </Site>
-      ...
-    </Hamiltonian>
-
-Hamiltonian/Site/STYPE
-  定義されるサイト型の識別番号.
-
-Hamiltonian/Site/TTYPE
-  定義されるサイト型における, Hamiltonian/Source で記述される ワームの生成・消滅演算の識別番号.
-
-Hamiltonian/Site/NX
-  サイトが取りうる状態の数.
-
-
-Hamiltonian/Source
-   1つのソース型, つまり、ワームの生成・消滅演算を定義します.
-   サブ要素として, TTYPE, STYPE, Weight があります.
-   ::
-
-      <Source>
-        <TTYPE> 0 </TTYPE>
-        <STYPE> 0 </STYPE>
-        <Weight> 0 1       0.5000000000000000 </Weight>
-        <Weight> 1 0       0.5000000000000000 </Weight>
-      </Source>
    
-Hamiltonian/Source/TTYPE
-   定義されるソース型の識別番号.
+二次元の例を示します. ::
 
-Hamiltonian/Source/STYPE
-   定義されるソース型が適用されるサイト型の識別番号.
+   dim
+   2
 
-Hamiltonian/Source/Weight
-   生成・消滅演算子の重み.
-   2個の整数値と1個の浮動小数点数の組み合わせで指定.
-   2個の整数はそれぞれ演算子を適用する前と後の状態を示す状態番号で,
-   浮動小数点数は行列要素.
-   たとえば, ``0 1 0.5`` は :math:`\langle 1 | \mathcal{H} | 0 \rangle = 0.5` を示します.
-
-Hamiltonian/Interaction
-  1つの相互作用型を定義します.
-  サブ要素として ITYPE, STYPE, NBODY, Weight があります.
-  ::
-
-    <Hamiltonian>
-      ...
-      <Interaction>
-        <ITYPE> 0 </ITYPE>
-        <NBODY> 2 </NBODY>
-        <STYPE> 0 0 </STYPE>
-        <Weight> 0 0 0 0      -0.2500000000000000 </Weight>
-        <Weight> 1 1 0 0       0.2500000000000000 </Weight>
-        <Weight> 1 0 0 1      -0.5000000000000000 </Weight>
-        <Weight> 0 1 1 0      -0.5000000000000000 </Weight>
-        <Weight> 0 0 1 1       0.2500000000000000 </Weight>
-        <Weight> 1 1 1 1      -0.2500000000000000 </Weight>
-      </Interaction>
-      ...
-    </Hamiltonian>
-
-Hamiltonian/Interaction/ITYPE
-  相互作用の型の識別番号.
-
-Hamiltonian/Interaction/NBODY
-  相互作用に関与するサイトの数（ゼーマン項のような1体相互作用であれば1 で, 交換相互作用のような2体相互作用であれば2. 3以上を指定することも可能）.
-
-Hamiltonian/Interaction/ITYPE
-  相互作用が適用されるサイト型の識別番号.
-  NBODY 個の整数値で指定します.
-
-Hamiltonian/Interaction/Weight
-  局所ハミルトニアンの行列要素を指定します.
-  :math:`2\times` NBODY 個の整数値と, 1個の浮動小数点値の並びで指定.
-  整数値は, 関与する各サイトのそれぞれについて, 相互作用演算子が適用される前と後の状態で,
-  浮動小数点値は行列要素の大きさに :math:`-1` をかけたもの.
-
-  たとえば, ``0 0 1 1 0.25`` は :math:`\langle 0 1 | -\mathcal{H} | 0 1 \rangle = 0.25` を,
-  ``0 1 1 0 -0.5`` は :math:`\langle 1 0 | -\mathcal{H} | 0 1 \rangle = -0.5` を示します.
+   kpoints
+   3
+   0 0 0
+   1 2 0
+   2 4 0
 
 構造因子定義ファイル ``sf.xml``
 ************************************************
@@ -618,3 +897,4 @@ CorrelationFunction/CF
 
 要素名を含めて, 動的構造因子定義ファイルと全く同じ構造を持つため, 流用が可能です.
 
+.. _TOML: https://github.com/toml-lang/toml/blob/master/versions/ja/toml-v0.5.0.md
