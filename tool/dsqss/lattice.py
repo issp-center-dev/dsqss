@@ -55,13 +55,17 @@ class Vertex:
 
 
 class Lattice:
-    def __init__(self, inp):
+    def __init__(self, inp=None):
+        if inp is not None:
+            self.load(inp)
+
+    def load(self, inp):
         if type(inp) is dict:
             self.load_dict(inp)
         elif inp.endswith('.toml'):
             self.load_dict(toml.load(inp))
         else:
-            self.load(inp)
+            self.load_dat(inp)
 
     def load_dict(self, param):
         unitcell = param["unitcell"]
@@ -148,10 +152,10 @@ class Lattice:
                 self.ints.append(INT)
         self.update()
 
-    def save(self, out):
+    def save_dat(self, out):
         if type(out) is str:
             with codecs.open(out, "w", "utf-8") as f:
-                self.save(f)
+                self.save_dat(f)
                 return
 
         out.write("name\n")
@@ -196,10 +200,10 @@ class Lattice:
         for i, inter in enumerate(self.ints):
             out.write("{0}\n".format(inter))
 
-    def load(self, inp):
+    def load_dat(self, inp):
         if type(inp) is str:
             with open(inp) as f:
-                self.load(f)
+                self.load_dat(f)
                 return
 
         state = "waiting"

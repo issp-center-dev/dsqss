@@ -31,7 +31,7 @@ def main():
     if "lattice" in inp:
         inp = inp["lattice"]
     lat = std_lattice(inp)
-    lat.save(args.out)
+    lat.save_dat(args.out)
 
 
 if __name__ == "__main__":
