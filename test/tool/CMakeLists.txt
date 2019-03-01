@@ -1,8 +1,8 @@
-file(COPY ${CMAKE_SOURCE_DIR}/tool/ DESTINATION ${CMAKE_BINARY_DIR}/test/tool FILES_MATCHING PATTERN "*.py")
-file(COPY ${CMAKE_SOURCE_DIR}/tool/dsqss DESTINATION ${CMAKE_BINARY_DIR}/test/tool)
+configure_file(${CMAKE_SOURCE_DIR}/tool/cmake/pmwa_pre.in ${CMAKE_CURRENT_BINARY_DIR}/pmwa_pre @ONLY)
+set(BUILD_TOOL_DIR ${CMAKE_BINARY_DIR}/tool)
 function(add_python_test test)
     add_test(NAME python_${test} COMMAND ${PYTHON_EXECUTABLE} ${test}.py)
-    set_tests_properties(python_${test} PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}/test/tool")
+    set_tests_properties(python_${test} PROPERTIES ENVIRONMENT "PYTHONPATH=${BUILD_TOOL_DIR}")
 endfunction(add_python_test)
 
 file(GLOB_RECURSE TEST_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.py")
@@ -13,7 +13,7 @@ endforeach()
 if(MPI_FOUND)
 set(python_test_src
   #   test_dsqss_pre_dla
-  test_dsqss_pre_pmwa
+  test_pmwa_pre
 )
 else(MPI_FOUND)
 set(python_test_src

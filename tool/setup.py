@@ -18,6 +18,7 @@ setup(
             "dla_sfgen = dsqss.wavevector:main",
             "dla_alg = dsqss.dla_alg:main",
             "dla_pre = dsqss.parameter:main",
+            "pmwa_pre = dsqss.pmwa_pre:main",
         ]
     },
     zip_safe=False,
