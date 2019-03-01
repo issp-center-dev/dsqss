@@ -1,4 +1,5 @@
-configure_file(${CMAKE_SOURCE_DIR}/tool/cmake/pmwa_pre.in ${CMAKE_CURRENT_BINARY_DIR}/pmwa_pre @ONLY)
+file(COPY ${CMAKE_BINARY_DIR}/tool/pmwa_pre DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+# configure_file(${CMAKE_SOURCE_DIR}/tool/cmake/pmwa_pre.in ${CMAKE_CURRENT_BINARY_DIR}/pmwa_pre @ONLY)
 set(BUILD_TOOL_DIR ${CMAKE_BINARY_DIR}/tool)
 function(add_python_test test)
     add_test(NAME python_${test} COMMAND ${PYTHON_EXECUTABLE} ${test}.py)
