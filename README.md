@@ -16,7 +16,7 @@ cmake ../
 make
 ```
 
-You can find executable files in `build/src/dla`, `build/src/dla/generators` and `build/src/pmwa/`.
+You can find executable files in `build/src/dla`, `build/tool` and `build/src/pmwa/`.
 
 ### build manual
 
