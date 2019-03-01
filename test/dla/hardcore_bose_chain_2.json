@@ -139,18 +139,30 @@
       ]
     ]
   },
+
   "Parameter": {
-    "ntau": 5,
-    "U": 0.0,
-    "M": 1,
-    "t": 1.0,
-    "V": 1.0,
-    "Model": "boson",
-    "D": 1,
-    "L": [
-      8
-    ],
-    "mu": 0.0,
-    "beta": 3.0
+    "hamiltonian" : {
+      "model": "boson",
+      "M": 1,
+      "t": 1.0,
+      "U": 0.0,
+      "V": 1.0,
+      "mu": 0.0
+    },
+    "lattice" : {
+      "lattice": "hypercubic",
+      "dim": 1,
+      "L": [
+        8
+      ]
+    },
+    "parameter": {
+      "ntau": 5,
+      "beta": 3.0,
+      "nset": 10,
+      "nmcs": 5000,
+      "ntherm": 1000,
+      "npre" : 100
+    }
   }
 }

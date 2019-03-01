@@ -1,6 +1,8 @@
 #ifndef UTIL_HPP
 #define UTIL_HPP
 
+#include <cstdlib>
+#include <iostream>
 #include <vector>
 
 namespace util {
@@ -29,6 +31,12 @@ int max_index(const std::vector<T>& xs) {
     }
   }
   return i;
+}
+
+
+void ERROR(const char* msg){
+  std::cerr << "ERROR: " << msg << std::endl;
+  std::exit(1);
 }
 
 }  // namespace util

@@ -1,0 +1,6 @@
+#!@PYTHON_EXECUTABLE@
+import sys
+sys.path.append('@CMAKE_CURRENT_BINARY_DIR@')
+from dsqss.wavevector import main
+if __name__ == '__main__':
+    main()

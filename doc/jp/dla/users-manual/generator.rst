@@ -9,208 +9,208 @@ DLA は入力ファイルとして格子定義ファイル,アルゴリズム定
 手で定義するには複雑になっています.
 そのため,超立方格子やハイゼンベルグ模型などのよく使われるような格子・模型については生成ツールが用意されています.
 
-超立方格子生成ツール ``lattgene_C``
-************************************
-``lattgene_C`` は周期境界条件を持つ :math:`D` 次元超立方格子を表す格子定義ファイルを生成するためのツールです. ::
 
-  $ lattgene_C [-o filename] D L1 L2 ... LD BETA
+.. _dla_pre:
+
+シンプルモードツール ``dla_pre``
+***********************************
+``dla_pre`` は :ref:`simple_mode_file` から :ref:`dla_expert_files` を生成するツールです. ::
+
+   $ dla_pre [-p paramfile] <inputfile>
 
 パラメータは以下の通り.
 
-``D``
-  格子の次元.
+``paramfile``
+  出力されるパラメータファイル名.デフォルトは ``qmc.inp`` です.
 
-``L1 L2 ... LD``
-  格子のサイズ. ``D`` 個の整数をスペース区切りで入力します.
+``inputfile``
+  入力ファイル名. ファイル形式の詳細は :ref:`simple_mode_file` を参照してください.
 
-``BETA``
-  逆温度. 浮動小数点数で入力.
+
+格子XML ファイルなど、出力される XML ファイルの名前はパラメータから自動生成されます。
+
+
+.. _dla_lat_gen:
+
+格子生成ツール ``dla_latgen``
+************************************
+``dla_latgen`` は :ref:`simple_mode_file` から :ref:`lattice_data_file` を生成するツールです. ::
+
+  $ dla_latgen [-o filename] <inputfile>
+
+パラメータは以下の通り.
 
 ``filename``
-  出力ファイル名.デフォルトは ``lattice.xml`` です.
+   出力ファイル名.デフォルトは ``lattice.dat`` です.
+
+``inputfile``
+  入力ファイル名. ファイル形式の詳細は :ref:`std_toml_lattice` を参照してください.
 
 実行すると filename で指定した名前の格子定義ファイルが生成されます.
 
-実行例
+入力ファイル例
 ::
 
-  ## 8 サイトの一次元鎖で,逆温度は 10.0
-  $ lattgene_C 1 8 10.0
+   # 1次元鎖, 8 sites
+   [lattice]
+   lattice = "hypercubic"
+   dim = 1
+   L = 8
 
-  ## 6x6 サイトの正方格子で,逆温度は 10.0, ファイル名は lat.xml
-  $ lattgene_C -o lat.xml 2 6 6 10.0
+   # 2次元正方格子, 4x4 sites
+   [lattice]
+   lattice = "hypercubic"
+   dim = 2
+   L = 4
 
-三角格子生成ツール ``lattgene_T``
-************************************
-``lattgene_T`` は周期境界条件を持つ三角格子を表す格子定義ファイルを生成するためのツールです. ::
+   # leg はしご格子, 8x2 sites
+   [lattice]
+   lattice = "hypercubic"
+   dim = 2
+   L = [8,2]
+   bc = [true, false]
 
-  $ lattgene_T [-o filename] L1 L2 BETA
+
+ハミルトニアン生成ツール ``dla_hamgen``
+*****************************************
+
+``dla_hamgen`` は :ref:`simple_mode_file` から :ref:`hamiltonian_file` を生成するツールです. ::
+
+  $ dla_hamgen [-o filename] <inputfile>
 
 パラメータは以下の通り.
 
-``L1 L2``
-  格子のサイズ.
-
-``BETA``
-  逆温度. 浮動小数点数で入力.
-
 ``filename``
-  出力ファイル名.デフォルトは ``lattice.xml`` です.
+   出力ファイル名.デフォルトは ``hamiltonian.toml`` です.
 
-実行すると filename で指定した名前の格子定義ファイルが生成されます.
-
-実行例
-::
-
-  ## 6x6 サイトの三角格子で,逆温度は 10.0
-  $ lattgene_T 1 8 10.0
-
-ハイゼンベルグスピンハミルトニアン生成ツール ``hamgen_H``
-**********************************************************
-
-``hamgen_H`` はハイゼンベルグスピン模型
-
-.. math:
-   \mathcal{H} = -J  \sum_{\langle i, j \rangle} S_i \cdot S_j - h \sum_i S_i^z
-
-を表すハミルトニアンファイルを生成するツールです.
-::
-
-  $ hamgen_H [-o filename] M J F
-
-パラメータは以下の通り.
-
-``M``
-  局在スピンの大きさ :math:`S` の2倍に等しい整数.
-
-``J``
-  交換相互作用.正で強磁性,負で反強磁性.
-
-``F``
-  サイトにかかる,ボンドあたりの磁場 :math:`F = h/z` .
-  :math:`z` はサイトの配位数で,たとえば正方格子なら :math:`z=4` です.
-
-``filename``
-  出力ファイル名.デフォルトは ``hamiltonian.xml`` です.
+``inputfile``
+  入力ファイル名.  ファイル形式は :ref:`std_toml_hamiltonian` を参照してください.
 
 実行すると filename で指定した名前を持つファイルが生成されます.
 
-実行例
+入力ファイル例 ::
+
+   # S=1/2 AF Heisenberg model
+   [hamiltonian]
+   model = "spin"
+   M = 1
+   Jz = -1.0
+   Jxy = -1.0
+    
+   # S=1 J1 AF J2 FM XY model under the field
+   [hamiltonian]
+   model = "spin"
+   M = 2
+   Jxy = [-1.0, 1.0]
+   h = 1.0
+
+   # hardcore boson
+   [hamiltonian]
+   model = "boson"
+   M = 1
+   t = 1.0
+   V = 1.0
+
+   # softcore boson (upto N=2)
+   [hamiltonian]
+   model = "boson"
+   M = 2
+   t = 1.0
+   U = 1.0
+   V = 1.0
+   mu = 1.0
+
+波数ファイル生成ツール ``dla_sfgen``
+*************************************
+``dla_sfgen`` は :ref:`simple_mode_file` から :ref:`wavevector_file` を生成するツールです.
 ::
 
-  ## 磁場なしの反強磁性 S=1/2 ハイゼンベルグ模型
-  $ hamgen_H 1 -1.0 0.0
-
-  ## 磁場ありの強磁性 S=1 ハイゼンベルグ模型, ファイル名は ham.xml
-  $ hamgen_H -o ham.xml 2 1.0 1.0
-
-
-ボーズハバードハミルトニアン生成ツール ``hamgen_B``
-**********************************************************
-
-``hamgen_B`` はボーズハバード模型
-
-.. math:
-   \mathcal{H} = \sum_{\langle i, j \rangle} \left[ -t b_i^\dagger \cdot b_j + V n_i n_j \right] + \sum_i \left[ \frac{U}{2} n_i(n_i-1) - \mu n_i \right]
-
-を表すハミルトニアンファイルを生成するツールです.
-::
-
-  $ hamgen_B [-o filename] M t V U F
+  $ dla_sfgen [-o filename] [-s size] <inputfile>
 
 パラメータは以下の通り.
 
-``M``
-  サイトあたりに占めることのできる粒子数の最大値.
-
-``t``
-  粒子のホッピングパラメータ.
-
-``V``
-  最近接二体相互作用.正が斥力です.
-
-``U``
-  サイト内二体相互作用.正が斥力です.
-
-``F``
-  サイトにかかる,ボンドあたりの化学ポテンシャル :math:`F = \mu/z` .
-  :math:`z` はサイトの配位数で,たとえば正方格子なら :math:`z=4` です.
-
 ``filename``
-  出力ファイル名.デフォルトは ``hamiltonian.xml`` です.
+   出力ファイル名.デフォルトは ``hamiltonian.toml`` です.
 
-実行すると filename で指定した名前を持つファイルが生成されます.
+``size``
+   格子サイズ. 数字を空白区切りで並べた文字列で指定します (e.g. ``-s "4 4"`` .)
+   指定しない場合は, 入力ファイルの ``[lattice]`` テーブルから読み取ります.
+
+``inputfile``
+  入力ファイル名.  ファイル形式は :ref:`simple_mode_kpoints` を参照してください.
+
+実行すると filename で指定した名前の波数ファイルが生成されます.
+
 
 アルゴリズム生成ツール ``dla_alg``
 *************************************
-``dla_alg`` はハミルトニアン生成ツールで生成したハミルトニアンファイルからアルゴリズム定義ファイルを生成するツールです. ::
-
-  $ dla_alg HFILE AFILE
-
-パラメータは以下の通り.
-
-``HFILE``
-  読み込むハミルトニアンファイル.省略した場合は ``hamiltonian.xml`` が指定されます.
-
-``AFILE``
-  書き出されるアルゴリズム定義ファイル.省略した場合は ``algorithm.xml`` が指定されます.
-
-構造因子定義ファイル生成ツール ``sfgene``
-*********************************************
-``sfgene`` は超立方格子における構造因子定義ファイルを生成するツールです.
+``dla_alg`` は格子 dat/TOML ファイル, ハミルトニアン TOML ファイル, 波数ファイル から
+格子 XML ファイル, アルゴリズム XML ファイル, 波数 XML ファイル, 変位 XML ファイルを生成するツールです.
 ::
 
-  $ sfgene [-o filename] D L_1 ... L_D Ntau Ntau_cutoff KTYPE
+   $ dla_alg [-l LAT] [-h HAM] [-L LATXML] [-A ALGXML]
+             [--without_lattice] [--without_algorithm] [-k KPOINT] [--sf SF]
+             [--ntau NTAU] [--taucutoff TAUCUTOFF] [--cf CF]
+             [--distance-only] [--displacement-origin DISPLACEMENT_ORIGIN]
+             [--kernel KERNEL]
 
 パラメータは以下の通り.
 
-``D``
-  格子の次元.
+``LAT``
+   読み込む格子 dat/TOML ファイル.省略した場合は ``lattice.dat`` が指定されます.
 
-``L_1 ... L_D``
-  格子のサイズ. ``D`` 個の整数をスペース区切りで入力します.
+``HAM``
+   読み込むハミルトニアン TOML ファイル.省略した場合は ``hamiltonian.toml`` が指定されます.
 
-``Ntau``
-  虚時間軸の分割数.
+``LATXML``
+   書き出される格子定義ファイル. 省略した場合は ``lattice.xml`` が指定されます.
 
-``Ntau_cutoff``
-  虚時間方向の距離 :math:`d\tau` の最大値.
+``ALGXML``
+   書き出されるアルゴリズム定義ファイル.省略した場合は ``algorithm.xml`` が指定されます.
 
-``KTYPE``
-  計算する波数 :math:`k` のパターンを指定します.
+``without_lattice``
+   設定した場合、格子定義ファイルは書き出されません。
+   なお、格子ファイル ``LAT`` そのものは、アルゴリズムなどの導出に必要なために読み込まれます。
 
-  - ``KTYPE==0`` の場合
-    
-    :math:`k_x = n\pi/L_x, n = 0, 2, \dots, L` となります. :math:`k_y` や :math:`k_z` はすべてゼロです.
+``without_algorithm``
+   設定した場合、アルゴリズム定義ファイルは書き出されません。
 
-  - ``KTYPE==1`` の場合
+``KPOINT``
+   読み込む波数ファイル.省略した場合は ``kpoints.dat`` が指定されます.
 
-    たとえば3次元では, :math:`k/\pi = (0,0,0), (1,0,0), (0,1,0), (1,1,0), \dots, (1,1,1)` となります.
+``SF``
+   書き出される構造因子定義ファイル. 省略した場合は ``sf.xml`` が指定されます.
 
-``filename``
-  出力ファイル名.デフォルトは ``sf.xml`` です.
+``NTAU``
+   構造因子などの計算に用いる虚時間の離散化数（トロッター数）
 
-実行すると filename で指定した名前の構造因子定義ファイルが生成されます.
+``TAUCUTOFF``
+   構造因子などの計算における虚時間方向のカットオフ。
 
-実空間表示温度グリーン関数定義ファイル生成ツール ``cfgene``
-****************************************************************
-``cfgene`` は実空間表示温度グリーン関数定義ファイルを生成するツールです.
-::
+``CF``
+   書き出される変位定義ファイル。省略した場合は ``cf.xml`` が指定されます。
 
-  $ cfgene [-o filename] D L_1 ... L_D Ntau
+``--distance-only``
+   指定した場合、変位定義において変位 :math:`\vec{r}_{ij}` ではなくその絶対値 :math:`r_{ij}` でグループ化します。
 
-パラメータは以下の通り.
+``DISPLACEMENT_ORIGIN``
+   変位定義について、変位ベクトルの始点を指定したサイト番号で固定します。
+   省略した場合は、すべてのサイト対に関して変位が定義されます。
 
-``D``
-  格子の次元.
+``KERNEL``
+   バーテックスにおけるワームヘッドの散乱確率の導出に使うアルゴリズム。省略した場合、 ``suwa todo`` が用いられます。
 
-``L_1 ... L_D``
-  格子のサイズ. ``D`` 個の整数をスペース区切りで入力します.
+   ``suwa todo``
+      詳細釣り合いを破る諏訪・藤堂アルゴリズムを用います。
+      (H. Suwa and S. Todo, PRL 105, 120603 (2010))
+   
+   ``reversible suwa todo``
+      詳細釣り合いを満たす諏訪・藤堂アルゴリズムを用います。 (arXiv:1106.3562)
 
-``Ntau``
-  虚時間軸の分割数.
+   ``heat bath``
+      熱浴法を用います。
 
-``filename``
-  出力ファイル名.デフォルトは ``sf.xml`` です.
+   ``metropolice``
+      メトロポリスアルゴリズムを用います。
 
-実行すると filename で指定した名前の実空間表示温度グリーン関数定義ファイルが生成されます.
+.. _TOML: https://github.com/toml-lang/toml/blob/master/versions/ja/toml-v0.5.0.md

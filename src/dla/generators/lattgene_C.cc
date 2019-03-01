@@ -16,18 +16,17 @@ using namespace std;
 //--------------------------------------------------------------
 void ShowUsage(std::string const& exename) {
   cout << "usage:\n";
-  cout << "    " << exename << " [-o output] D L B\n";
-  cout << "    " << exename << " [-o output] D L_1 ... L_D B\n";
+  cout << "    " << exename << " [-o output] D L\n";
+  cout << "    " << exename << " [-o output] D L_1 ... L_D\n";
   cout << "arguments:\n";
   cout << "    D ... dimension.\n";
   cout << "    L ... the liner size of the lattice. \n";
   cout << "          ( L, L1, ... must be even number. )\n";
-  cout << "    B ... the inverse tempereture.       \n";
   cout << "option:\n";
   cout << "    -o output ... output file (default: lattice.xml)\n";
 }
 //-------------------------------------------------------------
-void WriteXML(int D, int L[], double B, std::string const& filename) {
+void WriteXML(int D, int L[], std::string const& filename) {
   ofstream fout(filename.c_str());
   fout.precision(15);
   int N = 1;  //number of sites.
@@ -35,7 +34,6 @@ void WriteXML(int D, int L[], double B, std::string const& filename) {
     N *= L[i];
   }
 
-  int NumberOfCells            = N;
   int NumberOfInteractions     = N * D;
   int NumberOfSiteTypes        = 1;
   int NumberOfInteractionTypes = 1;
@@ -68,8 +66,6 @@ void WriteXML(int D, int L[], double B, std::string const& filename) {
     fout << L[i] << " ";
   }
   fout << "</LinearSize>" << endl;
-  fout << "<Beta> " << B << " </Beta>" << endl;
-  fout << "<NumberOfCells> " << NumberOfCells << " </NumberOfCells>" << endl;
   fout << "<NumberOfSites> " << N << " </NumberOfSites>" << endl;
   fout << "<NumberOfInteractions> " << NumberOfInteractions
        << " </NumberOfInteractions>" << endl;
@@ -174,26 +170,23 @@ int main(int argc, char** argv) {
     argv = argv+2;
   }
   int NARG = 3;
-  if (argc < NARG + 1) {
+  if (argc < NARG) {
     ShowUsage(exename);
     exit(0);
   }
   const int D = atoi(argv[1]);
   //  int        L[D] ;
   int* L   = new int[D];  //edit sakakura
-  double B = 0.0;
 
-  if (argc == NARG + 1) {
+  if (argc == NARG) {
     int lx = atoi(argv[2]);
     for (int i = 0; i < D; i++) {
       L[i] = lx;
     }
-    B = (double)atof(argv[3]);
-  } else if (argc == D + NARG) {
+  } else if (argc == D + NARG - 1) {
     for (int i = 0; i < D; i++) {
       L[i] = atoi(argv[2 + i]);
     }
-    B = (double)atof(argv[D + NARG - 1]);
   } else {
     cout << "error: D != number of L[]." << endl;
     ShowUsage(exename);
@@ -207,11 +200,10 @@ int main(int argc, char** argv) {
     cout << "L" << i << "    = " << L[i] << endl;
     EvenOrOdd += L[i] % 2;
   }
-  cout << "B     = " << B << endl;
 
   if (EvenOrOdd) { cout << "Warnig: L should be an even number." << endl; }
 
-  WriteXML(D, L, B, filename);
+  WriteXML(D, L, filename);
   cout << "... done." << endl;
   delete[] L;
   return 0;

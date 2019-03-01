@@ -34,7 +34,7 @@ The list of parameters are the following,
     :widths: 1,1,1,4
 
     name, type, default, description
-    beta, double, --, "Inverse temperature. Overwrite a setting in lattice.xml."
+    beta, double, --, "Inverse temperature."
     npre, int, 1000, "The number of Monte Carlo steps in the pre-calculation phase where the number of creation trials of a pair of worms in one Monte Carlo sweep is defined."
     ntherm, int, 1000, "The number of Monte Carlo sweeps to thermalize the system."
     ndecor, int, 1000, "The number of Monte Carlo sweeps to reduce autocorrelation time between two preceding sets."
@@ -86,10 +86,6 @@ Lattice/Comment
 
 Lattice/Dimension
   The dimension of the lattice.
-
-Lattice/Beta
-  The inverse temperature.
-  This is overwritten by the parameter file.
 
 Lattice/LinearSize
   The size of the lattice in units of the unitcell.
@@ -263,7 +259,7 @@ Algorithm/Site/InitialConfiguration/Channel
 
 Algorithm/Interaction
   This defines an interaction.
-  This has children, "IType", "VType", "NBody", "EBase", and "VertexDensity".
+  This has children, "IType", "VType", "NBody", "EBase", "VertexDensity", and "Sign".
   ::
 
     <Algorithm>
@@ -275,6 +271,8 @@ Algorithm/Interaction
         <EBase> 0.125 </EBase>
         <VertexDensity> 0 0 0.25 </VertexDensity>
         <VertexDensity> 1 1 0.25 </VertexDensity>
+        <Sign> 0 1 1 0 -1.0 </Sign>
+        <Sign> 1 0 0 1 -1.0 </Sign>
       </Interaction>
       ...
     </Algorithm>
@@ -299,6 +297,15 @@ Algorithm/Interaction/VertexDensity
   This takes integers as many as "Algorithm/Interaction/NBody" and one preceding floating number.
   The integers denote the states of sites (the order should be compatible with the order of sites in "I" of the lattice file).
   The last floating number represents the density.
+
+Algorithm/Interaction/Sign
+  The sign of the local weight, :math:`\textrm{Sgn}(\langle f | -\mathcal{H} | i \rangle)` .
+  This takes integers as many as :math:`2\times` "Algorithm/Interaction/NBody" and one preceding floating number.
+  The integers denote the states of sites before and after applying the local Hamiltonian.
+  The last floating number represents the sign.
+  If the sign is equal to :math:`1.0`:, this element (``<Sign> ... </Sign>``) can be omitted.
+
+  For example, ``<Sign> 0 1 1 0 -1.0 </Sign>`` means :math:`\langle 1 0 | \left(-\mathcal{H}\right) | 0 1 \rangle < 0`.
 
 Algorithm/Vertex
   This defines a vertex.
@@ -498,8 +505,8 @@ Hamiltonian/Interaction
         <STYPE> 0 0 </STYPE>
         <Weight> 0 0 0 0      -0.2500000000000000 </Weight>
         <Weight> 1 1 0 0       0.2500000000000000 </Weight>
-        <Weight> 1 0 0 1       0.5000000000000000 </Weight>
-        <Weight> 0 1 1 0       0.5000000000000000 </Weight>
+        <Weight> 1 0 0 1      -0.5000000000000000 </Weight>
+        <Weight> 0 1 1 0      -0.5000000000000000 </Weight>
         <Weight> 0 0 1 1       0.2500000000000000 </Weight>
         <Weight> 1 1 1 1      -0.2500000000000000 </Weight>
       </Interaction>
@@ -524,10 +531,9 @@ Hamiltonian/Interaction/Weight
   This takes integers as many as :math:`2\times` NBODY and one preceding floating number.
   The integers denote the states of sites before and after applying the local Hamiltonian.
   The last floating number denotes the matrix element multiplied by :math:`-1`.
-  For off-diagonal elements, this value should be positive [#fn_reweighting]_.
 
-  For example, ``0 0 1 1 0.25`` means :math:`\langle 0 1 | \mathcal{H} | 0 1 \rangle = -0.25`
-  and ``0 1 1 0 0.5`` means :math:`\left| \langle 1 0 | \mathcal{H} | 0 1 \rangle \right| = 0.5`.
+  For example, ``0 0 1 1 0.25`` means :math:`\langle 0 1 | -\mathcal{H} | 0 1 \rangle = 0.25`
+  and ``0 1 1 0 -0.5`` means :math:`\langle 1 0 | -\mathcal{H} | 0 1 \rangle = -0.5`.
 
 Structure factor file ``sf.xml``
 *********************************
@@ -612,14 +618,3 @@ This defines wave vectors and the discretization of imaginary time to calculate 
 
 Since this file has the format as same as that of the structure factor file including the names of elements,
 users can use the same file.
-
-
-
-.. only:: html
-
-   .. rubric:: Footnote
-
-.. [#fn_reweighting]
-  In other words, we always perform a simulation of the "absolute" system.
-  We plans to implement the negative-sign reweighting and remove this limitation in DSQSS v2.
-

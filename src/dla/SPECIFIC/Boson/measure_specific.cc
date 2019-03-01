@@ -1,11 +1,8 @@
 #include "../../util.hpp"
 
-void Measurement::measure() {
+void Measurement::measure(double sgn) {
   using namespace Specific;
   int NV = LAT.countVertices();
-
-  ACC[NV1].accumulate(((double)NV));
-
 
   double MZUA = 0.0;  // uniform,   tau=0
   double MZUB = 0.0;  // uniform,   integrated
@@ -47,15 +44,6 @@ void Measurement::measure() {
   MZUB *= T;
   MZSB *= T;
 
-  ACC[MZUA1].accumulate(MZUA);
-  ACC[MZUA2].accumulate(MZUA * MZUA);
-  ACC[MZUB1].accumulate(MZUB);
-  ACC[MZUB2].accumulate(MZUB * MZUB);
-  ACC[MZSA1].accumulate(MZSA);
-  ACC[MZSA2].accumulate(MZSA * MZSA);
-  ACC[MZSB1].accumulate(MZSB);
-  ACC[MZSB2].accumulate(MZSB * MZSB);
-
   double EBSAMP = -(double)NV;
 
   for (int b = 0; b < LAT.NINT; b++) {
@@ -70,7 +58,7 @@ void Measurement::measure() {
     for (int i = 0; i < NBODY; i++) {
       Site& S = I.site(i);
       p[i].init(S);
-      p[i]++;
+      ++p[i];
       tau[i] = p[i]->topTime();
       x[i]   = p[i]->X();
     }
@@ -83,15 +71,28 @@ void Measurement::measure() {
 
       if (p[it]->top().isTerminal()) break;
       t = tau[it];
-      p[it]++;
+      ++p[it];
       tau[it] = p[it]->topTime();
       x[it]   = p[it]->X();
     }
   }
 
-  ACC[EB1].accumulate(EBSAMP);
-  ACC[EB2].accumulate(EBSAMP * EBSAMP);
-  ACC[NH1].accumulate(MZUA * EBSAMP);
+  ACC[SGN].accumulate(sgn);
+
+  ACC[NV1].accumulate(sgn*NV);
+
+  ACC[MZUA1].accumulate(sgn * MZUA);
+  ACC[MZUA2].accumulate(sgn * MZUA * MZUA);
+  ACC[MZUB1].accumulate(sgn * MZUB);
+  ACC[MZUB2].accumulate(sgn * MZUB * MZUB);
+  ACC[MZSA1].accumulate(sgn * MZSA);
+  ACC[MZSA2].accumulate(sgn * MZSA * MZSA);
+  ACC[MZSB1].accumulate(sgn * MZSB);
+  ACC[MZSB2].accumulate(sgn * MZSB * MZSB);
+
+  ACC[EB1].accumulate(sgn * EBSAMP);
+  ACC[EB2].accumulate(sgn * EBSAMP * EBSAMP);
+  ACC[NH1].accumulate(sgn * MZUA * EBSAMP);
 
   // WINDING NUMBER
   const int Dim = LAT.BD;
@@ -131,7 +132,7 @@ void Measurement::measure() {
       }
       wind2 += W * W;
     }
-    ACC[Wxy2].accumulate(wind2);
+    ACC[Wxy2].accumulate(sgn * wind2);
   }  // end of if(Dim)
 }
 
@@ -151,6 +152,14 @@ void Measurement::setsummary() {
   double V    = LAT.NSITE;
   double invV = 1.0 / V;
   double D    = LAT.D;
+
+  double invsign = 1.0 / X[SGN];
+
+  for(int i=0; i<NACC; ++i){
+    X[SGN] *= invsign;
+  }
+
+  Q[SIGN] = X[SGN];
 
   Q[ANV] = X[NV1] * invV;
   Q[ENE] = (EBASE + X[EB1] * T) * invV;

@@ -22,6 +22,7 @@ private:
   int NSF;
   std::vector<double> dvals;
 
+  Accumulator SIGN;
   std::vector<std::vector<double> > COSrk;
   std::vector<std::vector<double> > SINrk;
   std::vector<std::vector<Accumulator> > ACC;
@@ -34,7 +35,7 @@ public:
   SF(Parameter const& param, Lattice& lat, Algorithm& alg);
   void read(XML::Block const& X);
   void setinit();
-  void measure();
+  void measure(double sgn);
   void setsummary();
   void summary();
 #ifdef MULTI
@@ -99,6 +100,7 @@ SF::SF(Parameter const& param, Lattice& lat, Algorithm& alg)
       }
     }
 
+    SIGN.reset();
     NSF = NKMAX;
     for (int i = 0; i < NSF; i++) {
       ACC.push_back(std::vector<Accumulator>(Ntau));
@@ -126,12 +128,13 @@ SF::SF(Parameter const& param, Lattice& lat, Algorithm& alg)
 inline void SF::setinit() {
   if (!to_be_calc) { return; }
   AutoDebugDump("SF::setinit");
+  SIGN.reset();
   for (int i = 0; i < NSF; i++)
     for (int itau = 0; itau < Ntau; itau++)
       ACC[i][itau].reset();
 }
 
-void SF::measure() {
+void SF::measure(double sgn) {
   if (!to_be_calc) { return; }
   AutoDebugDump("SF::measure");
   using namespace Specific;
@@ -167,6 +170,7 @@ void SF::measure() {
 
   const double invNtauAll = 1.0 / NtauAll;
 
+  SIGN.accumulate(sgn);
   for (int isf = 0; isf < NSF; isf++) {
     for (int it = 0; it < Ntau; it++) {
       double SZKT = 0.0;
@@ -174,7 +178,7 @@ void SF::measure() {
         SZKT += counterC[isf][tt] * counterC[isf][(tt + it) % NtauAll]
                 + counterS[isf][tt] * counterS[isf][(tt + it) % NtauAll];
       }
-      ACC[isf][it].accumulate(SZKT * invNtauAll);
+      ACC[isf][it].accumulate(sgn * SZKT * invNtauAll);
     }
   }
 }
@@ -202,10 +206,12 @@ void SF::setsummary() {
   if (!to_be_calc) { return; }
   AutoDebugDump("SF::setsummary");
   const double invV = 1.0 / LAT.NSITE;
+  SIGN.average();
+  const double invsign = 1.0/SIGN.mean();
   for (int isf = 0; isf < NSF; isf++) {
     for (int it = 0; it < Ntau; it++) {
       ACC[isf][it].average();
-      PHY[isf][it].accumulate(invV * ACC[isf][it].mean());
+      PHY[isf][it].accumulate(invsign * invV * ACC[isf][it].mean());
     }
   }
 }
@@ -221,11 +227,13 @@ void SF::allreduce(MPI_Comm comm){
 #endif
 
 void SF::save(std::ofstream& F) const {
+  Serialize::save(F, SIGN);
   Serialize::save(F, ACC);
   Serialize::save(F, PHY);
 }
 
 void SF::load(std::ifstream& F) {
+  Serialize::load(F, SIGN);
   Serialize::load(F, ACC);
   const int nsf = ACC.size();
   if(nsf != NSF){

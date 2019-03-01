@@ -18,8 +18,10 @@
 
 
 #include <cmath>
+#include <string>
 
 #include "../common/version.h"
+#include "util.hpp"
 
 #include "dla.hpp"
 #include "debug.hpp"
@@ -74,9 +76,7 @@ Simulation::Simulation(Parameter& P0)
       ck(P, LAT, ALG) {
   AutoDebugDump("Simulation::Simulation");
 
-  if(!std::isinf(P.BETA)){
-    LAT.setBeta(P.BETA);
-  }
+  LAT.setBeta(P.BETA);
 
   reset_counters();
 
@@ -261,11 +261,14 @@ void Simulation::Set(int ntherm, int nmcs) {
     calctimer.reset_timer();
     Sweep(true);
     calctimer.measure();
-    MSR.measure();
-    MSR.accumulate_length(AMP);
-    sf.measure();
-    cf.accumulate(P.NCYC);
-    ck.accumulate(P.NCYC);
+
+    double sgn = calculate_sign();
+
+    MSR.measure(sgn);
+    MSR.accumulate_length(AMP, sgn);
+    sf.measure(sgn);
+    cf.accumulate(P.NCYC, sgn);
+    ck.accumulate(P.NCYC, sgn);
   }
   IMCSstart = 0;
 
@@ -780,6 +783,28 @@ double Simulation::DOWN_ONESTEP(bool thermalized) {
 
   delete[] UI;
   return len;
+}
+
+double Simulation::calculate_sign(){
+  double sgn = 1.0;
+  for (int b = 0; b < LAT.NINT; ++b) {
+    Interaction& I          = LAT.I(b);
+    InteractionProperty& IP = I.property();
+    int NLEG         = 2*IP.NBODY;
+    std::vector<int> x(NLEG);
+
+    Interaction::iterator itv(I.root());
+    ++itv;
+    for(;!itv.atOrigin(); ++itv){
+      Vertex& v = *itv;
+      for(int l=0; l<NLEG; ++l){
+        x[l] = v.X(l);
+      }
+      sgn *= IP.sign(x);
+    }
+
+  }
+  return sgn;
 }
 
 inline void Simulation::dump(const char* s = "") {

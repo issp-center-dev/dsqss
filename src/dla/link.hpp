@@ -108,9 +108,10 @@ public:
     return *this;
   };
 
-  RingIterator<C>& operator++(int) {
-    cur = &(cur->next());
-    return *this;
+  RingIterator<C> operator++(int) {
+    RingIterator<C> ret(*this);
+    operator++();
+    return ret;
   };
 
   RingIterator<C>& operator--() {
@@ -118,9 +119,10 @@ public:
     return *this;
   };
 
-  RingIterator<C>& operator--(int) {
-    cur = &(cur->prev());
-    return *this;
+  RingIterator<C> operator--(int) {
+    RingIterator<C> ret(*this);
+    operator--();
+    return ret;
   };
 
   C* operator->() { return cur; };

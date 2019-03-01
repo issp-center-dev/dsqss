@@ -23,9 +23,14 @@ if(MPI_FOUND)
   target_link_libraries(dla_B ${MPI_CXX_LIBRARIES})
 endif(MPI_FOUND)
 
+set(dla_deps dla_H dla_B)
+
+if(BUILD_OLD_GENERATORS)
 add_subdirectory(generators)
+set(dla_deps ${dla_deps} dla_alg_old lattgene_C lattgene_T hamgen_H hamgen_B cfgene sfgene)
+endif(BUILD_OLD_GENERATORS)
 
 add_custom_target(dla
   DEPENDS
-  dla_H dla_B dla_alg lattgene_C lattgene_T hamgen_H hamgen_B cfgene sfgene
+  ${dla_deps}
   )

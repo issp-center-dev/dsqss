@@ -28,7 +28,7 @@ public:
   double EBASE;
 
   Measurement(Parameter& P0, Lattice& L, Algorithm& A);
-  void measure();
+  void measure(double sgn);
   void summary();
   void setinit();
 
@@ -38,7 +38,7 @@ public:
   void allreduce(MPI_Comm comm);
 #endif
 
-  void accumulate_length(double len);
+  void accumulate_length(double len, double sgn);
   void dump();
   void show(FILE*);
 
@@ -117,7 +117,7 @@ inline void Measurement::dump() {
   }
 }
 
-inline void Measurement::accumulate_length(double len) { ACC[Specific::LE1].accumulate(len); }
+inline void Measurement::accumulate_length(double len, double sgn) { ACC[Specific::LE1].accumulate(len * sgn); }
 
 void Measurement::save(std::ofstream& F) const {
   Serialize::save(F, ACC);

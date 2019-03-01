@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 project(DSQSS NONE)
-set(DSQSS_VERSION 1.2.0)
+set(DSQSS_VERSION 2.0.0-DEV)
 
 message(STATUS "CMake version: " ${CMAKE_VERSION})
 
@@ -20,6 +20,9 @@ option(Document "Build HTML document" OFF)
 
 option(USE_SYSTEM_BOOST "use Boost installed in system" OFF)
 
+option(BUILD_NEW_GENERATORS "build new file-generators" ON)
+option(BUILD_OLD_GENERATORS "build old file-generators" OFF)
+
 enable_language(C CXX)
 
 set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
@@ -29,8 +32,6 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 set(CMAKE_MACOSX_RPATH 1)
 
 option(DEBUG "Debug" OFF)
-
-find_package(LAPACK)
 
 if(ENABLE_MPI)
   find_package(MPI)
@@ -56,6 +57,23 @@ else(USE_SYSTEM_BOOST)
 endif(USE_SYSTEM_BOOST)
 message(STATUS "Boost headers: ${Boost_INCLUDE_DIRS}")
 include_directories(${Boost_INCLUDE_DIRS})
+
+if(BUILD_NEW_GENERATORS OR Testing)
+  if(${CMAKE_VERSION} VERSION_LESS 3.12)
+    find_package(PythonInterp  2.7 REQUIRED)
+    set(python_version_mm "${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}")
+  else(${CMAKE_VERSION} VERSION_LESS 3.12)
+    find_package(Python3 3.4 COMPONENTS Interpreter)
+    if(Python3_FOUND)
+      set(PYTHON_EXECUTABLE ${Python3_EXECUTABLE})
+      set(python_version_mm "${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}")
+    else(Python3_FOUND)
+      find_package(Python2 2.7 COMPONENTS Interpreter REQUIRED)
+      set(PYTHON_EXECUTABLE ${Python2_EXECUTABLE})
+      set(python_version_mm "${Python2_VERSION_MAJOR}.${Python2_VERSION_MINOR}")
+    endif(Python3_FOUND)
+  endif(${CMAKE_VERSION} VERSION_LESS 3.12)
+endif(BUILD_NEW_GENERATORS OR Testing)
 
 add_subdirectory(src/dla)
 if(MPI_FOUND)

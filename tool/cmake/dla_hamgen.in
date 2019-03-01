@@ -1,0 +1,6 @@
+#!@PYTHON_EXECUTABLE@
+import sys
+sys.path.append('@CMAKE_CURRENT_BINARY_DIR@')
+from dsqss.std_model import main
+if __name__ == '__main__':
+    main()
