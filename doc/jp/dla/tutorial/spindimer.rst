@@ -24,40 +24,39 @@ DSQSS/DLA を実行するには,
 
 の3つの入力ファイルが必要です.
 そのため, まずはこれらの入力ファイルを作成します.
-そのためのユーティリティツールが dsqss_pre.py です.
-これは単一の入力ファイルから, DSQSS/DLA および DSQSS/PMWA の入力ファイルを生成するPython スクリプトです.
-まず, dsqss_pre.py の入力ファイルとして, 次の内容を持つテキストファイル std.in を準備します(sample/dla/01_spindimer/std.in).
+そのためのユーティリティツールが dla_pre.py です.
+これは単一の入力ファイルから, DSQSS/DLA  の入力ファイルを生成するPython スクリプトです.
+まず, dla_pre.py の入力ファイルとして, 次の内容を持つテキストファイル std.toml を準備します(sample/dla/01_spindimer/std.toml).
 ::
 
-  [System]
-  solver = DLA
-  [Hamiltonian]
-  model_type = spin
-  M =  1                 # S=1/2
-  J = -0.5               # coupling constant, negative for AF, not 1 but 1/2 due to PBC
-  F = 0.0                # magnetic field
-  [Lattice]
-  lattice_type = square  # hypercubic, periodic
-  D = 1                  # dimension
-  L = 2                  # number of sites along each direction
-  Beta = 100             # inverse temperature
-  [Parameter]
-  nset = 5               # set of Monte Carlo sweeps
-  npre = 10              # MCSteps to estimate hyperparameter
-  ntherm = 10            # MCSweeps for thermalization
-  nmcs = 10              # MCSweeps for measurement
+   [System]
+   solver = "DLA"
+   [hamiltonian]
+   model = "spin"
+   M =  1                 # S=1/2
+   Jz = -1.0              # coupling constant, negative for AF
+   Jxy = -1.0             # coupling constant, negative for AF
+   h = 0.0                # magnetic field
+   [lattice]
+   lattice = "hypercubic" # hypercubic, periodic
+   dim = 1                # dimension
+   L = 2                  # number of sites along each direction
+   periodic = false       # open boundary
+   [parameter]
+   beta = 100             # inverse temperature
+   nset = 5               # set of Monte Carlo sweeps
+   npre = 10              # MCSteps to estimate hyperparameter
+   ntherm = 10            # MCSweeps for thermalization
+   nmcs = 100             # MCSweeps for measurement
+   seed = 31415           # seed of RNG
 
-なお, このツールで作成される格子は周期的境界条件に従うために, 
-2サイト系でもボンドが2本生成されます.
-そのため,  コメント(``#`` 以下の文章) にもある通り, 相互作用として -1 ではなく -0.5 を指定しています.
 
-このファイルを dsqss_pre.py に与えます.
+このファイルを dla_pre.py に与えます.
 ::
 
-  $ python $DSQSS_ROOT/bin/dsqss_pre.py -i std.in
+  $ $DSQSS_ROOT/bin/dla_pre.py std.toml
 
-この結果, パラメータファイル param.in, 格子定義ファイル lattice.xml, アルゴリズム定義ファイル algorithm.xml と,
-アルゴリズム定義ファイル作成のための中間ファイル hamiltonian.xml が作成されます.
+この結果, パラメータファイル param.in, 格子定義ファイル lattice.xml, アルゴリズム定義ファイル algorithm.xml が生成されます。
 
 計算の実行
 **********
