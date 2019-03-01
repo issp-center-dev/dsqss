@@ -9,9 +9,32 @@ DLA は入力ファイルとして格子定義ファイル,アルゴリズム定
 手で定義するには複雑になっています.
 そのため,超立方格子やハイゼンベルグ模型などのよく使われるような格子・模型については生成ツールが用意されています.
 
+
+.. _dla_pre:
+
+シンプルモードツール ``dla_pre``
+***********************************
+``dla_pre`` は :ref:`simple_mode_file` から :ref:`dla_expert_files` を生成するツールです. ::
+
+   $ dla_pre [-p paramfile] <inputfile>
+
+パラメータは以下の通り.
+
+``paramfile``
+  出力されるパラメータファイル名.デフォルトは ``qmc.inp`` です.
+
+``inputfile``
+  入力ファイル名. ファイル形式の詳細は :ref:`simple_mode_file` を参照してください.
+
+
+格子XML ファイルなど、出力される XML ファイルの名前はパラメータから自動生成されます。
+
+
+.. _dla_lat_gen:
+
 格子生成ツール ``dla_latgen``
 ************************************
-``dla_latgen`` は `TOML`_ 形式の入力ファイルから格子 datファイルを生成するツールです. ::
+``dla_latgen`` は :ref:`simple_mode_file` から :ref:`lattice_data_file` を生成するツールです. ::
 
   $ dla_latgen [-o filename] <inputfile>
 
@@ -21,12 +44,9 @@ DLA は入力ファイルとして格子定義ファイル,アルゴリズム定
    出力ファイル名.デフォルトは ``lattice.dat`` です.
 
 ``inputfile``
-  入力ファイル名. 
+  入力ファイル名. ファイル形式の詳細は :ref:`std_toml_lattice` を参照してください.
 
 実行すると filename で指定した名前の格子定義ファイルが生成されます.
-
-入力は TOML 形式です.
-パラメータリストは :ref:`std_toml_lattice` を参照してください。
 
 入力ファイル例
 ::
@@ -54,13 +74,7 @@ DLA は入力ファイルとして格子定義ファイル,アルゴリズム定
 ハミルトニアン生成ツール ``dla_hamgen``
 *****************************************
 
-``dla_hamgen`` は `TOML`_ 形式の入力ファイルからハミルトニアン TOML ファイルを生成するツールです.
-
-.. math:
-   \mathcal{H} = -J  \sum_{\langle i, j \rangle} S_i \cdot S_j - h \sum_i S_i^z
-
-を表すハミルトニアンファイルを生成するツールです.
-::
+``dla_hamgen`` は :ref:`simple_mode_file` から :ref:`hamiltonian_file` を生成するツールです. ::
 
   $ dla_hamgen [-o filename] <inputfile>
 
@@ -70,15 +84,11 @@ DLA は入力ファイルとして格子定義ファイル,アルゴリズム定
    出力ファイル名.デフォルトは ``hamiltonian.toml`` です.
 
 ``inputfile``
-  入力ファイル名. 
+  入力ファイル名.  ファイル形式は :ref:`std_toml_hamiltonian` を参照してください.
 
 実行すると filename で指定した名前を持つファイルが生成されます.
 
-入力は TOML 形式です.
-パラメータリストは :ref:`std_toml_hamiltonian` を参照してください。
-
-入力ファイル例
-::
+入力ファイル例 ::
 
    # S=1/2 AF Heisenberg model
    [hamiltonian]
@@ -112,7 +122,7 @@ DLA は入力ファイルとして格子定義ファイル,アルゴリズム定
 
 波数ファイル生成ツール ``dla_sfgen``
 *************************************
-``dla_sfgen`` は `TOML`_ 形式の入力ファイルから波数ファイル ``kpoints.dat`` を生成するツールです.
+``dla_sfgen`` は :ref:`simple_mode_file` から :ref:`wavevector_file` を生成するツールです.
 ::
 
   $ dla_sfgen [-o filename] [-s size] <inputfile>
@@ -127,16 +137,9 @@ DLA は入力ファイルとして格子定義ファイル,アルゴリズム定
    指定しない場合は, 入力ファイルの ``[lattice]`` テーブルから読み取ります.
 
 ``inputfile``
-  入力ファイル名. 
+  入力ファイル名.  ファイル形式は :ref:`simple_mode_kpoints` を参照してください.
 
 実行すると filename で指定した名前の波数ファイルが生成されます.
-
-入力は TOML 形式です.
-このファイルには ``ksteps`` キーを持つ ``kpoints`` テーブルが必要です.
-
-``ksteps``
-   波数の増分を表します.  整数の配列か整数で指定します.
-   空間次元よりも要素数が少ない場合、足りない要素は指定された最後の要素で埋められます.
 
 
 アルゴリズム生成ツール ``dla_alg``
