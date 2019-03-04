@@ -86,10 +86,12 @@ ID = ".".join(os.path.basename(JSONFILE).split(".")[0:-1])
 param = data["Parameter"]
 ref = data["Result"]
 
-if param["hamiltonian"]["model"] == "boson":
-    exename = "dla_B"
-else:
-    exename = "dla_H"
+exename = 'dla'
+
+# if param["hamiltonian"]["model"] == "boson":
+#     exename = "dla_B"
+# else:
+#     exename = "dla_H"
 
 nset = param["parameter"]["nset"]
 cleanup(ID)

@@ -40,6 +40,7 @@ public:
   int VTYPE;
   VertexProperty* _VP;
   int NX;
+  std::vector<double> XVALS;
   int NIC;
   Array<SiteInitialConfiguration> IC;
   SiteProperty() : _VP(0) { IC.setLabel("SiteProperty::IC"); };
@@ -462,6 +463,11 @@ void SiteProperty::initialize(XML::Block& X) {  //<Site>
   NIC   = NX;
 
   IC.init(1, NIC);
+
+  XVALS.resize(NX);
+  for (int i=0; i<NX; ++i){
+    XVALS[i] = X["LocalStates"].getDouble(i);
+  }
 
   for (int i = 0; i < X.NumberOfBlocks(); i++) {
     XML::Block& B = X[i];

@@ -20,7 +20,6 @@ private:
   double dtau;
 
   int NSF;
-  std::vector<double> dvals;
 
   Accumulator SIGN;
   std::vector<std::vector<double> > COSrk;
@@ -66,8 +65,7 @@ SF::SF(Parameter const& param, Lattice& lat, Algorithm& alg)
       NtauAll(0),
       NKMAX(0),
       dtau(0.0),
-      NSF(0),
-      dvals(Specific::diagonal_operators(alg.NXMAX))
+      NSF(0)
 {
   AutoDebugDump("SF::SF");
   if (param.SFINPFILE.length() > 0) {
@@ -142,6 +140,7 @@ void SF::measure(double sgn) {
 
   for (int s = 0; s < LAT.NSITE; s++) {
     Site& SITE = LAT.S(s);
+    SiteProperty& SP = SITE.Property();
     Site::iterator p(SITE);
 
     double bTri = 0.0;
@@ -150,7 +149,7 @@ void SF::measure(double sgn) {
 
     while (!(++p).atOrigin()) {
       Segment& S = *p;
-      double mz  = dvals[S.X()];
+      double mz  = SP.XVALS[S.X()];
 
       double tTri = bTri + S.length();
 

@@ -30,6 +30,7 @@ class AlgSite:
     def __init__(self, hamsite, cutoff=1e-10):
         self.id = hamsite.id
         self.N = hamsite.N
+        self.values = hamsite.values
         self.vtype = self.id
         self.initialconfigurations = []
         for st in range(self.N):
@@ -55,6 +56,7 @@ class AlgSite:
 
         f.write(indent * level + tagged("STYPE", self.id))
         f.write(indent * level + tagged("NumberOfStates", self.N))
+        f.write(indent * level + tagged("LocalStates", self.values))
         f.write(indent * level + tagged("VertexTypeOfSource", self.vtype))
 
         for ic in self.initialconfigurations:

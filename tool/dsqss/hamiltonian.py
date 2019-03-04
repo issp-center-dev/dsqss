@@ -50,10 +50,13 @@ def matelems_todict(matelems, keepzero=False):
 
 
 class Site(object):
-    def __init__(self, param=None, id=None, N=None, elements=None, sources=None):
+    def __init__(self, param=None,
+                 id=None, N=None, values=None,
+                 elements=None, sources=None):
         if param is not None:
             self.id = param["id"]
             self.N = param["N"]
+            self.values = param["values"]
             self.elements = {}
             for x in param["elements"]:
                 append_matelem(self.elements, param=x)
@@ -63,6 +66,7 @@ class Site(object):
         else:
             self.id = id
             self.N = N
+            self.values = values
             self.elements = elements
             self.sources = sources
 
@@ -70,6 +74,7 @@ class Site(object):
         return {
             "id": self.id,
             "N": self.N,
+            "values": self.values,
             "elements": matelems_todict(self.elements),
             "sources": matelems_todict(self.sources),
         }
