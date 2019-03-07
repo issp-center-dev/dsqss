@@ -57,7 +57,7 @@ public:
 };
 
 SF::SF(Parameter const& param, Lattice& lat, Algorithm& alg, WaveVector& wv)
-    : to_be_calc(true),
+    : to_be_calc(false),
       LAT(lat),
       ALG(alg),
       wv(wv),
@@ -66,21 +66,23 @@ SF::SF(Parameter const& param, Lattice& lat, Algorithm& alg, WaveVector& wv)
       dtau(param.BETA/param.NTAU)
 {
   AutoDebugDump("SF::SF");
-
-  SIGN.reset();
-  for (int i = 0; i < NK; i++) {
-    ACC.push_back(std::vector<Accumulator>(Ntau));
-    PHY.push_back(std::vector<Accumulator>(Ntau));
-    for (int it = 0; it < Ntau; it++) {
-      std::stringstream ss;
-      ss << "C" << i << "t" << it;
-      ACC[i][it].reset();
-      PHY[i][it].reset(ss.str());
+  if (wv.defined){
+    to_be_calc = true;
+    SIGN.reset();
+    for (int i = 0; i < NK; i++) {
+      ACC.push_back(std::vector<Accumulator>(Ntau));
+      PHY.push_back(std::vector<Accumulator>(Ntau));
+      for (int it = 0; it < Ntau; it++) {
+        std::stringstream ss;
+        ss << "C" << i << "t" << it;
+        ACC[i][it].reset();
+        PHY[i][it].reset(ss.str());
+      }
     }
-  }
-  for (int ik = 0; ik < NK; ik++) {
-    counterC.push_back(std::vector<double>(Ntau));
-    counterS.push_back(std::vector<double>(Ntau));
+    for (int ik = 0; ik < NK; ik++) {
+      counterC.push_back(std::vector<double>(Ntau));
+      counterS.push_back(std::vector<double>(Ntau));
+    }
   }
 };
 

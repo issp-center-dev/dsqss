@@ -11,6 +11,7 @@
 #include "xml.h"
 
 struct WaveVector {
+  bool defined;
   int NSITES;
   int NK;
 
@@ -20,10 +21,11 @@ struct WaveVector {
   WaveVector(Parameter const& param);
 };
 
-WaveVector::WaveVector(Parameter const& param)
+WaveVector::WaveVector(Parameter const& param) : defined(false)
 {
   AutoDebugDump("WaveVector::WaveVector");
   if (param.WVFILE.length() > 0) {
+    defined = true;
     XML::Block X(param.WVFILE.c_str());
 
     NSITES = X["NumberOfSites"].getInteger();
