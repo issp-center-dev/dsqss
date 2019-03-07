@@ -49,7 +49,7 @@ public:
 };
 
 CF::CF(Parameter const& param, Lattice& lat, Algorithm& alg)
-    : to_be_calc(false),
+    : to_be_calc(true),
       LAT(lat),
       ALG(alg),
       Ntau(0),

@@ -67,18 +67,6 @@ def main():
         "-k", "--kpoint", dest="kpoint", default=None, help="kpoints data file"
     )
     parser.add_argument("--sf", dest="sf", default="sf.xml", help="kr XML file")
-    parser.add_argument(
-        "--ntau",
-        dest="ntau",
-        default=10,
-        help="number of imaginary time discritization",
-    )
-    parser.add_argument(
-        "--taucutoff",
-        dest="taucutoff",
-        default=None,
-        help="cutoff of imaginary time distance for the structure factor",
-    )
     parser.add_argument("--cf", dest="cf", default=None, help="displacement XML file")
     parser.add_argument(
         "--distance-only",

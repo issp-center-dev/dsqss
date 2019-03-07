@@ -33,6 +33,10 @@ set(CMAKE_MACOSX_RPATH 1)
 
 option(DEBUG "Debug" OFF)
 
+if(DEBUG)
+  add_definitions(-DDEB)
+endif(DEBUG)
+
 if(ENABLE_MPI)
   find_package(MPI)
   if(MPI_FOUND)

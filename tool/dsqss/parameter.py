@@ -25,15 +25,13 @@ def set_default_values(param):
         ("nset", 10),
         ("simulationtime", 0.0),
         ("ntau", 10),
-        ("taucutoff", None),
         ("seed", 198212240),
         ("nvermax", 10000),
         ("nsegmax", 10000),
         ("algfile", "algorithm.xml"),
         ("latfile", "lattice.xml"),
-        ("sfinpfile", ""),
+        ("wvfile", "wavevector.xml"),
         ("cfinpfile", ""),
-        ("ckinpfile", ""),
         ("outfile", "sample.log"),
         ("sfoutfile", "sf.dat"),
         ("cfoutfile", "cf.dat"),
@@ -78,13 +76,9 @@ def dla_pre(param, pfile):
     alg = Algorithm(ham, prob_kernel=kernel, ebase_extra=extra_shift)
     alg.write_xml(p["algfile"])
 
-    if p["sfinpfile"] != "" or p["ckinpfile"] != "":
-        sf = Wavevector()
-        sf.generate(param.get("kpoints", {}), size=lat.size)
-        if p["sfinpfile"] != "":
-            sf.write_xml(p["sfinpfile"], lat, p["ntau"], p["taucutoff"])
-        if p["ckinpfile"] != p["sfinpfile"]:
-            sf.write_xml(p["ckinpfile"], lat, p["ntau"], p["taucutoff"])
+    wv = Wavevector()
+    wv.generate(param.get("kpoints", {}), size=lat.size)
+    wv.write_xml(p['wvfile'], lat)
 
     if p["cfinpfile"] != "":
         pdisp = param.get("displacement", {})
