@@ -26,8 +26,8 @@ def cleanup(name=""):
         ("hamiltonian", ".xml"),
         ("algorithm", ".xml"),
         ("lattice", ".xml"),
-        ("sf", ".xml"),
-        ("cf", ".xml"),
+        ("wavevector", ".xml"),
+        ("displacement", ".xml"),
         ("res", ".dat"),
         ("sf", ".dat"),
         ("cf", ".dat"),
@@ -47,7 +47,7 @@ def geninp(param, seed, simtime=0.0, name=""):
     p["algfile"] = "algorithm{0}.xml".format(name)
     p["outfile"] = "res{0}.dat".format(name)
     p["wvfile"] = "wv{0}.xml".format(name)
-    p["cfinpfile"] = "cf{0}.xml".format(name)
+    p["dispfile"] = "dp{0}.xml".format(name)
     p["sfoutfile"] = "sf{0}.dat".format(name)
     p["cfoutfile"] = "cf{0}.dat".format(name)
     p["ckoutfile"] = "ck{0}.dat".format(name)

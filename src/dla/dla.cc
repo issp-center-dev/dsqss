@@ -70,10 +70,11 @@ Simulation::Simulation(Parameter& P0)
       ALG(P.ALGFILE),
       LAT(P, ALG),
       WV(P),
-      MSR(P, LAT, ALG),
+      DISP(P),
+      MSR(P, LAT, ALG, WV),
       calctimer(P.NMCS),
       sf(P, LAT, ALG, WV),
-      cf(P, LAT, ALG),
+      cf(P, LAT, ALG, DISP),
       ck(P, LAT, ALG, WV) {
   AutoDebugDump("Simulation::Simulation");
 

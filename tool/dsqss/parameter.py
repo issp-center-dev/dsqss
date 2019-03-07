@@ -6,7 +6,7 @@ import codecs
 import toml
 
 from .algorithm import Algorithm
-from .displacement import CF
+from .displacement import Displacement
 from .hamiltonian import GraphedHamiltonian
 from .prob_kernel import (heat_bath, metropolice, reversible_suwa_todo,
                           suwa_todo)
@@ -30,8 +30,8 @@ def set_default_values(param):
         ("nsegmax", 10000),
         ("algfile", "algorithm.xml"),
         ("latfile", "lattice.xml"),
-        ("wvfile", "wavevector.xml"),
-        ("cfinpfile", ""),
+        ("wvfile", ""),
+        ("dispfile", ""),
         ("outfile", "sample.log"),
         ("sfoutfile", "sf.dat"),
         ("cfoutfile", "cf.dat"),
@@ -76,14 +76,15 @@ def dla_pre(param, pfile):
     alg = Algorithm(ham, prob_kernel=kernel, ebase_extra=extra_shift)
     alg.write_xml(p["algfile"])
 
-    wv = Wavevector()
-    wv.generate(param.get("kpoints", {}), size=lat.size)
-    wv.write_xml(p['wvfile'], lat)
+    if p["wvfile"] != "":
+        wv = Wavevector()
+        wv.generate(param.get("kpoints", {}), size=lat.size)
+        wv.write_xml(p['wvfile'], lat)
 
-    if p["cfinpfile"] != "":
+    if p["dispfile"] != "":
         pdisp = param.get("displacement", {})
-        cf = CF(lat, pdisp.get("distance_only", False), pdisp.get("origin", None))
-        cf.write_xml(p["cfinpfile"], p["ntau"])
+        disp = Displacement(lat, pdisp.get("distance_only", False), pdisp.get("origin", None))
+        disp.write_xml(p["dispfile"], lat)
 
     with codecs.open(pfile, "w", "utf-8") as f:
         for key in sorted(p.keys()):

@@ -29,7 +29,8 @@ public:
   void dump();
   void openfile() {
     FOUT = fopen(OUTFILE.c_str(), "w");
-    if (CFINPFILE.length() > 0) {
+
+    if (DISPFILE.length() > 0) {
       FOUT4CF = fopen(CFOUTFILE.c_str(), "w");
       if (!FOUT4CF) {
         std::string msg("cannot open cfoutfile: ");
@@ -92,18 +93,16 @@ public:
   std::string LATFILE;  // lattice file name
   std::string OUTFILE;  // output file name
   std::string WVFILE; // wavevector file name
+  std::string DISPFILE; // displacement file name
   int NCYC;            // number of cycles in a sweep (not provided from the file)
   FILE* FOUT;  // file handler for the output file
 
-  std::string CFINPFILE;  // correlation function file name
   std::string CFOUTFILE;  // output file name
   FILE* FOUT4CF;         // file handler for the output file
 
-  std::string SFINPFILE;  // correlation function file name
   std::string SFOUTFILE;  // output file name
   FILE* FOUT4SF;         // file handler for the output file
 
-  std::string CKINPFILE;  // correlation function file name
   std::string CKOUTFILE;  // output file name
   FILE* FOUT4CK;         // file handler for the output file
 };
@@ -144,7 +143,7 @@ void Parameter::readfile(std::string const& filename) {
   ALGFILE = dict["algfile"];
   LATFILE = dict["latfile"];
   WVFILE = dict["wvfile"];
-  CFINPFILE = dict["cfinpfile"];
+  DISPFILE = dict["dispfile"];
   OUTFILE = dict["outfile"];
   SFOUTFILE = dict["sfoutfile"];
   CFOUTFILE = dict["cfoutfile"];
@@ -205,7 +204,7 @@ void Parameter::init(std::map<std::string, std::string>& dict) {
   dict["algfile"]        = "algorithm.xml";
   dict["latfile"]        = "lattice.xml";
   dict["wvfile"]         = "wavevector.xml";
-  dict["cfinpfile"]      = "";
+  dict["dispfile"]       = "displacement.xml";
   dict["outfile"]        = "sample.log";
   dict["sfoutfile"]      = "sf.dat";
   dict["cfoutfile"]      = "cf.dat";
@@ -229,7 +228,7 @@ inline void Parameter::dump() {
   cout << "ALGFILE = " << ALGFILE << endl;
   cout << "LATFILE = " << LATFILE << endl;
   cout << "WVFILE = " << WVFILE << endl;
-  cout << "CFINPFILE  = " << CFINPFILE << endl;
+  cout << "DISPFILE = " << DISPFILE << endl;
   cout << "OUTFILE = " << OUTFILE << endl;
   cout << "CFOUTFILE  = " << CFOUTFILE << endl;
   cout << "SFOUTFILE  = " << SFOUTFILE << endl;
@@ -252,7 +251,7 @@ inline void Parameter::dump(FILE* F) {
   fprintf(F, "P ALGFILE = %s\n", ALGFILE.c_str());
   fprintf(F, "P LATFILE = %s\n", LATFILE.c_str());
   fprintf(F, "P WVFILE = %s\n", WVFILE.c_str());
-  fprintf(F, "P CFINPFILE  = %s\n", CFINPFILE.c_str());
+  fprintf(F, "P DISPFILE  = %s\n", DISPFILE.c_str());
 
   fprintf(F, "P OUTFILE    = %s\n", OUTFILE.c_str());
   fprintf(F, "P CFOUTFILE  = %s\n", CFOUTFILE.c_str());
