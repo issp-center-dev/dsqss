@@ -88,10 +88,7 @@ ref = data["Result"]
 
 exename = 'dla'
 
-# if param["hamiltonian"]["model"] == "boson":
-#     exename = "dla_B"
-# else:
-#     exename = "dla_H"
+param["kpoints"] = {"ksteps": 1}
 
 nset = param["parameter"]["nset"]
 cleanup(ID)

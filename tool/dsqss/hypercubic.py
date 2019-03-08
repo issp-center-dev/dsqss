@@ -26,13 +26,12 @@ class HyperCubicLattice(Lattice):
         for i in range(N):
             ir = index2coord(i, self.size)
             parities = [x % 2 for x in ir]
-            p = sum(parities) % 2
             if bondalt:
                 stype = coord2index(parities, P)
             else:
                 stype = 0
             nstype = max(nstype, stype)
-            self.sites.append(Site(i, stype, p, ir))
+            self.sites.append(Site(i, stype, ir))
 
             for d in range(self.dim):
                 jr = ir[:]

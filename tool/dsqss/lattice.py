@@ -12,15 +12,14 @@ from .util import ERROR, WARN, coord2index, get_as_list, index2coord, tagged
 
 
 class Site:
-    def __init__(self, site_id, site_type, measure_type, coordinate):
+    def __init__(self, site_id, site_type, coordinate):
         self.id = site_id
         self.stype = site_type
-        self.mtype = measure_type
         self.coord = coordinate
         self.z = 0
 
     def __str__(self):
-        s = "{0} {1} {2}".format(self.id, self.stype, self.mtype)
+        s = "{0} {1}".format(self.id, self.stype)
         for c in self.coord:
             s += " {0}".format(c)
         return s
@@ -150,7 +149,7 @@ class Lattice:
             for lid, site in enumerate(unitcell["sites"]):
                 sid = site["siteid"] + icell * nsites_cell
                 coord = np.dot(self.latvec, cell_coord + np.array(site["coord"], dtype=float))
-                S = Site(sid, site["type"], site["mtype"], coord)
+                S = Site(sid, site["type"], coord)
                 self.sites.append(S)
             for ib, bond in enumerate(unitcell["bonds"]):
                 bid = bond["bondid"] + icell * nbonds_cell
@@ -199,7 +198,7 @@ class Lattice:
 
         out.write("sites\n")
         out.write("{0} # nsites\n".format(self.nsites))
-        out.write("# id, type, mtype, coord...\n")
+        out.write("# id, type, coord...\n")
         for i, site in enumerate(self.sites):
             out.write("{0}\n".format(site))
         out.write("\n")
@@ -345,8 +344,7 @@ class Lattice:
         self.sites[int(elem[0])] = Site(
             site_id=int(elem[0]),
             site_type=int(elem[1]),
-            measure_type=int(elem[2]),
-            coordinate=list(map(float, elem[3:])),
+            coordinate=list(map(float, elem[2:])),
         )
 
     def load_int(self, body, count):
@@ -462,9 +460,9 @@ class Lattice:
             f.write(tagged("NumberOfEdgeInteractions", self.nedges))
             f.write("\n")
 
-            f.write("<!-- <S> site_index site_type measure_type </S> -->\n")
+            f.write("<!-- <S> site_index site_type </S> -->\n")
             for i, site in enumerate(self.sites):
-                f.write(tagged("S", (i, site.stype, site.mtype)))
+                f.write(tagged("S", (i, site.stype)))
             f.write("\n")
 
             f.write("<!-- <SiteCoordinate> site_index coord... </SiteCoordinate> -->\n")

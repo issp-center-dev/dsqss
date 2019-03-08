@@ -83,7 +83,7 @@ def dla_pre(param, pfile):
 
     if p["dispfile"] != "":
         pdisp = param.get("displacement", {})
-        disp = Displacement(lat, pdisp.get("distance_only", False), pdisp.get("origin", None))
+        disp = Displacement(lat, pdisp.get("distance_only", False))
         disp.write_xml(p["dispfile"], lat)
 
     with codecs.open(pfile, "w", "utf-8") as f:
