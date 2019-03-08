@@ -9,6 +9,87 @@
 #include "measure_specific.h"
 #include "algorithm.hpp"
 #include "lattice.hpp"
+#include "wavevector.hpp"
+#include "serialize.hpp"
+
+struct ACC_smag{
+  Accumulator A1;
+  Accumulator A2;
+  Accumulator B1;
+  Accumulator B2;
+
+  void reset(){
+    A1.reset(); A2.reset(); B1.reset(); B2.reset();
+  }
+
+  void average(){
+    A1.average(); A2.average(); B1.average(); B2.average();
+  }
+};
+
+namespace Serialize{
+void save(std::ofstream & ofs, const ACC_smag& val){
+  save(ofs, val.A1);
+  save(ofs, val.A2);
+  save(ofs, val.B1);
+  save(ofs, val.B2);
+}
+
+void load(std::ifstream & ofs, ACC_smag& val){
+  load(ofs, val.A1);
+  load(ofs, val.A2);
+  load(ofs, val.B1);
+  load(ofs, val.B2);
+}
+}
+
+struct PHY_smag{
+  Accumulator A;
+  Accumulator B;
+  Accumulator S;
+  Accumulator X;
+  void reset(int k)
+  {
+    std::string names[4] = {"amzs", "bmzs", "smzs", "xmzs",};
+    Accumulator* Q[4] = {&A, &B, &S, &X};
+    for(int i=0; i<4; ++i){
+      std::stringstream ss;
+      ss << names[i];
+      ss << k;
+      Q[i]->reset(ss.str());
+    }
+  }
+  void average(){
+    A.average(); B.average(); S.average(); X.average();
+  }
+
+  void show(FILE* F, const char* prefix){
+    A.show(F,prefix); B.show(F,prefix); S.show(F,prefix); X.show(F,prefix);
+  }
+
+#ifdef MULTI
+  void allreduce(MPI_Comm comm){
+    A.allreduce(comm); B.allreduce(comm); S.allreduce(comm); X.allreduce(comm);
+  }
+#endif
+};
+
+namespace Serialize{
+void save(std::ofstream & ofs, const PHY_smag& val){
+  save(ofs, val.A);
+  save(ofs, val.B);
+  save(ofs, val.S);
+  save(ofs, val.X);
+}
+
+void load(std::ifstream & ofs, PHY_smag& val){
+  load(ofs, val.A);
+  load(ofs, val.B);
+  load(ofs, val.S);
+  load(ofs, val.X);
+}
+}
+
 
 class Measurement {
 private:
@@ -17,18 +98,22 @@ private:
   Parameter& P;
   Lattice& LAT;
   Algorithm& ALG;
+  WaveVector& WV;
   std::vector<double> Q;
 
 public:
-  std::vector<Accumulator> ACC;  // accumurator of snapshot values
-  std::vector<Accumulator> PHY;  // accumurator of set averages
+  std::vector<Accumulator> ACC;        // accumurator of snapshot values
+  std::vector<Accumulator> PHY;        // accumurator of set averages
+
+  std::vector<ACC_smag> ACC_SMAG;   // accumurator of snapshot of stagmag
+  std::vector<PHY_smag> PHY_SMAG;   // accumurator of stagmag
 
   double ediag;
   int nkink;
 
   double EBASE;
 
-  Measurement(Parameter& P0, Lattice& L, Algorithm& A);
+  Measurement(Parameter& P0, Lattice& L, Algorithm& A, WaveVector& W);
   void measure(double sgn);
   void summary();
   void setinit();
@@ -47,15 +132,19 @@ public:
   void load(std::ifstream& F);
 };
 
-inline Measurement::Measurement(Parameter& P0, Lattice& L, Algorithm& A)
+inline Measurement::Measurement(Parameter& P0, Lattice& L, Algorithm& A, WaveVector& W)
     : NACC(Specific::NACC),
       NPHY(Specific::NPHY),
       P(P0),
       LAT(L),
       ALG(A),
+      WV(W),
       Q(NPHY),
       ACC(NACC),
-      PHY(NPHY) {
+      PHY(NPHY),
+      ACC_SMAG(WV.NK),
+      PHY_SMAG(WV.NK)
+{
   AutoDebugDump("Measurement::Measurement");
 
   for (int i = 0; i < NACC; i++) {
@@ -66,6 +155,11 @@ inline Measurement::Measurement(Parameter& P0, Lattice& L, Algorithm& A)
   for (int i = 0; i < NPHY; i++) {
     PHY[i].reset();
     PHY[i].set_key(Specific::PNAME[i]);
+  }
+
+  for (int k=0; k < WV.NK; ++k){
+    ACC_SMAG[k].reset();
+    PHY_SMAG[k].reset(k);
   }
 
   // setting EBASE
@@ -79,13 +173,20 @@ inline Measurement::Measurement(Parameter& P0, Lattice& L, Algorithm& A)
 }
 
 inline void Measurement::setinit() {
-  for (int i = 0; i < NACC; i++)
+  for (int i = 0; i < NACC; i++){
     ACC[i].reset();
+  }
+  for (int k=0; k < WV.NK; ++k){
+    ACC_SMAG[k].reset();
+  }
 }
 
 inline void Measurement::summary() {
   for (int i = 0; i < NPHY; i++) {
     PHY[i].average();
+  }
+  for (int k=0; k < WV.NK; ++k){
+    PHY_SMAG[k].average();
   }
 }
 
@@ -94,12 +195,18 @@ inline void Measurement::allreduce(MPI_Comm comm){
   for (int i=0; i<NPHY; i++){
     PHY[i].allreduce(comm);
   }
+  for (int k=0; k < WV.NK; ++k){
+    PHY_SMAG[k].allreduce(comm);
+  }
 }
 #endif
 
 inline void Measurement::show(FILE* F) {
   for (int i = 0; i < NPHY; i++) {
     PHY[i].show(F, "R");
+  }
+  for (int k=0; k < WV.NK; ++k){
+    PHY_SMAG[k].show(F, "R");
   }
 }
 
@@ -121,7 +228,9 @@ inline void Measurement::accumulate_length(double len, double sgn) { ACC[Specifi
 
 void Measurement::save(std::ofstream& F) const {
   Serialize::save(F, ACC);
+  Serialize::save(F, ACC_SMAG);
   Serialize::save(F, PHY);
+  Serialize::save(F, PHY_SMAG);
 }
 
 void Measurement::load(std::ifstream& F) {
@@ -132,6 +241,7 @@ void Measurement::load(std::ifstream& F) {
     std::cerr << "       model maybe changed." << std::endl;
     exit(1);
   }
+  Serialize::load(F, ACC_SMAG);
 
   Serialize::load(F, PHY);
   const int NPHY_ = PHY.size();
@@ -140,6 +250,7 @@ void Measurement::load(std::ifstream& F) {
     std::cerr << "       model maybe changed." << std::endl;
     exit(1);
   }
+  Serialize::load(F, PHY_SMAG);
 }
 
 void Measurement::measure(double sgn) {
@@ -148,26 +259,22 @@ void Measurement::measure(double sgn) {
 
   double MZUA = 0.0;  // uniform,   tau=0
   double MZUB = 0.0;  // uniform,   integrated
-  double MZSA = 0.0;  // staggered, tau=0
-  double MZSB = 0.0;  // staggered, integrated
+  std::vector<double> MZSA(WV.NK);  // staggered, tau=0
+  std::vector<double> MZSB(WV.NK);  // staggered, integrated
 
   const double T    = 1.0 / LAT.BETA;
   const double invV = 1.0 / LAT.NSITE;
-
-  std::vector<double> phase(LAT.NSMTYPE);
-  for(int m=0; m<LAT.NSMTYPE; ++m){
-    phase[m] = std::cos(2*M_PI*m/LAT.NSMTYPE);
-  }
 
   for (int s = 0; s < LAT.NSITE; s++) {
     Site& SITE  = LAT.S(s);
     SiteProperty& SP = SITE.Property();
     int mt      = SITE.getMTYPE();
-    double ph   = phase[mt];
     Segment& S0 = SITE.first();
     double mz0  = SP.XVALS[S0.X()];
     Site::iterator p(SITE);
     double mza0 = 0.0;
+
+    std::vector<double> const &ph = WV.COSrk[s];
 
     while (!(++p).atOrigin()) {
       Segment& S = *p;
@@ -177,15 +284,19 @@ void Measurement::measure(double sgn) {
 
     MZUA += mz0;
     MZUB += mza0;
-    MZSA += ph * mz0;
-    MZSB += ph * mza0;
+    for(int k=0; k<WV.NK; ++k){
+      MZSA[k] += ph[k] * mz0;
+      MZSB[k] += ph[k] * mza0;
+    }
   }
   MZUA *= invV;
-  MZSA *= invV;
   MZUB *= invV;
-  MZSB *= invV;
   MZUB *= T;
-  MZSB *= T;
+  for(int k=0; k<WV.NK; ++k){
+    MZSA[k] *= invV;
+    MZSB[k] *= invV;
+    MZSB[k] *= T;
+  }
 
   double EBSAMP = -(double)NV;
 
@@ -228,10 +339,13 @@ void Measurement::measure(double sgn) {
   ACC[MZUA2].accumulate(sgn * MZUA * MZUA);
   ACC[MZUB1].accumulate(sgn * MZUB);
   ACC[MZUB2].accumulate(sgn * MZUB * MZUB);
-  ACC[MZSA1].accumulate(sgn * MZSA);
-  ACC[MZSA2].accumulate(sgn * MZSA * MZSA);
-  ACC[MZSB1].accumulate(sgn * MZSB);
-  ACC[MZSB2].accumulate(sgn * MZSB * MZSB);
+
+  for(int k=0; k<WV.NK; ++k){
+    ACC_SMAG[k].A1.accumulate(sgn * MZSA[k]);
+    ACC_SMAG[k].A2.accumulate(sgn * MZSA[k] * MZSA[k]);
+    ACC_SMAG[k].B1.accumulate(sgn * MZSB[k]);
+    ACC_SMAG[k].B2.accumulate(sgn * MZSB[k] * MZSB[k]);
+  }
 
   ACC[EB1].accumulate(sgn * EBSAMP);
   ACC[EB2].accumulate(sgn * EBSAMP * EBSAMP);
@@ -305,6 +419,11 @@ void Measurement::setsummary() {
     X[i] *= invsign;
   }
 
+  for(int k=0; k<WV.NK; ++k){
+    ACC_SMAG[k].average();
+  }
+
+
   Q[SIGN] = X[SGN];
 
   Q[ANV] = X[NV1] * invV;
@@ -320,11 +439,6 @@ void Measurement::setsummary() {
   Q[SMZU] = (X[MZUA2] - X[MZUA1] * X[MZUA1]) * V;
   Q[XMZU] = (X[MZUB2] - X[MZUB1] * X[MZUB1]) * B * V;
 
-  Q[AMZS] = X[MZSA1];
-  Q[BMZS] = X[MZSB1];
-  Q[SMZS] = (X[MZSA2] - X[MZSA1] * X[MZSA1]) * V;
-  Q[XMZS] = (X[MZSB2] - X[MZSB1] * X[MZSB1]) * B * V;
-
   Q[DS1]  = B * (X[NH1] - X[MZUA1] * X[EB1]) / V;
   Q[W2]   = X[Wxy2];
   Q[RHOS] = X[Wxy2] * 0.5 / D / V / B;
@@ -332,6 +446,17 @@ void Measurement::setsummary() {
 
   for (int i = 0; i < NPHY; i++) {
     PHY[i].accumulate(Q[i]);
+  }
+
+  for (int k=0; k<WV.NK; ++k){
+    const double a1 = ACC_SMAG[k].A1.mean() * invsign;
+    const double a2 = ACC_SMAG[k].A2.mean() * invsign;
+    const double b1 = ACC_SMAG[k].B1.mean() * invsign;
+    const double b2 = ACC_SMAG[k].B2.mean() * invsign;
+    PHY_SMAG[k].A.accumulate(a1);
+    PHY_SMAG[k].B.accumulate(a2);
+    PHY_SMAG[k].S.accumulate((a2 - a1*a1)*V);
+    PHY_SMAG[k].X.accumulate((b2 - b1*b1)*B*V);
   }
 }
 
