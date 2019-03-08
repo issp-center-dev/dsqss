@@ -13,7 +13,10 @@ class Wavevector:
 
     def generate(self, param, size):
         self.dim = len(size)
-        steps = get_as_list(param, "ksteps", default=1, extendto=self.dim)
+        steps = get_as_list(param, "ksteps", default=0, extendto=self.dim)
+        for d in range(self.dim):
+            if steps[d] == 0:
+                steps[d] = size[d]//2
         ks = []
         self.nk = 1
         for d in range(self.dim):
