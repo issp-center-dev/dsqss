@@ -4,7 +4,7 @@ from __future__ import print_function
 import argparse
 
 from .algorithm import Algorithm
-from .displacement import CF
+from .displacement import Displacement
 from .hamiltonian import GraphedHamiltonian
 from .lattice import Lattice
 from .prob_kernel import (heat_bath, metropolice, reversible_suwa_todo,
@@ -66,20 +66,13 @@ def main():
     parser.add_argument(
         "-k", "--kpoint", dest="kpoint", default=None, help="kpoints data file"
     )
-    parser.add_argument("--sf", dest="sf", default="sf.xml", help="kr XML file")
-    parser.add_argument("--cf", dest="cf", default=None, help="displacement XML file")
+    parser.add_argument("--wv", dest="wv", default="wv.xml", help="wavevector XML file")
+    parser.add_argument("--disp", dest="disp", default=None, help="displacement XML file")
     parser.add_argument(
         "--distance-only",
         dest="distance_only",
         action="store_true",
         help="use |r_ij| instead of r_ij",
-    )
-    parser.add_argument(
-        "--displacement-origin",
-        dest="displacement_origin",
-        default=None,
-        help="origin site (i) of displacement vector r_ij = r_j - r_i. "
-        + "If None, all pairs of sites <ij> are considered.",
     )
     parser.add_argument(
         "--kernel",
@@ -122,10 +115,10 @@ def main():
     if args.kpoint is not None:
         wv = Wavevector()
         wv.load(args.kpoint)
-        wv.write_xml(args.sf, lat, ntau=args.ntau, taucutoff=args.taucutoff)
-    if args.cf is not None:
-        cf = CF(lat, origin=args.displacement_origin, distance_only=args.distance_only)
-        cf.write_xml(args.cf, ntau=args.ntau)
+        wv.write_xml(args.wv, lat, ntau=args.ntau, taucutoff=args.taucutoff)
+    if args.disp is not None:
+        disp = Displacement(lat, distance_only=args.distance_only)
+        disp.write_xml(args.disp, ntau=args.ntau)
 
 
 if __name__ == "__main__":

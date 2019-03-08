@@ -7,18 +7,12 @@ from .util import tagged
 
 
 class Displacement:
-    def __init__(self, lat, distance_only=False, origin=None):
+    def __init__(self, lat, distance_only=False):
         self.lat = lat
         self.nr = 0
-        self.origin = origin
-        if origin is not None:
-            sources = [origin]
-            self.displacements = -np.ones(lat.nsites, dtype=int)
-            self.nelems = lat.nsites
-        else:
-            sources = range(lat.nsites)
-            self.displacements = -np.ones((lat.nsites, lat.nsites), dtype=int)
-            self.nelems = lat.nsites * lat.nsites
+        sources = range(lat.nsites)
+        self.displacements = -np.ones((lat.nsites, lat.nsites), dtype=int)
+        self.nelems = lat.nsites * lat.nsites
         rdict = {}
         for s in sources:
             sr = np.array(lat.sites[s].coord)
@@ -36,10 +30,7 @@ class Displacement:
                 if r not in rdict:
                     rdict[r] = self.nr
                     self.nr += 1
-                if origin is not None:
-                    self.displacements[t] = rdict[r]
-                else:
-                    self.displacements[s, t] = rdict[r]
+                self.displacements[s, t] = rdict[r]
 
     def write_xml(self, filename, lat):
         with codecs.open(filename, "w", "utf-8") as f:
@@ -52,13 +43,8 @@ class Displacement:
             f.write("<!-- <R> [kind] [isite] [jsite] </R> -->\n")
             f.write("\n")
 
-            if self.origin is not None:
-                for t in range(self.lat.nsites):
-                    f.write(tagged("R",
-                                   (self.displacements[t], self.origin, t)))
-            else:
-                for s, t in product(range(self.lat.nsites), range(self.lat.nsites)):
-                    f.write(tagged("R",
-                                   (self.displacements[s, t], s, t)))
+            for s, t in product(range(self.lat.nsites), range(self.lat.nsites)):
+                f.write(tagged("R",
+                               (self.displacements[s, t], s, t)))
 
             f.write("</Displacements>\n")
