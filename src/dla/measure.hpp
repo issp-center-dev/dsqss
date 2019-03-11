@@ -268,7 +268,6 @@ void Measurement::measure(double sgn) {
   for (int s = 0; s < LAT.NSITE; s++) {
     Site& SITE  = LAT.S(s);
     SiteProperty& SP = SITE.Property();
-    int mt      = SITE.getMTYPE();
     Segment& S0 = SITE.first();
     double mz0  = SP.XVALS[S0.X()];
     Site::iterator p(SITE);
