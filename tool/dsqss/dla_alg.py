@@ -115,10 +115,10 @@ def main():
     if args.kpoint is not None:
         wv = Wavevector()
         wv.load(args.kpoint)
-        wv.write_xml(args.wv, lat, ntau=args.ntau, taucutoff=args.taucutoff)
+        wv.write_xml(args.wv, lat)
     if args.disp is not None:
         disp = Displacement(lat, distance_only=args.distance_only)
-        disp.write_xml(args.disp, ntau=args.ntau)
+        disp.write_xml(args.disp)
 
 
 if __name__ == "__main__":
