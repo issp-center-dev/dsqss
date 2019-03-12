@@ -1,4 +1,5 @@
 from .hypercubic import HyperCubicLattice
+from .lattice import Lattice
 from .util import ERROR
 
 
@@ -28,9 +29,13 @@ def main():
 
     args = parser.parse_args()
     inp = toml.load(args.input)
-    if "lattice" in inp:
+    if "lattice" in inp and inp["lattice"] is not str:
         inp = inp["lattice"]
-    lat = std_lattice(inp)
+    if "unitcell" in inp:
+        lat = Lattice()
+        lat.load_dict(inp)
+    else:
+        lat = std_lattice(inp)
     lat.save_dat(args.out)
 
 
