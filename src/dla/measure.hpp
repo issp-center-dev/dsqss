@@ -444,7 +444,7 @@ void Measurement::setsummary() {
 
   Q[DS1]  = B * (X[NH1] - X[MZUA1] * X[EB1]) / V;
   Q[W2]   = X[Wxy2];
-  Q[RHOS] = X[Wxy2] * 0.5 / D / V / B;
+  Q[RHOS] = X[Wxy2] / (D * V * B);
   Q[RHOF] = Q[RHOS] / Q[AMZU];
   Q[COMP] = Q[XMZU] / (X[MZUB1] * X[MZUB1]);
 
