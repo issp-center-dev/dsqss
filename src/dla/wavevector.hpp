@@ -21,7 +21,7 @@ struct WaveVector {
   WaveVector(Parameter const& param);
 };
 
-WaveVector::WaveVector(Parameter const& param) : defined(false)
+WaveVector::WaveVector(Parameter const& param) : defined(false), NSITES(0), NK(0)
 {
   AutoDebugDump("WaveVector::WaveVector");
   if (param.WVFILE.length() > 0) {

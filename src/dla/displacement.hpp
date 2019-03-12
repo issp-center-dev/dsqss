@@ -22,7 +22,7 @@ struct Displacement {
   void read(XML::Block const& X);
 };
 
-Displacement::Displacement(Parameter const& param) : defined(false)
+Displacement::Displacement(Parameter const& param) : defined(false), NSITES(0), nkinds(0)
 {
   AutoDebugDump("Displacement::Displacement");
   if (param.DISPFILE.length() > 0) {
