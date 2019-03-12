@@ -2,7 +2,7 @@
 import codecs
 
 from .lattice import Lattice
-from .lattice_factory import hypercubic, triangular, honeycomb
+from .lattice_factory import honeycomb, hypercubic, kagome, triangular
 from .util import ERROR
 
 
@@ -19,6 +19,8 @@ def std_lattice(param, ret_dict=False):
             latticedict = triangular.generate(param)
         elif latname == "honeycomb":
             latticedict = honeycomb.generate(param)
+        elif latname == "kagome":
+            latticedict = kagome.generate(param)
         else:
             ERROR(
                 'Unknown lattice: param["lattice"] = {0}'.format(
