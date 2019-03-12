@@ -14,4 +14,9 @@ DSQSS_VERSION=$(@PYTHON_EXECUTABLE@ setup.py --version)
 @PYTHON_EXECUTABLE@ setup.py bdist_wheel --universal
 mkdir -p temp
 cd temp
+
+# install dependencies if not installed
 @PYTHON_EXECUTABLE@ -m pip install ../dist/dsqss-${DSQSS_VERSION}-py2.py3-none-any.whl --prefix=@CMAKE_INSTALL_PREFIX@ --no-warn-script-location
+
+# forcely install dsqss
+@PYTHON_EXECUTABLE@ -m pip install --no-deps --force-reinstall ../dist/dsqss-${DSQSS_VERSION}-py2.py3-none-any.whl --prefix=@CMAKE_INSTALL_PREFIX@ --no-warn-script-location
