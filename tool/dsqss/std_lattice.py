@@ -1,15 +1,37 @@
-from .hypercubic import HyperCubicLattice
+# from .hypercubic import HyperCubicLattice
+import codecs
+
 from .lattice import Lattice
+from .lattice_factory import hypercubic, triangular, honeycomb
 from .util import ERROR
 
 
-def std_lattice(param):
-    if param["lattice"] == "hypercubic":
-        return HyperCubicLattice(param)
+def std_lattice(param, ret_dict=False):
+    if "lattice" in param and param["lattice"] is not str:
+        param = param["lattice"]
+    if "unitcell" in param:
+        latticedict = param
     else:
-        ERROR(
-            'Unknown lattice: param["lattice"] = {0}'.format(param["lattice"].lower())
-        )
+        latname = param["lattice"].lower()
+        if latname == "hypercubic":
+            latticedict = hypercubic.generate(param)
+        elif latname == "triangular":
+            latticedict = triangular.generate(param)
+        elif latname == "honeycomb":
+            latticedict = honeycomb.generate(param)
+        else:
+            ERROR(
+                'Unknown lattice: param["lattice"] = {0}'.format(
+                    param["lattice"].lower()
+                )
+            )
+
+    lat = Lattice()
+    lat.load_dict(latticedict)
+    if ret_dict:
+        return lat, latticedict
+    else:
+        return lat
 
 
 def main():
@@ -24,19 +46,25 @@ def main():
 
     parser.add_argument("input", help="Input filename")
     parser.add_argument(
-        "-o", "--output", dest="out", default="lattice.dat", help="Output filename"
+        "-o", "--output", dest="out", default="lattice.dat", help="Output data filename"
+    )
+    parser.add_argument(
+        "-t", "--toml", dest="toml", default="", help="Output TOML filename"
+    )
+    parser.add_argument(
+        "-g", "--gnuplot", dest="gnuplot", default="", help="Output Gnuplot filename"
     )
 
     args = parser.parse_args()
     inp = toml.load(args.input)
-    if "lattice" in inp and inp["lattice"] is not str:
-        inp = inp["lattice"]
-    if "unitcell" in inp:
-        lat = Lattice()
-        lat.load_dict(inp)
-    else:
-        lat = std_lattice(inp)
-    lat.save_dat(args.out)
+    lat, lattice_dict = std_lattice(inp, True)
+    if len(args.out) > 0:
+        lat.save_dat(args.out)
+    if len(args.toml) > 0:
+        with codecs.open(args.toml, "w", "utf-8") as f:
+            toml.dump(lattice_dict, f)
+    if len(args.gnuplot) > 0:
+        lat.write_gnuplot(args.gnuplot)
 
 
 if __name__ == "__main__":

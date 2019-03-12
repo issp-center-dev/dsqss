@@ -8,7 +8,7 @@ setup(
     author="DSQSS developers",
     author_email="dsqss-dev@issp.u-tokyo.ac.jp",
     license="GPLv3",
-    packages=["dsqss"],
+    packages=["dsqss", 'dsqss.lattice_factory'],
     python_requires=">=2.7",
     install_requires=["numpy", "scipy", "toml"],
     entry_points={

@@ -3,8 +3,6 @@ from __future__ import print_function
 
 import codecs
 
-import toml
-
 from .algorithm import Algorithm
 from .displacement import Displacement
 from .hamiltonian import GraphedHamiltonian
@@ -53,11 +51,12 @@ def dla_pre(param, pfile):
     set_default_values(p)
     check_mandatories(p)
 
-    if "lattice" in param["lattice"]:
-        lat = std_lattice(param["lattice"])
-    else:
-        lat = Lattice()
-        lat.load_dict(param["lattice"])
+    # if "lattice" in param["lattice"]:
+    #     lat = std_lattice(param["lattice"])
+    # else:
+    #     lat = Lattice()
+    #     lat.load_dict(param["lattice"])
+    lat = std_lattice(param)
     lat.write_xml(p["latfile"])
 
     h = std_model(param["hamiltonian"])
@@ -99,6 +98,7 @@ def dla_pre(param, pfile):
 def main():
     import argparse
     import sys
+    import toml
 
     parser = argparse.ArgumentParser(
         description="Generate input files for dsqss/dla", add_help=True

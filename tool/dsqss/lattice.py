@@ -72,7 +72,7 @@ class Lattice:
         parameter = param["parameter"]
         self.name = parameter["name"]
         self.dim = parameter["dim"]
-        self.size = parameter["L"]
+        self.size = get_as_list(parameter, "L", extendto=self.dim)
         self.bc = get_as_list(parameter, "bc", default=True, extendto=self.dim)
         ncells = np.product(self.size)
         self.latvec = np.array(parameter["basis"], dtype=float).transpose()
@@ -506,8 +506,8 @@ class Lattice:
                 for site in self.sites:
                     if site.stype != st:
                         continue
-                    v = site.coord
-                    for x in site.coord:
+                    v = np.dot(self.latvec, site.coord)
+                    for x in v:
                         f.write("{0} ".format(x))
                     f.write("{0}\n".format(site.stype))
                 f.write("EOD\n")
@@ -519,11 +519,11 @@ class Lattice:
                         continue
                     if bond.itype != bt:
                         continue
-                    v = np.array(self.sites[bond.sites[0]].coord, dtype=float)
+                    v = np.dot(self.latvec, np.array(self.sites[bond.sites[0]].coord, dtype=float))
                     for x in v:
                         f.write("{0} ".format(x))
                     f.write("\n")
-                    v += np.array(self.dirs[bond.dir], dtype=float)
+                    v += np.dot(self.latvec, np.array(self.dirs[bond.dir], dtype=float))
                     for x in v:
                         f.write("{0} ".format(x))
                     f.write("\n\n")
