@@ -8,6 +8,7 @@ import toml
 from .algorithm import Algorithm
 from .displacement import Displacement
 from .hamiltonian import GraphedHamiltonian
+from .lattice import Lattice
 from .prob_kernel import (heat_bath, metropolice, reversible_suwa_todo,
                           suwa_todo)
 from .std_lattice import std_lattice
@@ -52,7 +53,11 @@ def dla_pre(param, pfile):
     set_default_values(p)
     check_mandatories(p)
 
-    lat = std_lattice(param["lattice"])
+    if "lattice" in param["lattice"]:
+        lat = std_lattice(param["lattice"])
+    else:
+        lat = Lattice()
+        lat.load_dict(param["lattice"])
     lat.write_xml(p["latfile"])
 
     h = std_model(param["hamiltonian"])
@@ -79,7 +84,7 @@ def dla_pre(param, pfile):
     if p["wvfile"] != "":
         wv = Wavevector()
         wv.generate(param.get("kpoints", {}), size=lat.size)
-        wv.write_xml(p['wvfile'], lat)
+        wv.write_xml(p["wvfile"], lat)
 
     if p["dispfile"] != "":
         pdisp = param.get("displacement", {})
