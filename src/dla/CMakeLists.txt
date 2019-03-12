@@ -18,6 +18,10 @@ install(TARGETS dla RUNTIME DESTINATION bin)
 # target_compile_definitions(dla_B PRIVATE MEASURE_BOSON=1)
 # target_compile_definitions(dla_H PRIVATE MEASURE_SPIN=1)
 
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
+  target_link_libraries(dla rt)
+endif(CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
+
 if(MPI_FOUND)
   add_definitions(-DMULTI)
   target_include_directories(dla PUBLIC ${MPI_CXX_INCLUDE_DIRS})
