@@ -114,8 +114,8 @@ Lattice/NumberOfSiteTypes
 Lattice/NumberOfInteractionTypes
   相互作用の種類数.
 
-Lattice/BondDimension
-  Winding number を測定する際に定義する要素.
+Lattice/NumberOfBondDirections
+  ボンドの方向 Direction の数。
 
 Lattice/NumberOfEdgeInteractions
   Winding number を測定する際に定義する要素. 格子の周期的境界をまたぐボンドの総数を指定します.
@@ -141,6 +141,9 @@ Lattice/I
     # 相互作用番号が5である相互作用は相互作用タイプが1で, 2つのサイトが関与し, 
     # それらのサイト番号は8と12である.
 
+Lattice/Direction
+  ボンドの方向. Lattice/NumberOfBondDirections の値だけ指定する必要があります.
+  内容として, 「方向のインデックス」と「方向ベクトルの座標」をスペース区切りで指定します.
 
 アルゴリズム定義ファイル ``algorithm.xml``
 ************************************************

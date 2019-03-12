@@ -450,12 +450,12 @@ class Lattice:
             f.write(tagged("Comment", self.name))
 
             f.write(tagged("Dimension", self.dim))
-            f.write(tagged("BondDimension", self.dim))
             f.write(tagged("LinearSize", self.size))
             f.write(tagged("BoundaryCondition", self.bc))
             f.write(tagged("NumberOfSites", self.nsites))
             f.write(tagged("NumberOfInteractions", self.nints))
             f.write(tagged("NumberOfSiteTypes", self.nstypes))
+            f.write(tagged("NumberOfBondDirections", len(self.dirs)))
             f.write(tagged("NumberOfInteractionTypes", self.nvtypes))
             f.write(tagged("NumberOfEdgeInteractions", self.nedges))
             f.write("\n")
@@ -489,9 +489,9 @@ class Lattice:
                 )
             f.write("\n")
 
-            f.write("<!-- <V> direction_index direction... </V> -->\n")
+            f.write("<!-- <Direction> direction_index direction... </Direction> -->\n")
             for i, bond in enumerate(self.dirs):
-                f.write(tagged("V", chain([i], bond)))
+                f.write(tagged("Direction", chain([i], bond)))
 
             f.write("</LATTICE>\n")
 

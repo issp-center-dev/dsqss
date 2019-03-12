@@ -165,9 +165,9 @@ void Lattice::read() {
       }
       //#endif
     }
-    if (B.getName() == "V") {
+    if (B.getName() == "Direction") {
       if (INIT_V) {
-        BD  = X["BondDimension"].getInteger();
+        BD  = X["NumberOfBondDirections"].getInteger();
         vec = new double*[D];
         for (int di = 0; di < D; di++) {
           vec[di] = new double[BD];
