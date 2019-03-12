@@ -28,6 +28,7 @@ struct ACC_smag{
 };
 
 namespace Serialize{
+template <>
 void save(std::ofstream & ofs, const ACC_smag& val){
   save(ofs, val.A1);
   save(ofs, val.A2);
@@ -35,6 +36,7 @@ void save(std::ofstream & ofs, const ACC_smag& val){
   save(ofs, val.B2);
 }
 
+template <>
 void load(std::ifstream & ofs, ACC_smag& val){
   load(ofs, val.A1);
   load(ofs, val.A2);
@@ -75,6 +77,7 @@ struct PHY_smag{
 };
 
 namespace Serialize{
+template <>
 void save(std::ofstream & ofs, const PHY_smag& val){
   save(ofs, val.A);
   save(ofs, val.B);
@@ -82,6 +85,7 @@ void save(std::ofstream & ofs, const PHY_smag& val){
   save(ofs, val.X);
 }
 
+template <>
 void load(std::ifstream & ofs, PHY_smag& val){
   load(ofs, val.A);
   load(ofs, val.B);
