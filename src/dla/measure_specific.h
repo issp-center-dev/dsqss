@@ -61,11 +61,12 @@ enum {
   DS1,
   W2,    // Winding number^2
   RHOS,  // Superfluid density
+  RHOF,  // Superfluid fraction
   COMP,  // COMPressibility
 
   NPHY,  // number of quantities computed at each set
 };
 static std::string PNAME[NPHY] = {"sign", "anv",  "ene",  "spe",  "len",  "xmx", "amzu", "bmzu", "smzu", "xmzu",
-                                  "ds1", "wi2",  "rhos", "comp"};
+                                  "ds1", "wi2",  "rhos", "rhof", "comp"};
 
 }  // namespace Specific
