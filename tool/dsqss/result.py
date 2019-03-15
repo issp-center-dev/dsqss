@@ -18,6 +18,8 @@ class Results:
                 R = Result(float(words[3]), float(words[4]))
                 self.result[words[1]] = R
 
-    def to_str(self, names, delim="+/-", delim_data=" "):
+    def to_str(self, names, delim=" ", delim_data=" "):
+        if type(names) is str:
+            return self.result[names].to_str(delim)
         ss = [self.result[name].to_str(delim) for name in names]
         return delim_data.join(ss)
