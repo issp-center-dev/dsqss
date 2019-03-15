@@ -80,8 +80,6 @@ class Lattice:
         unitcell = param["unitcell"]
         nsites_cell = len(unitcell["sites"])
         nbonds_cell = len(unitcell["bonds"])
-        self.nsites = ncells * nsites_cell
-        self.nints = ncells * nbonds_cell
 
         localsitecoords = []
         for site in unitcell["sites"]:
@@ -159,6 +157,8 @@ class Lattice:
                     continue
                 INT = Interaction(bid, bond["type"], nbody, sites, edge, directions[ib])
                 self.ints.append(INT)
+        self.nsites = len(self.sites)
+        self.nints = len(self.ints)
         self.update()
 
     def save_dat(self, out):
