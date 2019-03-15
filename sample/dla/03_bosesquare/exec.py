@@ -1,51 +1,34 @@
-import sys
 import os
 import os.path
 import subprocess
+import sys
 
-if len(sys.argv) > 1:
-    bindir = sys.argv[1]
-elif 'DSQSS_ROOT' in os.environ:
-    bindir = os.path.join(os.environ['DSQSS_ROOT'], 'bin')
-    pass
-else:
-    bindir = ''
+from dsqss.parameter import dla_pre
+from dsqss.result import Results
+
+V = 3
+L = [8,8]
+beta = 10.0
+
+lattice = {"lattice": "hypercubic", "dim": 2, "L": L}
+hamiltonian = {"model": "boson", "t": 1, "V": V, "M": 1}
+parameter = {"beta": beta, "nset": 4, "ntherm": 100, "ndecor": 100, "nmcs": 100}
 
 name = 'amzu'
 mus = [-4.0, -2.0, 0.0, 2.0, 2.5, 3.0, 6.0, 9.0, 9.5, 10.0, 12.0, 14.0]
 
-output = open('{0}.dat'.format(name), 'w')
-
-for i,mu in enumerate(mus):
-    with open('std_{0}.in'.format(i), 'w') as f:
-        f.write('''
-solver = DLA
-model_type = boson
-M = 1
-J = 1
-U = 0
-V = 3
-beta = 10.0
-lattice_type = square
-D = 2
-L = 8,8
-nset = 4
-ntherm = 100
-ndecor = 100
-nmcs = 100
-''')
-        f.write('F = {0}\n'.format(mu/4))
-        f.write('algfile = algorithm_{0}.xml\n'.format(i))
-        f.write('outfile = res_{0}.dat\n'.format(i))
-    cmd = [os.path.join(bindir, 'dsqss_pre.py'), '-p', 'param_{0}.in'.format(i), '-i', 'std_{0}.in'.format(i)]
+output = open("{}.dat".format(name), "w")
+for i, mu in enumerate(mus):
+    ofile = "res_{}.dat".format(i)
+    pfile = 'param_{}.in'.format(i)
+    hamiltonian["mu"] = mu
+    parameter["outfile"] = ofile
+    dla_pre(
+        {"parameter": parameter, "hamiltonian": hamiltonian, "lattice": lattice},
+        pfile
+    )
+    cmd = ["dla", pfile]
     subprocess.call(cmd)
-    cmd = [os.path.join(bindir, 'dla_B'), 'param_{0}.in'.format(i)]
-    subprocess.call(cmd)
-    with open('res_{0}.dat'.format(i)) as f:
-        for line in f:
-            if not line.startswith('R'):
-                continue
-            words = line.split()
-            if words[1] == name:
-                output.write('{0} {1} {2}\n'.format(mu, words[3], words[4]))
-
+    res = Results(ofile)
+    output.write('{} {}\n'.format(mu, res.to_str(name)))
+output.close()
