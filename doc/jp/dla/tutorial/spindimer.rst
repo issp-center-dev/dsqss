@@ -29,8 +29,6 @@ DSQSS/DLA を実行するには,
 まず, dla_pre.py の入力ファイルとして, 次の内容を持つテキストファイル std.toml を準備します(sample/dla/01_spindimer/std.toml).
 ::
 
-   [System]
-   solver = "DLA"
    [hamiltonian]
    model = "spin"
    M =  1                 # S=1/2
@@ -41,7 +39,7 @@ DSQSS/DLA を実行するには,
    lattice = "hypercubic" # hypercubic, periodic
    dim = 1                # dimension
    L = 2                  # number of sites along each direction
-   periodic = false       # open boundary
+   bc = false             # open boundary
    [parameter]
    beta = 100             # inverse temperature
    nset = 5               # set of Monte Carlo sweeps
@@ -64,13 +62,13 @@ DSQSS/DLA を実行するには,
 入力ファイルを作成したら, DSQSS/DLA による計算を実行します.
 ::
 
-  $ $DSQSS_ROOT/bin/dla_H param.in
+  $ $DSQSS_ROOT/bin/dla param.in
 
 
 なお, 計算を実行するときにMPI を用いることで, 乱数並列計算が可能です.
 ::
 
-  $ mpiexec -np 4 $DSQSS_ROOT/bin/dla_H param.in
+  $ mpiexec -np 4 $DSQSS_ROOT/bin/dla param.in
 
 並列数 (今回は4) だけ独立に計算を行い, モンテカルロサンプル数を増やすことで計算精度を向上できます. [#fn_ompi_macos]_
 

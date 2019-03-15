@@ -10,54 +10,53 @@ DSQSS/DLA によるスピン鎖の帯磁率計算
 帯磁率の温度依存性をファイルに書き出す Pythonスクリプトです(sample/dla/02_spinchain/exec.py).
 ::
 
-  import sys
+  import os
   import os.path
   import subprocess
+  import sys
 
-  bindir = sys.argv[1] if len(sys.argv) > 1 else ''
+  from dsqss.parameter import dla_pre
+  from dsqss.result import Results
 
-  name = 'xmzu'
-  Ms = [1,2]
+  if len(sys.argv) > 1:
+      bindir = sys.argv[1]
+  elif "DSQSS_ROOT" in os.environ:
+      bindir = os.path.join(os.environ["DSQSS_ROOT"], "bin")
+      pass
+  else:
+      bindir = ""
+
+  L = 30
+
+  lattice = {"lattice": "hypercubic", "dim": 1, "L": L}
+  hamiltonian = {"model": "spin", "Jz": -1, "Jxy": -1}
+  parameter = {"nset": 5, "ntherm": 1000, "ndecor": 1000, "nmcs": 1000}
+
+  name = "xmzu"
+  Ms = [1, 2]
   Ts = [0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.25, 1.5, 1.75, 2.0]
 
   for M in Ms:
-      output = open('{}_{}.dat'.format(name,M), 'w')
-      for i,T in enumerate(Ts):
-          with open('std_{}_{}.in'.format(M,i), 'w') as f:
-              f.write('''
-      solver = DLA
-      model_type = spin
-      J = -1
-      F = 0.0
-      lattice_type = square
-      D = 1
-      L = 30
-      nset = 5
-      ntherm = 1000
-      ndecor = 1000
-      nmcs = 1000
-      ''')
-              f.write('M = {}\n'.format(M))
-              f.write('beta = {}\n'.format(1.0/T))
-              f.write('outfile = res_{}_{}.dat\n'.format(M,i))
-          cmd = [os.path.join(bindir, 'dsqss_pre.py'),
-                 '-p', 'param_{}_{}.in'.format(M,i),
-                 '-i', 'std_{}_{}.in'.format(M,i)]
+      output = open("{0}_{1}.dat".format(name, M), "w")
+      for i, T in enumerate(Ts):
+          ofile = "res_{}_{}.dat".format(M,i)
+          pfile = 'param_{}_{}.in'.format(M,i)
+          hamiltonian["M"] = M
+          parameter["beta"] = 1.0 / T
+          parameter["outfile"] = ofile
+          dla_pre(
+              {"parameter": parameter, "hamiltonian": hamiltonian, "lattice": lattice},
+              pfile
+          )
+          cmd = ["dla", "param_{0}_{1}.in".format(M, i)]
           subprocess.call(cmd)
-          cmd = [os.path.join(bindir, 'dla_H'), 'param_{}_{}.in'.format(M,i)]
-          subprocess.call(cmd)
-          with open('res_{}_{}.dat'.format(M,i)) as f:
-              for line in f:
-                  if not line.startswith('R'):
-                      continue
-                  words = line.split()
-                  if words[1] == name:
-                      output.write('{} {} {}\n'.format(T, words[3], words[4]))
+          res = Results(ofile)
+          output.write('{} {}\n'.format(T, res.to_str(name)))
+      output.close()
 
-環境変数 ``$DSQSS_ROOT`` が設定されているならばそのまま実行できますが,
-そうでない場合は実行ファイルがインストールされているディレクトリを引数として渡します. ::
+必要なパスを設定するために, ``dsqssvars-VERSION.sh`` を読み込んでから実行してください. ::
 
-  $ python exec.py $DSQSS_ROOT/bin
+  $ python exec.py
 
 :math:`S=1/2` の結果が xmzu_1.dat に, :math:`S=1` の結果が xmzu_2.dat にそれぞれ書き出されます (:numref:`fig_spinchain`).
 スピンの大きさによって, スピンギャップの有無が異なり, その結果として絶対零度付近での帯磁率の振る舞いが異なってくることがわかります.
