@@ -11,7 +11,8 @@ DSQSSの使用には以下のプログラム・ライブラリが必要です.
 - (Optional) MPI (PMWAを使用する場合には必須)
 - python 2.7 or 3.x
 
-   - NumPy
+   - numpy
+   - scipy
    - toml
    - pip (make install する場合には必須)
    
@@ -96,6 +97,7 @@ DSQSSのダウンロード後にzipファイルを解凍すると, ファイル�
 
 実行バイナリが先に指定したインストールパスにある ``bin`` ディレクトリに,
 サンプルが ``share/dsqss/VERSION/samples`` にインストールされます.
-また、DSQSS の実行に必要な環境変数を設定するためのファイルが ``share/dsqss/dsqssvar-VERSION.sh`` に生成されます。
-このファイルを ``source`` コマンドで読み込んでください。
+また, 補助ツールを含めたDSQSS の実行に必要な環境変数を設定するためのファイルが ``share/dsqss/dsqssvar-VERSION.sh`` に生成されます.
+このファイルを ``source`` コマンドで読み込んでください. ::
 
+   $ source share/dsqss/dsqssvar-VERSION.sh
