@@ -99,9 +99,6 @@ Lattice/LinearSize
     <LinearSize> 3 4 </LinearSize>
     # ユニットセルが第1次元方向に3個, 第2次元方向に4個並んでいる場合
 
-Lattice/NumberOfCells
-  ユニットセルの総数. LinearSize で指定した各次元方向のサイズの積.
-
 Lattice/NumberOfSites
   サイトの総数. ユニットセルの総数と1セル内のサイト数の積.
 
@@ -115,10 +112,13 @@ Lattice/NumberOfInteractionTypes
   相互作用の種類数.
 
 Lattice/NumberOfBondDirections
-  ボンドの方向 Direction の数。
+  ボンドの方向 Direction の数.
 
 Lattice/NumberOfEdgeInteractions
-  Winding number を測定する際に定義する要素. 格子の周期的境界をまたぐボンドの総数を指定します.
+  格子の周期的境界をまたぐボンドの総数.
+
+Lattice/Basis
+  格子の空間座標を記述する基底ベクトル.
 
 Lattice/S
   サイト情報. Lattice/NumberOfSites で指定したサイト数だけ指定する必要があります.
