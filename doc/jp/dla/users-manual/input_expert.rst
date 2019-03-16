@@ -223,6 +223,10 @@ Algorithm/Site/SType
 Algorithm/Site/NumberOfStates
   サイトが取りうる状態の数.
 
+Algorithm/Site/LocalStates
+  状態のインデックスに対応する局所変数の値を空白区切りで指定したもの.
+  例えば局所基底がスピンのz 成分ではられる場合, z 成分の大きさ.
+
 Algorithm/Site/VertexTypeOfSource
   挿入される可能性のあるバーテックスのタイプ.
 
