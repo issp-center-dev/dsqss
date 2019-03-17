@@ -120,17 +120,17 @@ DLA は入力ファイルとして格子定義ファイル,アルゴリズム定
    V = 1.0
    mu = 1.0
 
-波数ファイル生成ツール ``dla_sfgen``
+波数ファイル生成ツール ``dla_wvgen``
 *************************************
-``dla_sfgen`` は :ref:`simple_mode_file` から :ref:`wavevector_file` を生成するツールです.
+``dla_wvgen`` は :ref:`simple_mode_file` から :ref:`wavevector_file` を生成するツールです.
 ::
 
-  $ dla_sfgen [-o filename] [-s size] <inputfile>
+  $ dla_wvgen [-o filename] [-s size] <inputfile>
 
 パラメータは以下の通り.
 
 ``filename``
-   出力ファイル名.デフォルトは ``hamiltonian.toml`` です.
+   出力ファイル名.デフォルトは ``kpoints.dat`` です.
 
 ``size``
    格子サイズ. 数字を空白区切りで並べた文字列で指定します (e.g. ``-s "4 4"`` .)
@@ -149,9 +149,8 @@ DLA は入力ファイルとして格子定義ファイル,アルゴリズム定
 ::
 
    $ dla_alg [-l LAT] [-h HAM] [-L LATXML] [-A ALGXML]
-             [--without_lattice] [--without_algorithm] [-k KPOINT] [--sf SF]
-             [--ntau NTAU] [--taucutoff TAUCUTOFF] [--cf CF]
-             [--distance-only] [--displacement-origin DISPLACEMENT_ORIGIN]
+             [--without_lattice] [--without_algorithm] [-k KPOINT]
+             [--wv WV] [--disp DISP] [--distance-only]
              [--kernel KERNEL]
 
 パラメータは以下の通り.
@@ -178,24 +177,14 @@ DLA は入力ファイルとして格子定義ファイル,アルゴリズム定
 ``KPOINT``
    読み込む波数ファイル.省略した場合は ``kpoints.dat`` が指定されます.
 
-``SF``
-   書き出される構造因子定義ファイル. 省略した場合は ``sf.xml`` が指定されます.
+``WV``
+   書き出される波数ベクトルXMLファイル. 省略した場合は ``wavevector.xml`` が指定されます.
 
-``NTAU``
-   構造因子などの計算に用いる虚時間の離散化数（トロッター数）
-
-``TAUCUTOFF``
-   構造因子などの計算における虚時間方向のカットオフ。
-
-``CF``
-   書き出される変位定義ファイル。省略した場合は ``cf.xml`` が指定されます。
+``DISP``
+   書き出される変位定義ファイル。省略した場合は ``displacement.xml`` が指定されます。
 
 ``--distance-only``
    指定した場合、変位定義において変位 :math:`\vec{r}_{ij}` ではなくその絶対値 :math:`r_{ij}` でグループ化します。
-
-``DISPLACEMENT_ORIGIN``
-   変位定義について、変位ベクトルの始点を指定したサイト番号で固定します。
-   省略した場合は、すべてのサイト対に関して変位が定義されます。
 
 ``KERNEL``
    バーテックスにおけるワームヘッドの散乱確率の導出に使うアルゴリズム。省略した場合、 ``suwa todo`` が用いられます。

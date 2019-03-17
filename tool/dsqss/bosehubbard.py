@@ -22,10 +22,12 @@ class BoseSite(Site):
         M = int(M)
         NX = M + 1
 
+        values = []
         sources = {}
         elements = {}
         for n in range(NX):
             value = -mu * n + 0.5 * U * n * (n - 1)
+            values.append(n)
             append_matelem(elements, state=n, value=value)
             if n > 0:
                 # annihilator
@@ -36,7 +38,7 @@ class BoseSite(Site):
                 # creator
                 value = creator_boson(n)
                 append_matelem(sources, istate=n, fstate=n + 1, value=value)
-        super(BoseSite, self).__init__(id=id, N=NX,
+        super(BoseSite, self).__init__(id=id, N=NX, values=values,
                                        elements=elements, sources=sources)
 
 

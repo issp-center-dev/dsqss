@@ -44,20 +44,19 @@ DLA のエキスパートモード入力ファイル
     ndecor, int, 1000, "セット間の自己相関を取り除くためのモンテカルロスイープ数."
     nmcs, int, 1000, "物理量計算のためのモンテカルロスイープ数."
     nset, int, 10, "モンテカルロ計算の繰り返し数."
-    simulationtime, int,  0.0, "計算時間（単位は秒）. 詳細は後述."
+    simulationtime, int,  0.0, "計算時間（単位は秒）."
     seed, int, 198212240, "疑似乱数の種."
     nvermax, int,  10000, "最大バーテックス数."
     nsegmax, int,  10000, "最大セグメント数."
     algfile, int,  algorithm.xml, "アルゴリズム定義ファイル名."
     latfile, string, lattice.xml, "格子定義ファイル名."
-    sfinpfile, string, --,  "構造因子定義ファイル名. 空文字列の場合, 構造因子は計算されない."
-    cfinpfile, string,  --, "実空間表示温度グリーン関数定義ファイル名. 空文字列の場合, 実空間表示温度グリーン関数は計算されない."
-    ckinpfile, string,  --, "波数空間表示温度グリーン関数定義ファイル名. 空文字列の場合, 波数空間表示温度グリーン関数は計算されない."
+    ntau, int, 10, "虚時間構造因子などの計算で使われる虚時間方向の離散化数."
+    wvfile, string, --,  "波数ベクトルXMLファイル名. 空文字列の場合, 構造因子は計算されない."
+    dispfile, string,  --, "相対座標XMLファイル名. 空文字列の場合, 実空間表示温度グリーン関数は計算されない."
     outfile, string, sample.log, "メイン出力ファイル名."
     sfoutfile, string, sf.dat, "構造因子出力ファイル名."
     cfoutfile, string, cf.dat, "実空間表示温度グリーン関数出力ファイル名."
     ckoutfile, string, ck.dat, "波数空間表示温度グリーン関数出力ファイル名."
-    runtype, int, 0, 計算手法. "互換性および将来の拡張のために用意されている."
 
 - simulationtime について
 
@@ -100,9 +99,6 @@ Lattice/LinearSize
     <LinearSize> 3 4 </LinearSize>
     # ユニットセルが第1次元方向に3個, 第2次元方向に4個並んでいる場合
 
-Lattice/NumberOfCells
-  ユニットセルの総数. LinearSize で指定した各次元方向のサイズの積.
-
 Lattice/NumberOfSites
   サイトの総数. ユニットセルの総数と1セル内のサイト数の積.
 
@@ -115,20 +111,23 @@ Lattice/NumberOfSiteTypes
 Lattice/NumberOfInteractionTypes
   相互作用の種類数.
 
-Lattice/BondDimension
-  Winding number を測定する際に定義する要素.
+Lattice/NumberOfBondDirections
+  ボンドの方向 Direction の数.
 
 Lattice/NumberOfEdgeInteractions
-  Winding number を測定する際に定義する要素. 格子の周期的境界をまたぐボンドの総数を指定します.
+  格子の周期的境界をまたぐボンドの総数.
+
+Lattice/Basis
+  格子の空間座標を記述する基底ベクトル.
 
 Lattice/S
   サイト情報. Lattice/NumberOfSites で指定したサイト数だけ指定する必要があります.
-  内容として, 「サイト番号」, 「サイトタイプ」, 「測定タイプ」の3つの整数をスペース区切りで持ちます.
+  内容として, 「サイト番号」と「サイトタイプ」の2つの整数をスペース区切りで持ちます.
   サイトタイプの詳細は別途アルゴリズム定義ファイルの中で定義します.
   ::
 
-    <S> 3 0 1 </S>
-    # サイト番号が3のサイトはサイトタイプが0で, 測定タイプは1である.
+    <S> 3 0 </S>
+    # サイト番号が3のサイトはサイトタイプが0である.
 
 Lattice/I
   相互作用情報. Lattice/NumberOfInteractions で指定した相互作用数だけ指定する必要があります.
@@ -142,6 +141,9 @@ Lattice/I
     # 相互作用番号が5である相互作用は相互作用タイプが1で, 2つのサイトが関与し, 
     # それらのサイト番号は8と12である.
 
+Lattice/Direction
+  ボンドの方向. Lattice/NumberOfBondDirections の値だけ指定する必要があります.
+  内容として, 「方向のインデックス」と「方向ベクトルの座標」をスペース区切りで指定します.
 
 アルゴリズム定義ファイル ``algorithm.xml``
 ************************************************
@@ -220,6 +222,10 @@ Algorithm/Site/SType
 
 Algorithm/Site/NumberOfStates
   サイトが取りうる状態の数.
+
+Algorithm/Site/LocalStates
+  状態のインデックスに対応する局所変数の値を空白区切りで指定したもの.
+  例えば局所基底がスピンのz 成分ではられる場合, z 成分の大きさ.
 
 Algorithm/Site/VertexTypeOfSource
   挿入される可能性のあるバーテックスのタイプ.
@@ -399,45 +405,47 @@ Algorithm/Vertex/InitialConfiguration/Channel
 
   特別な場合として, ワームヘッドがテールに衝突して消滅する場合があり, この場合は 第1引数と第2引数に -1 を指定します.
 
-構造因子定義ファイル ``sf.xml``
+波数ベクトルXMLファイル ``wavevector.xml``
 ************************************************
 
-構造因子定義ファイルは, 動的構造因子
+波数ベクトルXMLファイルは, スタッガード秩序変数
+
+.. math::
+   M^{z}(\vec{k}) \equiv \frac{1}{N} \sum_i e^{-i\vec{k}\vec\vec{r}_i} \left\langle M^{z}_i \right\rangle
+
+や動的構造因子
 
 .. math::
     S^{zz}(\vec{k},\tau) \equiv
-      \left\langle M^z(\vec{k},\tau)M^z(-\vec{k},0) \right\rangle - \left\langle M^z(\vec{k},\tau)\right\rangle \left\langle M^z(-\vec{k},0)\right\rangle 
+      \left\langle M^z(\vec{k},\tau)M^z(-\vec{k},0) \right\rangle - \left\langle M^z(\vec{k},\tau)\right\rangle \left\langle M^z(-\vec{k},0)\right\rangle ,
 
-を計算するための波数や虚時間刻みの情報がXML ライクな形式で記述されるテキストファイルです.
-構造因子定義ファイル作成のための補助ツール ``sfgene`` が用意されています.
+波数表示温度グリーン関数
 
-格子ファイルはただ一つの要素 StructureFactor を持ち, すべての情報は StructureFactor 要素の内容として含まれます.
+.. math::
+  G(\vec{k},\tau) \equiv \left\langle M^+(\vec{k}, \tau) M^-(-\vec{k},0) \right\rangle
 
-StructureFactor
+を計算するための波数の情報がXML ライクな形式で記述されるテキストファイルです.
+波数ベクトルデータファイルから ``dla_alg`` を用いて生成可能です。
+
+波数ベクトルXMLファイルはただ一つの要素 WaveVector を持ち, すべての情報は WaveVector 要素の内容として含まれます.
+
+WaveVector
   ファイル全体の要素名.
-  サブ要素として, Ntau, NumberOfElements, CutoffOfNtau, NumberOfInverseLattice, SF があります.
+  サブ要素として, Comment, NumberOfSites, NumberOfWaveVectors, RK があります.
 
-StructureFactor/Comment
+WaveVector/Comment
   省略可能.
   コメント文を示し, 計算には使用されません.
 
-StructureFactor/Ntau
-  虚時間軸の分割数.
+WaveVector/NumberOfSites
+  系のサイト数.
 
-StructureFactor/CutoffOfNtau
-  動的構造因子の虚時間引数 :math:`\tau` の最大値.
-  StructureFactor/Ntau 以下の整数で指定します.
-
-StructureFactor/NumberOfInverseLattice
+WaveVector/NumberOfWaveVectors
   波数 :math:`\vec{k}` の数.
 
-StructureFactor/NumberOfElements
-  波数と座標の組み合わせの総数. 
-  StructureFactor/NumberOfInverseLattice と Lattice/NumberOfSites の積.
-
-StructureFactor/SF
+WaveVector/RK
   内積 :math:`\vec{r}\cdot\vec{k}` の情報.
-  StructureFactor/NumberOfElements で指定した数だけ指定する必要があります.
+  NumberOfSites と NumberOfWaveVectors の積だけ指定する必要があります.
   内容として,
   「 :math:`\cos(\theta)` の値」,
   「 :math:`\sin(\theta)` の値」,
@@ -445,47 +453,34 @@ StructureFactor/SF
   「波数番号」 の4つの数字をスペース区切りで持ちます.
   ここで :math:`\theta` はサイト番号で示されるサイトの座標 :math:`\vec{r}` と波数番号で示される波数 :math:`\vec{k}` との内積です.
 
-実空間表示温度グリーン関数定義ファイル ``cf.xml``
+相対座標定義ファイル ``displacement.xml``
 ****************************************************
 
-実空間表示温度グリーン関数定義ファイルは,実空間表示温度グリーン関数
+相対座標定義ファイルは,実空間表示温度グリーン関数
 
 .. math::
   G(\vec{r}_{ij},\tau) \equiv \left\langle M_i^+(\tau) M_j^- \right\rangle
 
 を計算するための相対座標 :math:`\vec{r}_{ij}` の情報がXML ライクな形式で記述されるテキストファイルです.
-実空間表示温度グリーン関数定義ファイル作成のための補助ツール ``cfgene`` が用意されています.
+``dla_alg`` を用いて生成可能です.
 
-格子ファイルはただ一つの要素 CorrelationFunction を持ち, すべての情報は CorrelationFunction 要素の内容として含まれます.
+格子ファイルはただ一つの要素 Displacements を持ち, すべての情報は Displacements 要素の内容として含まれます.
 
-CorrelationFunction
-  ファイル全体の要素名.サブ要素として, Ntau, NumberOfKinds, CF があります.
+Displacements
+  ファイル全体の要素名.サブ要素として, Comment, NumberOfKinds, NumberOfSites, R があります.
 
-CorrelationFunction/Comment
+Displacements/Comment
   省略可能.
   コメント文を示し, 計算には使用されません.
 
-CorrelationFunction/Ntau
-  虚時間軸の分割数.
+Displacements/NumberOfSites
+  系のサイト数.
 
-CorrelationFunction/NumberOfKinds
+Displacements/NumberOfKinds
   取りうる相対座標の数.
 
-CorrelationFunction/CF
-  CorrelationFunction/NumberOfKinds で指定した数だけ指定する必要があります.
+Displacements/R
   内容として,
   「相対座標のインデックス」, 「サイト i のインデックス」, 「サイト j のインデックス」 の3つの整数をスペース区切りで持ちます.
 
-
-波数表示温度グリーン関数定義ファイル ``ck.xml``
-************************************************
-
-波数表示温度グリーン関数定義ファイルは,波数表示温度グリーン関数
-
-.. math::
-  G(\vec{k},\tau) \equiv \left\langle M^+(\vec{k}, \tau) M^-(-\vec{k},0) \right\rangle
-
-を計算するための波数や虚時間刻みの情報がXML ライクな形式で記述されるテキストファイルです.
-
-要素名を含めて, 動的構造因子定義ファイルと全く同じ構造を持つため, 流用が可能です.
 

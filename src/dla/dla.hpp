@@ -38,6 +38,8 @@ bool ALERT = false;
 #include "io.h"
 #include "lattice.hpp"
 #include "link.hpp"
+#include "wavevector.hpp"
+#include "displacement.hpp"
 #include "measure.hpp"
 #include "sf.hpp"
 #include "cf.hpp"
@@ -70,6 +72,8 @@ public:
   Parameter& P;
   Algorithm ALG;
   Lattice LAT;
+  WaveVector WV;
+  Displacement DISP;
   Measurement MSR;
   CalcTimer calctimer;
   SF sf;

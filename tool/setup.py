@@ -8,14 +8,14 @@ setup(
     author="DSQSS developers",
     author_email="dsqss-dev@issp.u-tokyo.ac.jp",
     license="GPLv3",
-    packages=["dsqss"],
+    packages=["dsqss", 'dsqss.lattice_factory'],
     python_requires=">=2.7",
     install_requires=["numpy", "scipy", "toml"],
     entry_points={
         "console_scripts": [
             "dla_hamgen = dsqss.std_model:main",
             "dla_latgen = dsqss.std_lattice:main",
-            "dla_sfgen = dsqss.wavevector:main",
+            "dla_wvgen = dsqss.wavevector:main",
             "dla_alg = dsqss.dla_alg:main",
             "dla_pre = dsqss.parameter:main",
             "pmwa_pre = dsqss.pmwa_pre:main",

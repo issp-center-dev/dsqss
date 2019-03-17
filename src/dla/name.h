@@ -44,6 +44,6 @@ int INT   = 2;
 }  // namespace VCAT
 
 const double INF = 1.0e+14;
-const double EPS = 1.0e-14;
+const double EPS = 1.0e-10;
 
 #endif

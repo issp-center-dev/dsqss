@@ -39,14 +39,25 @@ DLA のシンプルモードファイル
     nsegmax, int,  10000, "最大セグメント数."
     algfile, int,  algorithm.xml, "アルゴリズム定義ファイル名."
     latfile, string, lattice.xml, "格子定義ファイル名."
-    sfinpfile, string, --,  "構造因子定義ファイル名. 空文字列の場合, 構造因子は計算されない."
-    cfinpfile, string,  --, "実空間表示温度グリーン関数定義ファイル名. 空文字列の場合, 実空間表示温度グリーン関数は計算されない."
-    ckinpfile, string,  --, "波数空間表示温度グリーン関数定義ファイル名. 空文字列の場合, 波数空間表示温度グリーン関数は計算されない."
+    ntau, int, 10, "虚時間構造因子などの計算で使われる虚時間方向の離散化数."
+    wvfile, string, --,  "波数ベクトルXMLファイル名. 空文字列の場合, 構造因子は計算されない."
+    dispfile, string,  --, "相対座標XMLファイル名. 空文字列の場合, 実空間表示温度グリーン関数は計算されない."
     outfile, string, sample.log, "メイン出力ファイル名."
     sfoutfile, string, sf.dat, "構造因子出力ファイル名."
     cfoutfile, string, cf.dat, "実空間表示温度グリーン関数出力ファイル名."
     ckoutfile, string, ck.dat, "波数空間表示温度グリーン関数出力ファイル名."
 
+- simulationtime について
+
+  - simulationtime > 0.0 のとき
+
+    - 指定秒数が経過するか, 計算が完了したとき, 途中経過をチェックポイントファイルに書き出した後, プログラムを終了します.
+    - 計算開始時にチェックポイントファイルがある場合, そのファイルを読み込んだ後に計算を再開します.
+    - チェックポイントファイルの名前は outfile で指定されるメイン出力ファイル名の末尾に .cjob をつけたものです.
+
+  - simulationtime <= 0.0 のとき
+
+    - チェックポイントファイルは無視され, 書き出しも読み込みも行われません.
 
 .. _std_toml_lattice:
 
@@ -130,14 +141,14 @@ XXZ 模型
 ``kpoints``
 +++++++++++++
 波数の情報を指定するテーブルです。
-``dla_pre`` および ``dla_sfgen`` で使用されます.
+``dla_pre`` および ``dla_wvgen`` で使用されます.
 
 .. csv-table::
     :header-rows: 1
     :widths: 1,1,1,4
 
     パラメータ名, 型, デフォルト値, 説明
-    ksteps, list(int) or int, 1, "波数の増分."
+    ksteps, list(int) or int, 0, "波数の増分. 0 の場合、格子サイズの半分が設定される."
 
 
 .. _simple_mode_algorithm:
@@ -147,7 +158,7 @@ XXZ 模型
 ワームの散乱確率の計算アルゴリズムなどを指定するテーブルです.
 ``dla_pre`` で使用されます.
 
-.. csv-table::
+wv.. csv-table::
     :header-rows: 1
     :widths: 1,1,1,4
 

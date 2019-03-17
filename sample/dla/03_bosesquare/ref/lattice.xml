@@ -1,88 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <LATTICE>
-
-<Comment>
-  2-dimension square lattice
-</Comment>
-
+<Comment> hypercubic </Comment>
 <Dimension> 2 </Dimension>
-<BondDimension> 2 </BondDimension>
 <LinearSize> 8 8 </LinearSize>
-<Beta> 10 </Beta>
-<NumberOfCells> 64 </NumberOfCells>
+<BoundaryCondition> True True </BoundaryCondition>
 <NumberOfSites> 64 </NumberOfSites>
 <NumberOfInteractions> 128 </NumberOfInteractions>
 <NumberOfSiteTypes> 1 </NumberOfSiteTypes>
+<NumberOfBondDirections> 2 </NumberOfBondDirections>
 <NumberOfInteractionTypes> 1 </NumberOfInteractionTypes>
 <NumberOfEdgeInteractions> 16 </NumberOfEdgeInteractions>
 
-<!-- <S> [id] [stype] [mtype] </S> -->
-<S> 0 0 0 </S>
-<S> 1 0 1 </S>
-<S> 2 0 0 </S>
-<S> 3 0 1 </S>
-<S> 4 0 0 </S>
-<S> 5 0 1 </S>
-<S> 6 0 0 </S>
-<S> 7 0 1 </S>
-<S> 8 0 1 </S>
-<S> 9 0 0 </S>
-<S> 10 0 1 </S>
-<S> 11 0 0 </S>
-<S> 12 0 1 </S>
-<S> 13 0 0 </S>
-<S> 14 0 1 </S>
-<S> 15 0 0 </S>
-<S> 16 0 0 </S>
-<S> 17 0 1 </S>
-<S> 18 0 0 </S>
-<S> 19 0 1 </S>
-<S> 20 0 0 </S>
-<S> 21 0 1 </S>
-<S> 22 0 0 </S>
-<S> 23 0 1 </S>
-<S> 24 0 1 </S>
-<S> 25 0 0 </S>
-<S> 26 0 1 </S>
-<S> 27 0 0 </S>
-<S> 28 0 1 </S>
-<S> 29 0 0 </S>
-<S> 30 0 1 </S>
-<S> 31 0 0 </S>
-<S> 32 0 0 </S>
-<S> 33 0 1 </S>
-<S> 34 0 0 </S>
-<S> 35 0 1 </S>
-<S> 36 0 0 </S>
-<S> 37 0 1 </S>
-<S> 38 0 0 </S>
-<S> 39 0 1 </S>
-<S> 40 0 1 </S>
-<S> 41 0 0 </S>
-<S> 42 0 1 </S>
-<S> 43 0 0 </S>
-<S> 44 0 1 </S>
-<S> 45 0 0 </S>
-<S> 46 0 1 </S>
-<S> 47 0 0 </S>
-<S> 48 0 0 </S>
-<S> 49 0 1 </S>
-<S> 50 0 0 </S>
-<S> 51 0 1 </S>
-<S> 52 0 0 </S>
-<S> 53 0 1 </S>
-<S> 54 0 0 </S>
-<S> 55 0 1 </S>
-<S> 56 0 1 </S>
-<S> 57 0 0 </S>
-<S> 58 0 1 </S>
-<S> 59 0 0 </S>
-<S> 60 0 1 </S>
-<S> 61 0 0 </S>
-<S> 62 0 1 </S>
-<S> 63 0 0 </S>
+<Basis> 1.0 0.0 </Basis>
+<Basis> 0.0 1.0 </Basis>
 
-<!-- <I> [id] [itype] [nbody] [s0] [s1] ... [eid] [edim] </I> -->
+<!-- <S> site_index site_type </S> -->
+<S> 0 0 </S>
+<S> 1 0 </S>
+<S> 2 0 </S>
+<S> 3 0 </S>
+<S> 4 0 </S>
+<S> 5 0 </S>
+<S> 6 0 </S>
+<S> 7 0 </S>
+<S> 8 0 </S>
+<S> 9 0 </S>
+<S> 10 0 </S>
+<S> 11 0 </S>
+<S> 12 0 </S>
+<S> 13 0 </S>
+<S> 14 0 </S>
+<S> 15 0 </S>
+<S> 16 0 </S>
+<S> 17 0 </S>
+<S> 18 0 </S>
+<S> 19 0 </S>
+<S> 20 0 </S>
+<S> 21 0 </S>
+<S> 22 0 </S>
+<S> 23 0 </S>
+<S> 24 0 </S>
+<S> 25 0 </S>
+<S> 26 0 </S>
+<S> 27 0 </S>
+<S> 28 0 </S>
+<S> 29 0 </S>
+<S> 30 0 </S>
+<S> 31 0 </S>
+<S> 32 0 </S>
+<S> 33 0 </S>
+<S> 34 0 </S>
+<S> 35 0 </S>
+<S> 36 0 </S>
+<S> 37 0 </S>
+<S> 38 0 </S>
+<S> 39 0 </S>
+<S> 40 0 </S>
+<S> 41 0 </S>
+<S> 42 0 </S>
+<S> 43 0 </S>
+<S> 44 0 </S>
+<S> 45 0 </S>
+<S> 46 0 </S>
+<S> 47 0 </S>
+<S> 48 0 </S>
+<S> 49 0 </S>
+<S> 50 0 </S>
+<S> 51 0 </S>
+<S> 52 0 </S>
+<S> 53 0 </S>
+<S> 54 0 </S>
+<S> 55 0 </S>
+<S> 56 0 </S>
+<S> 57 0 </S>
+<S> 58 0 </S>
+<S> 59 0 </S>
+<S> 60 0 </S>
+<S> 61 0 </S>
+<S> 62 0 </S>
+<S> 63 0 </S>
 
+<!-- <SiteCoordinate> site_index coord... </SiteCoordinate> -->
+<SiteCoordinate> 0 0.0 0.0 </SiteCoordinate>
+<SiteCoordinate> 1 1.0 0.0 </SiteCoordinate>
+<SiteCoordinate> 2 2.0 0.0 </SiteCoordinate>
+<SiteCoordinate> 3 3.0 0.0 </SiteCoordinate>
+<SiteCoordinate> 4 4.0 0.0 </SiteCoordinate>
+<SiteCoordinate> 5 5.0 0.0 </SiteCoordinate>
+<SiteCoordinate> 6 6.0 0.0 </SiteCoordinate>
+<SiteCoordinate> 7 7.0 0.0 </SiteCoordinate>
+<SiteCoordinate> 8 0.0 1.0 </SiteCoordinate>
+<SiteCoordinate> 9 1.0 1.0 </SiteCoordinate>
+<SiteCoordinate> 10 2.0 1.0 </SiteCoordinate>
+<SiteCoordinate> 11 3.0 1.0 </SiteCoordinate>
+<SiteCoordinate> 12 4.0 1.0 </SiteCoordinate>
+<SiteCoordinate> 13 5.0 1.0 </SiteCoordinate>
+<SiteCoordinate> 14 6.0 1.0 </SiteCoordinate>
+<SiteCoordinate> 15 7.0 1.0 </SiteCoordinate>
+<SiteCoordinate> 16 0.0 2.0 </SiteCoordinate>
+<SiteCoordinate> 17 1.0 2.0 </SiteCoordinate>
+<SiteCoordinate> 18 2.0 2.0 </SiteCoordinate>
+<SiteCoordinate> 19 3.0 2.0 </SiteCoordinate>
+<SiteCoordinate> 20 4.0 2.0 </SiteCoordinate>
+<SiteCoordinate> 21 5.0 2.0 </SiteCoordinate>
+<SiteCoordinate> 22 6.0 2.0 </SiteCoordinate>
+<SiteCoordinate> 23 7.0 2.0 </SiteCoordinate>
+<SiteCoordinate> 24 0.0 3.0 </SiteCoordinate>
+<SiteCoordinate> 25 1.0 3.0 </SiteCoordinate>
+<SiteCoordinate> 26 2.0 3.0 </SiteCoordinate>
+<SiteCoordinate> 27 3.0 3.0 </SiteCoordinate>
+<SiteCoordinate> 28 4.0 3.0 </SiteCoordinate>
+<SiteCoordinate> 29 5.0 3.0 </SiteCoordinate>
+<SiteCoordinate> 30 6.0 3.0 </SiteCoordinate>
+<SiteCoordinate> 31 7.0 3.0 </SiteCoordinate>
+<SiteCoordinate> 32 0.0 4.0 </SiteCoordinate>
+<SiteCoordinate> 33 1.0 4.0 </SiteCoordinate>
+<SiteCoordinate> 34 2.0 4.0 </SiteCoordinate>
+<SiteCoordinate> 35 3.0 4.0 </SiteCoordinate>
+<SiteCoordinate> 36 4.0 4.0 </SiteCoordinate>
+<SiteCoordinate> 37 5.0 4.0 </SiteCoordinate>
+<SiteCoordinate> 38 6.0 4.0 </SiteCoordinate>
+<SiteCoordinate> 39 7.0 4.0 </SiteCoordinate>
+<SiteCoordinate> 40 0.0 5.0 </SiteCoordinate>
+<SiteCoordinate> 41 1.0 5.0 </SiteCoordinate>
+<SiteCoordinate> 42 2.0 5.0 </SiteCoordinate>
+<SiteCoordinate> 43 3.0 5.0 </SiteCoordinate>
+<SiteCoordinate> 44 4.0 5.0 </SiteCoordinate>
+<SiteCoordinate> 45 5.0 5.0 </SiteCoordinate>
+<SiteCoordinate> 46 6.0 5.0 </SiteCoordinate>
+<SiteCoordinate> 47 7.0 5.0 </SiteCoordinate>
+<SiteCoordinate> 48 0.0 6.0 </SiteCoordinate>
+<SiteCoordinate> 49 1.0 6.0 </SiteCoordinate>
+<SiteCoordinate> 50 2.0 6.0 </SiteCoordinate>
+<SiteCoordinate> 51 3.0 6.0 </SiteCoordinate>
+<SiteCoordinate> 52 4.0 6.0 </SiteCoordinate>
+<SiteCoordinate> 53 5.0 6.0 </SiteCoordinate>
+<SiteCoordinate> 54 6.0 6.0 </SiteCoordinate>
+<SiteCoordinate> 55 7.0 6.0 </SiteCoordinate>
+<SiteCoordinate> 56 0.0 7.0 </SiteCoordinate>
+<SiteCoordinate> 57 1.0 7.0 </SiteCoordinate>
+<SiteCoordinate> 58 2.0 7.0 </SiteCoordinate>
+<SiteCoordinate> 59 3.0 7.0 </SiteCoordinate>
+<SiteCoordinate> 60 4.0 7.0 </SiteCoordinate>
+<SiteCoordinate> 61 5.0 7.0 </SiteCoordinate>
+<SiteCoordinate> 62 6.0 7.0 </SiteCoordinate>
+<SiteCoordinate> 63 7.0 7.0 </SiteCoordinate>
+
+<!-- <I> int_index int_type nbody site_index... edge_index direction_index </I> -->
 <I> 0 0 2 0 1 -1 0 </I>
 <I> 1 0 2 0 8 -1 1 </I>
 <I> 2 0 2 1 2 -1 0 </I>
@@ -212,8 +276,7 @@
 <I> 126 0 2 63 56 14 0 </I>
 <I> 127 0 2 63 7 15 1 </I>
 
-<!-- <V> [bond dim] [unit vectorx]...  </V> -->
-
-<V> 0 1 0 </V>
-<V> 1 0 1 </V>
+<!-- <Direction> direction_index direction... </Direction> -->
+<Direction> 0 1.0 0.0 </Direction>
+<Direction> 1 0.0 1.0 </Direction>
 </LATTICE>

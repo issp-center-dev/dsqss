@@ -45,7 +45,6 @@ public:
   int NSITE;    // total number of sites
   int NINT;     // total number of interactions
   int NSTYPE;   // number of site types
-  int NSMTYPE;   // number of site measure types
   int NITYPE;   // number of interaction types
   int NEDGE;
 
@@ -130,17 +129,13 @@ void Lattice::read() {
   edge        = NULL;
   vec         = NULL;
 
-  NSMTYPE = 0;
-
   for (int i = 0; i < X.NumberOfBlocks(); i++) {
     XML::Block& B = X[i];
 
     if (B.getName() == "S") {
       int id = B.getInteger(0);
       int st = B.getInteger(1);
-      int mt = B.getInteger(2);
-      S(id).init(ALG.getSiteProperty(st), mt);
-      NSMTYPE = std::max(NSMTYPE, mt);
+      S(id).init(ALG.getSiteProperty(st));
 
       S(id).setBeta(BETA);
     }
@@ -170,9 +165,9 @@ void Lattice::read() {
       }
       //#endif
     }
-    if (B.getName() == "V") {
+    if (B.getName() == "Direction") {
       if (INIT_V) {
-        BD  = X["BondDimension"].getInteger();
+        BD  = X["NumberOfBondDirections"].getInteger();
         vec = new double*[D];
         for (int di = 0; di < D; di++) {
           vec[di] = new double[BD];
@@ -188,7 +183,6 @@ void Lattice::read() {
       }
     }
   }
-  ++NSMTYPE;
 
   if (DEBUG) dump();
 }

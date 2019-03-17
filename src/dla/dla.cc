@@ -69,11 +69,13 @@ Simulation::Simulation(Parameter& P0)
     : P(P0),
       ALG(P.ALGFILE),
       LAT(P, ALG),
-      MSR(P, LAT, ALG),
+      WV(P),
+      DISP(P),
+      MSR(P, LAT, ALG, WV),
       calctimer(P.NMCS),
-      sf(P, LAT, ALG),
-      cf(P, LAT, ALG),
-      ck(P, LAT, ALG) {
+      sf(P, LAT, ALG, WV),
+      cf(P, LAT, ALG, DISP),
+      ck(P, LAT, ALG, WV) {
   AutoDebugDump("Simulation::Simulation");
 
   LAT.setBeta(P.BETA);
@@ -378,7 +380,7 @@ double Simulation::MoveHead(bool thermalized) {
   if (!W.atOrigin()) {
     fprintf(FERR, "\nMoveHead> ### Error.\n");
     fprintf(FERR, " ... Hasn't come back to the origin.\n");
-    dump();
+    // dump();
     exit(0);
   }
 #endif

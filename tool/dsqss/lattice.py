@@ -12,15 +12,14 @@ from .util import ERROR, WARN, coord2index, get_as_list, index2coord, tagged
 
 
 class Site:
-    def __init__(self, site_id, site_type, measure_type, coordinate):
+    def __init__(self, site_id, site_type, coordinate):
         self.id = site_id
         self.stype = site_type
-        self.mtype = measure_type
         self.coord = coordinate
         self.z = 0
 
     def __str__(self):
-        s = "{0} {1} {2}".format(self.id, self.stype, self.mtype)
+        s = "{0} {1}".format(self.id, self.stype)
         for c in self.coord:
             s += " {0}".format(c)
         return s
@@ -73,7 +72,7 @@ class Lattice:
         parameter = param["parameter"]
         self.name = parameter["name"]
         self.dim = parameter["dim"]
-        self.size = parameter["L"]
+        self.size = get_as_list(parameter, "L", extendto=self.dim)
         self.bc = get_as_list(parameter, "bc", default=True, extendto=self.dim)
         ncells = np.product(self.size)
         self.latvec = np.array(parameter["basis"], dtype=float).transpose()
@@ -81,8 +80,6 @@ class Lattice:
         unitcell = param["unitcell"]
         nsites_cell = len(unitcell["sites"])
         nbonds_cell = len(unitcell["bonds"])
-        self.nsites = ncells * nsites_cell
-        self.nints = ncells * nbonds_cell
 
         localsitecoords = []
         for site in unitcell["sites"]:
@@ -98,13 +95,13 @@ class Lattice:
 
             offset = np.array(
                 get_as_list(bond["target"], "offset", default=0.0, extendto=self.dim),
-                dtype = float
+                dtype=float,
             )
             offset += localsitecoords[bond["target"]["siteid"]]
             offset -= localsitecoords[bond["source"]["siteid"]]
             key = tuple(offset)
             if key not in directionmap:
-                self.dirs.append(np.dot(self.latvec, offset))
+                self.dirs.append(offset)
                 directionmap[key] = len(directionmap)
             directions.append(directionmap[key])
         self.ndir = len(self.dirs)
@@ -112,7 +109,7 @@ class Lattice:
         def bondsites(center_cellcoord, bond):
             ret = []
             offset = center_cellcoord + np.array(
-                get_as_list(bond["target"], "offset", default=0, extendto=self.dim),
+                get_as_list(bond["target"], "offset", default=0, extendto=self.dim)
             )
             edge = 0
             for dim in range(self.dim):
@@ -129,7 +126,7 @@ class Lattice:
 
             for site in (bond["source"], bond["target"]):
                 cell_coord = center_cellcoord + np.array(
-                    get_as_list(site, "offset", default=0, extendto=self.dim),
+                    get_as_list(site, "offset", default=0, extendto=self.dim)
                 )
                 for dim in range(self.dim):
                     if cell_coord[dim] < 0:
@@ -149,8 +146,8 @@ class Lattice:
             cell_coord = np.array(index2coord(icell, self.size))
             for lid, site in enumerate(unitcell["sites"]):
                 sid = site["siteid"] + icell * nsites_cell
-                coord = np.dot(self.latvec, cell_coord + np.array(site["coord"], dtype=float))
-                S = Site(sid, site["type"], site["mtype"], coord)
+                coord = cell_coord + np.array(site["coord"], dtype=float)
+                S = Site(sid, site["type"], coord)
                 self.sites.append(S)
             for ib, bond in enumerate(unitcell["bonds"]):
                 bid = bond["bondid"] + icell * nbonds_cell
@@ -160,6 +157,8 @@ class Lattice:
                     continue
                 INT = Interaction(bid, bond["type"], nbody, sites, edge, directions[ib])
                 self.ints.append(INT)
+        self.nsites = len(self.sites)
+        self.nints = len(self.ints)
         self.update()
 
     def save_dat(self, out):
@@ -199,7 +198,7 @@ class Lattice:
 
         out.write("sites\n")
         out.write("{0} # nsites\n".format(self.nsites))
-        out.write("# id, type, mtype, coord...\n")
+        out.write("# id, type, coord...\n")
         for i, site in enumerate(self.sites):
             out.write("{0}\n".format(site))
         out.write("\n")
@@ -345,8 +344,7 @@ class Lattice:
         self.sites[int(elem[0])] = Site(
             site_id=int(elem[0]),
             site_type=int(elem[1]),
-            measure_type=int(elem[2]),
-            coordinate=list(map(float, elem[3:])),
+            coordinate=list(map(float, elem[2:])),
         )
 
     def load_int(self, body, count):
@@ -452,19 +450,23 @@ class Lattice:
             f.write(tagged("Comment", self.name))
 
             f.write(tagged("Dimension", self.dim))
-            f.write(tagged("BondDimension", self.dim))
             f.write(tagged("LinearSize", self.size))
             f.write(tagged("BoundaryCondition", self.bc))
             f.write(tagged("NumberOfSites", self.nsites))
             f.write(tagged("NumberOfInteractions", self.nints))
             f.write(tagged("NumberOfSiteTypes", self.nstypes))
+            f.write(tagged("NumberOfBondDirections", len(self.dirs)))
             f.write(tagged("NumberOfInteractionTypes", self.nvtypes))
             f.write(tagged("NumberOfEdgeInteractions", self.nedges))
             f.write("\n")
 
-            f.write("<!-- <S> site_index site_type measure_type </S> -->\n")
+            for d in range(self.dim):
+                f.write(tagged("Basis", self.latvec[:, d]))
+            f.write("\n")
+
+            f.write("<!-- <S> site_index site_type </S> -->\n")
             for i, site in enumerate(self.sites):
-                f.write(tagged("S", (i, site.stype, site.mtype)))
+                f.write(tagged("S", (i, site.stype)))
             f.write("\n")
 
             f.write("<!-- <SiteCoordinate> site_index coord... </SiteCoordinate> -->\n")
@@ -491,44 +493,44 @@ class Lattice:
                 )
             f.write("\n")
 
-            f.write("<!-- <V> direction_index direction... </V> -->\n")
+            f.write("<!-- <Direction> direction_index direction... </Direction> -->\n")
             for i, bond in enumerate(self.dirs):
-                f.write(tagged("V", chain([i], bond)))
+                f.write(tagged("Direction", chain([i], bond)))
 
             f.write("</LATTICE>\n")
 
     def write_gnuplot(self, filename):
-        with open(filename, 'w') as f:
+        with open(filename, "w") as f:
             for st in range(self.nstypes):
-                f.write('$SITES_{0} << EOD\n'.format(st))
+                f.write("$SITES_{0} << EOD\n".format(st))
                 for site in self.sites:
                     if site.stype != st:
                         continue
-                    v = site.coord
-                    for x in site.coord:
-                        f.write('{0} '.format(x))
-                    f.write('{0}\n'.format(site.stype))
-                f.write('EOD\n')
+                    v = np.dot(self.latvec, site.coord)
+                    for x in v:
+                        f.write("{0} ".format(x))
+                    f.write("{0}\n".format(site.stype))
+                f.write("EOD\n")
 
             for bt in range(self.nitypes):
-                f.write('$BONDS_{0} << EOD\n'.format(bt))
+                f.write("$BONDS_{0} << EOD\n".format(bt))
                 for bond in self.ints:
                     if bond.nbody != 2:
                         continue
                     if bond.itype != bt:
                         continue
-                    v = np.array(self.sites[bond.sites[0]].coord, dtype=float)
+                    v = np.dot(self.latvec, np.array(self.sites[bond.sites[0]].coord, dtype=float))
                     for x in v:
-                        f.write('{0} '.format(x))
-                    f.write('\n')
-                    v += np.array(self.dirs[bond.dir], dtype=float)
+                        f.write("{0} ".format(x))
+                    f.write("\n")
+                    v += np.dot(self.latvec, np.array(self.dirs[bond.dir], dtype=float))
                     for x in v:
-                        f.write('{0} '.format(x))
-                    f.write('\n\n')
-                f.write('EOD\n')
+                        f.write("{0} ".format(x))
+                    f.write("\n\n")
+                f.write("EOD\n")
 
-            f.write('plot ')
+            f.write("plot ")
             for st in range(self.nstypes):
-                f.write('$SITES_{0} w p pt {1} ps 2 t "" , \\\n'.format(st, st+4))
+                f.write('$SITES_{0} w p pt {1} ps 2 t "" , \\\n'.format(st, st + 4))
             for bt in range(self.nitypes):
-                f.write('$BONDS_{0} w l lw 2 lt {1} t "" , \\\n'.format(bt, bt+1))
+                f.write('$BONDS_{0} w l lw 2 lt {1} t "" , \\\n'.format(bt, bt + 1))

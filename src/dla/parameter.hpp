@@ -29,7 +29,8 @@ public:
   void dump();
   void openfile() {
     FOUT = fopen(OUTFILE.c_str(), "w");
-    if (CFINPFILE.length() > 0) {
+
+    if (DISPFILE.length() > 0) {
       FOUT4CF = fopen(CFOUTFILE.c_str(), "w");
       if (!FOUT4CF) {
         std::string msg("cannot open cfoutfile: ");
@@ -39,7 +40,7 @@ public:
     } else {
       FOUT4CF = NULL;
     }
-    if (SFINPFILE.length() > 0) {
+    if (WVFILE.length() > 0) {
       FOUT4SF = fopen(SFOUTFILE.c_str(), "w");
       if (!FOUT4SF) {
         std::string msg("cannot open sfoutfile: ");
@@ -49,7 +50,7 @@ public:
     } else {
       FOUT4SF = NULL;
     }
-    if (CKINPFILE.length() > 0) {
+    if (WVFILE.length() > 0) {
       FOUT4CK = fopen(CKOUTFILE.c_str(), "w");
       if (!FOUT4CK) {
         std::string msg("cannot open ckoutfile: ");
@@ -83,24 +84,25 @@ public:
   int NSEGMAX;  // maximum allowed number of segments for dla or worms for pmwa
   int NVERMAX;  // maximum allowed number of vertices
 
+  int NTAU;
+
   double SIMTIME;  // time [sec] to save a snapshot and stop simulation
   // if <= 0, never stop until finish
 
   std::string ALGFILE;  // algorithm file name
   std::string LATFILE;  // lattice file name
   std::string OUTFILE;  // output file name
+  std::string WVFILE; // wavevector file name
+  std::string DISPFILE; // displacement file name
   int NCYC;            // number of cycles in a sweep (not provided from the file)
   FILE* FOUT;  // file handler for the output file
 
-  std::string CFINPFILE;  // correlation function file name
   std::string CFOUTFILE;  // output file name
   FILE* FOUT4CF;         // file handler for the output file
 
-  std::string SFINPFILE;  // correlation function file name
   std::string SFOUTFILE;  // output file name
   FILE* FOUT4SF;         // file handler for the output file
 
-  std::string CKINPFILE;  // correlation function file name
   std::string CKOUTFILE;  // output file name
   FILE* FOUT4CK;         // file handler for the output file
 };
@@ -136,11 +138,12 @@ void Parameter::readfile(std::string const& filename) {
   NSEGMAX = lexical_cast<int>(dict["nsegmax"]);
   NVERMAX = lexical_cast<int>(dict["nvermax"]);
 
+  NTAU = lexical_cast<int>(dict["ntau"]);
+
   ALGFILE = dict["algfile"];
   LATFILE = dict["latfile"];
-  SFINPFILE = dict["sfinpfile"];
-  CFINPFILE = dict["cfinpfile"];
-  CKINPFILE = dict["ckinpfile"];
+  WVFILE = dict["wvfile"];
+  DISPFILE = dict["dispfile"];
   OUTFILE = dict["outfile"];
   SFOUTFILE = dict["sfoutfile"];
   CFOUTFILE = dict["cfoutfile"];
@@ -192,16 +195,16 @@ void Parameter::init(std::map<std::string, std::string>& dict) {
   dict["nmcs"]           = "1000";
   dict["nset"]           = "10";
   dict["npre"]           = "1000";
-  dict["ntherm"]          = "1000";
+  dict["ntherm"]         = "1000";
   dict["simulationtime"] = "0.0";
   dict["seed"]           = "198212240";
   dict["nvermax"]        = "10000";
   dict["nsegmax"]        = "10000";
+  dict["ntau"]           = 10;
   dict["algfile"]        = "algorithm.xml";
   dict["latfile"]        = "lattice.xml";
-  dict["sfinpfile"]      = "";
-  dict["cfinpfile"]      = "";
-  dict["ckinpfile"]      = "";
+  dict["wvfile"]         = "wavevector.xml";
+  dict["dispfile"]       = "displacement.xml";
   dict["outfile"]        = "sample.log";
   dict["sfoutfile"]      = "sf.dat";
   dict["cfoutfile"]      = "cf.dat";
@@ -221,11 +224,11 @@ inline void Parameter::dump() {
   cout << "SEED    = " << SEED << endl;
   cout << "NVERMAX = " << NVERMAX << endl;
   cout << "NSEGMAX = " << NSEGMAX << endl << endl;
+  cout << "NTAU    = " << NTAU << endl;
   cout << "ALGFILE = " << ALGFILE << endl;
   cout << "LATFILE = " << LATFILE << endl;
-  cout << "CFINPFILE  = " << CFINPFILE << endl;
-  cout << "SFINPFILE  = " << SFINPFILE << endl;
-  cout << "CKINPFILE  = " << CKINPFILE << endl;
+  cout << "WVFILE = " << WVFILE << endl;
+  cout << "DISPFILE = " << DISPFILE << endl;
   cout << "OUTFILE = " << OUTFILE << endl;
   cout << "CFOUTFILE  = " << CFOUTFILE << endl;
   cout << "SFOUTFILE  = " << SFOUTFILE << endl;
@@ -243,12 +246,12 @@ inline void Parameter::dump(FILE* F) {
   fprintf(F, "P SEED    = %12d\n", SEED);
   fprintf(F, "P NSEGMAX = %12d\n", NSEGMAX);
   fprintf(F, "P NVERMAX = %12d\n", NVERMAX);
+  fprintf(F, "P NTAU    = %12d\n", NTAU);
   fprintf(F, "P NCYC    = %12d\n", NCYC);
   fprintf(F, "P ALGFILE = %s\n", ALGFILE.c_str());
   fprintf(F, "P LATFILE = %s\n", LATFILE.c_str());
-  fprintf(F, "P CFINPFILE  = %s\n", CFINPFILE.c_str());
-  fprintf(F, "P SFINPFILE  = %s\n", SFINPFILE.c_str());
-  fprintf(F, "P CKINPFILE  = %s\n", CKINPFILE.c_str());
+  fprintf(F, "P WVFILE = %s\n", WVFILE.c_str());
+  fprintf(F, "P DISPFILE  = %s\n", DISPFILE.c_str());
 
   fprintf(F, "P OUTFILE    = %s\n", OUTFILE.c_str());
   fprintf(F, "P CFOUTFILE  = %s\n", CFOUTFILE.c_str());

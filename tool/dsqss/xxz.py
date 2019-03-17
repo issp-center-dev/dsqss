@@ -21,10 +21,12 @@ class SpinSite(Site):
         """
         S = 0.5 * M
         NX = M + 1
+        values= []
         elements = {}
         sources = {}
         for st in range(NX):
             m = st - 0.5 * M
+            values.append(m)
             append_matelem(elements, state=st, value=-h * m + D * m * m)
             if st > 0:
                 # annihilator
@@ -36,7 +38,7 @@ class SpinSite(Site):
                 append_matelem(
                     sources, istate=st, fstate=st + 1, value=0.5 * Splus(S, m)
                 )
-        super(SpinSite, self).__init__(id=id, N=NX,
+        super(SpinSite, self).__init__(id=id, N=NX, values=values,
                                        elements=elements, sources=sources)
 
 

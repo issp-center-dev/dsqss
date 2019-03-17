@@ -12,6 +12,7 @@
   <Site>
     <STYPE> 0 </STYPE>
     <NumberOfStates> 2 </NumberOfStates>
+    <LocalStates> -0.500000000000000  0.500000000000000 </LocalStates>
     <VertexTypeOfSource> 0 </VertexTypeOfSource>
 
     <InitialConfiguration>
@@ -36,6 +37,8 @@
     <EBASE>  0.250000000000000 </EBASE>
     <VertexDensity> 0 1  0.500000000000000 </VertexDensity>
     <VertexDensity> 1 0  0.500000000000000 </VertexDensity>
+    <Sign> 0 1 1 0 -1.0 </Sign>
+    <Sign> 1 0 0 1 -1.0 </Sign>
   </Interaction>
 
   <Vertex>

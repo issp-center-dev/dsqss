@@ -4,6 +4,8 @@ set(DSQSS_VERSION 2.0.0-DEV)
 
 message(STATUS "CMake version: " ${CMAKE_VERSION})
 
+set(CMAKE_CXX_FLAGS_DEBUG "-g -fsanitize=address -fomit-frame-pointer")
+
 if(CONFIG)    
   message(STATUS "Loading configration: " ${PROJECT_SOURCE_DIR}/config/${CONFIG}.cmake)
   include(${PROJECT_SOURCE_DIR}/config/${CONFIG}.cmake)
@@ -32,6 +34,10 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 set(CMAKE_MACOSX_RPATH 1)
 
 option(DEBUG "Debug" OFF)
+
+if(DEBUG)
+  add_definitions(-DDEB)
+endif(DEBUG)
 
 if(ENABLE_MPI)
   find_package(MPI)

@@ -1,0 +1,28 @@
+{
+  "Result": {
+    "ene": -0.3097757108892936
+  },
+  "Parameter": {
+    "parameter": {
+      "ntherm": 1000,
+      "nset": 10,
+      "nmcs": 5000,
+      "npre": 1000,
+      "ntau": 5,
+      "beta": 1.0
+    },
+    "lattice": {
+      "lattice": "kagome",
+      "L": [
+        2,2
+      ]
+    },
+    "hamiltonian": {
+      "Jxy": 1.0,
+      "Jz": 1.0,
+      "M": 1,
+      "model": "spin",
+      "h": 0.0
+    }
+  }
+}

@@ -10,56 +10,44 @@ DSQSS/DLA による正方格子上ハードコアボソン系の粒子数計算
 粒子数密度の化学ポテンシャル依存性をファイルに書き出すスクリプトです(sample/dla/03_bosesquare/exec.py).
 ::
 
-  import sys
+  import os
   import os.path
   import subprocess
+  import sys
 
-  bindir = sys.argv[1] if len(sys.argv) > 1 else ''
+  from dsqss.parameter import dla_pre
+  from dsqss.result import Results
+
+  V = 3
+  L = [8,8]
+  beta = 10.0
+
+  lattice = {"lattice": "hypercubic", "dim": 2, "L": L}
+  hamiltonian = {"model": "boson", "t": 1, "V": V, "M": 1}
+  parameter = {"beta": beta, "nset": 4, "ntherm": 100, "ndecor": 100, "nmcs": 100}
 
   name = 'amzu'
   mus = [-4.0, -2.0, 0.0, 2.0, 2.5, 3.0, 6.0, 9.0, 9.5, 10.0, 12.0, 14.0]
 
-  output = open('{}.dat'.format(name), 'w')
-
-  for i,mu in enumerate(mus):
-      with open('std_{}.in'.format(i), 'w') as f:
-          f.write('''
-  solver = DLA
-  model_type = boson
-  M = 1
-  J = 1
-  U = 0
-  V = 3
-  beta = 10.0
-  lattice_type = square
-  D = 2
-  L = 8,8
-  nset = 4
-  ntherm = 100
-  ndecor = 100
-  nmcs = 100
-  ''')
-          f.write('F = {}\n'.format(mu/4))
-          f.write('algfile = algorithm_{}.xml\n'.format(i))
-          f.write('outfile = res_{}.dat\n'.format(i))
-      cmd = [os.path.join(bindir, 'dsqss_pre.py'),
-             '-p', 'param_{}.in'.format(i),
-             '-i', 'std_{}.in'.format(i)]
+  output = open("{}.dat".format(name), "w")
+  for i, mu in enumerate(mus):
+      ofile = "res_{}.dat".format(i)
+      pfile = 'param_{}.in'.format(i)
+      hamiltonian["mu"] = mu
+      parameter["outfile"] = ofile
+      dla_pre(
+          {"parameter": parameter, "hamiltonian": hamiltonian, "lattice": lattice},
+          pfile
+      )
+      cmd = ["dla", pfile]
       subprocess.call(cmd)
-      cmd = [os.path.join(bindir, 'dla_B'), 'param_{}.in'.format(i)]
-      subprocess.call(cmd)
-      with open('res_{}.dat'.format(i)) as f:
-          for line in f:
-              if not line.startswith('R'):
-                  continue
-              words = line.split()
-              if words[1] == name:
-                  output.write('{} {} {}\n'.format(mu, words[3], words[4]))
+      res = Results(ofile)
+      output.write('{} {}\n'.format(mu, res.to_str(name)))
+  output.close()
 
-環境変数 ``$DSQSS_ROOT`` が設定されているならばそのまま実行できますが,
-そうでない場合は実行ファイルがインストールされているディレクトリを引数として渡します. ::
+必要なパスを設定するために, ``dsqssvars-VERSION.sh`` を読み込んでから実行してください. ::
 
-  $ python exec.py $DSQSS_ROOT/bin
+  $ python exec.py
 
 結果は ``amzu.dat`` に書き出されます(:numref:`fig_bosesquare`).
 :math:`\mu=6` 付近では密度プラトーが観測されます. ここでは近接サイト間の反発によりチェッカーボード固体相になっています.

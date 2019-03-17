@@ -293,7 +293,6 @@ class Site : public Ring<Segment> {
 private:
   static int lastID;
   int ID;
-  int MTYPE;  // classification of sites used in measurements
   SiteProperty* _SP;
   Vertex* _vterm;
 
@@ -309,9 +308,8 @@ public:
   void setCI(int nth, Interaction* CI) { ConnectedInteraction[nth] = CI; }
   Interaction** getCI() { return ConnectedInteraction; }
 
-  void init(SiteProperty& SP, int mt) {
+  void init(SiteProperty& SP) {
     _SP   = &SP;
-    MTYPE = mt;
   }
 
   Site();
@@ -335,8 +333,6 @@ public:
   Segment& findS(double t);
 
   void merge(Segment& S1);
-
-  int getMTYPE() { return MTYPE; };
 
   void dump() {
     //    printf("Site::dump> Start.\n");

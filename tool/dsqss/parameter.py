@@ -3,11 +3,10 @@ from __future__ import print_function
 
 import codecs
 
-import toml
-
 from .algorithm import Algorithm
-from .displacement import CF
+from .displacement import Displacement
 from .hamiltonian import GraphedHamiltonian
+from .lattice import Lattice
 from .prob_kernel import (heat_bath, metropolice, reversible_suwa_todo,
                           suwa_todo)
 from .std_lattice import std_lattice
@@ -25,15 +24,13 @@ def set_default_values(param):
         ("nset", 10),
         ("simulationtime", 0.0),
         ("ntau", 10),
-        ("taucutoff", None),
         ("seed", 198212240),
         ("nvermax", 10000),
         ("nsegmax", 10000),
         ("algfile", "algorithm.xml"),
         ("latfile", "lattice.xml"),
-        ("sfinpfile", ""),
-        ("cfinpfile", ""),
-        ("ckinpfile", ""),
+        ("wvfile", ""),
+        ("dispfile", ""),
         ("outfile", "sample.log"),
         ("sfoutfile", "sf.dat"),
         ("cfoutfile", "cf.dat"),
@@ -54,7 +51,12 @@ def dla_pre(param, pfile):
     set_default_values(p)
     check_mandatories(p)
 
-    lat = std_lattice(param["lattice"])
+    # if "lattice" in param["lattice"]:
+    #     lat = std_lattice(param["lattice"])
+    # else:
+    #     lat = Lattice()
+    #     lat.load_dict(param["lattice"])
+    lat = std_lattice(param)
     lat.write_xml(p["latfile"])
 
     h = std_model(param["hamiltonian"])
@@ -78,18 +80,15 @@ def dla_pre(param, pfile):
     alg = Algorithm(ham, prob_kernel=kernel, ebase_extra=extra_shift)
     alg.write_xml(p["algfile"])
 
-    if p["sfinpfile"] != "" or p["ckinpfile"] != "":
-        sf = Wavevector()
-        sf.generate(param.get("kpoints", {}), size=lat.size)
-        if p["sfinpfile"] != "":
-            sf.write_xml(p["sfinpfile"], lat, p["ntau"], p["taucutoff"])
-        if p["ckinpfile"] != p["sfinpfile"]:
-            sf.write_xml(p["ckinpfile"], lat, p["ntau"], p["taucutoff"])
+    if p["wvfile"] != "":
+        wv = Wavevector()
+        wv.generate(param.get("kpoints", {}), size=lat.size)
+        wv.write_xml(p["wvfile"], lat)
 
-    if p["cfinpfile"] != "":
+    if p["dispfile"] != "":
         pdisp = param.get("displacement", {})
-        cf = CF(lat, pdisp.get("distance_only", False), pdisp.get("origin", None))
-        cf.write_xml(p["cfinpfile"], p["ntau"])
+        disp = Displacement(lat, pdisp.get("distance_only", False))
+        disp.write_xml(p["dispfile"], lat)
 
     with codecs.open(pfile, "w", "utf-8") as f:
         for key in sorted(p.keys()):
@@ -99,6 +98,7 @@ def dla_pre(param, pfile):
 def main():
     import argparse
     import sys
+    import toml
 
     parser = argparse.ArgumentParser(
         description="Generate input files for dsqss/dla", add_help=True

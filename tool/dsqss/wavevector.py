@@ -13,7 +13,10 @@ class Wavevector:
 
     def generate(self, param, size):
         self.dim = len(size)
-        steps = get_as_list(param, "ksteps", default=1, extendto=self.dim)
+        steps = get_as_list(param, "ksteps", default=0, extendto=self.dim)
+        for d in range(self.dim):
+            if steps[d] == 0:
+                steps[d] = size[d]//2
         ks = []
         self.nk = 1
         for d in range(self.dim):
@@ -82,21 +85,17 @@ class Wavevector:
                 out.write(" {0}".format(k))
             out.write("\n")
 
-    def write_xml(self, filename, lat, ntau=10, taucutoff=None):
-        if taucutoff is None:
-            taucutoff = ntau
+    def write_xml(self, filename, lat):
         if self.dim != lat.dim:
             ERROR("dimension mismatch between wavevector and lattice")
         with codecs.open(filename, "w", "utf-8") as f:
             f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
-            f.write("<StructureFactor>\n")
+            f.write("<WaveVector>\n")
             f.write(tagged("Comment", lat.name))
-            f.write(tagged("Ntau", ntau))
-            f.write(tagged("CutoffOfNtau", taucutoff))
-            f.write(tagged("NumberOfElements", len(lat.sites) * self.nk))
-            f.write(tagged("NumberOfInverseLattice", self.nk))
+            f.write(tagged("NumberOfSites", len(lat.sites)))
+            f.write(tagged("NumberOfWaveVectors", self.nk))
 
-            f.write("<!-- <SF> [phase(cos)] [phase(sin)] [isite] [kindx] </SF> -->\n")
+            f.write("<!-- <RK> [phase(cos)] [phase(sin)] [isite] [kindx] </RK> -->\n")
             for ik in range(self.nk):
                 k = self.ks[:, ik]
                 for site in lat.sites:
@@ -107,9 +106,9 @@ class Wavevector:
                         phase += coord[d] * k[d] / float(lat.size[d])
                     c = spsp.cosdg(360 * phase)
                     s = spsp.sindg(360 * phase)
-                    f.write(tagged("SF", [c, s, sid, ik]))
+                    f.write(tagged("RK", [c, s, sid, ik]))
 
-            f.write("</StructureFactor>\n")
+            f.write("</WaveVector>\n")
 
 
 def main():

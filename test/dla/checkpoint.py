@@ -60,10 +60,12 @@ param["parameter"] = {"beta": 1.0, "ntau": 5, "nset": 100}
 
 param["kpoints"] = {}
 
-if param["hamiltonian"]["model"] == "boson":
-    exename = "dla_B"
-else:
-    exename = "dla_H"
+exename = 'dla'
+
+# if param["hamiltonian"]["model"] == "boson":
+#     exename = "dla_B"
+# else:
+#     exename = "dla_H"
 
 cleanup(ID)
 cleanup("{0}_restarted".format(ID))
