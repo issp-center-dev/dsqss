@@ -177,7 +177,8 @@ class Lattice:
             out.write("{0} ".format(x))
         out.write("# size\n")
         for x in self.bc:
-            out.write("{0} ".format(x))
+            b = 1 if x else 0
+            out.write("{0} ".format(b))
         out.write("# 0:open boundary, 1:periodic boundary\n")
         for d in range(self.dim):
             out.write("{0} ".format(d))
