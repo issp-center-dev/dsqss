@@ -336,8 +336,8 @@ class Lattice:
 
     def load_site(self, body, count):
         elem = body.split()
-        if len(elem) != self.dim + 3:
-            if len(elem) < self.dim + 3:
+        if len(elem) != self.dim + 2:
+            if len(elem) < self.dim + 2:
                 ERROR("too few elements ({0})".format(body))
             else:
                 ERROR("too many elements ({0})".format(body))
