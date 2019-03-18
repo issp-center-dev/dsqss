@@ -165,8 +165,7 @@ DLA は計算結果を行区切りのプレーンテキストファイルで出�
 ``amzsK``
   「磁化」("staggered", :math:`\tau=0`)
 
-  :math:`\displaystyle m_K^z \equiv \frac{1}{N_s} \sum_i^{N_s} M_i^z 
-  \cos\left( \vec{k}\cdot\vec{r_i}  } \right)` 
+  :math:`\displaystyle m_K^z \equiv \frac{1}{N_s} \sum_i^{N_s} M_i^z \cos\left( \vec{k}\cdot\vec{r_i} \right)` 
   としたときの :math:`\left\langle m_s^z \right\rangle` .
   :math:`K` は波数ベクトルXMLファイルで定義された波数 :math:`k` のインデックス.
 
