@@ -3,7 +3,7 @@ import subprocess as sub
 import sys
 
 import dsqss
-import dsqss.parameter
+import dsqss.dla_pre
 import numpy as np
 import scipy.stats as stats
 
@@ -54,7 +54,7 @@ def geninp(param, seed, simtime=0.0, name=""):
     p["seed"] = seed
     p["simulationtime"] = simtime
 
-    dsqss.parameter.dla_pre(param, "qmc{0}.inp".format(name))
+    dsqss.dla_pre.dla_pre(param, "qmc{0}.inp".format(name))
 
 
 def run(exename, BINDIR=".", name=""):

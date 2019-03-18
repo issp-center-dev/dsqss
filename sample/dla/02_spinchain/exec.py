@@ -3,7 +3,7 @@ import os.path
 import subprocess
 import sys
 
-from dsqss.parameter import dla_pre
+from dsqss.dla_pre import dla_pre
 from dsqss.result import Results
 
 if len(sys.argv) > 1:

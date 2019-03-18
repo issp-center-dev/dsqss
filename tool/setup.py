@@ -15,9 +15,10 @@ setup(
         "console_scripts": [
             "dla_hamgen = dsqss.std_model:main",
             "dla_latgen = dsqss.std_lattice:main",
+            "dla_pgen = dsqss.parameter:main",
             "dla_wvgen = dsqss.wavevector:main",
             "dla_alg = dsqss.dla_alg:main",
-            "dla_pre = dsqss.parameter:main",
+            "dla_pre = dsqss.dla_pre:main",
             "pmwa_pre = dsqss.pmwa_pre:main",
         ]
     },
