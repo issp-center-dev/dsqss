@@ -2,6 +2,7 @@
 from __future__ import print_function
 
 import codecs
+from copy import deepcopy
 
 from .util import ERROR, INFO
 
@@ -40,7 +41,10 @@ def check_mandatories(param):
 class Parameter(dict):
     def __init__(self, param):
         super(Parameter, self).__init__()
-        p = param["parameter"]
+        if "parameter" in param:
+            p = deepcopy(param["parameter"])
+        else:
+            p = deepcopy(param)
         set_default_values(p)
         check_mandatories(p)
         self.update(p)

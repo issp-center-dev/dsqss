@@ -66,7 +66,7 @@ class Lattice:
             self.load_dat(inp)
 
     def load_dict(self, param):
-        if "lattice" in param:
+        if "lattice" in param and not isinstance(param["lattice"], str):
             return self.load_dict(param["lattice"])
 
         parameter = param["parameter"]

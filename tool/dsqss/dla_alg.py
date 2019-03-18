@@ -13,6 +13,30 @@ from .util import ERROR
 from .wavevector import Wavevector
 
 
+def dla_alg(
+    lat,
+    ham=None,
+    wv=None,
+    latxml=None,
+    algxml=None,
+    wvxml=None,
+    dispxml=None,
+    prob_kernel=suwa_todo,
+    ebase_extra=0.0,
+    distance_only=False,
+):
+    if latxml is not None:
+        lat.write_xml(latxml)
+    if ham is not None and algxml is not None:
+        alg = Algorithm(ham, prob_kernel=prob_kernel, ebase_extra=ebase_extra)
+        alg.write_xml(algxml)
+    if wv is not None and wvxml is not None:
+        wv.write_xml(wvxml, lat)
+    if dispxml is not None:
+        disp = Displacement(lat, distance_only=distance_only)
+        disp.write_xml(dispxml)
+
+
 def main():
 
     parser = argparse.ArgumentParser(
@@ -67,7 +91,9 @@ def main():
         "-k", "--kpoint", dest="kpoint", default=None, help="kpoints data file"
     )
     parser.add_argument("--wv", dest="wv", default="wv.xml", help="wavevector XML file")
-    parser.add_argument("--disp", dest="disp", default=None, help="displacement XML file")
+    parser.add_argument(
+        "--disp", dest="disp", default=None, help="displacement XML file"
+    )
     parser.add_argument(
         "--distance-only",
         dest="distance_only",
@@ -106,19 +132,39 @@ def main():
         ERROR("unknown kernel: {0}".format(args.kernel))
 
     lat = Lattice(args.lat)
-    if not args.wolat:
-        lat.write_xml(args.latxml)
-    if not args.woalg:
-        ham = GraphedHamiltonian(args.ham, lat)
-        alg = Algorithm(ham, prob_kernel=kernel, ebase_extra=args.extra_shift)
-        alg.write_xml(args.algxml)
+    ham = GraphedHamiltonian(args.ham, lat) if not args.woalg else None
+    wv = None
     if args.kpoint is not None:
         wv = Wavevector()
         wv.load(args.kpoint)
-        wv.write_xml(args.wv, lat)
-    if args.disp is not None:
-        disp = Displacement(lat, distance_only=args.distance_only)
-        disp.write_xml(args.disp)
+
+    dla_alg(
+        lat,
+        ham=ham,
+        wv=wv,
+        latxml=args.latxml,
+        algxml=args.algxml,
+        wvxml=args.wv,
+        dispxml=args.disp,
+        prob_kernel=kernel,
+        ebase_extra=args.extra_shift,
+        distance_only=args.distance_only,
+    )
+
+    # lat = Lattice(args.lat)
+    # if not args.wolat:
+    #     lat.write_xml(args.latxml)
+    # if not args.woalg:
+    #     ham = GraphedHamiltonian(args.ham, lat)
+    #     alg = Algorithm(ham, prob_kernel=kernel, ebase_extra=args.extra_shift)
+    #     alg.write_xml(args.algxml)
+    # if args.kpoint is not None:
+    #     wv = Wavevector()
+    #     wv.load(args.kpoint)
+    #     wv.write_xml(args.wv, lat)
+    # if args.disp is not None:
+    #     disp = Displacement(lat, distance_only=args.distance_only)
+    #     disp.write_xml(args.disp)
 
 
 if __name__ == "__main__":

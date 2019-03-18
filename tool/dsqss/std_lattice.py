@@ -7,7 +7,7 @@ from .util import ERROR
 
 
 def std_lattice(param, ret_dict=False):
-    if "lattice" in param and param["lattice"] is not str:
+    if "lattice" in param and not isinstance(param["lattice"], str):
         param = param["lattice"]
     if "unitcell" in param:
         latticedict = param
