@@ -129,6 +129,12 @@ DLA は計算結果を行区切りのプレーンテキストファイルで出�
   比熱.
 
   :math:`\displaystyle C_V \equiv \frac{\partial \epsilon}{\partial T}`
+
+``som``
+  比熱と温度の比. 
+
+  :math:`\displaystyle \gamma \equiv \frac{C_V}{T} = \beta C_V`
+
 ``len``
   平均ワーム長さ.
 ``xmx``

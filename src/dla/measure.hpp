@@ -433,6 +433,7 @@ void Measurement::setsummary() {
   Q[ENE] = (EBASE + X[EB1] * T) * invV;
 
   Q[SPE] = (X[EB2] - X[EB1] * X[EB1] - X[NV1]) * invV;
+  Q[SOM] = Q[SPE] * B;
 
   Q[LEN] = X[LE1];
   Q[XMX] = WDIAG * X[LE1] / B;

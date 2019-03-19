@@ -44,6 +44,7 @@ enum {
   ANV,  // (site) Average of the Number of Vertices
   ENE,  // ENErgy per site
   SPE,  // SPEcific heat
+  SOM,  // SOMmerfeld coeff
   LEN,  // LENgth of worm pair
   XMX,
 
@@ -66,7 +67,7 @@ enum {
 
   NPHY,  // number of quantities computed at each set
 };
-static std::string PNAME[NPHY] = {"sign", "anv",  "ene",  "spe",  "len",  "xmx", "amzu", "bmzu", "smzu", "xmzu",
+static std::string PNAME[NPHY] = {"sign", "anv",  "ene",  "spe",  "som", "len",  "xmx", "amzu", "bmzu", "smzu", "xmzu",
                                   "ds1", "wi2",  "rhos", "rhof", "comp"};
 
 }  // namespace Specific
