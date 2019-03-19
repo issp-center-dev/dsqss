@@ -4,14 +4,19 @@ from .xxz import XXZ_hamiltonian
 
 
 def std_model(param):
-    if param["model"].lower() == "spin":
-        hamdict = XXZ_hamiltonian(param)
-    elif param["model"].lower() == "boson":
-        hamdict = BoseHubbard_hamiltonian(param)
+    if "hamiltonian" in param:
+        param = param["hamiltonian"]
+    if "model" in param:
+        if param["model"].lower() == "spin":
+            ham = XXZ_hamiltonian(param)
+        elif param["model"].lower() == "boson":
+            ham = BoseHubbard_hamiltonian(param)
+        else:
+            ERROR('Unknown model: param["model"] = {0}'.format(param["model"].lower()))
     else:
-        ERROR('Unknown model: param["model"] = {0}'.format(param["model"].lower()))
+        ham = Hamiltonian(param)
 
-    return hamdict
+    return ham
 
 
 def main():
