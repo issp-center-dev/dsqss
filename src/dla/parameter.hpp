@@ -224,6 +224,7 @@ inline void Parameter::dump() {
   cout << "SEED    = " << SEED << endl;
   cout << "NVERMAX = " << NVERMAX << endl;
   cout << "NSEGMAX = " << NSEGMAX << endl << endl;
+  cout << "BETA    = " << BETA << endl;
   cout << "NTAU    = " << NTAU << endl;
   cout << "ALGFILE = " << ALGFILE << endl;
   cout << "LATFILE = " << LATFILE << endl;
@@ -246,6 +247,7 @@ inline void Parameter::dump(FILE* F) {
   fprintf(F, "P SEED    = %12d\n", SEED);
   fprintf(F, "P NSEGMAX = %12d\n", NSEGMAX);
   fprintf(F, "P NVERMAX = %12d\n", NVERMAX);
+  fprintf(F, "P BETA    = %.12lf\n", BETA);
   fprintf(F, "P NTAU    = %12d\n", NTAU);
   fprintf(F, "P NCYC    = %12d\n", NCYC);
   fprintf(F, "P ALGFILE = %s\n", ALGFILE.c_str());
