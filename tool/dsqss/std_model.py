@@ -1,6 +1,7 @@
 from .bosehubbard import BoseHubbard_hamiltonian
 from .util import ERROR
 from .xxz import XXZ_hamiltonian
+from .hamiltonian import Hamiltonian
 
 
 def std_model(param):

@@ -1,0 +1,42 @@
+{
+  "Result": {
+    "ene": -0.12003954271361367
+  },
+  "Parameter": {
+    "parameter": {
+      "ntherm": 1000,
+      "nset": 10,
+      "nmcs": 5000,
+      "npre": 1000,
+      "ntau": 5,
+      "beta": 1.0
+    },
+    "lattice": {
+      "lattice": "hypercubic",
+      "dim": 1,
+      "L": [2],
+      "bc" : [false]
+    },
+    "hamiltonian": {
+      "name": "non Hermite",
+      "sites": [{
+        "id": 0,
+        "N": 2,
+        "values": [-0.5, 0.5],
+        "elements": [],
+        "sources": [
+          {"istate":0, "fstate": 1, "value": 1.0},
+          {"istate":1, "fstate": 0, "value": 1.0}
+        ]
+      }],
+      "interactions": [
+        {"id": 0, "nbody": 2, "N": [2,2],
+          "elements": [
+            {"istate": [0,1], "fstate": [1,0], "value": 0.5},
+            {"istate": [1,0], "fstate": [0,1], "value": 1.0}
+          ]
+        }
+      ]
+    }
+  }
+}
