@@ -1,0 +1,235 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>1. DSQSSとは？ &#8212; DSQSS 2.0.0-Beta ドキュメント</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="2. インストール" href="install.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="dsqss">
+<h1>1. DSQSSとは？<a class="headerlink" href="#dsqss" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id1">
+<h2>1.1. 概要<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>DSQSSは, 連続虚数時間向き付きループアルゴリズムに基づく量子モンテカルロ法によって離散空間上で定義された量子多体問題を解くためのプログラム群です.
+単位格子の情報, 2体相互作用ハミルトニアンの行列要素などを入力ファイルとして広い範囲のモデルに対応しています.
+例えば, 次元, 格子の1辺の長さ, 相互作用の異方性, スピンの大きさ, 磁場の大きさ, 温度などのパラメータを任意にとって, XXZハイゼンベルクモデルの計算を行うことができます.
+また, ボーズ系のシミュレーションも可能です.
+大規模並列化に対応したプログラムPMWAも含まれています.</p>
+<p>DSQSSは, 以下のサブシステム群から構成されています.</p>
+<ul>
+<li><p class="first">シリアル版 DSQSS/DLA</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>ハミルトニアン定義ファイルジェネレータ: <code class="docutils literal notranslate"><span class="pre">hamgen_H</span></code> (スピン系),  <code class="docutils literal notranslate"><span class="pre">hamgen_B</span></code> (ボソン系)</li>
+<li>格子定義ジェネレータ: <code class="docutils literal notranslate"><span class="pre">lattgene_C</span></code> (超立方格子),  <code class="docutils literal notranslate"><span class="pre">lattgene_T</span></code> (三角格子)</li>
+<li>アルゴリズムジェネレータ: <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code></li>
+<li>量子モンテカルロ法エンジン(向き付きループアルゴリズム)： <code class="docutils literal notranslate"><span class="pre">dla_H</span></code> (スピン系),  <code class="docutils literal notranslate"><span class="pre">dla_B</span></code> (ボソン系)</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">非自明並列版 DSQSS/PMWA</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>格子定義ジェネレータ： <code class="docutils literal notranslate"><span class="pre">lattgene_P</span></code></li>
+<li>量子モンテカルロ法エンジン(向き付きループアルゴリズム)： <code class="docutils literal notranslate"><span class="pre">pmwa_H</span></code> （XXZ模型）,  <code class="docutils literal notranslate"><span class="pre">pmwa_B</span></code> (ハードコアボソン系)</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">ツール</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>入力一括作成ツール：dsqss_pre.py</li>
+</ol>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>1.2. リリース情報<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>2018.10.19 dsqss Ver 1.2.0
+CMake の導入, 入力ファイル生成支援スクリプト dsqss_pre.py の追加など</li>
+<li>2015.11.20 dsqss-Ver.1.1.17+pmwa-Ver.1.1.2
+GCCに対応,  PMWA, configure修正, その他/toolのスクリプトを追加</li>
+<li>2014.03.28 Ver.1.1.16
+シングルモード（非MPI環境）に対応</li>
+<li>2013.07.22 Ver.1.1.15
+レプリカ交換法の不具合の修正, マニュアルの一部修正</li>
+<li>2013.01.10 Ver.1.1.14
+メモリ増大の不具合の修正, マニュアルの一部修正</li>
+<li>2012.10.03 Ver.1.1.13
+サンプルの追加, その他微修正</li>
+<li>2012.7.12 Ver.1.1.12
+物性研システムBのMPI環境に対応したマクロを生成</li>
+<li>2012.6.7 Ver.1.1.11
+doxygen, sphinxの自動生成makeの作成, その他微修正</li>
+<li>2012.3.25 Ver.1.1.10
+exact_H.ccの修正, 実行モジュール名hamgen_Hに変更</li>
+<li>2012.3.23 Ver.1.1.9
+runConfigure, dla.ccの不具合修正</li>
+<li>2012.3.14 Ver.1.1.8
+コードdla_alg.ccのコメント文修正</li>
+<li>2012.2.29 Ver.1.1.6
+バグ修正, マニュアルの整備追加</li>
+<li>2011.9.30 Ver.1.1
+レプリカ交換計算機能の追加</li>
+<li>2011.9.25 Ver.1.0.20
+温度の規格化, GNU拡張の廃止等修正</li>
+<li>2011.3.31 Ver.1.0</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>1.3. 開発者<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>加藤康之（東京大学工学系研究科）</li>
+<li>川島直輝（東京大学物性研究所）</li>
+<li>坂倉耕太（NEC）</li>
+<li>鈴木隆史（兵庫県立大学工学研究科）</li>
+<li>原田健自（京都大学情報学研究科）</li>
+<li>正木晶子（日立研究所）</li>
+<li>本山裕一（東京大学物性研究所）</li>
+<li>吉見一慶（東京大学物性研究所）</li>
+</ul>
+<p>2018/10/19 現在</p>
+</div>
+<div class="section" id="id4">
+<h2>1.4. 協力者<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>大久保毅 (東京大学理学系研究科)</li>
+<li>加藤岳生 (東京大学物性研究所)</li>
+</ul>
+<p>2018/10/19 現在</p>
+</div>
+<div class="section" id="id5">
+<h2>1.5. ライセンス<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>GNU General Public License (GPL)に基づきます.</li>
+<li>利用のための必須条件ではありませんが, 利用実態を把握したいので, 科学計算などに使用した場合, 関連公表論文の書誌情報などをアプリケーション管理者までお知らせ下さることを希望します. また, 論文などによる成果公開に際して謝辞に記載していただければ幸いです.</li>
+</ul>
+<div class="topic">
+<p class="topic-title first">Acknowledgment Sample</p>
+<p>Numerical results in the present paper were obtained by the quantum Monte Carlo program DSQSS(<a class="reference external" href="https://github.com/qmc/dsqss/wiki">https://github.com/qmc/dsqss/wiki</a>).
+This package is distributed under GNU General Public License version 3 (GPL v3) or later.</p>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>1.6. 謝辞<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>本ソフトウェアの研究開発は, 一部, 次世代スパコンプロジェクト「次世代ナノ統合シミュレーションソフトウェア研究開発」および2018年度東京大学物性研究所ソフトウェア開発・高度化プロジェクトの援助によって行われました. ここに感謝の意を記します.</p>
+</div>
+<div class="section" id="id7">
+<h2>1.7. 連絡・問い合わせ先<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>GitHubページのissueもしくはDSQSS開発者用メーリングリスト <a class="reference external" href="mailto:dsqss-dev&#37;&#52;&#48;issp&#46;u-tokyo&#46;ac&#46;jp">dsqss-dev<span>&#64;</span>issp<span>&#46;</span>u-tokyo<span>&#46;</span>ac<span>&#46;</span>jp</a> にご連絡ください.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>ナビゲーション</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. DSQSSとは？</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">1.1. 概要</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">1.2. リリース情報</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">1.3. 開発者</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">1.4. 協力者</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">1.5. ライセンス</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">1.6. 謝辞</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">1.7. 連絡・問い合わせ先</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">2. インストール</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dla/tutorial/index.html">3. DLAのチュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dla/users-manual/index.html">4. DSQSS/DLAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pmwa/tutorial/tutorial.html">5. DSQSS/PMWAのチュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pmwa/tutorial/tu-index.html">6. DSQSS/PMWAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="algorithm.html">7. アルゴリズム</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">&lt;no title&gt;</a><ul>
+      <li>Previous: <a href="index.html" title="前の章へ">&lt;no title&gt;</a></li>
+      <li>Next: <a href="install.html" title="次の章へ">2. インストール</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="検索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/dsqss/about_dsqss.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

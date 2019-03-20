@@ -1,0 +1,489 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>4.1. DLA のシンプルモードファイル &#8212; DSQSS 2.0.0-Beta ドキュメント</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="検索" href="../../search.html" />
+    <link rel="next" title="4.2. DLA のスタンダードモード入力ファイル" href="input_standard.html" />
+    <link rel="prev" title="4. DSQSS/DLAのユーザーマニュアル" href="index.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="dla">
+<h1>4.1. DLA のシンプルモードファイル<a class="headerlink" href="#dla" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="std-toml">
+<span id="simple-mode-file"></span><h2>4.1.1. シンプルモードファイル <code class="docutils literal notranslate"><span class="pre">std.toml</span></code><a class="headerlink" href="#std-toml" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>シンプルモードファイルは <a class="reference external" href="https://github.com/toml-lang/toml/blob/master/versions/ja/toml-v0.5.0.md">TOML</a> 形式のテキストファイルです。
+<code class="docutils literal notranslate"><span class="pre">dla_pre</span></code> や <code class="docutils literal notranslate"><span class="pre">dla_hamgen</span></code> などのツールの入力ファイルとして使います。</p>
+<div class="section" id="parameter">
+<span id="std-toml-parameter"></span><h3>4.1.1.1. <code class="docutils literal notranslate"><span class="pre">parameter</span></code><a class="headerlink" href="#parameter" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>逆温度やモンテカルロステップ数などの計算条件を指定するテーブルです。
+<code class="docutils literal notranslate"><span class="pre">dla_pre</span></code> で使用されます。</p>
+<p><code class="docutils literal notranslate"><span class="pre">parameter</span></code> テーブルに属するキーのリストと意味を次に示します。</p>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">パラメータ名</th>
+<th class="head">型</th>
+<th class="head">デフォルト値</th>
+<th class="head">説明</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>beta</td>
+<td>double</td>
+<td>--</td>
+<td>逆温度.</td>
+</tr>
+<tr class="row-odd"><td>npre</td>
+<td>int</td>
+<td>1000</td>
+<td>モンテカルロスイープ中のワーム対生成回数を求める事前計算のためのモンテカルロ試行回数.</td>
+</tr>
+<tr class="row-even"><td>ntherm</td>
+<td>int</td>
+<td>1000</td>
+<td>熱平衡化のためのモンテカルロスイープ数.</td>
+</tr>
+<tr class="row-odd"><td>ndecor</td>
+<td>int</td>
+<td>1000</td>
+<td>セット間の自己相関を取り除くためのモンテカルロスイープ数.</td>
+</tr>
+<tr class="row-even"><td>nmcs</td>
+<td>int</td>
+<td>1000</td>
+<td>物理量計算のためのモンテカルロスイープ数.</td>
+</tr>
+<tr class="row-odd"><td>nset</td>
+<td>int</td>
+<td>10</td>
+<td>モンテカルロ計算の繰り返し数.</td>
+</tr>
+<tr class="row-even"><td>simulationtime</td>
+<td>int</td>
+<td>0.0</td>
+<td>計算時間（単位は秒）.</td>
+</tr>
+<tr class="row-odd"><td>seed</td>
+<td>int</td>
+<td>198212240</td>
+<td>疑似乱数の種.</td>
+</tr>
+<tr class="row-even"><td>nvermax</td>
+<td>int</td>
+<td>10000</td>
+<td>最大バーテックス数.</td>
+</tr>
+<tr class="row-odd"><td>nsegmax</td>
+<td>int</td>
+<td>10000</td>
+<td>最大セグメント数.</td>
+</tr>
+<tr class="row-even"><td>algfile</td>
+<td>int</td>
+<td>algorithm.xml</td>
+<td>アルゴリズム定義ファイル名.</td>
+</tr>
+<tr class="row-odd"><td>latfile</td>
+<td>string</td>
+<td>lattice.xml</td>
+<td>格子定義ファイル名.</td>
+</tr>
+<tr class="row-even"><td>ntau</td>
+<td>int</td>
+<td>10</td>
+<td>虚時間構造因子などの計算で使われる虚時間方向の離散化数.</td>
+</tr>
+<tr class="row-odd"><td>wvfile</td>
+<td>string</td>
+<td>--</td>
+<td>波数ベクトルXMLファイル名. 空文字列の場合, 構造因子は計算されない.</td>
+</tr>
+<tr class="row-even"><td>dispfile</td>
+<td>string</td>
+<td>--</td>
+<td>相対座標XMLファイル名. 空文字列の場合, 実空間表示温度グリーン関数は計算されない.</td>
+</tr>
+<tr class="row-odd"><td>outfile</td>
+<td>string</td>
+<td>sample.log</td>
+<td>メイン出力ファイル名.</td>
+</tr>
+<tr class="row-even"><td>sfoutfile</td>
+<td>string</td>
+<td>sf.dat</td>
+<td>構造因子出力ファイル名.</td>
+</tr>
+<tr class="row-odd"><td>cfoutfile</td>
+<td>string</td>
+<td>cf.dat</td>
+<td>実空間表示温度グリーン関数出力ファイル名.</td>
+</tr>
+<tr class="row-even"><td>ckoutfile</td>
+<td>string</td>
+<td>ck.dat</td>
+<td>波数空間表示温度グリーン関数出力ファイル名.</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>simulationtime について<ul>
+<li>simulationtime &gt; 0.0 のとき<ul>
+<li>指定秒数が経過するか, 計算が完了したとき, 途中経過をチェックポイントファイルに書き出した後, プログラムを終了します.</li>
+<li>計算開始時にチェックポイントファイルがある場合, そのファイルを読み込んだ後に計算を再開します.</li>
+<li>チェックポイントファイルの名前は outfile で指定されるメイン出力ファイル名の末尾に .cjob をつけたものです.</li>
+</ul>
+</li>
+<li>simulationtime &lt;= 0.0 のとき<ul>
+<li>チェックポイントファイルは無視され, 書き出しも読み込みも行われません.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="lattice">
+<span id="std-toml-lattice"></span><h3>4.1.1.2. <code class="docutils literal notranslate"><span class="pre">lattice</span></code><a class="headerlink" href="#lattice" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>格子の情報を指定するテーブルです。 <code class="docutils literal notranslate"><span class="pre">dla_pre</span></code>, <code class="docutils literal notranslate"><span class="pre">dla_latgen</span></code> で使用されます。</p>
+<p><code class="docutils literal notranslate"><span class="pre">lattice</span></code> テーブルに属するキーのリストと意味を次に示します。</p>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">パラメータ名</th>
+<th class="head">型</th>
+<th class="head">デフォルト値</th>
+<th class="head">説明</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>lattice</td>
+<td>string</td>
+<td>--</td>
+<td>格子の種類. 超立方格子 'hypercubic' が利用可能です.</td>
+</tr>
+<tr class="row-odd"><td>dim</td>
+<td>int</td>
+<td>--</td>
+<td>空間次元.</td>
+</tr>
+<tr class="row-even"><td>L</td>
+<td>list(int) or int</td>
+<td>--</td>
+<td>格子の大きさ. 整数の配列か整数で指定します.  空間次元より要素が少ない場合, 足りない要素は最後の要素で自動的に埋められます.</td>
+</tr>
+<tr class="row-odd"><td>bc</td>
+<td>list(bool) or bool</td>
+<td>true</td>
+<td>各次元に対する、格子の境界条件. ブール値の配列かブール値で指定します.  <code class="docutils literal notranslate"><span class="pre">true</span></code> が周期的境界条件を, <code class="docutils literal notranslate"><span class="pre">false</span></code> が開境界条件を示します.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="hamiltonian">
+<span id="std-toml-hamiltonian"></span><h3>4.1.1.3. <code class="docutils literal notranslate"><span class="pre">hamiltonian</span></code><a class="headerlink" href="#hamiltonian" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ハミルトニアンの情報を指定するテーブルです。
+<code class="docutils literal notranslate"><span class="pre">dla_pre</span></code>, <code class="docutils literal notranslate"><span class="pre">dla_hamgen</span></code> で使用されます。</p>
+<p><code class="docutils literal notranslate"><span class="pre">hamiltonian</span></code> テーブルに属するキーのリストと意味を次に示します。</p>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">パラメータ名</th>
+<th class="head">型</th>
+<th class="head">デフォルト値</th>
+<th class="head">説明</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>model</td>
+<td>string</td>
+<td>--</td>
+<td>模型の種類. XXZ 模型 'spin' とボーズハバード模型 'boson' が利用可能です.</td>
+</tr>
+<tr class="row-odd"><td>M</td>
+<td>int</td>
+<td>1</td>
+<td>サイトあたりの取りうる状態数-1.  XXZ 模型では局所スピンの大きさ <span class="math notranslate nohighlight">\(2S\)</span> を, ボーズハバード模型では粒子数カットオフを指定します.</td>
+</tr>
+</tbody>
+</table>
+<p>XXZ 模型</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{H} = \sum_{\langle i, j \rangle} -J_z S_i^z S_j^z -\frac{J_{xy}}{2} \left( S_i^+ S_j^- + S_i^- S_j^+ \right)
++ D \sum_i \left(S_i^z\right)^2
+- h \sum_i S_i^z\]</div>
+<p>に特有のパラメータは次の通り.</p>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">パラメータ名</th>
+<th class="head">型</th>
+<th class="head">デフォルト値</th>
+<th class="head">説明</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Jz</td>
+<td>list(float) or float</td>
+<td>0.0</td>
+<td>交換相互作用. 相互作用の種類が複数ある場合は, 配列で指定する.  正が強磁性的相互作用を, 負が反強磁性的相互作用を意味する.</td>
+</tr>
+<tr class="row-odd"><td>Jxy</td>
+<td>list(float) or float</td>
+<td>0.0</td>
+<td>交換相互作用. 相互作用の種類が複数ある場合は, 配列で指定する.  正が強磁性的相互作用を, 負が反強磁性的相互作用を意味する.</td>
+</tr>
+<tr class="row-even"><td>D</td>
+<td>list(float) or float</td>
+<td>0.0</td>
+<td>オンサイトのスピン異方性パラメータ. サイトの種類が複数ある場合は, 配列で指定する.</td>
+</tr>
+<tr class="row-odd"><td>h</td>
+<td>list(float) or float</td>
+<td>0.0</td>
+<td>磁場. サイトの種類が複数ある場合は, 配列で指定する.</td>
+</tr>
+</tbody>
+</table>
+<p>ボーズハバード 模型</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{H} = \sum_{\langle i, j \rangle} \left[ -t b_i^\dagger \cdot b_j + h.c. + V n_i n_j \right] + \sum_i \left[ \frac{U}{2} n_i(n_i-1) - \mu n_i \right]\]</div>
+<p>に特有のパラメータは次の通り.</p>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">パラメータ名</th>
+<th class="head">型</th>
+<th class="head">デフォルト値</th>
+<th class="head">説明</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>t</td>
+<td>list(float) or float</td>
+<td>0.0</td>
+<td>ホッピングパラメータ. 相互作用の種類が複数ある場合は, 配列で指定する.</td>
+</tr>
+<tr class="row-odd"><td>V</td>
+<td>list(float) or float</td>
+<td>0.0</td>
+<td>オフサイトの粒子間相互作用. 相互作用の種類が複数ある場合は, 配列で指定する.  正が斥力ポテンシャル, 負が引力ポテンシャルを意味する.</td>
+</tr>
+<tr class="row-even"><td>U</td>
+<td>list(float) or float</td>
+<td>0.0</td>
+<td>オンサイトの粒子間相互作用. サイトの種類が複数ある場合は, 配列で指定する. 正が斥力ポテンシャル, 負が引力ポテンシャルを意味する.</td>
+</tr>
+<tr class="row-odd"><td>mu</td>
+<td>list(float) or float</td>
+<td>0.0</td>
+<td>化学ポテンシャル. サイトの種類が複数ある場合は, 配列で指定する.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="kpoints">
+<span id="simple-mode-kpoints"></span><h3>4.1.1.4. <code class="docutils literal notranslate"><span class="pre">kpoints</span></code><a class="headerlink" href="#kpoints" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>波数の情報を指定するテーブルです。
+<code class="docutils literal notranslate"><span class="pre">dla_pre</span></code> および <code class="docutils literal notranslate"><span class="pre">dla_wvgen</span></code> で使用されます.</p>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">パラメータ名</th>
+<th class="head">型</th>
+<th class="head">デフォルト値</th>
+<th class="head">説明</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>ksteps</td>
+<td>list(int) or int</td>
+<td>0</td>
+<td>波数の増分. 0 の場合、格子サイズの半分が設定される.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="algorithm">
+<span id="simple-mode-algorithm"></span><h3>4.1.1.5. <code class="docutils literal notranslate"><span class="pre">algorithm</span></code><a class="headerlink" href="#algorithm" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ワームの散乱確率の計算アルゴリズムなどを指定するテーブルです.
+<code class="docutils literal notranslate"><span class="pre">dla_pre</span></code> で使用されます.</p>
+<dl class="docutils">
+<dt>wv.. csv-table::</dt>
+<dd><table class="first docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">header-rows:</th><td class="field-body">1</td>
+</tr>
+<tr class="field-even field"><th class="field-name">widths:</th><td class="field-body">1,1,1,4</td>
+</tr>
+</tbody>
+</table>
+<p class="last">パラメータ名, 型, デフォルト値, 説明
+kernel, string, 'suwa todo', &quot;バーテックスにおけるワームの散乱過程について、その遷移確率を計算するために用いる手法。&quot;</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">kernel</span></code> として指定できる手法は次の通り。</p>
+<dl class="docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">suwa</span> <span class="pre">todo</span></code></dt>
+<dd>詳細釣り合いを破る諏訪・藤堂アルゴリズム.
+(H. Suwa and S. Todo, PRL 105, 120603 (2010))</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">reversible</span> <span class="pre">suwa</span> <span class="pre">todo</span></code></dt>
+<dd>詳細釣り合いを満たす諏訪・藤堂アルゴリズム. (arXiv:1106.3562)</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">heat</span> <span class="pre">bath</span></code></dt>
+<dd>熱浴法.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">metropolice</span></code></dt>
+<dd>メトロポリスアルゴリズム.</dd>
+</dl>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>ナビゲーション</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. DSQSSとは？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. インストール</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">3. DLAのチュートリアル</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. DSQSS/DLAのユーザーマニュアル</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.1. DLA のシンプルモードファイル</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#std-toml">4.1.1. シンプルモードファイル <code class="docutils literal notranslate"><span class="pre">std.toml</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parameter">4.1.1.1. <code class="docutils literal notranslate"><span class="pre">parameter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lattice">4.1.1.2. <code class="docutils literal notranslate"><span class="pre">lattice</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hamiltonian">4.1.1.3. <code class="docutils literal notranslate"><span class="pre">hamiltonian</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#kpoints">4.1.1.4. <code class="docutils literal notranslate"><span class="pre">kpoints</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#algorithm">4.1.1.5. <code class="docutils literal notranslate"><span class="pre">algorithm</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="input_standard.html">4.2. DLA のスタンダードモード入力ファイル</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_expert.html">4.3. DLA のエキスパートモード入力ファイル</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generator.html">4.4. DLA の入力ファイル生成ツール</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engine.html">4.5. 向き付きループアルゴリズムソルバ dla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="output.html">4.6. DLA の出力ファイル</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tutorial.html">5. DSQSS/PMWAのチュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tu-index.html">6. DSQSS/PMWAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/algorithm.html">7. アルゴリズム</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">4. DSQSS/DLAのユーザーマニュアル</a><ul>
+      <li>Previous: <a href="index.html" title="前の章へ">4. DSQSS/DLAのユーザーマニュアル</a></li>
+      <li>Next: <a href="input_standard.html" title="次の章へ">4.2. DLA のスタンダードモード入力ファイル</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="検索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../../_sources/dla/users-manual/input_simple.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

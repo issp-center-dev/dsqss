@@ -1,0 +1,135 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>5. DSQSS/PMWAのチュートリアル &#8212; DSQSS 2.0.0-Beta ドキュメント</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="検索" href="../../search.html" />
+    <link rel="next" title="5.1. DSQSS/PMWAとは？" href="intro.html" />
+    <link rel="prev" title="4.6. DLA の出力ファイル" href="../../dla/users-manual/output.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="dsqss-pmwa">
+<h1>5. DSQSS/PMWAのチュートリアル<a class="headerlink" href="#dsqss-pmwa" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">5.1. DSQSS/PMWAとは？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">5.2. 使用方法</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lattgene.html">5.2.1. 格子定義ファイルの作成</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html">5.2.2. DSQSS/PMWAの入力ファイルの作成</a></li>
+<li class="toctree-l2"><a class="reference internal" href="output.html">5.2.3. 計算実行</a></li>
+<li class="toctree-l2"><a class="reference internal" href="output.html#id2">5.2.4. 出力ファイル</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sample_Heisenberg.html">5.3. DSQSS/PMWAによるスピン鎖のエネルギー計算</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sample_Heisenberg.html#id1">5.3.1. 入力ファイルの準備</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sample_Heisenberg.html#id2">5.3.2. 計算の実行</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sample_Heisenberg.html#id3">5.3.3. 計算結果の解釈</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>ナビゲーション</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. DSQSSとは？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. インストール</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dla/tutorial/index.html">3. DLAのチュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dla/users-manual/index.html">4. DSQSS/DLAのユーザーマニュアル</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5. DSQSS/PMWAのチュートリアル</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html">5.1. DSQSS/PMWAとは？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html">5.2. 使用方法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sample_Heisenberg.html">5.3. DSQSS/PMWAによるスピン鎖のエネルギー計算</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tu-index.html">6. DSQSS/PMWAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/algorithm.html">7. アルゴリズム</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../../dla/users-manual/output.html" title="前の章へ">4.6. DLA の出力ファイル</a></li>
+      <li>Next: <a href="intro.html" title="次の章へ">5.1. DSQSS/PMWAとは？</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="検索" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../../_sources/pmwa/tutorial/tutorial.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
