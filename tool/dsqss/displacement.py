@@ -32,18 +32,19 @@ class Displacement:
                     self.nr += 1
                 self.displacements[s, t] = rdict[r]
 
-    def write_xml(self, filename, lat):
+    def write_xml(self, filename):
+        lat = self.lat
         with codecs.open(filename, "w", "utf-8") as f:
             f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
             f.write("<Displacements>\n")
-            f.write(tagged("Comment", self.lat.name))
+            f.write(tagged("Comment", lat.name))
             f.write(tagged("NumberOfKinds", self.nr))
             f.write(tagged("NumberOfSites", lat.nsites))
             f.write("\n")
             f.write("<!-- <R> [kind] [isite] [jsite] </R> -->\n")
             f.write("\n")
 
-            for s, t in product(range(self.lat.nsites), range(self.lat.nsites)):
+            for s, t in product(range(lat.nsites), range(lat.nsites)):
                 f.write(tagged("R",
                                (self.displacements[s, t], s, t)))
 
