@@ -7,9 +7,13 @@ How to install
 Requirements
 ********************
 
-- BLAS
-- LAPACK
 - (Optional) MPI (essential for PMWA)
+- python 2.7 or 3.x
+
+   - numpy
+   - scipy
+   - toml
+   - pip (essential for ``make install``)
 
 Download
 ********************
@@ -88,15 +92,17 @@ please type the following command:
 
 
 After seeing that all tests are passed,
-type the following command to install binary files:
+type the following command to install files:
 
 ::
    
    $ make install
 
-If the path for installation was changed, 
-it is convenient to export the path:
 
+This installs the executable files into ``bin`` directory,
+the samples into ``share/dsqss/VERSION/samples`` directory,
+and a configure file ``dsqssvars-VERSION.sh`` into ``share/dsqss`` directory.
+Before executing utility tools and solvers, ``source`` the configure file in order to set the environment variables properly.
 ::
-   
-   $ export PATH="/path/to/install/to:$PATH"
+
+   $ source share/dsqss/dsqssvar-VERSION.sh
