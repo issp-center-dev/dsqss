@@ -22,9 +22,9 @@ To run DSQSS/PMWA, following two input files are needed:
 1. lattice definition file,
 2. parameter file.
 
-The utility tool ``dsqss_pre.py`` for doing automatically these process is prepared.
+The utility tool ``pmwa_pre`` for doing automatically these process is prepared.
 This tool is made by a Python script that generates input files for DSQSS/DLA and DSQSS/PMWA from a single input file.
-First of all, prepare a text file ``std.in`` with the following contents as an input file for ``dsqss_pre.py``. 
+First of all, prepare a text file ``std.in`` with the following contents as an input file for ``pmwa_pre``. 
 
 ::
 
@@ -54,7 +54,7 @@ Next, type the following command:
 
 ::
 
-   $ $DSQSS_ROOT/bin/dsqss_pre.py -i std.in
+   $ $DSQSS_ROOT/bin/pmwa_pre -i std.in
 
 Then, input files ``param.in`` and ``lattice.xml`` are generated.
 
