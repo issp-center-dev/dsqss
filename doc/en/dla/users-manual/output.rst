@@ -164,28 +164,28 @@ Main results are written in a file with the name specified by ``outfile`` keywor
   \beta N_s\left[ \left\langle \left(\tilde{m}^z\right)^2\right\rangle
   - \left\langle \tilde{m}^z\right\rangle^2 \right]`
 
-``amzs``
+``amzsK``
   The "magnetization" ("staggered", :math:`\tau=0`)
 
-  :math:`\left\langle m_s^z \right\rangle` , where
-  :math:`\displaystyle m_s^z \equiv \frac{1}{N_s} \sum_i^{N_s} M_i^z 
-  \cos\left( 2\pi \frac{\text{mtype}(i)}{N_\text{mtype}} \right)` ,
-  :math:`\text{mtype}(i)` is the kind of measurement of :math:`i` site (see lattice file), 
-  and :math:`N_\text{mtype}` is the number of kinds of measurements.
+  :math:`\left\langle m_s^z \right\rangle` where
+  :math:`\displaystyle m_K^z \equiv \frac{1}{N_s} \sum_i^{N_s} M_i^z \cos\left( \vec{k}\cdot\vec{r_i} \right)` .
+
+  :math:`K` is an index of wavevector :math:`k` specified in the wavevector XML file.
 
 ``bmzu``
-  The "magnetization" ("staggered", average over :math:`\tau`). :math:`\left\langle \tilde{m}_s^z \right\rangle` .
+  The "magnetization" ("staggered", average over :math:`\tau`).
+  :math:`\left\langle \tilde{m}_K^z \right\rangle` .
 
 ``smzs``
   The structure factor ("staggered").
 
-  :math:`\displaystyle S^{zz}(\vec{k}_s) = N_s \left[ \left\langle (m_s^z)^2 \right\rangle - \left\langle m_s^z \right\rangle^2 \right]`
+  :math:`\displaystyle S^{zz}(\vec{k}) = N_s \left[ \left\langle (m_K^z)^2 \right\rangle - \left\langle m_K^z \right\rangle^2 \right]`
 
 ``xmzs``
   The longitudinal susceptibility ("staggered").
 
-  :math:`\displaystyle \chi^{zz}(\vec{k}_s,  \omega=0) 
-  = \beta N_s \left[\left\langle (\tilde{m}_s^z)^2 \right\rangle - \left\langle \tilde{m}_s^z \right\rangle^2 \right]`
+  :math:`\displaystyle \chi^{zz}(\vec{k},  \omega=0) 
+  = \beta N_s \left[\left\langle (\tilde{m}_K^z)^2 \right\rangle - \left\langle \tilde{m}_K^z \right\rangle^2 \right]`
 
 Structure factor output
 ****************************************
@@ -204,7 +204,7 @@ Wave vector :math:`\vec{k}` and imaginary time :math:`\tau` are specified by the
   R C0t1 = 1.32500000e-03 1.40929454e-04
   R C1t0 = 7.35281032e-02 3.18028565e-04
 
-where ``<k>`` is an index of the wave vector specified by ``kindex`` (the last element of each ``SF`` tag) in the structure factor input file
+where ``<k>`` is an index of the wave vector specified by ``kindex`` (the last element of each ``RK`` tag) in the wavevector XML file
 and ``<t>`` is an index of the discretized imaginary time.
 
 Real space temperature Green's function output
@@ -216,7 +216,7 @@ The real space temperature Green's function is defined as the following:
   G(\vec{r}_{ij}, \tau) \equiv \left\langle M_i^+(\tau) M_j^- \right\rangle
 
 Displacement :math:`\vec{r}_{ij}` and imaginary time :math:`\tau` are specified by the name ``C<k>t<t>`` as the same way of structure factor,
-where ``<k>`` is an index of the displacement specified by ``kind`` (the first element of each ``CF`` tag) in the real space temperature Green's function input file,
+where ``<k>`` is an index of the displacement specified by ``kind`` (the first element of each ``R`` tag) in the relative coordinate XML file,
 and ``<t>`` is an index of the discretized imaginary time.
 
 Momentum space temperature Green's function output
@@ -228,5 +228,5 @@ The momentum space temperature Green's function is defined as the following:
   G(\vec{k}, \tau) \equiv \left\langle M^+(\vec{k},  \tau) M^-(-\vec{k}, 0) \right\rangle
 
 Wave vector :math:`\vec{r}_{ij}` and imaginary time :math:`\tau` are specified by the name ``C<k>t<t>`` as the same way of structure factor,
-where ``<k>`` is an index of the displacement specified by ``kind`` (the last element of each ``SF`` tag) in the momentum space temperature Green's function input file,
+where ``<k>`` is an index of the displacement specified by ``kind`` (the last element of each ``RK`` tag) in the wavevector XML file,
 and ``<t>`` is an index of the discretized imaginary time.

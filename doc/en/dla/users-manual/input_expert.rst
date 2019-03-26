@@ -19,10 +19,10 @@ The list of input files
     cf.xml, "Indexing directions between all the sites. (optional)"
 
 
-.. expert_param_file:
+.. _expert_param_file:
 
-Parameter file ``qmc.inp``
-**********************************
+Parameter file
+***************
 The parameter file is a plain-text file with the following format,
 
 - One line stands for one parameter by the key-value style, ``<name> = <value>``.
@@ -49,6 +49,7 @@ The list of parameters are the following,
     nsegmax, int,  10000, "The maximum number of world-line segments."
     algfile, string,  algorithm.xml, "The filename of an algorithm file."
     latfile, string, lattice.xml, "The filename of a lattice file."
+    ntau, int, 10, "The number of the discretization of the imaginary time for calculating some observables as functions of imaginary time."
     wvfile, string, --,  "A wavevector XML file. If it is an empty string, observables as functions of wavevector will not be calculated."
     dispfile, string,  --, "A relative coordinates XML file. If it is an empty string, observables as functions of relative coordinates will not be calculated."
     outfile, string, sample.log, "The name of the main result file."
@@ -69,9 +70,10 @@ The list of parameters are the following,
 
     - The checkpoint file is ignored. DSQSS/DLA never saves nor loads it.
 
+.. _lattice_xml_file:
 
-Lattice file ``lattice.xml``
-**************************************
+Lattice XML file
+*****************
 
 A lattice file is a textfile written in XML format.
 This defines space to be simulation, for example, the number of sites, the connections between sites, and so on.
@@ -112,7 +114,6 @@ Lattice/NumberOfInteractionTypes
 
 Lattice/NumberOfBondDirections
   The number of bond directions.
-  ボンドの方向 Direction の数.
 
 Lattice/NumberOfEdgeInteractions
   The number of bonds connecting sites over the lattice's boundary.
@@ -145,8 +146,12 @@ Lattice/Direction
   The direction of bonds.
   This takes "index of the direction" and "coordinates of the direction."
 
-Algorithm file ``algorithm.xml``
-***********************************
+
+
+.. _algorithm_xml_file:
+
+Algorithm XML file
+********************
 
 An algorithm file is a textfile written in XML format.
 This defines the details of interactions, for example, the scattering probability of a worm head.
@@ -198,13 +203,7 @@ Algorithm/General/WDiag
 
 Algorithm/Site
   This defines a site type, for example, the weight of worm heads on a site.
-  This has children "SType", "NumberOfStates", "VertexTypeOfSource", and "InitialConfiguration".
-
-Algorithm/Site
-  1つのサイト型を定義します.具体的には, そのサイト型をもつサイトに対する操作を定義します.
-  サイトにワームを生成消滅する過程もここで定義します.
-  サブ要素として,  SType,  NumberOfStates,  VertexTypeOfSource,  InitialConfiguration があります.
-  ::
+  This has children "SType", "NumberOfStates", "VertexTypeOfSource", and "InitialConfiguration".::
 
     <Algorithm>
       ...
@@ -230,7 +229,7 @@ Algorithm/Site/NumberOfStates
   The number of states of the site.
 
 Algorithm/Site/LocalStates
-  Mapping from indecies of local states to values of states.
+  Mapping from indices of local states to values of states.
   For example, the z components of the spin operator in the usual spin case.
 
 Algorithm/Site/VertexTypeOfSource
@@ -415,8 +414,12 @@ Algorithm/Vertex/InitialConfiguration/Channel
 
   For the special case, the pair-annihilation of worm heads, let both the first and the second integer be -1.
 
-Wavevector XMLファイル ``wavevector.xml``
-************************************************
+
+
+.. _wavevector_xml_file:
+
+Wavevector XML file
+**********************
 
 A wavevector XML file is a textfile written in a XML-like format.
 This defines the wavevectors to calculate several observables: staggered magnetization
@@ -430,7 +433,7 @@ dynamical structure factor
     S^{zz}(\vec{k},\tau) \equiv
       \left\langle M^z(\vec{k},\tau)M^z(-\vec{k},0) \right\rangle - \left\langle M^z(\vec{k},\tau)\right\rangle \left\langle M^z(-\vec{k},0)\right\rangle ,
 
-and momentum space temperatur Green's function
+and momentum space temperature Green's function
 
 .. math::
   G(\vec{k},\tau) \equiv \left\langle M^+(\vec{k}, \tau) M^-(-\vec{k},0) \right\rangle .
@@ -450,15 +453,19 @@ WaveVector/NumberOfSites
   The number of lattice sites.
 
 WaveVector/NumberOfWaveVectors
-  波数 :math:`\vec{k}` の数.
+  The number of wavevectors.
 
 WaveVector/RK
   The phase factor :math:`z = \exp{\vec{r}\cdot\vec{k}}` for a pair of a wave vector and a site.
   This takes four figures, ":math:`\mathrm{Re}z`", ":math:`\mathrm{Im}z`", "the index of the site", "the index of the wave vector".
   "StructureFactor" should has this elements as many as the number specified by "StructureFactor/NumberOfElements".
 
-Relative coordinate XML file ``displacement.xml``
-****************************************************
+
+
+.. _relative_coordinate_xml_file:
+
+Relative coordinate XML file
+*****************************
 
 A relative coordinate XML file is a textfile written in a XML-like format.
 This defines relative coordinate between two sites, :math:`\vec{r}_{ij}`, to calculate real space temperature Green's function,

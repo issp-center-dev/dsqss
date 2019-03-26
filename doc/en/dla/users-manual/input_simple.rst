@@ -1,13 +1,13 @@
 .. highlight:: none
 
-DLA のシンプルモードファイル
+Simple mode file of DSQSS/DLA
 =================================
 
 
 .. _simple_mode_file:
 
-Simple mode file ``std.toml``
-********************************************
+Simple mode file 
+*****************
 A simple mode file is a textfile written in `TOML`_ format.
 This is used as an input file of several tools such as ``dla_pre``.
 
@@ -37,6 +37,7 @@ Keys in the ``parameter`` table are following:
     nsegmax, int,  10000, "The maximum number of world-line segments."
     algfile, string,  algorithm.xml, "The filename of an algorithm file."
     latfile, string, lattice.xml, "The filename of a lattice file."
+    ntau, int, 10, "The number of the discretization of the imaginary time for calculating some observables as functions of imaginary time."
     wvfile, string, --,  "A wavevector XML file. If it is an empty string, observables as functions of wavevector will not be calculated."
     dispfile, string,  --, "A relative coordinates XML file. If it is an empty string, observables as functions of relative coordinates will not be calculated."
     outfile, string, sample.log, "The name of the main result file."
@@ -97,7 +98,7 @@ kagome
 ``hamiltonian``
 ++++++++++++++++++++
 
-A table spefifying information of Hamiltonian.
+A table specifying information of Hamiltonian.
 This table is used in ``dla_pre`` and ``dla_hamgen``.
 
 Keys in the ``hamiltonian`` table are following:
@@ -170,28 +171,29 @@ Keys in the ``kpoints`` table are following:
 
 ``algorithm``
 +++++++++++++++
-A table specifying algorithm for calculating scattering probability of wormheads.
+A table specifying algorithm for calculating scattering probability of worm heads.
 This table is used in ``dla_pre``.
 
 Keys in the ``algorithm`` table are following:
 
-wv.. csv-table::
+.. csv-table::
     :header-rows: 1
     :widths: 1,1,1,4
 
     name, type, default, description
-    kernel, string, 'suwa todo',  "Algorithm for calculating the scattering probability of wormheads."
+    kernel, string, 'suwa todo',  "Algorithm for calculating the scattering probability of worm heads."
 
 
-``kernel`` として指定できる手法は次の通り。
+Available ``kernel`` s are following:
 
 ``suwa todo``
-   Rejection minimized algorithm without detailed balance condition (irreversible) proposed by Suwa and Todo.
-   (H. Suwa and S. Todo, PRL 105, 120603 (2010))
+   Rejection minimized algorithm without detailed balance condition (irreversible) proposed by 
+   Suwa and Todo
+   (`H. Suwa and S. Todo, PRL 105, 120603 (2010) <https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.105.120603>`_.)
 
 ``reversible suwa todo``
-   Rejection minimized algorithm with detailed balance condition (reversible) proposed by Suwa and Todo.
-   (arXiv:1106.3562)
+   Rejection minimized algorithm with detailed balance condition (reversible) proposed by Suwa and Todo
+   (`H. Suwa and S. Todo, arXiv:1106.3562 <https://arxiv.org/abs/1106.3562>`_.)
 
 ``heat bath``
    Heat bath method (Gibbs sampler).

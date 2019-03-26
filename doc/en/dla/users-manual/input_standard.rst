@@ -4,28 +4,28 @@ Standard input files for DSQSS/DLA
 ======================================
 
 List of files
-************************
+**************
 
 .. csv-table::
     :header-rows: 0
     :widths: 1,4
 
-    lattice.dat, "格子ファイル."
-    lattice.toml, "格子TOMLファイル."
-    hamiltonian.toml, "ハミルトニアンファイル."
-    kpoints.dat, "波数ファイル."
+    lattice.dat, "lattice datafile."
+    lattice.toml, "lattice TOML file."
+    hamiltonian.toml, "Hamiltonian TOML file."
+    kpoints.dat, "Wavevector file."
 
 
 .. _lattice_data_file:
 
-Lattice datafile ``lattice.dat``
-**************************************
+Lattice datafile 
+*****************
 A lattice datafile is a textfile describing information of space (lattice), such as the number of sites and links connecting some sites.
 This file is used as an input file of ``dla_alg``.
 
 From ``#`` mark to the end of the line is a comment and ignored.
 A blank line is also ignored.
-A "list" is written as spece separated elements in one line like ``2 2``.
+A "list" is written as space separated elements in one line like ``2 2``.
 
 The lattice datafile includes the five sections, 
 ``name``, ``lattice``, ``directions``, ``sites``, ``interactions``.
@@ -165,8 +165,10 @@ The following is an example describing :math:`4 \times 4` square lattice::
    31 0 2 15 3 1 1
 
 
-Lattice TOML file ``lattice.toml``
-*************************************
+.. _lattice_toml_file:
+
+Lattice TOML file 
+******************
 A lattice TOML file is a `TOML`_ formatted file defining a lattice by using an unitcell and primitive translation vectors.
 This is used as an input file of ``dla_alg``.
 
@@ -265,9 +267,9 @@ The following is an example describing two dimensional square lattice.
 
 .. _hamiltonian_file:
 
-Hamiltonian file ``hamiltonian.toml``
-***************************************************
-A Hamiltonian file is a `TOML`_ formatted file describing the local Hamiltonian.
+Hamiltonian TOML file 
+**********************
+A Hamiltonian TOML file is a `TOML`_ formatted file describing the local Hamiltonian.
 This file is used as an input file of ``dla_alg``.
 A utility tool ``dla_hamgen`` generates Hamiltonian file for common models, XXZ spin model and Bose-Hubbard model.
 
@@ -411,20 +413,20 @@ The following is an example describing :math:`S=1/2` antiferromagnetic Heisenber
 
 .. _wavevector_file:
 
-Wavevector datafile ``kpoints.dat``
-****************************************
+Wavevector datafile 
+********************
 
 A wavevector datafile is a textfile describing wavevectors
 
 .. math::
-   \vec{k}^{(i)} = \sum_{d=1}^{D} n_d^{(i)} \vec{g}_d,
+   \vec{k}^{(i)} = \sum_{d=1}^{D} k_d^{(i)} \vec{g}_d,
 
 
 where :math:`\vec{g}` is the set of the reciprocal vectors.
 
 From ``#`` mark to the end of the line is a comment and ignored.
 A blank line is also ignored.
-A "list" is written as spece separated elements in one line like ``2 2``.
+A "list" is written as space separated elements in one line like ``2 2``.
 
 The wavevector datafile includes the two sections, ``dim`` and ``kpoints``.
 
@@ -439,20 +441,14 @@ The wavevector datafile includes the two sections, ``dim`` and ``kpoints``.
    - Rest 
       - A list of integers denoting the wavevector.
         The first integer means the index of the wavevector.
-        The rest integers means the coordinates of the wavevector, :math:`n_d`.
+        The rest integers means the coordinates of the wavevector, :math:`k_d`.
 
-ベクトルの基底は逆格子ベクトルです。
-``lattice.dat`` などで座標が ``a_d`` と指定されるような格子点 :math:`r` と、
-``kpoints.dat`` で ``n_d`` で指定されるような波数 :math:`k` との内積は、
-:math:``
-
-正確には、格子の座標が :math:`\vec{r} = \sum r_d \vec{e}_d` で表現されて、
-波数が :math:`\vec{k} = \sum k_d \vec{g}_d` で表現されているとき、これらの内積は
-:math:`\vec{r}\cdot\vec{k} = \sum_d 2\pi r_d k_d / L_d` となります。
-ここで :math:`L_d` は :math:`d` 番目の次元における格子のサイズです。
-
+The inner product between the coordinate :math:`\vec{r} = \sum r_d \vec{e}_d` and
+the wavevector :math:`\vec{k} = \sum k_d \vec{g}_d` is
+:math:`\vec{r}\cdot\vec{k} = \sum_d 2\pi r_d k_d / L_d`,
+where :math:`L_d` is the size of lattice along :math:`d` th dimension.
    
-二次元の例を示します. ::
+The following is an example::
 
    dim
    2
