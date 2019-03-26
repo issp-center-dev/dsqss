@@ -34,19 +34,27 @@ DLA は入力ファイルとして格子定義ファイル,アルゴリズム定
 
 格子生成ツール ``dla_latgen``
 ************************************
-``dla_latgen`` は :ref:`simple_mode_file` から :ref:`lattice_data_file` を生成するツールです. ::
+``dla_latgen`` は :ref:`simple_mode_file` から :ref:`lattice_data_file` や :ref:`lattice_toml_file` を生成するツールです. ::
 
-  $ dla_latgen [-o filename] <inputfile>
+  $ dla_latgen [-o datafile] [-t TOML] [-g GNUPLOT] input
 
 パラメータは以下の通り.
 
-``filename``
-   出力ファイル名.デフォルトは ``lattice.dat`` です.
+``datafile``
+   出力される格子データファイルの名前. デフォルトは ``lattice.dat`` です.
+   空文字列の場合, 格子データファイルは出力されません.
+
+``TOML``
+   出力される格子TOMLファイルの名前. デフォルトは空文字列で, ファイルは出力されません.
+
+``GNUPLOT``
+   出力される格子Gnuplotファイルの名前. デフォルトは空文字列で, ファイルは出力されません.
+   出力されたファイルを``gnuplot`` で ``load`` することで、格子を可視化することができます.
 
 ``inputfile``
   入力ファイル名. ファイル形式の詳細は :ref:`std_toml_lattice` を参照してください.
 
-実行すると filename で指定した名前の格子定義ファイルが生成されます.
+実行すると datafile や TOML で指定した名前の格子定義ファイルが生成されます.
 
 入力ファイル例
 ::
@@ -162,8 +170,9 @@ DLA は入力ファイルとして格子定義ファイル,アルゴリズム定
 
 アルゴリズム生成ツール ``dla_alg``
 *************************************
-``dla_alg`` は格子 dat/TOML ファイル, ハミルトニアン TOML ファイル, 波数ファイル から
-格子 XML ファイル, アルゴリズム XML ファイル, 波数 XML ファイル, 変位 XML ファイルを生成するツールです.
+``dla_alg`` は
+:ref:`lattice_data_file`, :ref:`lattice_toml_file`, :ref:`hamiltonian_file`, :ref:`wavevector_file` から
+:ref:`lattice_xml_file`, :ref:`algorithm_xml_file`, :ref:`wavevector_xml_file`, :ref:`relative_coordinate_xml_file` を生成するツールです.
 ::
 
    $ dla_alg [-l LAT] [-h HAM] [-L LATXML] [-A ALGXML]
@@ -193,31 +202,17 @@ DLA は入力ファイルとして格子定義ファイル,アルゴリズム定
    設定した場合、アルゴリズム定義ファイルは書き出されません。
 
 ``KPOINT``
-   読み込む波数ファイル.省略した場合は ``kpoints.dat`` が指定されます.
+   読み込む波数ファイル.省略した場合は波数ベクトルXML ファイルは出力されません.
 
 ``WV``
    書き出される波数ベクトルXMLファイル. 省略した場合は ``wavevector.xml`` が指定されます.
 
 ``DISP``
-   書き出される変位定義ファイル。省略した場合は ``displacement.xml`` が指定されます。
+   書き出される相対座標定義ファイル。省略した場合は相対座標XML ファイルは出力されません.
 
 ``--distance-only``
    指定した場合、変位定義において変位 :math:`\vec{r}_{ij}` ではなくその絶対値 :math:`r_{ij}` でグループ化します。
 
 ``KERNEL``
    バーテックスにおけるワームヘッドの散乱確率の導出に使うアルゴリズム。省略した場合、 ``suwa todo`` が用いられます。
-
-   ``suwa todo``
-      詳細釣り合いを破る諏訪・藤堂アルゴリズムを用います。
-      (H. Suwa and S. Todo, PRL 105, 120603 (2010))
-   
-   ``reversible suwa todo``
-      詳細釣り合いを満たす諏訪・藤堂アルゴリズムを用います。 (arXiv:1106.3562)
-
-   ``heat bath``
-      熱浴法を用います。
-
-   ``metropolice``
-      メトロポリスアルゴリズムを用います。
-
-.. _TOML: https://github.com/toml-lang/toml/blob/master/versions/ja/toml-v0.5.0.md
+   利用できるアルゴリズムは :ref:`simple_mode_algorithm` を参照してください.
