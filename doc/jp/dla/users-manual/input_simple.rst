@@ -63,19 +63,34 @@ DLA のシンプルモードファイル
 
 ``lattice``
 +++++++++++++++
-格子の情報を指定するテーブルです。 ``dla_pre``, ``dla_latgen`` で使用されます。
+格子の情報を指定するテーブルです. ``dla_pre``, ``dla_latgen`` で使用されます.
 
-``lattice`` テーブルに属するキーのリストと意味を次に示します。
+``lattice`` テーブルに属するキーのリストと意味を次に示します.
 
 .. csv-table::
     :header-rows: 1
     :widths: 1,1,1,4
 
     パラメータ名, 型, デフォルト値, 説明
-    lattice, string, --, "格子の種類. 超立方格子 'hypercubic' が利用可能です."
+    lattice, string, --, "格子の種類."
     dim, int, --, 空間次元.
     L, list(int) or int, --, "格子の大きさ. 整数の配列か整数で指定します.  空間次元より要素が少ない場合, 足りない要素は最後の要素で自動的に埋められます."
     bc, list(bool) or bool, true, "各次元に対する、格子の境界条件. ブール値の配列かブール値で指定します.  ``true`` が周期的境界条件を, ``false`` が開境界条件を示します."
+
+
+現在利用可能な格子は次のとおりです.
+
+hypercubic
+  d次元超立方格子.
+
+triangular
+  2次元三角格子.
+
+honeycomb
+  2次元蜂の巣格子.
+
+kagome
+  2次元カゴメ格子.
 
 
 .. _std_toml_hamiltonian:

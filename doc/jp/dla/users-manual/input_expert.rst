@@ -191,14 +191,12 @@ Algorithm/General/NXMax
   例えば大きさ :math:`S` のスピン系ならば :math:`2S+1` .
 
 Algorithm/General/WDiag
-  ユーザが改変する measure_specific.cc 以外では用いられないので, その中で使われない場合には指定する必要はありません.
-  （標準の measure_specific.cc では, ワームの行程長から相関関数を求めるときの比例係数として用いられています.
-  この量に興味がない場合は, 任意の数を指定してください.）
+  ワームの行程長から相関関数を求めるときの比例係数.
 
 Algorithm/Site
   1つのサイト型を定義します.具体的には, そのサイト型をもつサイトに対する操作を定義します.
   サイトにワームを生成消滅する過程もここで定義します.
-  サブ要素として,  SType,  NumberOfStates,  VertexTypeOfSource,  InitialConfiguration があります.
+  サブ要素として,  SType,  NumberOfStates, LocalStates, VertexTypeOfSource,  InitialConfiguration があります.
   ::
 
     <Algorithm>
@@ -206,6 +204,7 @@ Algorithm/Site
       <Site>
         <STYPE> 0 </STYPE>
         <NumberOfStates> 2 </NumberOfStates>
+        <LocalStates> -0.5 0.5 </LocalStates>
         <VertexTypeOfSource> 0 </VertexTypeOfSource>
         <InitialConfiguration>
            ...
