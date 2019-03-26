@@ -15,8 +15,8 @@ The list of input files
     qmc.inp, "Parameter list for the simulation, e.g., the number of Monte Carlo sets."
     lattice.xml, "Definition of the lattice."
     algorithm.xml, "Definition of the algorithm (e.g., scattering rate of a worm)."
-    sf.xml, "Indication of wave vectors for structure factors. (optional)"
-    cf.xml, "Indexing directions between all the sites. (optional)"
+    wavevector.xml, "Indication of wave vectors for structure factors. (optional)"
+    displacement.xml, "Indexing directions between all the sites. (optional)"
 
 
 .. _expert_param_file:

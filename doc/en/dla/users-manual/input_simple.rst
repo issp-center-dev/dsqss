@@ -15,7 +15,7 @@ This is used as an input file of several tools such as ``dla_pre``.
 
 ``parameter``
 +++++++++++++++++
-A table specifying simulation parameters such as the inverse temperature.
+A table denoting simulation parameters such as the inverse temperature.
 This table is used in ``dla_pre`` and ``dla_pgen``.
 
 Keys in the ``parameter`` table are following:
@@ -63,7 +63,7 @@ Keys in the ``parameter`` table are following:
 
 ``lattice``
 +++++++++++++++
-A table specifying information of lattice.
+A table denoting information of lattice.
 This is used in ``dla_pre`` and ``dla_latgen``.
 
 Keys in the ``lattice`` table are following:
@@ -98,7 +98,7 @@ kagome
 ``hamiltonian``
 ++++++++++++++++++++
 
-A table specifying information of Hamiltonian.
+A table denoting information of Hamiltonian.
 This table is used in ``dla_pre`` and ``dla_hamgen``.
 
 Keys in the ``hamiltonian`` table are following:
@@ -154,7 +154,7 @@ has the following parameters:
 
 ``kpoints``
 +++++++++++++
-A table specifying information of wavevectors.
+A table denoting information of wavevectors.
 This table is used in ``dla_pre`` and ``dla_wvgen``.
 
 Keys in the ``kpoints`` table are following:
@@ -171,7 +171,7 @@ Keys in the ``kpoints`` table are following:
 
 ``algorithm``
 +++++++++++++++
-A table specifying algorithm for calculating scattering probability of worm heads.
+A table denoting algorithm for calculating scattering probability of worm heads.
 This table is used in ``dla_pre``.
 
 Keys in the ``algorithm`` table are following:

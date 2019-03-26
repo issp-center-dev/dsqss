@@ -32,8 +32,8 @@ The lattice datafile includes the five sections,
 
 
 ``name``
-   The name of lattice.
-   This is just a comment or marker, and will not be used.
+   A string denoting the name of lattice.
+   This is just a comment or a marker, and will not be used.
 
 ``lattice``
    The section specifying general information of lattice.
@@ -262,9 +262,6 @@ The following is an example describing two dimensional square lattice.
    target = { siteid = 0, offset = [0,1] }
 
 
-
-
-
 .. _hamiltonian_file:
 
 Hamiltonian TOML file 
@@ -408,9 +405,6 @@ The following is an example describing :math:`S=1/2` antiferromagnetic Heisenber
    value = 0.25
 
 
-
-
-
 .. _wavevector_file:
 
 Wavevector datafile 
@@ -437,7 +431,7 @@ The wavevector datafile includes the two sections, ``dim`` and ``kpoints``.
    A section describing wavevectors.
 
    - First line
-      - The number of wavevectors.
+      - An integer denoting the number of wavevectors.
    - Rest 
       - A list of integers denoting the wavevector.
         The first integer means the index of the wavevector.
