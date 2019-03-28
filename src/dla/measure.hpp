@@ -413,55 +413,59 @@ void Measurement::setsummary() {
   double invV = 1.0 / V;
   double D    = LAT.D;
 
-  double invsign = 1.0 / X[SGN];
+  const double sgn = X[SGN];
+  if (sgn != 0.0){
+    const double invsign = 1.0 / sgn;
 
-  for(int i=0; i<NACC; ++i){
-    if(i==SGN){
-      continue;
+    for(int i=0; i<NACC; ++i){
+      if(i==SGN){
+        continue;
+      }
+      X[i] *= invsign;
     }
-    X[i] *= invsign;
-  }
 
-  for(int k=0; k<WV.NK; ++k){
-    ACC_SMAG[k].average();
-  }
+    Q[SIGN] = X[SGN];
 
+    Q[ANV] = X[NV1] * invV;
+    Q[ENE] = (EBASE + X[EB1] * T) * invV;
 
-  Q[SIGN] = X[SGN];
+    Q[SPE] = (X[EB2] - X[EB1] * X[EB1] - X[NV1]) * invV;
+    Q[SOM] = Q[SPE] * B;
 
-  Q[ANV] = X[NV1] * invV;
-  Q[ENE] = (EBASE + X[EB1] * T) * invV;
+    Q[LEN] = X[LE1];
+    Q[XMX] = WDIAG * X[LE1] / B;
 
-  Q[SPE] = (X[EB2] - X[EB1] * X[EB1] - X[NV1]) * invV;
-  Q[SOM] = Q[SPE] * B;
+    Q[AMZU] = X[MZUA1];
+    Q[BMZU] = X[MZUB1];
+    Q[SMZU] = (X[MZUA2] - X[MZUA1] * X[MZUA1]) * V;
+    Q[XMZU] = (X[MZUB2] - X[MZUB1] * X[MZUB1]) * B * V;
 
-  Q[LEN] = X[LE1];
-  Q[XMX] = WDIAG * X[LE1] / B;
+    Q[DS1]  = B * (X[NH1] - X[MZUA1] * X[EB1]) / V;
+    Q[W2]   = X[Wxy2];
+    Q[RHOS] = X[Wxy2] / (2*D * V * B);
+    Q[RHOF] = Q[RHOS] / Q[AMZU];
+    Q[COMP] = Q[XMZU] / (X[MZUB1] * X[MZUB1]);
 
-  Q[AMZU] = X[MZUA1];
-  Q[BMZU] = X[MZUB1];
-  Q[SMZU] = (X[MZUA2] - X[MZUA1] * X[MZUA1]) * V;
-  Q[XMZU] = (X[MZUB2] - X[MZUB1] * X[MZUB1]) * B * V;
+    for (int i = 0; i < NPHY; i++) {
+      PHY[i].accumulate(Q[i]);
+    }
 
-  Q[DS1]  = B * (X[NH1] - X[MZUA1] * X[EB1]) / V;
-  Q[W2]   = X[Wxy2];
-  Q[RHOS] = X[Wxy2] / (2*D * V * B);
-  Q[RHOF] = Q[RHOS] / Q[AMZU];
-  Q[COMP] = Q[XMZU] / (X[MZUB1] * X[MZUB1]);
+    for(int k=0; k<WV.NK; ++k){
+      ACC_SMAG[k].average();
+    }
 
-  for (int i = 0; i < NPHY; i++) {
-    PHY[i].accumulate(Q[i]);
-  }
-
-  for (int k=0; k<WV.NK; ++k){
-    const double a1 = ACC_SMAG[k].A1.mean() * invsign;
-    const double a2 = ACC_SMAG[k].A2.mean() * invsign;
-    const double b1 = ACC_SMAG[k].B1.mean() * invsign;
-    const double b2 = ACC_SMAG[k].B2.mean() * invsign;
-    PHY_SMAG[k].A.accumulate(a1);
-    PHY_SMAG[k].B.accumulate(a2);
-    PHY_SMAG[k].S.accumulate((a2 - a1*a1)*V);
-    PHY_SMAG[k].X.accumulate((b2 - b1*b1)*B*V);
+    for (int k=0; k<WV.NK; ++k){
+      const double a1 = ACC_SMAG[k].A1.mean() * invsign;
+      const double a2 = ACC_SMAG[k].A2.mean() * invsign;
+      const double b1 = ACC_SMAG[k].B1.mean() * invsign;
+      const double b2 = ACC_SMAG[k].B2.mean() * invsign;
+      PHY_SMAG[k].A.accumulate(a1);
+      PHY_SMAG[k].B.accumulate(a2);
+      PHY_SMAG[k].S.accumulate((a2 - a1*a1)*V);
+      PHY_SMAG[k].X.accumulate((b2 - b1*b1)*B*V);
+    }
+  }else{ // sgn == 0.0
+    PHY[SGN].accumulate(0.0);
   }
 }
 

@@ -163,12 +163,15 @@ void CF::setsummary() {
   const double V        = LAT.NSITE;
   const double testDIAG = ALG.getBlock("WDIAG", (double)1.0);  //ALG.X["General"]["WDIAG" ].getDouble(); // 0.25
   SIGN.average();
-  const double invsign = 1.0 / SIGN.mean();
-  for (int icf = 0; icf < nkinds; icf++) {
-    const double factor = 2 * testDIAG * V / DISP.NR[icf];
-    for (int it = 0; it < Ntau; it++) {
-      ACC[icf][it].average();
-      PHY[icf][it].accumulate(invsign * ACC[icf][it].mean() * factor);
+  const double sgn = SIGN.mean();
+  if(sgn != 0.0){
+    const double invsign = 1.0 / sgn;
+    for (int icf = 0; icf < nkinds; icf++) {
+      const double factor = 2 * testDIAG * V / DISP.NR[icf];
+      for (int it = 0; it < Ntau; it++) {
+        ACC[icf][it].average();
+        PHY[icf][it].accumulate(invsign * ACC[icf][it].mean() * factor);
+      }
     }
   }
 }
