@@ -23,9 +23,9 @@ DSQSS/PMWAを実行するには,
 
 の2つの入力ファイルが必要です.
 そのため, まずはこれらの入力ファイルを作成します.
-そのためのユーティリティツールが ``dsqss_pre.py`` です.
-これは単一の入力ファイルから, DSQSS/DLA および DSQSS/PMWA の入力ファイルを生成するPython スクリプトです.
-まず, ``dsqss_pre.py`` の入力ファイルとして, 次の内容を持つテキストファイル ``std.in`` を準備します.
+そのためのユーティリティツールが ``pmwa_pre`` です.
+これは単一の入力ファイルから, DSQSS/PMWA の入力ファイルを生成するPython スクリプトです.
+まず, ``pmwa_pre`` の入力ファイルとして, 次の内容を持つテキストファイル ``std.in`` を準備します.
 
 ::
 
@@ -51,11 +51,11 @@ DSQSS/PMWAを実行するには,
   NDECOR = 100
 
 自分の好きなエディタで書くか, ``sample/pmwa/1DDimer`` ディレクトリにあるものを利用してください.
-このファイルを ``dsqss_pre.py`` に与えます.
+このファイルを ``pmwa_pre`` に与えます.
 
 ::
 
-  $ $DSQSS_ROOT/bin/dsqss_pre.py -i std.in
+  $ $DSQSS_ROOT/bin/dsqss_pre.py std.in
 
 この結果, パラメータファイル param.in, 格子定義ファイル lattice.xmlが作成されます.
 

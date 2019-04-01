@@ -12,18 +12,19 @@ For example, you can perform finite temperature calculation of XXZ spin model by
 
 DSQSS consists of the following subpackages.
 
-- serial (/dsqss)
-    1. Hamiltonian file generators: ``hamgen_H`` (Spin system), ``hamgen_B`` (Boson system)
-    2. Lattice file generator: ``lattgene``
-    3. Algorithm file generator:  ``dla_alg``
-    4. QMC engines (directed loop algorithm): ``dla_H`` (Spin system), ``dla_B`` (Boson system)
+- serial (dla)
 
-- non-trivial parallel (/pmwa)
-    1. Lattice file generator: ``lattgene_P``
-    2. QMC engines (multiworm): ``pmwa_H`` ( XXZ spin model), ``pmwa_B`` (Hard core Boson)
+    #. Input files generator: ``dla_pre``
+    #. Hamiltonian file generator: ``dla_hamgen``
+    #. Lattice file generator: ``dla_latgen``
+    #. Algorithm file generator:  ``dla_alg``
+    #. QMC engines (directed loop algorithm): ``dla``
 
-- tools (/tool)
-    1. Input files generator: ``dsqss_pre.py``
+- non-trivial parallel (pmwa)
+
+    #. Input files generator: ``pmwa_pre``
+    #. Lattice file generator: ``lattgene_P``
+    #. QMC engines (multiworm): ``pmwa_H`` ( XXZ spin model), ``pmwa_B`` (Hard core Boson)
 
 
 Developers
