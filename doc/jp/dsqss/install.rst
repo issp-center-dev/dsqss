@@ -39,30 +39,31 @@ DSQSSのダウンロード後にzipファイルを解凍すると, ファイル�
   ├── CMakeLists.txt
   ├── LICENSE
   ├── README.md
-  ├── config
+  ├── config                 #CMake用のconfigure fileを格納したフォルダ
   │   ├── gcc.cmake
   │   └── intel.cmake
-  ├── doc
+  ├── doc                    #マニュアルのソース一式を格納したフォルダ
   │   ├── en
   │   └── jp
-  ├── sample
+  ├── sample                 #サンプルファイルを格納したフォルダ
   │   ├── CMakeLists.txt
   │   ├── dla
   │   └── pmwa
-  ├── src
+  ├── src                    #ソースファイル一式を格納したフォルダ
   │   ├── common
   │   ├── dla
   │   ├── pmwa
   │   └── third-party
   │       └── boost
-  ├── test
+  ├── test                   #CTest用のファイル一式を格納したフォルダ
   │   ├── CMakeLists.txt
   │   ├── dla
   │   ├── pmwa
   │   └── tool
-  └── tool
+  └── tool                  
        ├── CMakeLists.txt
-       └── dsqss_pre.py
+       ├── setup.py          #DSQSS用のツールのセットアップ用スクリプト
+       └── dsqss             #DSQSS用のツールを格納したフォルダ
 
 
 インストール
