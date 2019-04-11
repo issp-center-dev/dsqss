@@ -23,7 +23,7 @@ install:
 script:
   - mkdir build
   - cd build
-  - cmake -DDocument=ON../
+  - cmake -DDocument=ON ../
   - VERBOSE=1 make
   - export OMP_NUM_THREADS=1
   - make test ARGS='-V'
