@@ -19,14 +19,14 @@ install:
   - pip install numpy
   - pip install scipy
   - pip install toml
-  - pip install sphinx
+  - pip install sphinx sphinxcontrib-spelling
 script:
   - mkdir build
   - cd build
   - cmake -DDocument=ON ../
   - VERBOSE=1 make
   - export OMP_NUM_THREADS=1
-  - make test ARGS='-V'
+  - ctest -VV
 after_success:
   - /bin/bash -x ${ROOTDIR}/.travis/deploy_docs.sh
 before_deploy:
