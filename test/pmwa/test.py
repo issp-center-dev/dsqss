@@ -105,7 +105,7 @@ def geninp(param, seed, nset=10, name=""):
 def run(exename, name=""):
     if name != "":
         name = "_{0}".format(name)
-    retval = sub.call(["{0}/{1}".format(BINDIR, exename), "qmc{0}.inp".format(name)])
+    retval = sub.call(["mpiexec", "-np", "1", "{0}/{1}".format(BINDIR, exename), "qmc{0}.inp".format(name)])
     if retval != 0:
         sys.exit(retval)
 
