@@ -1,42 +1,20 @@
-os: linux
-dist: xenial
-language: cpp
-sudo: enabled
-
-install:
-  - export ROOTDIR=`pwd`
-  - wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
-  - sh ./miniconda.sh -b
-  - export PATH=/home/travis/miniconda3/bin:$PATH
-  - conda update -y conda
-  - sudo apt-get update
-  - sudo apt-get install -y gcc gfortran cmake wget
-  - sudo apt-get install -y libopenmpi-dev openmpi-bin
-  - sudo apt-get install -y enchant
-  - |
-    sudo apt-get install -y texlive-latex-recommended texlive-latex-extra \
-         texlive-lang-japanese texlive-fonts-recommended texlive-fonts-extra latexmk
-  - kanji-config-updmap-sys ipaex
-    #  - pip install numpy
-    #  - pip install scipy
-    #  - pip install toml
-  - pip install sphinx sphinxcontrib-spelling
-script:
-  - mkdir build
-  - cd build
-  - cmake -DDocument=ON ../
-  - VERBOSE=1 make
-  - export OMP_NUM_THREADS=1
-  - ctest -VV
-after_success:
-  - /bin/bash -x ${ROOTDIR}/.travis/deploy_docs.sh
-before_deploy:
-  - /bin/bash -x ${ROOTDIR}/.travis/make_tarball.sh
-deploy:
-  provider: releases
-  api_key:
-    secure: Ouz4H3hFt47uGBU3Ppn3nTjLl/e6RByTLIXnO1vJdATWnCG7IM34EXHW9vtBbRarLn3sW1zC4m5nTfNuIuEvQEz0WGeHg5qrp+vwEoz7tKRzos9IQWwIP5i3mQG7JDpbwnJ8CTBYCwZbzUvY1s6DTvIkiu6yDcsqJnkNQZzHCgWDFLgg3nSssIaAWfX94PoGegAdlfAcfOwYkN68P6h8dAjC9fHz6me6x0U1JfPRLxNUpLQh+qcS1GnYpTi0c9r+46cAy3vhqcIywX9/eHW2aXp5jeFam2ljPBidqGoHhXpHOuLwDbNTLIR2ecCPTOapQcXmNapYi8ngqyRD6ExORbH1hEUDfHMB8BOguljyqUDf7t/4vHEqNjUTaszyrk+VRwdZn7LwyxLflbBVNo2o1zXCOwZkT7U0Kedr95pY1u5D2KkEM457zT6eNUXqnmxxFJa/sQL8TwzYdXSMiw2lYvIhpxZlfN0BclppO+weeRQLtt1wp+7HvAURVQ6EmSf4I2HSXHTvf+gibrfmGpEFbI92mHuMwoxCwNu6O+viyYReIDyAsaP61+e+nolWwjyQCF1YsP2N42w85CKDTl2gdFG1ZMp/UjcjXbU0grAgyB7b1BouoMSbhPugPbNLVMwuJBbCDTqetPu/5DfQYYTC1VOQpqUARwnHhPUZtdhWDUQ=
-  file_glob: true
-  file: '*.tar.gz'
-  on:
-    tags: on
+matrix:
+  include:
+  - language: cpp
+    sudo: enabled
+    before_install:
+      - sudo apt-get update
+      - sudo apt-get install -y gcc gfortran liblapack-dev cmake
+        #       - pip install numpy --user
+        #       - pip install scipy --user
+        #       - pip install toml --user
+      - sudo apt-get install -y libopenmpi-dev openmpi-bin
+    install:
+      - mkdir build
+      - cd build
+      - cmake ../
+      - VERBOSE=1 make 
+    script:
+      - export OMP_NUM_THREADS=1
+      - make test ARGS='-V'
+ 

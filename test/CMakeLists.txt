@@ -25,6 +25,7 @@ if(num_missing_modules)
     execute_process(COMMAND PYTHONPATH=${pythonpath_testing} ${PYTHON_EXECUTABLE} -m pip install -U pip)
   endif(NOT PIP_FOUND)
   foreach(module_name ${missing_modules})
+    message(STATUS ${module_name})
     execute_process(
       COMMAND PYTHONPATH=${pythonpath_testing} ${PYTHON_EXECUTABLE} -m pip install --prefix=${pythonpath_testing} ${module_name}
       )
