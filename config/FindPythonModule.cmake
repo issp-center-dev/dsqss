@@ -1,5 +1,7 @@
 # - Macro to find a python module
 #
+# https://github.com/openturns/openturns/tree/master/cmake.FindPythonModule.cmake
+#
 # Usage:
 #  include (FindPythonModule)
 #  find_python_module (module [VERSION] [REQUIRED])
