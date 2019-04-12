@@ -10,7 +10,7 @@ install:
   - export PATH=/home/travis/miniconda3/bin:$PATH
   - conda update -y conda
   - sudo apt-get update
-  - sudo apt-get install -y gcc gfortran cmake wget
+  - sudo apt-get install -y gcc gfortran cmake wget liblapack-dev
   - sudo apt-get install -y libopenmpi-dev openmpi-bin
   - sudo apt-get install -y enchant
   - |
