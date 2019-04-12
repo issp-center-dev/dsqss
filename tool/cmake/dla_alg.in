@@ -1,6 +1,7 @@
 #!@PYTHON_EXECUTABLE@
 import sys
 sys.path.append('@CMAKE_CURRENT_BINARY_DIR@')
+sys.path.append('@pythonpath_build@')
 from dsqss.dla_alg import main
 if __name__ == '__main__':
     main()
