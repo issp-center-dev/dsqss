@@ -356,16 +356,16 @@ void Lattice::read() {
   NITYPE = X["NumberOfInteractionTypes"].getInteger();
   NFIELD = X["NumberOfExternalField"].getInteger();
 
-  newcall(bond_vec, lc, D);
-  newcalls(bd, V, bnum);
-  newcall(frame, lc, V);  //sites on boundary
-  newcall(frame_rsite, lc, V);
-  newcall(frame_rnum, lc, V);
-  newcall(frame_lsite, lc, V);
-  newcall(frame_lnum, lc, V);
+  newcall_zero(bond_vec, lc, D);
+  newcall_zero(bd, V, bnum);
+  newcall_zero(frame, lc, V);  //sites on boundary
+  newcall_zero(frame_rsite, lc, V);
+  newcall_zero(frame_rnum, lc, V);
+  newcall_zero(frame_lsite, lc, V);
+  newcall_zero(frame_lnum, lc, V);
 
-  newcall(Fx, lc);
-  newcall(lx, V);
+  newcall_zero(Fx, lc);
+  newcall_zero(lx, V);
 
   for (int l = 0; l < lc; l++) {
     if (l == 0)

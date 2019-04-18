@@ -66,7 +66,7 @@ void Probability::look(Size *N, System *sp) {
   MPI_Comm_rank(comm_nst0, &nst0_rank);
 
   double *peu;
-  newcall(peu, PR->NtNs);
+  newcall_zero(peu, PR->NtNs);
 
   MPI_Allgather(&sp->Eu, 1, MPI_DOUBLE, peu, 1, MPI_DOUBLE, comm_nst0);
 
@@ -325,25 +325,25 @@ Probability::Probability(Size *N, System *sp, Parallel *m_PR) {
   z    = 2.0 * N->d;
   XMAX = 2;
 
-  newcall(ep, PR->V);
-  newcall(local_Eu, PR->V);
-  newcall(rumax, PR->V);
-  newcall(ru, nmax + 1, PR->V);
+  newcall_zero(ep, PR->V);
+  newcall_zero(local_Eu, PR->V);
+  newcall_zero(rumax, PR->V);
+  newcall_zero(ru, nmax + 1, PR->V);
 
-  newcall(t, 2, 4, 4, nmax + 1, nmax + 1, XMAX);
-  newcall(u, 2, nmax + 1, PR->V);
-  newcall(w, 5, nmax + 1);
-  newcall(at, nmax + 1, nmax + 1, XMAX);
+  newcall_zero(t, 2, 4, 4, nmax + 1, nmax + 1, XMAX);
+  newcall_zero(u, 2, nmax + 1, PR->V);
+  newcall_zero(w, 5, nmax + 1);
+  newcall_zero(at, nmax + 1, nmax + 1, XMAX);
 
   newcalls(Om, 4);
-  newcall(Tr, 4);
-  newcall(ex_Wall, 4);
-  newcall(ex_Penki, 4);
+  newcall_zero(Tr, 4);
+  newcall_zero(ex_Wall, 4);
+  newcall_zero(ex_Penki, 4);
 
-  newcall(Wall, 4, 4);
+  newcall_zero(Wall, 4, 4);
 
-  newcall(FracW, 6, 6, XMAX);
-  newcall(weight, 6);
+  newcall_zero(FracW, 6, 6, XMAX);
+  newcall_zero(weight, 6);
 }
 
 void Probability::LocalPotential(double mu) {

@@ -33,6 +33,7 @@ def cleanup(name=""):
         ("evout_res", ".dat.0_rank0.dat"),
         ("RNDevout_res", ".dat.0_rank0.dat"),
         ("qmc_", ".inp"),
+        ("qmc_", ".inp.0.log"),
     ]:
         fname = "{0}{1}{2}".format(prefix, name, suffix)
         if os.path.exists(fname):
@@ -105,7 +106,7 @@ def geninp(param, seed, nset=10, name=""):
 def run(exename, name=""):
     if name != "":
         name = "_{0}".format(name)
-    retval = sub.call(["{0}/{1}".format(BINDIR, exename), "qmc{0}.inp".format(name)])
+    retval = sub.call(["mpiexec", "-np", "1", "{0}/{1}".format(BINDIR, exename), "qmc{0}.inp".format(name)])
     if retval != 0:
         sys.exit(retval)
 
