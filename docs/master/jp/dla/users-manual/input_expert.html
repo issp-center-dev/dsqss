@@ -1,0 +1,647 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>4.3. DLA のエキスパートモード入力ファイル &#8212; DSQSS 2.0.0-Beta ドキュメント</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="検索" href="../../search.html" />
+    <link rel="next" title="4.4. DLA の入力ファイル生成ツール" href="generator.html" />
+    <link rel="prev" title="4.2. DLA のスタンダードモード入力ファイル" href="input_standard.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="dla">
+<span id="dla-expert-files"></span><h1>4.3. DLA のエキスパートモード入力ファイル<a class="headerlink" href="#dla" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id1">
+<h2>4.3.1. 入力ファイル一覧<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<table class="colwidths-given docutils align-center">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 80%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>qmc.inp</p></td>
+<td><p>モンテカルロの繰り返し回数など,計算制御のためのパラメータファイル.</p></td>
+</tr>
+<tr class="row-even"><td><p>lattice.xml</p></td>
+<td><p>格子の定義ファイル.</p></td>
+</tr>
+<tr class="row-odd"><td><p>algorithm.xml</p></td>
+<td><p>アルゴリズム（ワームの散乱確率など）の定義ファイル.</p></td>
+</tr>
+<tr class="row-even"><td><p>wavevetor.xml</p></td>
+<td><p>波数定義ファイル.</p></td>
+</tr>
+<tr class="row-odd"><td><p>disp.xml</p></td>
+<td><p>相対座標定義ファイル.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="expert-param-file">
+<span id="id2"></span><h2>4.3.2. パラメータファイル<a class="headerlink" href="#expert-param-file" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>パラメータファイルは次に示すような書式のプレーンテキストファイルです.</p>
+<ul class="simple">
+<li><p>1行あたり1パラメータを, <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span> <span class="pre">=</span> <span class="pre">&lt;value&gt;</span></code> という形式で表します.</p></li>
+<li><p>ファイル名以外は大文字小文字を区別しません.</p></li>
+<li><p>空行,空白は無視されます.</p></li>
+<li><p>&quot;#&quot; から行末まではコメントとして無視されます.</p></li>
+</ul>
+<p>パラメータのリストと意味を以下に示します.</p>
+<table class="colwidths-given docutils align-center">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 57%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>パラメータ名</p></th>
+<th class="head"><p>型</p></th>
+<th class="head"><p>デフォルト値</p></th>
+<th class="head"><p>説明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>beta</p></td>
+<td><p>double</p></td>
+<td><p>--</p></td>
+<td><p>逆温度.</p></td>
+</tr>
+<tr class="row-odd"><td><p>npre</p></td>
+<td><p>int</p></td>
+<td><p>1000</p></td>
+<td><p>モンテカルロスイープ中のワーム対生成回数を求める事前計算のためのモンテカルロ試行回数.</p></td>
+</tr>
+<tr class="row-even"><td><p>ntherm</p></td>
+<td><p>int</p></td>
+<td><p>1000</p></td>
+<td><p>熱平衡化のためのモンテカルロスイープ数.</p></td>
+</tr>
+<tr class="row-odd"><td><p>ndecor</p></td>
+<td><p>int</p></td>
+<td><p>1000</p></td>
+<td><p>セット間の自己相関を取り除くためのモンテカルロスイープ数.</p></td>
+</tr>
+<tr class="row-even"><td><p>nmcs</p></td>
+<td><p>int</p></td>
+<td><p>1000</p></td>
+<td><p>物理量計算のためのモンテカルロスイープ数.</p></td>
+</tr>
+<tr class="row-odd"><td><p>nset</p></td>
+<td><p>int</p></td>
+<td><p>10</p></td>
+<td><p>モンテカルロ計算の繰り返し数.</p></td>
+</tr>
+<tr class="row-even"><td><p>simulationtime</p></td>
+<td><p>int</p></td>
+<td><p>0.0</p></td>
+<td><p>計算時間（単位は秒）.</p></td>
+</tr>
+<tr class="row-odd"><td><p>seed</p></td>
+<td><p>int</p></td>
+<td><p>198212240</p></td>
+<td><p>疑似乱数の種.</p></td>
+</tr>
+<tr class="row-even"><td><p>nvermax</p></td>
+<td><p>int</p></td>
+<td><p>10000</p></td>
+<td><p>最大バーテックス数.</p></td>
+</tr>
+<tr class="row-odd"><td><p>nsegmax</p></td>
+<td><p>int</p></td>
+<td><p>10000</p></td>
+<td><p>最大セグメント数.</p></td>
+</tr>
+<tr class="row-even"><td><p>algfile</p></td>
+<td><p>int</p></td>
+<td><p>algorithm.xml</p></td>
+<td><p>アルゴリズム定義ファイル名.</p></td>
+</tr>
+<tr class="row-odd"><td><p>latfile</p></td>
+<td><p>string</p></td>
+<td><p>lattice.xml</p></td>
+<td><p>格子定義ファイル名.</p></td>
+</tr>
+<tr class="row-even"><td><p>ntau</p></td>
+<td><p>int</p></td>
+<td><p>10</p></td>
+<td><p>虚時間構造因子などの計算で使われる虚時間方向の離散化数.</p></td>
+</tr>
+<tr class="row-odd"><td><p>wvfile</p></td>
+<td><p>string</p></td>
+<td><p>--</p></td>
+<td><p>波数ベクトルXMLファイル名. 空文字列の場合, 構造因子は計算されない.</p></td>
+</tr>
+<tr class="row-even"><td><p>dispfile</p></td>
+<td><p>string</p></td>
+<td><p>--</p></td>
+<td><p>相対座標XMLファイル名. 空文字列の場合, 実空間表示温度グリーン関数は計算されない.</p></td>
+</tr>
+<tr class="row-odd"><td><p>outfile</p></td>
+<td><p>string</p></td>
+<td><p>sample.log</p></td>
+<td><p>メイン出力ファイル名.</p></td>
+</tr>
+<tr class="row-even"><td><p>sfoutfile</p></td>
+<td><p>string</p></td>
+<td><p>sf.dat</p></td>
+<td><p>構造因子出力ファイル名.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cfoutfile</p></td>
+<td><p>string</p></td>
+<td><p>cf.dat</p></td>
+<td><p>実空間表示温度グリーン関数出力ファイル名.</p></td>
+</tr>
+<tr class="row-even"><td><p>ckoutfile</p></td>
+<td><p>string</p></td>
+<td><p>ck.dat</p></td>
+<td><p>波数空間表示温度グリーン関数出力ファイル名.</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>simulationtime について</p>
+<ul>
+<li><p>simulationtime &gt; 0.0 のとき</p>
+<ul>
+<li><p>指定秒数が経過するか, 計算が完了したとき, 途中経過をチェックポイントファイルに書き出した後, プログラムを終了します.</p></li>
+<li><p>計算開始時にチェックポイントファイルがある場合, そのファイルを読み込んだ後に計算を再開します.</p></li>
+<li><p>チェックポイントファイルの名前は outfile で指定されるメイン出力ファイル名の末尾に .cjob をつけたものです.</p></li>
+</ul>
+</li>
+<li><p>simulationtime &lt;= 0.0 のとき</p>
+<ul>
+<li><p>チェックポイントファイルは無視され, 書き出しも読み込みも行われません.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="xml">
+<span id="lattice-xml-file"></span><h2>4.3.3. 格子XMLファイル<a class="headerlink" href="#xml" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>格子ファイルは空間の情報, たとえばサイトの数やサイト同士のつながりかたなどを定義するための,
+XML ライクな形式で記述されるテキストファイルです.
+これは一般に複雑になりますが, より単純な格子データファイルや格子TOML ファイルから
+<code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> を用いて生成することができます。</p>
+<p>格子ファイルはただ一つの要素 Lattice を持ち, すべての情報は Lattice 要素の内容として含まれます.</p>
+<dl>
+<dt>Lattice</dt><dd><p>ファイル全体の要素.
+ほかのすべての要素は Lattice のサブ要素です.</p>
+</dd>
+<dt>Lattice/Comment</dt><dd><p>省略可能. コメント文を示し, 計算には使用されません.</p>
+</dd>
+<dt>Lattice/Dimension</dt><dd><p>格子の次元.</p>
+</dd>
+<dt>Lattice/LinearSize</dt><dd><p>ユニットセルを単位とした, 各次元の格子の長さ.
+内容として, スペース区切りの正整数を Lattice/Dimension で指定した数だけ並べたものをとります.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;LinearSize&gt; 3 4 &lt;/LinearSize&gt;
+# ユニットセルが第1次元方向に3個, 第2次元方向に4個並んでいる場合
+</pre></div>
+</div>
+</dd>
+<dt>Lattice/NumberOfSites</dt><dd><p>サイトの総数. ユニットセルの総数と1セル内のサイト数の積.</p>
+</dd>
+<dt>Lattice/NumberOfInteractions</dt><dd><p>相互作用項の総数. 二体相互作用のみの場合は,いわゆる「ボンド数」.</p>
+</dd>
+<dt>Lattice/NumberOfSiteTypes</dt><dd><p>サイトの種類数.</p>
+</dd>
+<dt>Lattice/NumberOfInteractionTypes</dt><dd><p>相互作用の種類数.</p>
+</dd>
+<dt>Lattice/NumberOfBondDirections</dt><dd><p>ボンドの方向 Direction の数.</p>
+</dd>
+<dt>Lattice/NumberOfEdgeInteractions</dt><dd><p>格子の周期的境界をまたぐボンドの総数.</p>
+</dd>
+<dt>Lattice/Basis</dt><dd><p>格子の空間座標を記述する基底ベクトル.</p>
+</dd>
+<dt>Lattice/S</dt><dd><p>サイト情報. Lattice/NumberOfSites で指定したサイト数だけ指定する必要があります.
+内容として, 「サイト番号」と「サイトタイプ」の2つの整数をスペース区切りで持ちます.
+サイトタイプの詳細は別途アルゴリズム定義ファイルの中で定義します.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;S&gt; 3 0 &lt;/S&gt;
+# サイト番号が3のサイトはサイトタイプが0である.
+</pre></div>
+</div>
+</dd>
+<dt>Lattice/I</dt><dd><p>相互作用情報. Lattice/NumberOfInteractions で指定した相互作用数だけ指定する必要があります.
+内容として, 「相互作用番号」, 「相互作用タイプ」, 「相互作用サイト数」, 「相互作用サイト番号」を指定するために,
+相互作用サイト数+3個の整数をスペース区切りで持ちます.
+相互作用タイプの詳細 ― たとえば相互作用の大きさ ― は別途アルゴリズム定義ファイルの中で定義します.
+サイト番号の順序は, アルゴリズム定義ファイルの Algorithm/Vertex/InitialConfiguration 要素で用いられるサイトの並び順と整合させる必要があります.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;I&gt; 5 1 2 8 12 &lt;/I&gt;
+# 相互作用番号が5である相互作用は相互作用タイプが1で, 2つのサイトが関与し,
+# それらのサイト番号は8と12である.
+</pre></div>
+</div>
+</dd>
+<dt>Lattice/Direction</dt><dd><p>ボンドの方向. Lattice/NumberOfBondDirections の値だけ指定する必要があります.
+内容として, 「方向のインデックス」と「方向ベクトルの座標」をスペース区切りで指定します.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="algorithm-xml-file">
+<span id="id3"></span><h2>4.3.4. アルゴリズム定義ファイル<a class="headerlink" href="#algorithm-xml-file" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>アルゴリズム定義ファイルは相互作用ごとのワームの散乱確率などを定義する,
+XML ライクな形式で記述されるテキストファイルです.
+これは一般に複雑になりえるので, より簡単なハミルトニアン定義ファイルから自動生成するためのツール <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> が用意されています.</p>
+<p>アルゴリズム定義ファイルはただ一つの要素 Algorithm を持ち, すべての情報は Algorithm 要素の内容として含まれます.</p>
+<dl>
+<dt>Algorithm</dt><dd><p>ファイル全体の要素名.サブ要素として,  General,  Site,  Interaction,  Vertex があります.
+ワームの生成・消滅・散乱の仕方を定義します.</p>
+</dd>
+<dt>Algorithm/Comment</dt><dd><p>省略可能. コメント文を示し, 計算には使用されません.</p>
+</dd>
+<dt>Algorithm/General</dt><dd><p>サブ要素として,  NSType,  NIType,  NVType,  NXMax,  WDiag があります.
+サイトの種類数や相互作用の種類数など, アルゴリズム定義の基本パラメータを設定します.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Algorithm&gt;
+  &lt;General&gt;
+    &lt;NSType&gt;  1 &lt;/NSType&gt;
+    &lt;NIType&gt;  1 &lt;/NIType&gt;
+    &lt;NVType&gt;  2 &lt;/NVType&gt;
+    &lt;NXMax&gt;   2 &lt;/NXMax&gt;
+    &lt;WDiag&gt;   0.25 &lt;/WDiag&gt;
+  &lt;/General&gt;
+  ...
+&lt;/Algorithm&gt;
+</pre></div>
+</div>
+</dd>
+<dt>Algorithm/General/NSType</dt><dd><p>異なるサイト型の個数を指定する整数値.</p>
+</dd>
+<dt>Algorithm/General/NIType</dt><dd><p>異なる相互作用型の個数を指定する整数値.</p>
+</dd>
+<dt>Algorithm/General/NVType</dt><dd><p>異なるバーテックス型の個数を指定する整数値.</p>
+</dd>
+<dt>Algorithm/General/NXMax</dt><dd><p>各サイトが取りうる状態の数の最大値.
+例えば大きさ <span class="math notranslate nohighlight">\(S\)</span> のスピン系ならば <span class="math notranslate nohighlight">\(2S+1\)</span> .</p>
+</dd>
+<dt>Algorithm/General/WDiag</dt><dd><p>ワームの行程長から相関関数を求めるときの比例係数.</p>
+</dd>
+<dt>Algorithm/Site</dt><dd><p>1つのサイト型を定義します.具体的には, そのサイト型をもつサイトに対する操作を定義します.
+サイトにワームを生成消滅する過程もここで定義します.
+サブ要素として,  SType,  NumberOfStates, LocalStates, VertexTypeOfSource,  InitialConfiguration があります.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Algorithm&gt;
+  ...
+  &lt;Site&gt;
+    &lt;STYPE&gt; 0 &lt;/STYPE&gt;
+    &lt;NumberOfStates&gt; 2 &lt;/NumberOfStates&gt;
+    &lt;LocalStates&gt; -0.5 0.5 &lt;/LocalStates&gt;
+    &lt;VertexTypeOfSource&gt; 0 &lt;/VertexTypeOfSource&gt;
+    &lt;InitialConfiguration&gt;
+       ...
+    &lt;/InitialConfiguration&gt;
+    &lt;InitialConfiguration&gt;
+       ...
+    &lt;/InitialConfiguration&gt;
+  &lt;/Site&gt;
+  ...
+&lt;/Algorithm&gt;
+</pre></div>
+</div>
+</dd>
+<dt>Algorithm/Site/SType</dt><dd><p>定義されるサイト型の識別番号.</p>
+</dd>
+<dt>Algorithm/Site/NumberOfStates</dt><dd><p>サイトが取りうる状態の数.</p>
+</dd>
+<dt>Algorithm/Site/LocalStates</dt><dd><p>状態のインデックスに対応する局所変数の値を空白区切りで指定したもの.
+例えば局所基底がスピンのz 成分ではられる場合, z 成分の大きさ.</p>
+</dd>
+<dt>Algorithm/Site/VertexTypeOfSource</dt><dd><p>挿入される可能性のあるバーテックスのタイプ.</p>
+</dd>
+<dt>Algorithm/Site/InitialConfiguration</dt><dd><p>初期条件の定義. 初期条件ごとのワーム対の生成消滅過程を定義もこの要素のなかで行われます.
+サブ要素として, State, NumberOfChannels, Channel があります.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Algorithm&gt;
+  ...
+  &lt;Site&gt;
+    ...
+    &lt;InitialConfiguration&gt;
+      &lt;State&gt; 0 &lt;/State&gt;
+      &lt;NumberOfChannels&gt; 2 &lt;/NumberOfChannels&gt;
+      &lt;Channel&gt; 0 1 0.5 &lt;/Channel&gt;
+      &lt;Channel&gt; 1 1 0.5 &lt;/Channel&gt;
+    &lt;/InitialConfiguration&gt;
+    ...
+  &lt;/Site&gt;
+  ...
+&lt;/Algorithm&gt;
+</pre></div>
+</div>
+</dd>
+<dt>Algorithm/Site/InitialConfiguration/State</dt><dd><p>ワーム対が生成される前（もしくは消滅後）のサイトの状態.</p>
+</dd>
+<dt>Algorithm/Site/InitialConfiguration/NumberOfChannels</dt><dd><p>可能性のある終状態（チャネル）の数.</p>
+</dd>
+<dt>Algorithm/Site/InitialConfiguration/Channel</dt><dd><p>各チャネルの定義. 整数値, 整数値, 浮動小数点値の3つの並びで指定.</p>
+<ul class="simple">
+<li><p>第1の値はワーム生成後のヘッドの向き（0は虚時間方向負の向き, 1は正の向き.）.</p></li>
+<li><p>第2の値はワーム生成後のヘッドとテールの間の状態.</p></li>
+<li><p>第3の値はそのような終状態をとる確率.</p></li>
+</ul>
+<p>終状態としてワーム対を生成しない場合は, その Channel の 第1と第2の整数値はともに -1とする.</p>
+</dd>
+<dt>Algorithm/Interaction</dt><dd><p>１つの相互作用型を定義します.
+サブ要素として IType, VType, NBody, EBase, VertexDensity, Sign があります.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Algorithm&gt;
+  ...
+  &lt;Interaction&gt;
+    &lt;IType&gt; 0 &lt;/IType&gt;
+    &lt;VType&gt; 1 &lt;/VType&gt;
+    &lt;NBody&gt; 2 &lt;/NBody&gt;
+    &lt;EBase&gt; 0.125 &lt;/EBase&gt;
+    &lt;VertexDensity&gt; 0 0 0.25 &lt;/VertexDensity&gt;
+    &lt;VertexDensity&gt; 1 1 0.25 &lt;/VertexDensity&gt;
+    &lt;Sign&gt; 0 1 1 0 -1.0 &lt;/Sign&gt;
+    &lt;Sign&gt; 1 0 0 1 -1.0 &lt;/Sign&gt;
+  &lt;/Interaction&gt;
+  ...
+&lt;/Algorithm&gt;
+</pre></div>
+</div>
+</dd>
+<dt>Algorithm/Interaction/IType</dt><dd><p>相互作用の型の識別番号.</p>
+</dd>
+<dt>Algorithm/Interaction/VType</dt><dd><p>挿入する可能性のあるバーテックスの型の識別番号. バーテックス型の内容は Vertex/Algorithm で定義します.</p>
+</dd>
+<dt>Algorithm/Interaction/NBody</dt><dd><p>相互作用に関与するサイトの数（ゼーマン項のような1体相互作用であれば1 で, 交換相互作用のような2体相互作用であれば2. 3以上を指定することも可能）.</p>
+</dd>
+<dt>Algorithm/Interaction/EBase</dt><dd><p>エネルギーオフセットの値. シミュレーション自体には影響しませんが, 最終的なエネルギーの値を出すときに使用されます.</p>
+</dd>
+<dt>Algorithm/Interaction/VertexDensity</dt><dd><p>関与するサイトの状態ごとに挿入するバーテックスの密度を指定します.
+Algorithm/Interaction/NBody 個の整数値と, 1個の浮動小数点値の並びで指定.
+整数値は, 関与する各サイトの状態（順序は格子定義ファイルの I で指定するサイト番号の順序と対応します）.
+浮動小数点値は密度.</p>
+</dd>
+<dt>Algorithm/Interaction/Sign</dt><dd><p>その相互作用における局所重みの符号, すなわち <span class="math notranslate nohighlight">\(\textrm{Sgn}(\langle f | -\mathcal{H} | i \rangle)\)</span> を指定します.
+<span class="math notranslate nohighlight">\(2\times\)</span> Algorithm/Interaction/NBody 個の整数値と, 1個の浮動小数点値の並びで指定.
+整数値は, 関与する各サイトのそれぞれについて, 相互作用演算子が適用される前と後の状態で,
+浮動小数点値は重みの符号.</p>
+<p>例えば, <code class="docutils literal notranslate"><span class="pre">&lt;Sign&gt;</span> <span class="pre">0</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">0</span> <span class="pre">-1.0</span> <span class="pre">&lt;/Sign&gt;</span></code> は <span class="math notranslate nohighlight">\(\langle 1 0 | \left(-\mathcal{H}\right) | 0 1 \rangle &lt; 0\)</span> を意味します.</p>
+</dd>
+<dt>Algorithm/Vertex</dt><dd><p>1つのバーテックスの型を定義します. バーテックスとしては, 通常の2体, 3体, ……の相互作用を記述するもの（ <code class="docutils literal notranslate"><span class="pre">VCategory=2</span></code> ）と,
+ワームヘッドがテールと消滅する場合のテール（ <code class="docutils literal notranslate"><span class="pre">VCategory=1</span></code> ）があります.
+Algorithm/Interaction の要素になりえるのは, 前者です.
+（このほか, 時間方向の周期境界（ <code class="docutils literal notranslate"><span class="pre">VCategory=0</span></code> ）も1体のバーテックスとして扱っていますが, これをユーザが定義する必要はありません.）
+サブ要素として VType,  VCategory,  NBody,  NumberOfInitialConfigurations,  InitialConfiguration があります.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Algorithm&gt;
+  ...
+  &lt;Vertex&gt;
+    &lt;VTYPE&gt; 0 &lt;/VTYPE&gt;
+    &lt;VCATEGORY&gt; 1 &lt;/VCATEGORY&gt;
+    &lt;NBODY&gt; 1 &lt;/NBODY&gt;
+    &lt;NumberOfInitialConfigurations&gt; 4 &lt;/NumberOfInitialConfigurations&gt;
+    &lt;InitialConfiguration&gt;
+      ...
+    &lt;/InitialConfiguration&gt;
+    ...
+    &lt;InitialConfiguration&gt;
+      ...
+    &lt;/InitialConfiguration&gt;
+  &lt;/Vertex&gt;
+  ...
+&lt;/Algorithm&gt;
+</pre></div>
+</div>
+</dd>
+<dt>Algorithm/Vertex/VType</dt><dd><p>バーテックス型の識別番号. バーテックス型の定義ごとに異なる番号である必要があります.</p>
+</dd>
+<dt>Algorithm/Vertex/VCategory</dt><dd><p>1がワームテール, 2が相互作用.</p>
+</dd>
+<dt>Algorithm/Vertex/NBody</dt><dd><p>相互作用に関与するサイトの個数.
+テールの場合には1.</p>
+</dd>
+<dt>Algorithm/Vertex/NumberOfInitialConfigurations</dt><dd><p>バーテックスの可能な初期状態数.</p>
+</dd>
+<dt>Algorithm/Vertex/InitialConfiguration</dt><dd><p>特定のバーテックス初期状態に対するワームの可能なアクションを定義します.
+従って, この要素は, Algorithm/Vertex/NumberOfInitialConfigurations の値と同じ数だけ存在する必要があります.
+サブ要素として,  State,  IncomingDirection,  NewState,  NumberOfChannels,  Channel があります.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Algorithm&gt;
+  ...
+  &lt;Vertex&gt;
+    ...
+    &lt;InitialConfiguration&gt;
+      &lt;State&gt;  1 0 0 1 &lt;/State&gt;
+      &lt;IncomingDirection&gt; 0 &lt;/IncomingDirection&gt;
+      &lt;NewState&gt; 0 &lt;/NewState&gt;
+      &lt;NumberOfChannels&gt; 1 &lt;/NumberOfChannels&gt;
+      &lt;Channel&gt;    3    0       1.0000000000000000 &lt;/Channel&gt;
+    &lt;/InitialConfiguration&gt;
+    ...
+  &lt;/Vertex&gt;
+  ...
+&lt;/Algorithm&gt;
+</pre></div>
+</div>
+<p>この例で定義されているのは, 「バーテックスの左下(0), 左上(1), 右下(2), 右上(3)の脚の状態がそれぞれ1, 0, 0, 1 であって, そこに, 左下（脚0の方向）から, その脚の状態を 0 に変化させるような ワームヘッドが入射した場合」のアクションであり,
+その内容は,  「確率1で, そのワームヘッドを 脚3の方向に散乱させて,  その方向の足の状態を 0 に変更する」ことを表しています. （つまり, この散乱が起こった場合, 散乱後のバーテックスの状態は 0, 0, 0, 0 になる.）</p>
+</dd>
+<dt>Algorithm/Vertex/InitialConfiguration/State</dt><dd><p>ワームヘッドが入ってくる前のバーテックスの初期状態を指定します.
+具体的にはバーテックスの各脚の状態を指定します.
+足の本数は,  Algorithm/Vertex/NBody で指定される数 (=m) の2倍なので,  2m 個数の整数値をスペースで区切ったものを入力します.
+その順序として, 脚は対応するサイトの順序に並べられ,
+同じサイトに対応する2本の脚については, 虚数時間の小さい側が先に来ます.
+（サイトの並び順は任意でよいが,  格子定義ファイルの Lattice/I 要素で 指定されているサイトの並び順はここで用いられたサイトの順序と整合している必要があります.）
+各整数はバーテックスの足の状態を示す 0 から n-1 までの値. （ここで, n は対応するサイトの,  Algorithm/Site/NumberOfStates で指定される値.）</p>
+</dd>
+<dt>Algorithm/Vertex/InitialConfiguration/IncomingDirection</dt><dd><p>入射するワームヘッドが入射前に乗っている脚の番号.
+対応する足が Algorithm/Vertex/InitialConfiguration/State の記述において何番目に出てくるかを 0 から 2m-1 の整数値で指定.</p>
+</dd>
+<dt>Algorithm/Vertex/InitialConfiguration/NewState</dt><dd><p>ワームヘッドが通過したあとの Algorithm/Vertex/InitialConfiguration/IncomingDirection の足の状態. 0 から n-1 の整数値で指定.</p>
+</dd>
+<dt>Algorithm/Vertex/InitialConfiguration/NumberOfChannels</dt><dd><p>可能な散乱チャネルの個数.</p>
+</dd>
+<dt>Algorithm/Vertex/InitialConfiguration/Channel</dt><dd><p>散乱チャネルの定義.
+Algorithm/Vertex/InitialConfiguration/NumberOfChannels の個数だけこの要素を用意する必要があります.
+2つの整数値と1つの浮動小数点値をスペースで区切ったもので指定.</p>
+<ul class="simple">
+<li><p>第1の整数値は, 散乱後のワームヘッドが乗っている足の番号を 0 から 2m-1 の値で指定したもの.</p></li>
+<li><p>第2の整数値は, ワームヘッドが飛び去ったあとのその足の状態を 0 から n-1 の値で指定したもの.</p></li>
+<li><p>第3の浮動小数点値は, そのチャネルを選ぶ確率.</p></li>
+</ul>
+<p>特別な場合として, ワームヘッドがテールに衝突して消滅する場合があり, この場合は 第1引数と第2引数に -1 を指定します.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="wavevector-xml-file">
+<span id="id4"></span><h2>4.3.5. 波数ベクトルXMLファイル<a class="headerlink" href="#wavevector-xml-file" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>波数ベクトルXMLファイルは, スタッガード秩序変数</p>
+<div class="math notranslate nohighlight">
+\[M^{z}(\vec{k}) \equiv \frac{1}{N} \sum_i e^{-i\vec{k}\vec\vec{r}_i} \left\langle M^{z}_i \right\rangle\]</div>
+<p>や動的構造因子</p>
+<div class="math notranslate nohighlight">
+\[S^{zz}(\vec{k},\tau) \equiv
+  \left\langle M^z(\vec{k},\tau)M^z(-\vec{k},0) \right\rangle - \left\langle M^z(\vec{k},\tau)\right\rangle \left\langle M^z(-\vec{k},0)\right\rangle ,\]</div>
+<p>波数表示温度グリーン関数</p>
+<div class="math notranslate nohighlight">
+\[G(\vec{k},\tau) \equiv \left\langle M^+(\vec{k}, \tau) M^-(-\vec{k},0) \right\rangle\]</div>
+<p>を計算するための波数の情報がXML ライクな形式で記述されるテキストファイルです.
+波数ベクトルデータファイルから <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> を用いて生成可能です。</p>
+<p>波数ベクトルXMLファイルはただ一つの要素 WaveVector を持ち, すべての情報は WaveVector 要素の内容として含まれます.</p>
+<dl class="simple">
+<dt>WaveVector</dt><dd><p>ファイル全体の要素名.
+サブ要素として, Comment, NumberOfSites, NumberOfWaveVectors, RK があります.</p>
+</dd>
+<dt>WaveVector/Comment</dt><dd><p>省略可能.
+コメント文を示し, 計算には使用されません.</p>
+</dd>
+<dt>WaveVector/NumberOfSites</dt><dd><p>系のサイト数.</p>
+</dd>
+<dt>WaveVector/NumberOfWaveVectors</dt><dd><p>波数 <span class="math notranslate nohighlight">\(\vec{k}\)</span> の数.</p>
+</dd>
+<dt>WaveVector/RK</dt><dd><p>内積 <span class="math notranslate nohighlight">\(\vec{r}\cdot\vec{k}\)</span> の情報.
+NumberOfSites と NumberOfWaveVectors の積だけ指定する必要があります.
+内容として,
+「 <span class="math notranslate nohighlight">\(\cos(\theta)\)</span> の値」,
+「 <span class="math notranslate nohighlight">\(\sin(\theta)\)</span> の値」,
+「サイト番号」,
+「波数番号」 の4つの数字をスペース区切りで持ちます.
+ここで <span class="math notranslate nohighlight">\(\theta\)</span> はサイト番号で示されるサイトの座標 <span class="math notranslate nohighlight">\(\vec{r}\)</span> と波数番号で示される波数 <span class="math notranslate nohighlight">\(\vec{k}\)</span> との内積です.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="relative-coordinate-xml-file">
+<span id="id5"></span><h2>4.3.6. 相対座標定義ファイル<a class="headerlink" href="#relative-coordinate-xml-file" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>相対座標定義ファイルは,実空間表示温度グリーン関数</p>
+<div class="math notranslate nohighlight">
+\[G(\vec{r}_{ij},\tau) \equiv \left\langle M_i^+(\tau) M_j^- \right\rangle\]</div>
+<p>を計算するための相対座標 <span class="math notranslate nohighlight">\(\vec{r}_{ij}\)</span> の情報がXML ライクな形式で記述されるテキストファイルです.
+<code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> を用いて生成可能です.</p>
+<p>格子ファイルはただ一つの要素 Displacements を持ち, すべての情報は Displacements 要素の内容として含まれます.</p>
+<dl class="simple">
+<dt>Displacements</dt><dd><p>ファイル全体の要素名.サブ要素として, Comment, NumberOfKinds, NumberOfSites, R があります.</p>
+</dd>
+<dt>Displacements/Comment</dt><dd><p>省略可能.
+コメント文を示し, 計算には使用されません.</p>
+</dd>
+<dt>Displacements/NumberOfSites</dt><dd><p>系のサイト数.</p>
+</dd>
+<dt>Displacements/NumberOfKinds</dt><dd><p>取りうる相対座標の数.</p>
+</dd>
+<dt>Displacements/R</dt><dd><p>内容として,
+「相対座標のインデックス」, 「サイト i のインデックス」, 「サイト j のインデックス」 の3つの整数をスペース区切りで持ちます.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>ナビゲーション</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. DSQSSとは？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. インストール</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">3. DLAのチュートリアル</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. DSQSS/DLAのユーザーマニュアル</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="input_simple.html">4.1. DLA のシンプルモードファイル</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_standard.html">4.2. DLA のスタンダードモード入力ファイル</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.3. DLA のエキスパートモード入力ファイル</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">4.3.1. 入力ファイル一覧</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#expert-param-file">4.3.2. パラメータファイル</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#xml">4.3.3. 格子XMLファイル</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#algorithm-xml-file">4.3.4. アルゴリズム定義ファイル</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wavevector-xml-file">4.3.5. 波数ベクトルXMLファイル</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#relative-coordinate-xml-file">4.3.6. 相対座標定義ファイル</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="generator.html">4.4. DLA の入力ファイル生成ツール</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engine.html">4.5. 向き付きループアルゴリズムソルバ dla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="output.html">4.6. DLA の出力ファイル</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tutorial.html">5. DSQSS/PMWAのチュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tu-index.html">6. DSQSS/PMWAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/algorithm.html">7. アルゴリズム</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">4. DSQSS/DLAのユーザーマニュアル</a><ul>
+      <li>Previous: <a href="input_standard.html" title="前の章へ">4.2. DLA のスタンダードモード入力ファイル</a></li>
+      <li>Next: <a href="generator.html" title="次の章へ">4.4. DLA の入力ファイル生成ツール</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="検索" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/dla/users-manual/input_expert.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
