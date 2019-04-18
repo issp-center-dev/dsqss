@@ -1,9 +1,9 @@
 # dsqss
 
 [![Build Status](https://travis-ci.org/issp-center-dev/dsqss.svg?branch=master)](https://travis-ci.org/issp-center-dev/dsqss)
-[![doc latest jp](https://img.shields.io/badge/doc--jp-v2.0_beta-blue.svg)](https://issp-center-dev.github.io/dsqss/manual/2.0_beta/jp/index.html)
-[![doc latest stable](https://img.shields.io/badge/doc-v1.2.1-blue.svg)](https://issp-center-dev.github.io/dsqss/manual/1.2.1/en/index.html)
-[![doc latest stable jp](https://img.shields.io/badge/doc--jp-v1.2.1-blue.svg)](https://issp-center-dev.github.io/dsqss/manual/1.2.1/jp/index.html)
+[![doc latest jp](https://img.shields.io/badge/doc--jp-v2.0_beta-blue.svg)](https://issp-center-dev.github.io/dsqss/manual/v2.0_beta/jp/index.html)
+[![doc latest stable](https://img.shields.io/badge/doc-v1.2.1-blue.svg)](https://issp-center-dev.github.io/dsqss/manual/v1.2.1/en/index.html)
+[![doc latest stable jp](https://img.shields.io/badge/doc--jp-v1.2.1-blue.svg)](https://issp-center-dev.github.io/dsqss/manual/v1.2.1/jp/index.html)
 
 DSQSS (Discrete Space Quantum Systems Solver) is a software package for calculating expectation values of several observables of quantum lattice systems in finite temperature.
 DSQSS implements the path-integral Monte Carlo method with the directed loop algorithm.
