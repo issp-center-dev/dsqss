@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include <debug.hpp>
+
 #include <Configuration.h>
 #include <Probability.h>
 
@@ -34,6 +36,7 @@ void Configuration::DeterminationNworm(int MCS, My_rdm *MR, Quantities *QNT) {
  * Determine NCycle so that total distance of all the worms during NCycle updates is about V*beta
  */
 void Configuration::updateAnner(int MCS, My_rdm *MR, Quantities *QNT) {
+  AutoPlog("");
   MPI_Status status;
   MPI_Comm comm_nst0, scomm_nst0;
   int nst0_rank;
@@ -145,6 +148,7 @@ void Configuration::updateAnner(int MCS, My_rdm *MR, Quantities *QNT) {
 }
 
 void Configuration::sweep(int MCS, My_rdm *MR, Quantities *QNT) {
+  AutoPlog("");
   For_Nworm = false;
   Wlen      = 0.0;
   while (MCS--) {
@@ -153,6 +157,7 @@ void Configuration::sweep(int MCS, My_rdm *MR, Quantities *QNT) {
 }
 
 void Configuration::measurement(Quantities *QNT, My_rdm *MR) {
+  AutoPlog("");
   if(PR->my_rank == 0){
     std::cout << "start main calculation" << std::endl;
   }
