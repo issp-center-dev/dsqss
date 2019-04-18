@@ -64,6 +64,8 @@ endif(USE_SYSTEM_BOOST)
 message(STATUS "Boost headers: ${Boost_INCLUDE_DIRS}")
 include_directories(${Boost_INCLUDE_DIRS})
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/third-party/plog)
+
 if(BUILD_NEW_GENERATORS OR Testing)
   if(${CMAKE_VERSION} VERSION_LESS 3.12)
     find_package(PythonInterp 3.4)
