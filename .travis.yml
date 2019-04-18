@@ -14,6 +14,7 @@ install:
          texlive-lang-japanese texlive-fonts-recommended texlive-fonts-extra latexmk
   - kanji-config-updmap-sys ipaex
   - pyenv global 3.7
+  - python3 -m pip install -U pip
 script:
   - cd ${ROOTDIR}
   - mkdir build

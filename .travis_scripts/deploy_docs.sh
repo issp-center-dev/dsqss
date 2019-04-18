@@ -20,7 +20,7 @@ git checkout gh-pages
 
 
 ## TODO
-DOCDIR=docs/${TRAVIS_BRANCH}
+DOCDIR=manual/${TRAVIS_BRANCH}
 mkdir -p ${DOCDIR}
 rm -rf ${DOCDIR}
 mkdir -p ${DOCDIR}/jp/
