@@ -75,8 +75,9 @@ and documents (if built) to `${INSTALL_DIR}/share/dsqss/dsqss-${DSQSS_VERSION}/d
 DSQSS is distributed under the GNU GPL v3.
 
 ### License of the bundled libs
-- Boost C++ library is redistributed under the Boost software license.
-- `FindPythonModule.cmake` is redistributed under the OSI approved BSD license.
+- [Boost C++ library](https://www.boost.org/) is redistributed under the Boost software license.
+- [Plog](https://github.com/SergiusTheBest/plog) is redistributed under the Mozilla Public License 2.0
+- [`FindPythonModule.cmake`](https://github.com/openturns/openturns/tree/master/cmake.FindPythonModule.cmake) is redistributed under the OSI approved BSD license.
 
 ## Acknowledgement
 DSQSS v1.2 and v2.0 are developed under the support of "Project for advancement of software usability in materials science" in fiscal year 2018 by The Institute for Solid State Physics, The University of Tokyo.
