@@ -46,7 +46,7 @@ void Configuration::updateAnner(int MCS, My_rdm *MR, Quantities *QNT) {
   int step1 = step / 2;
   long *pcyc;
 
-  newcall(pcyc, PR->NtNs);
+  newcall_zero(pcyc, PR->NtNs);
 
   For_Nworm = true;
   MCS /= step;
