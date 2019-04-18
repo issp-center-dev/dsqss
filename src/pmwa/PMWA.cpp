@@ -55,13 +55,16 @@ double Dla::PMWA() {
   if(!std::isinf(BETA)){
     LT.set_beta(BETA);
   }
+  PR.FlgAnneal = false;
   PR.FlgRestart = (MC.runtype == Restart);
   if(PR.FlgRestart) {
-      if (!std::isinf(oldBETA)) {
-          LT.set_oldbeta(oldBETA);
-          PR.FlgAnneal = true;
-          PR.FlgRestart = false;
-      } else PR.FlgAnneal = false;
+    if (!std::isinf(oldBETA)) {
+      LT.set_oldbeta(oldBETA);
+      PR.FlgAnneal = true;
+      PR.FlgRestart = false;
+    } else{
+      PR.FlgAnneal = false;
+    }
   }
 
   LT.make_Size(&N);
