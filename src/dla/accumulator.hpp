@@ -111,9 +111,14 @@ public:
 
 #ifdef MULTI
   void allreduce(MPI_Comm comm){
-    MPI_Allreduce(&s1, &s1, 1, MPI_DOUBLE, MPI_SUM, comm);
-    MPI_Allreduce(&s2, &s2, 1, MPI_DOUBLE, MPI_SUM, comm);
-    MPI_Allreduce(&n, &n, 1, MPI_INT, MPI_SUM, comm);
+    double s1_tmp, s2_tmp;
+    int n_tmp;
+    MPI_Allreduce(&s1, &s1_tmp, 1, MPI_DOUBLE, MPI_SUM, comm);
+    MPI_Allreduce(&s2, &s2_tmp, 1, MPI_DOUBLE, MPI_SUM, comm);
+    MPI_Allreduce(&n, &n_tmp, 1, MPI_INT, MPI_SUM, comm);
+    s1 = s1_tmp;
+    s2 = s2_tmp;
+    n = n_tmp;
   }
 #endif
 };
