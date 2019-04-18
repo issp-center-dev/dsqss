@@ -15,6 +15,7 @@ install:
   - kanji-config-updmap-sys ipaex
   - pyenv global 3.7
 script:
+  - cd ${ROOTDIR}
   - mkdir build
   - cd build
   - cmake -DDocument=ON ../
@@ -22,8 +23,10 @@ script:
   - export OMP_NUM_THREADS=1
   - ctest -VV
 after_success:
+  - cd ${ROOTDIR}
   - /bin/bash -x ${ROOTDIR}/.travis_scripts/deploy_docs.sh
 before_deploy:
+  - cd ${ROOTDIR}
   - /bin/bash -x ${ROOTDIR}/.travis_scripts/make_tarball.sh
 deploy:
   provider: releases
