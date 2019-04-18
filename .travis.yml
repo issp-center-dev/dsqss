@@ -8,12 +8,12 @@ install:
   - sudo apt-get update
   - sudo apt-get install -y gcc gfortran cmake wget liblapack-dev
   - sudo apt-get install -y libopenmpi-dev openmpi-bin
-  - sudo apt-get install -y python3
   - sudo apt-get install -y enchant
   - |
     sudo apt-get install -y texlive-latex-recommended texlive-latex-extra \
          texlive-lang-japanese texlive-fonts-recommended texlive-fonts-extra latexmk
   - kanji-config-updmap-sys ipaex
+  - pyenv global 3.7
 script:
   - mkdir build
   - cd build
