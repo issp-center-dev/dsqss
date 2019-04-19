@@ -162,11 +162,14 @@ void CK::setsummary() {
   AutoDebugDump("CK::setsummary");
   const double factor = 2 * ALG.getBlock("WDIAG", (double)1.0);  //ALG.X["General"]["WDIAG" ].getDouble(); // 0.25
   SIGN.average();
-  const double invsign = 1.0/SIGN.mean();
-  for (int ik = 0; ik < NK; ik++) {
-    for (int it = 0; it < Ntau; it++) {
-      ACC[ik][it].average();
-      PHY[ik][it].accumulate(invsign * ACC[ik][it].mean() * factor);
+  const double sgn = SIGN.mean();
+  if(sgn != 0.0){
+    const double invsign = 1.0/sgn;
+    for (int ik = 0; ik < NK; ik++) {
+      for (int it = 0; it < Ntau; it++) {
+        ACC[ik][it].average();
+        PHY[ik][it].accumulate(invsign * ACC[ik][it].mean() * factor);
+      }
     }
   }
 }

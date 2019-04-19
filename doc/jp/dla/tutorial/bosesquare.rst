@@ -10,10 +10,7 @@ DSQSS/DLA による正方格子上ハードコアボソン系の粒子数計算
 粒子数密度の化学ポテンシャル依存性をファイルに書き出すスクリプトです(sample/dla/03_bosesquare/exec.py).
 ::
 
-  import os
-  import os.path
   import subprocess
-  import sys
 
   from dsqss.parameter import dla_pre
   from dsqss.result import Results
@@ -45,8 +42,11 @@ DSQSS/DLA による正方格子上ハードコアボソン系の粒子数計算
       output.write('{} {}\n'.format(mu, res.to_str(name)))
   output.close()
 
-必要なパスを設定するために, ``dsqssvars-VERSION.sh`` を読み込んでから実行してください. ::
+必要なパスを設定するために, ``dsqssvars-VERSION.sh`` を読み込んでから実行してください
+(``VERSION`` はDSQSS のバージョン番号, 例えば ``2.0.0`` に読み替えてください).
+::
 
+  $ source $DSQSS_INSTALL_DIR/share/dsqss/dsqssvars-VERSION.sh
   $ python exec.py
 
 結果は ``amzu.dat`` に書き出されます(:numref:`fig_bosesquare`).

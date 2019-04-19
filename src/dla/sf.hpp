@@ -168,11 +168,15 @@ void SF::setsummary() {
   AutoDebugDump("SF::setsummary");
   const double invV = 1.0 / LAT.NSITE;
   SIGN.average();
-  const double invsign = 1.0/SIGN.mean();
-  for (int ik = 0; ik < NK; ik++) {
-    for (int it = 0; it < Ntau; it++) {
-      ACC[ik][it].average();
-      PHY[ik][it].accumulate(invsign * invV * ACC[ik][it].mean());
+  const double sgn = SIGN.mean();
+  if (sgn != 0.0){
+    const double invsign = 1.0/sgn;
+    for (int ik = 0; ik < NK; ik++) {
+      for (int it = 0; it < Ntau; it++) {
+        ACC[ik][it].average();
+        const double Q = ACC[ik][it].mean();
+        PHY[ik][it].accumulate(invsign * invV * Q);
+      }
     }
   }
 }

@@ -7,6 +7,7 @@
 #include <cstdio>
 #include <exception>
 #include <string>
+#include <boost/math/special_functions/fpclassify.hpp>
 #include "debug.hpp"
 #include "io.h"
 #include "objects.hpp"
@@ -96,7 +97,7 @@ inline Lattice::Lattice(Parameter const& P, Algorithm& A) : ALG(A) {
   X.initialize(P.LATFILE, "LATTICE");
   read();
 
-  if(!std::isinf(P.BETA)){
+  if(boost::math::isfinite(P.BETA)){
     setBeta(P.BETA);
   }
 

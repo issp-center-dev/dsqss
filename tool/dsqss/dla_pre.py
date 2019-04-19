@@ -52,7 +52,7 @@ def dla_pre(param, pfile):
     if p["dispfile"] != "":
         pdisp = param.get("displacement", {})
         disp = Displacement(lat, pdisp.get("distance_only", False))
-        disp.write_xml(p["dispfile"], lat)
+        disp.write_xml(p["dispfile"])
 
     p.write_param(pfile)
 

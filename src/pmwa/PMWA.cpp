@@ -2,6 +2,8 @@
 
 #include "../common/version.h"
 
+#include <debug.hpp>
+
 #include <PMWA.h>
 
 #include "../common/read_keyvalues.h"
@@ -23,6 +25,11 @@ Dla::Dla(int NP, char **PLIST) {
   MPI_Init(&NP, &PLIST);
   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &p_num);
+
+  std::stringstream logfile;
+  logfile << PLIST[1] << "." << my_rank << ".log";
+
+  plog::init(plog::info, logfile.str().c_str());
 
   MPI_Barrier(MPI_COMM_WORLD);
   allstart = MPI_Wtime();
@@ -50,18 +57,22 @@ Dla::~Dla() {
 //*************************************************************************************************
 
 double Dla::PMWA() {
+  AutoPlog("");
   Lattice LT(latfile);
 
   if(!std::isinf(BETA)){
     LT.set_beta(BETA);
   }
+  PR.FlgAnneal = false;
   PR.FlgRestart = (MC.runtype == Restart);
   if(PR.FlgRestart) {
-      if (!std::isinf(oldBETA)) {
-          LT.set_oldbeta(oldBETA);
-          PR.FlgAnneal = true;
-          PR.FlgRestart = false;
-      } else PR.FlgAnneal = false;
+    if (!std::isinf(oldBETA)) {
+      LT.set_oldbeta(oldBETA);
+      PR.FlgAnneal = true;
+      PR.FlgRestart = false;
+    } else{
+      PR.FlgAnneal = false;
+    }
   }
 
   LT.make_Size(&N);
@@ -76,7 +87,7 @@ double Dla::PMWA() {
 
   Configuration CS(&MC, &N, sp.nmax, &LT, &P, &PR, IMAX, WMAX, Eventfile_old, &MR, (bool)cb, outfile);
   Quantities QNT(&N, &MC, &sp, &LT, &PR, sfinpfile);
-
+  
   //##########################################################################
   ////////////////// Determination of Ncyc ////////////////////////
   if (MC.nc <= 1) {
@@ -190,6 +201,7 @@ void Dla::ReadParameterfile(int m_pnum, int m_myrank, int NP, char **PLIST) {
   deprecated_parameter(dict, "ndecor", "nmcsd");
 
   MC.runtype  = lexical_cast<int>(dict["runtype"]);
+  MC.nc  = lexical_cast<int>(dict["nc"]);
   MC.Nbin     = lexical_cast<int>(dict["nset"]);
   MC.Nsample  = lexical_cast<int>(dict["nmcs"]);
   MC.Nthermal = lexical_cast<int>(dict["ntherm"]);
@@ -239,6 +251,7 @@ void Dla::init_paramdict(std::map<std::string, std::string> &dict) {
   dict["ntherm"] = "1000";
   dict["ndecor"] = "1000";
   dict["seed"]   = "13";
+  dict["nc"]   = "0";
 
   dict["nvermax"] = "100000000";
   dict["nwormax"] = "1000";

@@ -10,21 +10,10 @@ DSQSS/DLA によるスピン鎖の帯磁率計算
 帯磁率の温度依存性をファイルに書き出す Pythonスクリプトです(sample/dla/02_spinchain/exec.py).
 ::
 
-  import os
-  import os.path
   import subprocess
-  import sys
 
   from dsqss.parameter import dla_pre
   from dsqss.result import Results
-
-  if len(sys.argv) > 1:
-      bindir = sys.argv[1]
-  elif "DSQSS_ROOT" in os.environ:
-      bindir = os.path.join(os.environ["DSQSS_ROOT"], "bin")
-      pass
-  else:
-      bindir = ""
 
   L = 30
 
@@ -54,8 +43,11 @@ DSQSS/DLA によるスピン鎖の帯磁率計算
           output.write('{} {}\n'.format(T, res.to_str(name)))
       output.close()
 
-必要なパスを設定するために, ``dsqssvars-VERSION.sh`` を読み込んでから実行してください. ::
+必要なパスを設定するために, ``dsqssvars-VERSION.sh`` を読み込んでから実行してください
+(``VERSION`` はDSQSS のバージョン番号, 例えば ``2.0.0`` に読み替えてください).
+::
 
+  $ source $DSQSS_INSTALL_DIR/share/dsqss/dsqssvars-VERSION.sh
   $ python exec.py
 
 :math:`S=1/2` の結果が xmzu_1.dat に, :math:`S=1` の結果が xmzu_2.dat にそれぞれ書き出されます (:numref:`fig_spinchain`).

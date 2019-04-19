@@ -28,38 +28,36 @@ Directory structure
 
 ::
    
-  |── CMakeLists.txt
-  |── LICENSE
-  |── README.md
-  |── config
-  |   |── gcc.cmake
-  |   |── intel.cmake
-  |
-  |── doc
-  |   |── en
-  |   |── jp
-  |
-  |── sample
-  |   |── CMakeLists.txt
-  |   |── dla
-  |   |── pmwa
-  |
-  |── src
-  |   |── common
-  |   |── dla
-  |   |── pmwa
-  |   |── third-party
-  |       |── boost
-  |
-  |── test
-  |   |── CMakeLists.txt
-  |   |── dla
-  |   |── pmwa
-  |   |── tool
-  |
-  |── tool
-      |── CMakeLists.txt
-      |── dsqss_pre.py
+  |-- CMakeLists.txt
+  |-- LICENSE
+  |-- README.md
+  |-- config
+  |   |-- gcc.cmake
+  |   `-- intel.cmake
+  |-- doc
+  |   |-- CMakeLists.txt
+  |   |-- en
+  |   `-- jp
+  |-- sample
+  |   |-- CMakeLists.txt
+  |   |-- dla
+  |   `-- pmwa
+  |-- src
+  |   |-- common
+  |   |-- dla
+  |   |-- pmwa
+  |   `-- third-party
+  |-- test
+  |   |-- CMakeLists.txt
+  |   |-- dla
+  |   |-- pmwa
+  |   `-- tool
+  `-- tool
+      |-- CMakeLists.txt
+      |-- cmake
+      |-- dsqss
+      `-- setup.py
+
 
 Install
 ********************

@@ -93,7 +93,7 @@ class info:
         self.prm = param()
         self.gendir = args.gendir
         if self.gendir is None:
-            self.gendir = os.path.abspath('./')
+            self.gendir = os.path.dirname(os.path.abspath(sys.argv[0]))
             print("use file generators in {0}".format(self.gendir))
         self._get_info(args.input)
         self._check_condition()
@@ -315,9 +315,7 @@ def main():
     parser.add_argument(
         "--hamfile", dest="hfile", default="hamiltonian.xml", help="Hamiltonian file"
     )
-    parser.add_argument(
-        "-i", "--input", dest="input", type=argparse.FileType("r"), help="Input file"
-    )
+    parser.add_argument("input", type=argparse.FileType("r"), help="Input file")
     parser.add_argument(
         "-s",
         "--stdin",
