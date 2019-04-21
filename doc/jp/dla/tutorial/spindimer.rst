@@ -24,7 +24,7 @@ DSQSS/DLA を実行するには,
 
 の3つの入力ファイルが必要です.
 そのため, まずはこれらの入力ファイルを作成します.
-そのためのユーティリティツールが dla_pre.py です.
+そのためのユーティリティツールが dla_pre です.
 これは単一の入力ファイルから, DSQSS/DLA  の入力ファイルを生成するPython スクリプトです.
 まず, dla_pre.py の入力ファイルとして, 次の内容を持つテキストファイル std.toml を準備します(sample/dla/01_spindimer/std.toml).
 ::
@@ -52,7 +52,7 @@ DSQSS/DLA を実行するには,
 このファイルを dla_pre.py に与えます.
 ::
 
-  $ $DSQSS_ROOT/bin/dla_pre.py std.toml
+  $ dla_pre std.toml
 
 この結果, パラメータファイル param.in, 格子定義ファイル lattice.xml, アルゴリズム定義ファイル algorithm.xml が生成されます。
 
@@ -62,15 +62,15 @@ DSQSS/DLA を実行するには,
 入力ファイルを作成したら, DSQSS/DLA による計算を実行します.
 ::
 
-  $ $DSQSS_ROOT/bin/dla param.in
+  $ dla param.in
 
 
 なお, 計算を実行するときにMPI を用いることで, 乱数並列計算が可能です.
 ::
 
-  $ mpiexec -np 4 $DSQSS_ROOT/bin/dla param.in
+  $ mpiexec -np 4 dla param.in
 
-並列数 (今回は4) だけ独立に計算を行い, モンテカルロサンプル数を増やすことで計算精度を向上できます. [#fn_ompi_macos]_
+乱数並列計算では並列数 (この例では4) だけ独立に計算が行われ, その分モンテカルロサンプル数を増えるために計算精度が向上します. [#fn_ompi_macos]_
 
 
 計算結果の解釈
