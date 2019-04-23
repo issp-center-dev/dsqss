@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Input files for DSQSS/DLA &#8212; DSQSS 2.0.0-DEV documentation</title>
+    <title>5.3. Input files for DSQSS/DLA &#8212; DSQSS 2.0.0-DEV documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -15,6 +15,8 @@
     <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.4. Utility tools to generate the input files of DSQSS/DLA" href="generator.html" />
+    <link rel="prev" title="5.2. Standard input files for DSQSS/DLA" href="input_standard.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -32,9 +34,9 @@
           <div class="body" role="main">
             
   <div class="section" id="input-files-for-dsqss-dla">
-<span id="sec-dla-input"></span><h1>Input files for DSQSS/DLA<a class="headerlink" href="#input-files-for-dsqss-dla" title="Permalink to this headline">¶</a></h1>
+<span id="dla-expert-files"></span><h1>5.3. Input files for DSQSS/DLA<a class="headerlink" href="#input-files-for-dsqss-dla" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="the-list-of-input-files">
-<h2>The list of input files<a class="headerlink" href="#the-list-of-input-files" title="Permalink to this headline">¶</a></h2>
+<h2>5.3.1. The list of input files<a class="headerlink" href="#the-list-of-input-files" title="Permalink to this headline">¶</a></h2>
 <table class="colwidths-given docutils align-center">
 <colgroup>
 <col style="width: 20%" />
@@ -60,7 +62,7 @@
 </table>
 </div>
 <div class="section" id="parameter-file-qmc-inp">
-<h2>Parameter file <code class="docutils literal notranslate"><span class="pre">qmc.inp</span></code><a class="headerlink" href="#parameter-file-qmc-inp" title="Permalink to this headline">¶</a></h2>
+<h2>5.3.2. Parameter file <code class="docutils literal notranslate"><span class="pre">qmc.inp</span></code><a class="headerlink" href="#parameter-file-qmc-inp" title="Permalink to this headline">¶</a></h2>
 <p>The parameter file is a plain-text file with the following format,</p>
 <ul class="simple">
 <li><p>One line stands for one parameter by the key-value style, <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span> <span class="pre">=</span> <span class="pre">&lt;value&gt;</span></code>.</p></li>
@@ -144,45 +146,35 @@
 <td><p>lattice.xml</p></td>
 <td><p>The filename of a lattice file.</p></td>
 </tr>
-<tr class="row-even"><td><p>sfinpfile</p></td>
+<tr class="row-even"><td><p>wvfile</p></td>
 <td><p>string</p></td>
 <td><p>–</p></td>
-<td><p>A structure factor file. If it is an empty string, structure factors will not be calculated.</p></td>
+<td><p>A wavevector XML file. If it is an empty string, observables as functions of wavevector will not be calculated.</p></td>
 </tr>
-<tr class="row-odd"><td><p>cfinpfile</p></td>
+<tr class="row-odd"><td><p>dispfile</p></td>
 <td><p>string</p></td>
 <td><p>–</p></td>
-<td><p>A real space temperature Green’s function file. If it is an empty string, real space temperature Green’s functions will not be calculated.</p></td>
+<td><p>A relative coordinates XML file. If it is an empty string, observables as functions of relative coordinates will not be calculated.</p></td>
 </tr>
-<tr class="row-even"><td><p>ckinpfile</p></td>
-<td><p>string</p></td>
-<td><p>–</p></td>
-<td><p>A momentum space temperature Green’s function file. If it is an empty string, momentum space temperature Green’s functions will not be calculated.</p></td>
-</tr>
-<tr class="row-odd"><td><p>outfile</p></td>
+<tr class="row-even"><td><p>outfile</p></td>
 <td><p>string</p></td>
 <td><p>sample.log</p></td>
 <td><p>The name of the main result file.</p></td>
 </tr>
-<tr class="row-even"><td><p>sfoutfile</p></td>
+<tr class="row-odd"><td><p>sfoutfile</p></td>
 <td><p>string</p></td>
 <td><p>sf.dat</p></td>
 <td><p>The name of the structure factor result file.</p></td>
 </tr>
-<tr class="row-odd"><td><p>cfoutfile</p></td>
+<tr class="row-even"><td><p>cfoutfile</p></td>
 <td><p>string</p></td>
 <td><p>cf.dat</p></td>
 <td><p>The name of the real space temperature Green’s function output file.</p></td>
 </tr>
-<tr class="row-even"><td><p>ckoutfile</p></td>
+<tr class="row-odd"><td><p>ckoutfile</p></td>
 <td><p>string</p></td>
 <td><p>ck.dat</p></td>
 <td><p>The name of the momentum space temperature Green’s function output file.</p></td>
-</tr>
-<tr class="row-odd"><td><p>runtype</p></td>
-<td><p>int</p></td>
-<td><p>0</p></td>
-<td><p>Method. This remains for backward compatibility.</p></td>
 </tr>
 </tbody>
 </table>
@@ -212,10 +204,10 @@
 </ul>
 </div>
 <div class="section" id="lattice-file-lattice-xml">
-<h2>Lattice file <code class="docutils literal notranslate"><span class="pre">lattice.xml</span></code><a class="headerlink" href="#lattice-file-lattice-xml" title="Permalink to this headline">¶</a></h2>
+<h2>5.3.3. Lattice file <code class="docutils literal notranslate"><span class="pre">lattice.xml</span></code><a class="headerlink" href="#lattice-file-lattice-xml" title="Permalink to this headline">¶</a></h2>
 <p>A lattice file is a textfile written in XML format.
-This defines timespace to be simulation, for example, the number of sites, the connections between sites, the inverse temperature, and so on.
-This file can be very complicated, so DSQSS has a utility tool <code class="docutils literal notranslate"><span class="pre">lattgene</span></code> to generate lattice files describing common lattices, such as a hypercubic lattice.</p>
+This defines space to be simulation, for example, the number of sites, the connections between sites, and so on.
+This file can be very complicated, so DSQSS has a utility tool <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> to generate lattice XML files from simpler files, lattice data files and lattice TOML files.</p>
 <p>The lattice file has a unique element named “Lattice”. The other elements belong to “Lattice” as children.</p>
 <dl>
 <dt>Lattice</dt><dd><p>The root element.</p>
@@ -231,8 +223,6 @@ This takes space-separated positive integers as many as specified by “Lattice/
 </pre></div>
 </div>
 </dd>
-<dt>Lattice/NumberOfCells</dt><dd><p>The number of unitcells.</p>
-</dd>
 <dt>Lattice/NumberOfSites</dt><dd><p>The number of sites.</p>
 </dd>
 <dt>Lattice/NumberOfInteractions</dt><dd><p>The number of the interactions.
@@ -242,17 +232,18 @@ When all the interactions are two-body ones, this is nothing but the number of b
 </dd>
 <dt>Lattice/NumberOfInteractionTypes</dt><dd><p>The number of interaction types.</p>
 </dd>
-<dt>Lattice/BondDimension</dt><dd><p>Parameter for the winding number.</p>
+<dt>Lattice/NumberOfBondDirections</dt><dd><p>The number of bond directions.</p>
 </dd>
-<dt>Lattice/NumberOfEdgeInteractions</dt><dd><p>Parameter for the Winding number.
-The number of bonds connecting sites over the lattice’s boundary.</p>
+<dt>Lattice/NumberOfEdgeInteractions</dt><dd><p>The number of bonds connecting sites over the lattice’s boundary.</p>
+</dd>
+<dt>Lattice/Basis</dt><dd><p>The basic vectors spanning lattice space.</p>
 </dd>
 <dt>Lattice/S</dt><dd><p>Site information.
 “Lattice” should includes this element as many as the number specified by “Lattice/NumberOfSites”.
-This takes three positive integers, “index of site”, “site type”, and “measure type”.
+This takes two nonnegative integers, “index of site” and “site type”.
 The detail of site type is defined in an algorithm file.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;S&gt; 3 0 1 &lt;/S&gt;
-# the site with index 3 has the site type of 0 and the measure type of 1.
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;S&gt; 3 0 &lt;/S&gt;
+# the site with index 3 has the site type of 0.
 </pre></div>
 </div>
 </dd>
@@ -266,10 +257,13 @@ The order of the indices of sites should be compatible with the order of sites s
 </pre></div>
 </div>
 </dd>
+<dt>Lattice/Direction</dt><dd><p>The direction of bonds.
+This takes “index of the direction” and “coordinates of the direction.”</p>
+</dd>
 </dl>
 </div>
 <div class="section" id="algorithm-file-algorithm-xml">
-<h2>Algorithm file <code class="docutils literal notranslate"><span class="pre">algorithm.xml</span></code><a class="headerlink" href="#algorithm-file-algorithm-xml" title="Permalink to this headline">¶</a></h2>
+<h2>5.3.4. Algorithm file <code class="docutils literal notranslate"><span class="pre">algorithm.xml</span></code><a class="headerlink" href="#algorithm-file-algorithm-xml" title="Permalink to this headline">¶</a></h2>
 <p>An algorithm file is a textfile written in XML format.
 This defines the details of interactions, for example, the scattering probability of a worm head.
 This file can be very complicated, so DSQSS has a utility tool <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> to generate algorithm files from more simple file, the Hamiltonian file introduced later.</p>
@@ -304,8 +298,7 @@ This has children, “NSType”, “NIType”, “NVType”, “NXMax”, and �
 <dt>Algorithm/General/NXMax</dt><dd><p>The maximum number of states on a site.
 For example, <span class="math notranslate nohighlight">\(2S+1\)</span> for a spin system with local spin <span class="math notranslate nohighlight">\(S\)</span>.</p>
 </dd>
-<dt>Algorithm/General/WDiag</dt><dd><p>User can use this value for user’s own purpose in “measure_specific.cc”.
-In the original “measure_specific.cc” uses this value as a coefficient to measure correlation functions from the length of worms.</p>
+<dt>Algorithm/General/WDiag</dt><dd><p>A coefficient to measure correlation functions from the length of worms.</p>
 </dd>
 <dt>Algorithm/Site</dt><dd><p>This defines a site type, for example, the weight of worm heads on a site.
 This has children “SType”, “NumberOfStates”, “VertexTypeOfSource”, and “InitialConfiguration”.</p>
@@ -314,6 +307,7 @@ This has children “SType”, “NumberOfStates”, “VertexTypeOfSource”, a
   &lt;Site&gt;
     &lt;STYPE&gt; 0 &lt;/STYPE&gt;
     &lt;NumberOfStates&gt; 2 &lt;/NumberOfStates&gt;
+    &lt;LocalStates&gt; -0.5 0.5 &lt;/LocalStates&gt;
     &lt;VertexTypeOfSource&gt; 0 &lt;/VertexTypeOfSource&gt;
     &lt;InitialConfiguration&gt;
        ...
@@ -330,6 +324,9 @@ This has children “SType”, “NumberOfStates”, “VertexTypeOfSource”, a
 <dt>Algorithm/Site/SType</dt><dd><p>The index of site type.</p>
 </dd>
 <dt>Algorithm/Site/NumberOfStates</dt><dd><p>The number of states of the site.</p>
+</dd>
+<dt>Algorithm/Site/LocalStates</dt><dd><p>Mapping from indices of local states to values of states.
+For example, the z components of the spin operator in the usual spin case.</p>
 </dd>
 <dt>Algorithm/Site/VertexTypeOfSource</dt><dd><p>The index of the vertex to be inserted here.</p>
 </dd>
@@ -496,181 +493,60 @@ This takes two integers and one floating number.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="hamiltonian-file-hamiltonian-xml">
-<h2>Hamiltonian file <code class="docutils literal notranslate"><span class="pre">hamiltonian.xml</span></code><a class="headerlink" href="#hamiltonian-file-hamiltonian-xml" title="Permalink to this headline">¶</a></h2>
-<p>A Hamiltonian file is a textfile written in XML format.
-This defines the local Hamiltonians, e.g., a bond Hamiltonian.
-This file is used as an input of <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> in order to generate <code class="docutils literal notranslate"><span class="pre">algorithm.xml</span></code> .
-DSQSS has utility tools <code class="docutils literal notranslate"><span class="pre">hamgen_H</span></code> and <code class="docutils literal notranslate"><span class="pre">hamgen_B</span></code> to generate hamiltonian files describing the Heisenberg spin model and the Bose-Hubbard model.</p>
-<p>The Hamiltonian file has a unique element named “Hamiltonian”. The other elements belong to “Hamiltonian” as children.</p>
-<dl>
-<dt>Hamiltonian</dt><dd><p>The root element.
-This has children, “General”, “Site”, “Source”, and “Interaction”.</p>
-</dd>
-<dt>Hamiltonian/General</dt><dd><p>General parameters such as the number of site types.
-This has children, “NSTYPE”, “NITYPE”, “NXMAX”, and “Comment”.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Hamiltonian&gt;
-   &lt;General&gt;
-     &lt;Comment&gt; SU(2) Heisenberg model with S=1/2 &lt;/Comment&gt;
-     &lt;NSTYPE&gt; 1 &lt;/NSTYPE&gt;
-     &lt;NITYPE&gt; 1 &lt;/NITYPE&gt;
-     &lt;NXMAX&gt;  2 &lt;/NXMAX&gt;
-   &lt;/General&gt;
-  ...
-&lt;/Hamiltonian&gt;
-</pre></div>
-</div>
-</dd>
-<dt>Hamiltonian/General/Comment</dt><dd><p>(Optional) Comment. DSQSS ignores this.</p>
-</dd>
-<dt>Hamiltonian/General/NSTYPE</dt><dd><p>The number of site types.</p>
-</dd>
-<dt>Hamiltonian/General/NITYPE</dt><dd><p>The number of interaction types.</p>
-</dd>
-<dt>Hamiltonian/General/NXMAX</dt><dd><p>The maximum number of states on a site.
-For example, <span class="math notranslate nohighlight">\(2S+1\)</span> for a spin system with local spin <span class="math notranslate nohighlight">\(S\)</span>.</p>
-</dd>
-<dt>Hamiltonian/Site</dt><dd><p>This defines a site type, for example, the number of states.
-This has children “STYPE”, “TTYPE”, and “NX”.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Hamiltonian&gt;
-  ...
-  &lt;Site&gt;
-    &lt;STYPE&gt; 0 &lt;/STYPE&gt;
-    &lt;TTYPE&gt; 0 &lt;/TTYPE&gt;
-    &lt;NX&gt;   2 &lt;/NX&gt;
-  &lt;/Site&gt;
-  ...
-&lt;/Hamiltonian&gt;
-</pre></div>
-</div>
-</dd>
-<dt>Hamiltonian/Site/STYPE</dt><dd><p>The index of site type.</p>
-</dd>
-<dt>Hamiltonian/Site/TTYPE</dt><dd><p>The index of the source type (type of pair creation/annihilation of worm-heads.)</p>
-</dd>
-<dt>Hamiltonian/Site/NX</dt><dd><p>The number of states of the site.</p>
-</dd>
-<dt>Hamiltonian/Source</dt><dd><p>This defines a source type, that is, the pair-creation/annihilation of worm-heads.
-This has children “TTYPE”, “STYPE”, and “Weight”.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Source&gt;
-  &lt;TTYPE&gt; 0 &lt;/TTYPE&gt;
-  &lt;STYPE&gt; 0 &lt;/STYPE&gt;
-  &lt;Weight&gt; 0 1       0.5000000000000000 &lt;/Weight&gt;
-  &lt;Weight&gt; 1 0       0.5000000000000000 &lt;/Weight&gt;
-&lt;/Source&gt;
-</pre></div>
-</div>
-</dd>
-<dt>Hamiltonian/Source/TTYPE</dt><dd><p>The index of the source type.</p>
-</dd>
-<dt>Hamiltonian/Source/STYPE</dt><dd><p>The index of the site type.</p>
-</dd>
-<dt>Hamiltonian/Source/Weight</dt><dd><p>The weight of the creation/annihilation operator.
-This takes two integers and one floating number.
-The integers denote the states of the site before and after applying the operator, respectively.
-The floating number denotes the matrix element.</p>
-<p>For example, <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">1</span> <span class="pre">0.5</span></code> means <span class="math notranslate nohighlight">\(\langle 1 | \mathcal{H} | 0 \rangle = 0.5\)</span>.</p>
-</dd>
-<dt>Hamiltonian/Interaction</dt><dd><p>This defines an interaction type.
-This has children “ITYPE”, “STYPE”, “NBODY”, and “Weight”.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Hamiltonian&gt;
-  ...
-  &lt;Interaction&gt;
-    &lt;ITYPE&gt; 0 &lt;/ITYPE&gt;
-    &lt;NBODY&gt; 2 &lt;/NBODY&gt;
-    &lt;STYPE&gt; 0 0 &lt;/STYPE&gt;
-    &lt;Weight&gt; 0 0 0 0      -0.2500000000000000 &lt;/Weight&gt;
-    &lt;Weight&gt; 1 1 0 0       0.2500000000000000 &lt;/Weight&gt;
-    &lt;Weight&gt; 1 0 0 1      -0.5000000000000000 &lt;/Weight&gt;
-    &lt;Weight&gt; 0 1 1 0      -0.5000000000000000 &lt;/Weight&gt;
-    &lt;Weight&gt; 0 0 1 1       0.2500000000000000 &lt;/Weight&gt;
-    &lt;Weight&gt; 1 1 1 1      -0.2500000000000000 &lt;/Weight&gt;
-  &lt;/Interaction&gt;
-  ...
-&lt;/Hamiltonian&gt;
-</pre></div>
-</div>
-</dd>
-<dt>Hamiltonian/Interaction/ITYPE</dt><dd><p>The index of the interaction type.</p>
-</dd>
-<dt>Hamiltonian/Interaction/NBODY</dt><dd><p>The number of sites involved in this interaction.
-An onebody interaction such as the Zeeman term has 1 and a twobody interaction such as the exchange coupling has 2.
-Three or higher body interaction can be treated.</p>
-</dd>
-<dt>Hamiltonian/Interaction/ITYPE</dt><dd><p>The indices of sites involved in this interaction.
-This takes NBODY integers.</p>
-</dd>
-<dt>Hamiltonian/Interaction/Weight</dt><dd><p>The matrix elements of the local Hamiltonian.</p>
-<p>This takes integers as many as <span class="math notranslate nohighlight">\(2\times\)</span> NBODY and one preceding floating number.
-The integers denote the states of sites before and after applying the local Hamiltonian.
-The last floating number denotes the matrix element multiplied by <span class="math notranslate nohighlight">\(-1\)</span>.</p>
-<p>For example, <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">0</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">0.25</span></code> means <span class="math notranslate nohighlight">\(\langle 0 1 | -\mathcal{H} | 0 1 \rangle = 0.25\)</span>
-and <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">0</span> <span class="pre">-0.5</span></code> means <span class="math notranslate nohighlight">\(\langle 1 0 | -\mathcal{H} | 0 1 \rangle = -0.5\)</span>.</p>
-</dd>
-</dl>
-</div>
-<div class="section" id="structure-factor-file-sf-xml">
-<h2>Structure factor file <code class="docutils literal notranslate"><span class="pre">sf.xml</span></code><a class="headerlink" href="#structure-factor-file-sf-xml" title="Permalink to this headline">¶</a></h2>
-<p>A structure factor file is a textfile written in a XML-like format.
-This defines wave vectors and the discretization of imaginary time to calculate the dynamical structure factor</p>
+<div class="section" id="wavevector-xml-file-wavevector-xml">
+<h2>5.3.5. Wavevector XML file <code class="docutils literal notranslate"><span class="pre">wavevector.xml</span></code><a class="headerlink" href="#wavevector-xml-file-wavevector-xml" title="Permalink to this headline">¶</a></h2>
+<p>A wavevector XML file is a textfile written in a XML-like format.
+This defines the wavevectors to calculate several observables: staggered magnetization</p>
+<div class="math notranslate nohighlight">
+\[M^{z}(\vec{k}) \equiv \frac{1}{N} \sum_i e^{-i\vec{k}\vec\vec{r}_i} \left\langle M^{z}_i \right\rangle,\]</div>
+<p>dynamical structure factor</p>
 <div class="math notranslate nohighlight">
 \[S^{zz}(\vec{k},\tau) \equiv
-  \left\langle M^z(\vec{k},\tau)M^z(-\vec{k},0) \right\rangle - \left\langle M^z(\vec{k},\tau)\right\rangle \left\langle M^z(-\vec{k},0)\right\rangle .\]</div>
-<p>DSQSS has a utility tool to generate a structure factor file, <code class="docutils literal notranslate"><span class="pre">sfgene</span></code>.</p>
-<p>A structure factor file has only one element, “StructureFactor”, and the other elements are children of this.</p>
+  \left\langle M^z(\vec{k},\tau)M^z(-\vec{k},0) \right\rangle - \left\langle M^z(\vec{k},\tau)\right\rangle \left\langle M^z(-\vec{k},0)\right\rangle ,\]</div>
+<p>and momentum space temperature Green’s function</p>
+<div class="math notranslate nohighlight">
+\[G(\vec{k},\tau) \equiv \left\langle M^+(\vec{k}, \tau) M^-(-\vec{k},0) \right\rangle .\]</div>
+<p>This can be generated from a wavevector datafile via <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code>.</p>
+<p>A structure factor file has only one element, “WaveVector”, and the other elements are children of this.</p>
 <dl class="simple">
-<dt>StructureFactor</dt><dd><p>The root element.
-This has children, “Ntau”, “NumberOfElements”, “CutoffOfNtau”, “NumberOfInverseLattice”, and “SF”.</p>
+<dt>WaveVector</dt><dd><p>The root element.
+This has children, “Comment”, “NumberOfSites”, “NumberOfWaveVectors” and “RK”.</p>
 </dd>
-<dt>StructureFactor/Comment</dt><dd><p>(Optional) Comment. DSQSS ignores this.</p>
+<dt>WaveVector/Comment</dt><dd><p>(Optional) Comment. DSQSS ignores this.</p>
 </dd>
-<dt>StructureFactor/Ntau</dt><dd><p>The number of discretization of the imaginary time axis.</p>
+<dt>WaveVector/NumberOfSites</dt><dd><p>The number of lattice sites.</p>
 </dd>
-<dt>StructureFactor/CutoffOfNtau</dt><dd><p>The maximum of the imaginary time distance of the dynamical structure factor, <span class="math notranslate nohighlight">\(\tau\)</span>.
-This takes an integer in <span class="math notranslate nohighlight">\(0, 1, \dots, \mathrm{Ntau}\)</span>.</p>
+<dt>WaveVector/NumberOfWaveVectors</dt><dd><p>The number of Wavevectors <span class="math notranslate nohighlight">\(\vec{k}\)</span>.</p>
 </dd>
-<dt>StructureFactor/NumberOfInverseLattice</dt><dd><p>The number of wave vectors, <span class="math notranslate nohighlight">\(\vec{k}\)</span></p>
-</dd>
-<dt>StructureFactor/NumberOfElements</dt><dd><p>The number of the combination of wave vectors and sites.</p>
-</dd>
-<dt>StructureFactor/SF</dt><dd><p>The phase factor <span class="math notranslate nohighlight">\(z = \exp{\vec{r}\cdot\vec{k}}\)</span> for a pair of a wave vector and a site.
+<dt>WaveVector/RK</dt><dd><p>The phase factor <span class="math notranslate nohighlight">\(z = \exp{\vec{r}\cdot\vec{k}}\)</span> for a pair of a wave vector and a site.
 This takes four figures, “<span class="math notranslate nohighlight">\(\mathrm{Re}z\)</span>”, “<span class="math notranslate nohighlight">\(\mathrm{Im}z\)</span>”, “the index of the site”, “the index of the wave vector”.
 “StructureFactor” should has this elements as many as the number specified by “StructureFactor/NumberOfElements”.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="real-space-temperature-green-s-function-file-cf-xml">
-<h2>Real space temperature Green’s function file <code class="docutils literal notranslate"><span class="pre">cf.xml</span></code><a class="headerlink" href="#real-space-temperature-green-s-function-file-cf-xml" title="Permalink to this headline">¶</a></h2>
-<p>Real space temperature Green’s function file is a textfile written in a XML-like format.
+<div class="section" id="relative-coordinate-xml-file-displacement-xml">
+<h2>5.3.6. Relative coordinate XML file <code class="docutils literal notranslate"><span class="pre">displacement.xml</span></code><a class="headerlink" href="#relative-coordinate-xml-file-displacement-xml" title="Permalink to this headline">¶</a></h2>
+<p>A relative coordinate XML file is a textfile written in a XML-like format.
 This defines relative coordinate between two sites, <span class="math notranslate nohighlight">\(\vec{r}_{ij}\)</span>, to calculate real space temperature Green’s function,</p>
 <div class="math notranslate nohighlight">
-\[G(\vec{r},\tau) \equiv \frac{1}{N^2}\sum_{i,j}\left\langle M_i^+(\tau) M_j^- \right\rangle \delta(\vec{r}-\vec{r}_{ij}) .\]</div>
-<p>More precisely, this groups all the pair of sites by the relative coordinates.</p>
-<p>DSQSS has a utility tool to generate a real space temperature Green’s function file, <code class="docutils literal notranslate"><span class="pre">cfgene</span></code>.</p>
-<p>A real space temperature Green’s function file has only one element, “CorrelationFunction”, and the other elements belong to this as children.</p>
+\[G(\vec{r}_{ij},\tau) \equiv \left\langle M_i^+(\tau) M_j^- \right\rangle .\]</div>
+<p>This file can be generated by using <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code>.</p>
+<p>A relative coordinate XML file has only one element,
+“Displacements”, and the other elements belong to this as children.</p>
 <dl class="simple">
-<dt>CorrelationFunction</dt><dd><p>The root element.
-This has children, “Ntau”, “NumberOfKinds”, and “CF”.</p>
+<dt>Displacements</dt><dd><p>The root element.
+This has children, “Comment”, “NumberOfKinds”, “NumberOfSites”, and “R”.</p>
 </dd>
-<dt>CorrelationFunction/Comment</dt><dd><p>(Optional) Comment. DSQSS ignores this.</p>
+<dt>Displacements/Comment</dt><dd><p>(Optional) Comment. DSQSS ignores this.</p>
 </dd>
-<dt>CorrelationFunction/Ntau</dt><dd><p>The number of discretization of the imaginary time axis.</p>
+<dt>Displacements/NumberOfSites</dt><dd><p>The number of lattice sites.</p>
 </dd>
-<dt>CorrelationFunction/NumberOfKinds</dt><dd><p>The number of relative coordinates.</p>
+<dt>Displacements/NumberOfKinds</dt><dd><p>The number of relative coordinates.</p>
 </dd>
-<dt>CorrelationFunction/CF</dt><dd><p>This takes three integers, “the index of the relative coordinate”, “the index of the site <span class="math notranslate nohighlight">\(i\)</span>”, and “the index of the site <span class="math notranslate nohighlight">\(j\)</span>”.
+<dt>Displacements/R</dt><dd><p>This takes three integers, “the index of the relative coordinate”, “the index of the site <span class="math notranslate nohighlight">\(i\)</span>”, and “the index of the site <span class="math notranslate nohighlight">\(j\)</span>”.
 “CorrelationFunction” should has this elements as many as the number specified by “CorrelationFunction/NumberOfKinds”.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="momentum-space-temperature-green-s-function-file-ck-xml">
-<h2>Momentum space temperature Green’s function file <code class="docutils literal notranslate"><span class="pre">ck.xml</span></code><a class="headerlink" href="#momentum-space-temperature-green-s-function-file-ck-xml" title="Permalink to this headline">¶</a></h2>
-<p>A momentum space temperature Green’s function file is a textfile written in a XML-like format.
-This defines wave vectors and the discretization of imaginary time to calculate the momentum space temperature Green’s function,</p>
-<div class="math notranslate nohighlight">
-\[G(\vec{k},\tau) \equiv \left\langle M^+(\vec{k}, \tau) M^-(-\vec{k},0) \right\rangle .\]</div>
-<p>Since this file has the format as same as that of the structure factor file including the names of elements,
-users can use the same file.</p>
 </div>
 </div>
 
@@ -696,12 +572,28 @@ users can use the same file.</p>
 
 
 <h3>Navigation</h3>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. About DSQSS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. How to install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dsqss/usage.html">3. Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">4. Tutorial of DSQSS/DLA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html">5. User’s manual of DSQSS/DLA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">5. User’s manual of DSQSS/DLA</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="input_simple.html">5.1. Simple mode of DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_standard.html">5.2. Standard input files for DSQSS/DLA</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.3. Input files for DSQSS/DLA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-list-of-input-files">5.3.1. The list of input files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parameter-file-qmc-inp">5.3.2. Parameter file <code class="docutils literal notranslate"><span class="pre">qmc.inp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lattice-file-lattice-xml">5.3.3. Lattice file <code class="docutils literal notranslate"><span class="pre">lattice.xml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#algorithm-file-algorithm-xml">5.3.4. Algorithm file <code class="docutils literal notranslate"><span class="pre">algorithm.xml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wavevector-xml-file-wavevector-xml">5.3.5. Wavevector XML file <code class="docutils literal notranslate"><span class="pre">wavevector.xml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#relative-coordinate-xml-file-displacement-xml">5.3.6. Relative coordinate XML file <code class="docutils literal notranslate"><span class="pre">displacement.xml</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="generator.html">5.4. Utility tools to generate the input files of DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engine.html">5.5. Directed loop algorithm solvers, <code class="docutils literal notranslate"><span class="pre">dla_H</span></code> and <code class="docutils literal notranslate"><span class="pre">dla_B</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="output.html">5.6. Output of DSQSS/DLA</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tutorial.html">6. Tutorial of DSQSS/PMWA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tu-index.html">7. User’s manual for DSQSS/PMWA</a></li>
 </ul>
@@ -710,6 +602,10 @@ users can use the same file.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">5. User’s manual of DSQSS/DLA</a><ul>
+      <li>Previous: <a href="input_standard.html" title="previous chapter">5.2. Standard input files for DSQSS/DLA</a></li>
+      <li>Next: <a href="generator.html" title="next chapter">5.4. Utility tools to generate the input files of DSQSS/DLA</a></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>
@@ -743,7 +639,7 @@ users can use the same file.</p>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="../../_sources/dla/users-manual/input.rst.txt"
+      <a href="../../_sources/dla/users-manual/input_expert.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

@@ -16,7 +16,7 @@
     <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="検索" href="../../search.html" />
-    <link rel="next" title="4.1. DLA のシンプルモードファイル" href="input_simple.html" />
+    <link rel="next" title="4.1. DSQSS/DLA のシンプルモード" href="input_simple.html" />
     <link rel="prev" title="3.4. DSQSS/DLA による正方格子上ハードコアボソン系の粒子数計算" href="../tutorial/bosesquare.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -36,17 +36,13 @@
             
   <div class="section" id="dsqss-dla">
 <span id="chap-dla-usermanual"></span><h1>4. DSQSS/DLAのユーザーマニュアル<a class="headerlink" href="#dsqss-dla" title="このヘッドラインへのパーマリンク">¶</a></h1>
-<div class="figure align-center" id="id1">
-<img alt="../../_images/dla_flow.png" src="../../_images/dla_flow.png" />
-<p class="caption"><span class="caption-number">図 4.1 </span><span class="caption-text">DSQSS/DLA のワークフロー</span><a class="headerlink" href="#id1" title="この画像へのパーマリンク">¶</a></p>
-</div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="input_simple.html">4.1. DLA のシンプルモードファイル</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="input_simple.html">4.1. DSQSS/DLA のシンプルモード</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="input_simple.html#simple-mode-file">4.1.1. シンプルモードファイル</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="input_standard.html">4.2. DLA のスタンダードモード入力ファイル</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="input_standard.html">4.2. DSQSS/DLA のスタンダードモード</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="input_standard.html#id1">4.2.1. 入力ファイル一覧</a></li>
 <li class="toctree-l2"><a class="reference internal" href="input_standard.html#lattice-data-file">4.2.2. 格子データファイル</a></li>
 <li class="toctree-l2"><a class="reference internal" href="input_standard.html#toml">4.2.3. 格子TOML ファイル</a></li>
@@ -54,7 +50,7 @@
 <li class="toctree-l2"><a class="reference internal" href="input_standard.html#wavevector-file">4.2.5. 波数ファイル</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="input_expert.html">4.3. DLA のエキスパートモード入力ファイル</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="input_expert.html">4.3. DSQSS/DLA のエキスパートモード入力ファイル</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="input_expert.html#id1">4.3.1. 入力ファイル一覧</a></li>
 <li class="toctree-l2"><a class="reference internal" href="input_expert.html#expert-param-file">4.3.2. パラメータファイル</a></li>
 <li class="toctree-l2"><a class="reference internal" href="input_expert.html#xml">4.3.3. 格子XMLファイル</a></li>
@@ -112,9 +108,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. インストール</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">3. DLAのチュートリアル</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">4. DSQSS/DLAのユーザーマニュアル</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="input_simple.html">4.1. DLA のシンプルモードファイル</a></li>
-<li class="toctree-l2"><a class="reference internal" href="input_standard.html">4.2. DLA のスタンダードモード入力ファイル</a></li>
-<li class="toctree-l2"><a class="reference internal" href="input_expert.html">4.3. DLA のエキスパートモード入力ファイル</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_simple.html">4.1. DSQSS/DLA のシンプルモード</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_standard.html">4.2. DSQSS/DLA のスタンダードモード</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_expert.html">4.3. DSQSS/DLA のエキスパートモード入力ファイル</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generator.html">4.4. DLA の入力ファイル生成ツール</a></li>
 <li class="toctree-l2"><a class="reference internal" href="engine.html">4.5. 向き付きループアルゴリズムソルバ dla</a></li>
 <li class="toctree-l2"><a class="reference internal" href="output.html">4.6. DLA の出力ファイル</a></li>
@@ -130,7 +126,7 @@
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
       <li>Previous: <a href="../tutorial/bosesquare.html" title="前の章へ">3.4. DSQSS/DLA による正方格子上ハードコアボソン系の粒子数計算</a></li>
-      <li>Next: <a href="input_simple.html" title="次の章へ">4.1. DLA のシンプルモードファイル</a></li>
+      <li>Next: <a href="input_simple.html" title="次の章へ">4.1. DSQSS/DLA のシンプルモード</a></li>
   </ul></li>
 </ul>
 </div>

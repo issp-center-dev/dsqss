@@ -75,13 +75,12 @@
 <span class="n">output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>必要なパスを設定するために, <code class="docutils literal notranslate"><span class="pre">dsqssvars-VERSION.sh</span></code> を読み込んでから実行してください
-(<code class="docutils literal notranslate"><span class="pre">VERSION</span></code> はDSQSS のバージョン番号, 例えば <code class="docutils literal notranslate"><span class="pre">2.0.0</span></code> に読み替えてください).</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ source $DSQSS_INSTALL_DIR/share/dsqss/dsqssvars-VERSION.sh
-$ python exec.py
+<p>このPython スクリプトを実行すると</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python exec.py
 </pre></div>
 </div>
-<p>結果は <code class="docutils literal notranslate"><span class="pre">amzu.dat</span></code> に書き出されます(<a class="reference internal" href="#fig-bosesquare"><span class="std std-numref">図 3.2</span></a>).
+<p>化学ポテンシャルごとに密度の期待値と統計誤差が <code class="docutils literal notranslate"><span class="pre">amzu.dat</span></code> に行ごとにスペース区切りで書き出されます.
+このファイルをGnuplot などで図示すると(<a class="reference internal" href="#fig-bosesquare"><span class="std std-numref">図 3.2</span></a>).
 <span class="math notranslate nohighlight">\(\mu=6\)</span> 付近では密度プラトーが観測されます. ここでは近接サイト間の反発によりチェッカーボード固体相になっています.</p>
 <div class="figure align-center" id="fig-bosesquare">
 <img alt="2次元ボース系の密度プラトー" src="../../_images/bosesquare.png" />

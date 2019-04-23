@@ -55,7 +55,7 @@ DSQSS/DLA の使い方を学びます.</p>
 </ol>
 <p>の3つの入力ファイルが必要です.
 そのため, まずはこれらの入力ファイルを作成します.
-そのためのユーティリティツールが dla_pre.py です.
+そのためのユーティリティツールが dla_pre です.
 これは単一の入力ファイルから, DSQSS/DLA  の入力ファイルを生成するPython スクリプトです.
 まず, dla_pre.py の入力ファイルとして, 次の内容を持つテキストファイル std.toml を準備します(sample/dla/01_spindimer/std.toml).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">hamiltonian</span><span class="p">]</span>
@@ -79,7 +79,7 @@ DSQSS/DLA の使い方を学びます.</p>
 </pre></div>
 </div>
 <p>このファイルを dla_pre.py に与えます.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ $DSQSS_ROOT/bin/dla_pre.py std.toml
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dla_pre std.toml
 </pre></div>
 </div>
 <p>この結果, パラメータファイル param.in, 格子定義ファイル lattice.xml, アルゴリズム定義ファイル algorithm.xml が生成されます。</p>
@@ -87,14 +87,14 @@ DSQSS/DLA の使い方を学びます.</p>
 <div class="section" id="id2">
 <h2>3.2.2. 計算の実行<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>入力ファイルを作成したら, DSQSS/DLA による計算を実行します.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ $DSQSS_ROOT/bin/dla param.in
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dla param.in
 </pre></div>
 </div>
 <p>なお, 計算を実行するときにMPI を用いることで, 乱数並列計算が可能です.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ mpiexec -np 4 $DSQSS_ROOT/bin/dla param.in
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ mpiexec -np 4 dla param.in
 </pre></div>
 </div>
-<p>並列数 (今回は4) だけ独立に計算を行い, モンテカルロサンプル数を増やすことで計算精度を向上できます. <a class="footnote-reference brackets" href="#fn-ompi-macos" id="id3">1</a></p>
+<p>乱数並列計算では並列数 (この例では4) だけ独立に計算が行われ, その分モンテカルロサンプル数を増えるために計算精度が向上します. <a class="footnote-reference brackets" href="#fn-ompi-macos" id="id3">1</a></p>
 </div>
 <div class="section" id="id4">
 <h2>3.2.3. 計算結果の解釈<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>

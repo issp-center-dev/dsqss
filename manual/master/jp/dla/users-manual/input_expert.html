@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
   <head>
     <meta charset="utf-8" />
-    <title>4.3. DLA のエキスパートモード入力ファイル &#8212; DSQSS 2.0.0-Beta ドキュメント</title>
+    <title>4.3. DSQSS/DLA のエキスパートモード入力ファイル &#8212; DSQSS 2.0.0-Beta ドキュメント</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -17,7 +17,7 @@
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="検索" href="../../search.html" />
     <link rel="next" title="4.4. DLA の入力ファイル生成ツール" href="generator.html" />
-    <link rel="prev" title="4.2. DLA のスタンダードモード入力ファイル" href="input_standard.html" />
+    <link rel="prev" title="4.2. DSQSS/DLA のスタンダードモード" href="input_standard.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -34,8 +34,11 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="dla">
-<span id="dla-expert-files"></span><h1>4.3. DLA のエキスパートモード入力ファイル<a class="headerlink" href="#dla" title="このヘッドラインへのパーマリンク">¶</a></h1>
+  <div class="section" id="dsqss-dla">
+<span id="dla-expert-files"></span><h1>4.3. DSQSS/DLA のエキスパートモード入力ファイル<a class="headerlink" href="#dsqss-dla" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>DSQSS/DLA のエキスパートモード入力ファイルは, DSQSS/DLA の実行バイナリ <cite>dla</cite> が直接扱う入力ファイルです.
+シンプルモードやスタンダードモードはこれらエキスパートモード入力ファイルを前処理として生成する工程です.
+このファイルをユーザが直接生成, 編集する必要は, 普通はありません.</p>
 <div class="section" id="id1">
 <h2>4.3.1. 入力ファイル一覧<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <table class="colwidths-given docutils align-center">
@@ -208,7 +211,7 @@
 <p>格子ファイルは空間の情報, たとえばサイトの数やサイト同士のつながりかたなどを定義するための,
 XML ライクな形式で記述されるテキストファイルです.
 これは一般に複雑になりますが, より単純な格子データファイルや格子TOML ファイルから
-<code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> を用いて生成することができます。</p>
+<code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> を用いて生成することができます.</p>
 <p>格子ファイルはただ一つの要素 Lattice を持ち, すべての情報は Lattice 要素の内容として含まれます.</p>
 <dl>
 <dt>Lattice</dt><dd><p>ファイル全体の要素.
@@ -498,7 +501,7 @@ Algorithm/Vertex/InitialConfiguration/NumberOfChannels の個数だけこの要�
 <div class="math notranslate nohighlight">
 \[G(\vec{k},\tau) \equiv \left\langle M^+(\vec{k}, \tau) M^-(-\vec{k},0) \right\rangle\]</div>
 <p>を計算するための波数の情報がXML ライクな形式で記述されるテキストファイルです.
-波数ベクトルデータファイルから <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> を用いて生成可能です。</p>
+波数ベクトルデータファイルから <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> を用いて生成可能です.</p>
 <p>波数ベクトルXMLファイルはただ一つの要素 WaveVector を持ち, すべての情報は WaveVector 要素の内容として含まれます.</p>
 <dl class="simple">
 <dt>WaveVector</dt><dd><p>ファイル全体の要素名.
@@ -574,9 +577,9 @@ NumberOfSites と NumberOfWaveVectors の積だけ指定する必要がありま
 <li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. インストール</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">3. DLAのチュートリアル</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">4. DSQSS/DLAのユーザーマニュアル</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="input_simple.html">4.1. DLA のシンプルモードファイル</a></li>
-<li class="toctree-l2"><a class="reference internal" href="input_standard.html">4.2. DLA のスタンダードモード入力ファイル</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.3. DLA のエキスパートモード入力ファイル</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="input_simple.html">4.1. DSQSS/DLA のシンプルモード</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_standard.html">4.2. DSQSS/DLA のスタンダードモード</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.3. DSQSS/DLA のエキスパートモード入力ファイル</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id1">4.3.1. 入力ファイル一覧</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#expert-param-file">4.3.2. パラメータファイル</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#xml">4.3.3. 格子XMLファイル</a></li>
@@ -600,7 +603,7 @@ NumberOfSites と NumberOfWaveVectors の積だけ指定する必要がありま
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
   <li><a href="index.html">4. DSQSS/DLAのユーザーマニュアル</a><ul>
-      <li>Previous: <a href="input_standard.html" title="前の章へ">4.2. DLA のスタンダードモード入力ファイル</a></li>
+      <li>Previous: <a href="input_standard.html" title="前の章へ">4.2. DSQSS/DLA のスタンダードモード</a></li>
       <li>Next: <a href="generator.html" title="次の章へ">4.4. DLA の入力ファイル生成ツール</a></li>
   </ul></li>
   </ul></li>

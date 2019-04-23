@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>5.4. Output of DSQSS/DLA &#8212; DSQSS 2.0.0-DEV documentation</title>
+    <title>5.6. Output of DSQSS/DLA &#8212; DSQSS 2.0.0-DEV documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="6. Tutorial of DSQSS/PMWA" href="../../pmwa/tutorial/tutorial.html" />
-    <link rel="prev" title="5.3. Directed loop algorithm solvers, dla_H and dla_B" href="engine.html" />
+    <link rel="prev" title="5.5. Directed loop algorithm solvers, dla_H and dla_B" href="engine.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -34,9 +34,9 @@
           <div class="body" role="main">
             
   <div class="section" id="output-of-dsqss-dla">
-<h1>5.4. Output of DSQSS/DLA<a class="headerlink" href="#output-of-dsqss-dla" title="Permalink to this headline">¶</a></h1>
+<h1>5.6. Output of DSQSS/DLA<a class="headerlink" href="#output-of-dsqss-dla" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="format">
-<h2>5.4.1. Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h2>
+<h2>5.6.1. Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h2>
 <p>DSQSS/DLA generates the result of a simulation as a plain-text file.
 The first character stands for the meaning of the line.</p>
 <dl class="simple">
@@ -93,7 +93,7 @@ I [the maximum number of reg. vertex info.] = 3
 </pre></div>
 </div>
 <div class="section" id="notations">
-<h3>5.4.1.1. Notations<a class="headerlink" href="#notations" title="Permalink to this headline">¶</a></h3>
+<h3>5.6.1.1. Notations<a class="headerlink" href="#notations" title="Permalink to this headline">¶</a></h3>
 <dl>
 <dt><span class="math notranslate nohighlight">\(N_s\)</span></dt><dd><p>The number of sites.</p>
 </dd>
@@ -131,7 +131,7 @@ The longitudinal magnetic field for spin systems and the chemical potential for 
 </div>
 </div>
 <div class="section" id="main-results">
-<h2>5.4.2. Main results<a class="headerlink" href="#main-results" title="Permalink to this headline">¶</a></h2>
+<h2>5.6.2. Main results<a class="headerlink" href="#main-results" title="Permalink to this headline">¶</a></h2>
 <p>Main results are written in a file with the name specified by <code class="docutils literal notranslate"><span class="pre">outfile</span></code> keyword in the input parameter file.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">sign</span></code></dt><dd><p>The sign of the weights.</p>
@@ -191,7 +191,7 @@ and <span class="math notranslate nohighlight">\(N_\text{mtype}\)</span> is the 
 </dl>
 </div>
 <div class="section" id="structure-factor-output">
-<h2>5.4.3. Structure factor output<a class="headerlink" href="#structure-factor-output" title="Permalink to this headline">¶</a></h2>
+<h2>5.6.3. Structure factor output<a class="headerlink" href="#structure-factor-output" title="Permalink to this headline">¶</a></h2>
 <p>The structure factor is written into a file with the name specified by <code class="docutils literal notranslate"><span class="pre">sfoutfile</span></code> keyword in the input file.
 The structure factor is defined as the following:</p>
 <div class="math notranslate nohighlight">
@@ -208,7 +208,7 @@ R C1t0 = 7.35281032e-02 3.18028565e-04
 and <code class="docutils literal notranslate"><span class="pre">&lt;t&gt;</span></code> is an index of the discretized imaginary time.</p>
 </div>
 <div class="section" id="real-space-temperature-green-s-function-output">
-<h2>5.4.4. Real space temperature Green’s function output<a class="headerlink" href="#real-space-temperature-green-s-function-output" title="Permalink to this headline">¶</a></h2>
+<h2>5.6.4. Real space temperature Green’s function output<a class="headerlink" href="#real-space-temperature-green-s-function-output" title="Permalink to this headline">¶</a></h2>
 <p>The real space temperature Green’s function is written into a file with the name specified by <code class="docutils literal notranslate"><span class="pre">cfoutfile</span></code> keyword in the input file.
 The real space temperature Green’s function is defined as the following:</p>
 <div class="math notranslate nohighlight">
@@ -218,7 +218,7 @@ where <code class="docutils literal notranslate"><span class="pre">&lt;k&gt;</sp
 and <code class="docutils literal notranslate"><span class="pre">&lt;t&gt;</span></code> is an index of the discretized imaginary time.</p>
 </div>
 <div class="section" id="momentum-space-temperature-green-s-function-output">
-<h2>5.4.5. Momentum space temperature Green’s function output<a class="headerlink" href="#momentum-space-temperature-green-s-function-output" title="Permalink to this headline">¶</a></h2>
+<h2>5.6.5. Momentum space temperature Green’s function output<a class="headerlink" href="#momentum-space-temperature-green-s-function-output" title="Permalink to this headline">¶</a></h2>
 <p>The momentum space temperature Green’s function is written into a file with the name specified by <code class="docutils literal notranslate"><span class="pre">ckoutfile</span></code> keyword in the input file.
 The momentum space temperature Green’s function is defined as the following:</p>
 <div class="math notranslate nohighlight">
@@ -257,18 +257,20 @@ and <code class="docutils literal notranslate"><span class="pre">&lt;t&gt;</span
 <li class="toctree-l1"><a class="reference internal" href="../../dsqss/usage.html">3. Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">4. Tutorial of DSQSS/DLA</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">5. User’s manual of DSQSS/DLA</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="input.html">5.1. Input files for DSQSS/DLA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generator.html">5.2. Utility tools to generate the input files of DSQSS/DLA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="engine.html">5.3. Directed loop algorithm solvers, <code class="docutils literal notranslate"><span class="pre">dla_H</span></code> and <code class="docutils literal notranslate"><span class="pre">dla_B</span></code></a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">5.4. Output of DSQSS/DLA</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#format">5.4.1. Format</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#notations">5.4.1.1. Notations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_simple.html">5.1. Simple mode of DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_standard.html">5.2. Standard input files for DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_expert.html">5.3. Input files for DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generator.html">5.4. Utility tools to generate the input files of DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engine.html">5.5. Directed loop algorithm solvers, <code class="docutils literal notranslate"><span class="pre">dla_H</span></code> and <code class="docutils literal notranslate"><span class="pre">dla_B</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.6. Output of DSQSS/DLA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#format">5.6.1. Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#notations">5.6.1.1. Notations</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#main-results">5.4.2. Main results</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#structure-factor-output">5.4.3. Structure factor output</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#real-space-temperature-green-s-function-output">5.4.4. Real space temperature Green’s function output</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#momentum-space-temperature-green-s-function-output">5.4.5. Momentum space temperature Green’s function output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#main-results">5.6.2. Main results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#structure-factor-output">5.6.3. Structure factor output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#real-space-temperature-green-s-function-output">5.6.4. Real space temperature Green’s function output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#momentum-space-temperature-green-s-function-output">5.6.5. Momentum space temperature Green’s function output</a></li>
 </ul>
 </li>
 </ul>
@@ -282,7 +284,7 @@ and <code class="docutils literal notranslate"><span class="pre">&lt;t&gt;</span
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
   <li><a href="index.html">5. User’s manual of DSQSS/DLA</a><ul>
-      <li>Previous: <a href="engine.html" title="previous chapter">5.3. Directed loop algorithm solvers, <code class="docutils literal notranslate"><span class="pre">dla_H</span></code> and <code class="docutils literal notranslate"><span class="pre">dla_B</span></code></a></li>
+      <li>Previous: <a href="engine.html" title="previous chapter">5.5. Directed loop algorithm solvers, <code class="docutils literal notranslate"><span class="pre">dla_H</span></code> and <code class="docutils literal notranslate"><span class="pre">dla_B</span></code></a></li>
       <li>Next: <a href="../../pmwa/tutorial/tutorial.html" title="next chapter">6. Tutorial of DSQSS/PMWA</a></li>
   </ul></li>
   </ul></li>

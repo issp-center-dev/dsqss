@@ -40,7 +40,7 @@
 反強磁性ハイゼンベルグ鎖 (<span class="math notranslate nohighlight">\(J=-1, L=30\)</span>) において,
 温度 <span class="math notranslate nohighlight">\(T\)</span> を <span class="math notranslate nohighlight">\(0.05\)</span> から <span class="math notranslate nohighlight">\(2.0\)</span> まで動かしたときの
 帯磁率変化を計算します.</p>
-<p>次に示すのは, 入力ファイルの生成と本計算を自動で行い,
+<p>次に示すのは, 温度やスピンの大きさを変えながら入力ファイルの生成と本計算を自動で行い,
 帯磁率の温度依存性をファイルに書き出す Pythonスクリプトです(sample/dla/02_spinchain/exec.py).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">subprocess</span>
 
@@ -76,14 +76,13 @@
     <span class="n">output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>必要なパスを設定するために, <code class="docutils literal notranslate"><span class="pre">dsqssvars-VERSION.sh</span></code> を読み込んでから実行してください
-(<code class="docutils literal notranslate"><span class="pre">VERSION</span></code> はDSQSS のバージョン番号, 例えば <code class="docutils literal notranslate"><span class="pre">2.0.0</span></code> に読み替えてください).</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ source $DSQSS_INSTALL_DIR/share/dsqss/dsqssvars-VERSION.sh
-$ python exec.py
+<p>このPython スクリプトを実行すると</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python exec.py
 </pre></div>
 </div>
-<p><span class="math notranslate nohighlight">\(S=1/2\)</span> の結果が xmzu_1.dat に, <span class="math notranslate nohighlight">\(S=1\)</span> の結果が xmzu_2.dat にそれぞれ書き出されます (<a class="reference internal" href="#fig-spinchain"><span class="std std-numref">図 3.1</span></a>).
-スピンの大きさによって, スピンギャップの有無が異なり, その結果として絶対零度付近での帯磁率の振る舞いが異なってくることがわかります.</p>
+<p><span class="math notranslate nohighlight">\(S=1/2\)</span> の結果が xmzu_1.dat に, <span class="math notranslate nohighlight">\(S=1\)</span> の結果が xmzu_2.dat にそれぞれ書き出されます.
+ファイルの各行には温度, 帯磁率の期待値, 帯磁率の統計誤差が順に書き出されます.
+この2つのファイルをGnuplot などで図示すると(<a class="reference internal" href="#fig-spinchain"><span class="std std-numref">図 3.1</span></a>), スピンの大きさによって, スピンギャップの有無が異なり, その結果として絶対零度付近での帯磁率の振る舞いが異なってくることがわかります.</p>
 <div class="figure align-center" id="fig-spinchain">
 <img alt="スピン鎖の帯磁率" src="../../_images/spinchain.png" />
 <p class="caption"><span class="caption-number">図 3.1 </span><span class="caption-text">反強磁性ハイゼンベルグスピン鎖の帯磁率の温度依存性. 青が <span class="math notranslate nohighlight">\(S=1/2\)</span> で 赤が <span class="math notranslate nohighlight">\(S=1\)</span> の結果.</span><a class="headerlink" href="#fig-spinchain" title="この画像へのパーマリンク">¶</a></p>

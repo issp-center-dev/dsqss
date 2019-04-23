@@ -80,7 +80,7 @@ NDECOR = 100
 </div>
 <p>自分の好きなエディタで書くか, <code class="docutils literal notranslate"><span class="pre">sample/pmwa/1DDimer</span></code> ディレクトリにあるものを利用してください.
 このファイルを <code class="docutils literal notranslate"><span class="pre">pmwa_pre</span></code> に与えます.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ $DSQSS_ROOT/bin/dsqss_pre.py std.in
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pmwa_pre std.in
 </pre></div>
 </div>
 <p>この結果, パラメータファイル param.in, 格子定義ファイル lattice.xmlが作成されます.</p>
@@ -88,11 +88,11 @@ NDECOR = 100
 <div class="section" id="id2">
 <h2>5.3.2. 計算の実行<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>入力ファイルを作成したら, <code class="docutils literal notranslate"><span class="pre">DSQSS/PMWA</span></code> による計算を実行します.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ $DSQSS_ROOT/bin/pmwa_H param.in
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pmwa_H param.in
 </pre></div>
 </div>
 <p>なお, 計算を実行するときにMPI を用いることで, 乱数並列計算が可能です(入力ファイルの指定により空間分割, 虚時間方向の分割を行うこともできます. 詳細はDLAのユーザーマニュアルをご覧ください).</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ mpiexec -np 4 $DSQSS_ROOT/bin/pmwa_H param.in
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ mpiexec -np 4 pmwa_H param.in
 </pre></div>
 </div>
 <p>並列数 (今回は4) だけ独立に計算を行い, モンテカルロサンプル数を増やすことで計算精度を向上できます.</p>

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>5.2. Utility tools to generate the input files of DSQSS/DLA &#8212; DSQSS 2.0.0-DEV documentation</title>
+    <title>5.4. Utility tools to generate the input files of DSQSS/DLA &#8212; DSQSS 2.0.0-DEV documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -15,8 +15,8 @@
     <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="5.3. Directed loop algorithm solvers, dla_H and dla_B" href="engine.html" />
-    <link rel="prev" title="5.1. Input files for DSQSS/DLA" href="input.html" />
+    <link rel="next" title="5.5. Directed loop algorithm solvers, dla_H and dla_B" href="engine.html" />
+    <link rel="prev" title="5.3. Input files for DSQSS/DLA" href="input_expert.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -34,13 +34,13 @@
           <div class="body" role="main">
             
   <div class="section" id="utility-tools-to-generate-the-input-files-of-dsqss-dla">
-<h1>5.2. Utility tools to generate the input files of DSQSS/DLA<a class="headerlink" href="#utility-tools-to-generate-the-input-files-of-dsqss-dla" title="Permalink to this headline">¶</a></h1>
+<h1>5.4. Utility tools to generate the input files of DSQSS/DLA<a class="headerlink" href="#utility-tools-to-generate-the-input-files-of-dsqss-dla" title="Permalink to this headline">¶</a></h1>
 <p>DSQSS/DLA needs several XML-formatted input files:
 lattice file, algorithm file, structure file, real space temperature Green’s function file, and momentum space temperature Green’s function file.
 By writing these files, you can simulate any model on any lattice.
 Since they are a little complicated, DSQSS/DLA prepares utility tools for generating them.</p>
 <div class="section" id="hypercubic-lattice-generator-lattgene-c">
-<h2>5.2.1. Hypercubic lattice generator <code class="docutils literal notranslate"><span class="pre">lattgene_C</span></code><a class="headerlink" href="#hypercubic-lattice-generator-lattgene-c" title="Permalink to this headline">¶</a></h2>
+<h2>5.4.1. Hypercubic lattice generator <code class="docutils literal notranslate"><span class="pre">lattgene_C</span></code><a class="headerlink" href="#hypercubic-lattice-generator-lattgene-c" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">lattgene_C</span></code> is a utility tool to generate a lattice file describing a <span class="math notranslate nohighlight">\(D\)</span> dimensional hypercubic lattice with the periodic boundary condition.:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ lattgene_C [-o filename] D L1 L2 ... LD
 </pre></div>
@@ -65,7 +65,7 @@ $ lattgene_C -o lat.xml 2 6 6
 </div>
 </div>
 <div class="section" id="triangular-lattice-generator-lattgene-t">
-<h2>5.2.2. Triangular lattice generator <code class="docutils literal notranslate"><span class="pre">lattgene_T</span></code><a class="headerlink" href="#triangular-lattice-generator-lattgene-t" title="Permalink to this headline">¶</a></h2>
+<h2>5.4.2. Triangular lattice generator <code class="docutils literal notranslate"><span class="pre">lattgene_T</span></code><a class="headerlink" href="#triangular-lattice-generator-lattgene-t" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">lattgene_T</span></code> is a utility tool to generate a lattice file describing a triangular lattice with the periodic boundary condition.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ lattgene_T [-o filename] L1 L2
 </pre></div>
@@ -84,7 +84,7 @@ $ lattgene_T 1 6
 </div>
 </div>
 <div class="section" id="heisenberg-spin-hamiltonian-generator-hamgen-h">
-<h2>5.2.3. Heisenberg spin Hamiltonian generator <code class="docutils literal notranslate"><span class="pre">hamgen_H</span></code><a class="headerlink" href="#heisenberg-spin-hamiltonian-generator-hamgen-h" title="Permalink to this headline">¶</a></h2>
+<h2>5.4.3. Heisenberg spin Hamiltonian generator <code class="docutils literal notranslate"><span class="pre">hamgen_H</span></code><a class="headerlink" href="#heisenberg-spin-hamiltonian-generator-hamgen-h" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">hamgen_H</span></code> is a utility tool generating a hamiltonian file describing Heisenberg spin model</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ hamgen_H [-o filename] M J F
 </pre></div>
@@ -112,7 +112,7 @@ $ hamgen_H -o ham.xml 2 1.0 1.0
 </div>
 </div>
 <div class="section" id="bose-hubbard-model-generator-hamgen-b">
-<h2>5.2.4. Bose-Hubbard model generator <code class="docutils literal notranslate"><span class="pre">hamgen_B</span></code><a class="headerlink" href="#bose-hubbard-model-generator-hamgen-b" title="Permalink to this headline">¶</a></h2>
+<h2>5.4.4. Bose-Hubbard model generator <code class="docutils literal notranslate"><span class="pre">hamgen_B</span></code><a class="headerlink" href="#bose-hubbard-model-generator-hamgen-b" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">hamgen_B</span></code> is a utility tool generating a hamiltonian file describing Bose-Hubbard model</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ hamgen_B [-o filename] M t V U F
 </pre></div>
@@ -135,7 +135,7 @@ where <span class="math notranslate nohighlight">\(z\)</span> is the coordinatio
 </dl>
 </div>
 <div class="section" id="algorithm-file-generator-dla-alg">
-<h2>5.2.5. Algorithm file generator <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code><a class="headerlink" href="#algorithm-file-generator-dla-alg" title="Permalink to this headline">¶</a></h2>
+<h2>5.4.5. Algorithm file generator <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code><a class="headerlink" href="#algorithm-file-generator-dla-alg" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> is an utility tool to convert a hamiltonian file to an algorithm file.:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dla_alg HFILE AFILE
 </pre></div>
@@ -149,7 +149,7 @@ where <span class="math notranslate nohighlight">\(z\)</span> is the coordinatio
 </dl>
 </div>
 <div class="section" id="structure-factor-file-generator-sfgene">
-<h2>5.2.6. Structure factor file generator <code class="docutils literal notranslate"><span class="pre">sfgene</span></code><a class="headerlink" href="#structure-factor-file-generator-sfgene" title="Permalink to this headline">¶</a></h2>
+<h2>5.4.6. Structure factor file generator <code class="docutils literal notranslate"><span class="pre">sfgene</span></code><a class="headerlink" href="#structure-factor-file-generator-sfgene" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">sfgene</span></code> is a utility tool generating a structure factor file for a hypercubic lattice:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ sfgene [-o filename] D L_1 ... L_D Ntau Ntau_cutoff KTYPE
 </pre></div>
@@ -179,7 +179,7 @@ where <span class="math notranslate nohighlight">\(z\)</span> is the coordinatio
 </dl>
 </div>
 <div class="section" id="real-space-temperature-green-s-function-file-generator-cfgene">
-<h2>5.2.7. Real space temperature Green’s function file generator <code class="docutils literal notranslate"><span class="pre">cfgene</span></code><a class="headerlink" href="#real-space-temperature-green-s-function-file-generator-cfgene" title="Permalink to this headline">¶</a></h2>
+<h2>5.4.7. Real space temperature Green’s function file generator <code class="docutils literal notranslate"><span class="pre">cfgene</span></code><a class="headerlink" href="#real-space-temperature-green-s-function-file-generator-cfgene" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">cfgene</span></code> is a utility tool generating a real space temperature Green’s function file for a hypercubic lattice:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ cfgene [-o filename] D L_1 ... L_D Ntau
 </pre></div>
@@ -226,19 +226,21 @@ where <span class="math notranslate nohighlight">\(z\)</span> is the coordinatio
 <li class="toctree-l1"><a class="reference internal" href="../../dsqss/usage.html">3. Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">4. Tutorial of DSQSS/DLA</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">5. User’s manual of DSQSS/DLA</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="input.html">5.1. Input files for DSQSS/DLA</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">5.2. Utility tools to generate the input files of DSQSS/DLA</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#hypercubic-lattice-generator-lattgene-c">5.2.1. Hypercubic lattice generator <code class="docutils literal notranslate"><span class="pre">lattgene_C</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#triangular-lattice-generator-lattgene-t">5.2.2. Triangular lattice generator <code class="docutils literal notranslate"><span class="pre">lattgene_T</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#heisenberg-spin-hamiltonian-generator-hamgen-h">5.2.3. Heisenberg spin Hamiltonian generator <code class="docutils literal notranslate"><span class="pre">hamgen_H</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#bose-hubbard-model-generator-hamgen-b">5.2.4. Bose-Hubbard model generator <code class="docutils literal notranslate"><span class="pre">hamgen_B</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#algorithm-file-generator-dla-alg">5.2.5. Algorithm file generator <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#structure-factor-file-generator-sfgene">5.2.6. Structure factor file generator <code class="docutils literal notranslate"><span class="pre">sfgene</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#real-space-temperature-green-s-function-file-generator-cfgene">5.2.7. Real space temperature Green’s function file generator <code class="docutils literal notranslate"><span class="pre">cfgene</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_simple.html">5.1. Simple mode of DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_standard.html">5.2. Standard input files for DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_expert.html">5.3. Input files for DSQSS/DLA</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.4. Utility tools to generate the input files of DSQSS/DLA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hypercubic-lattice-generator-lattgene-c">5.4.1. Hypercubic lattice generator <code class="docutils literal notranslate"><span class="pre">lattgene_C</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#triangular-lattice-generator-lattgene-t">5.4.2. Triangular lattice generator <code class="docutils literal notranslate"><span class="pre">lattgene_T</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#heisenberg-spin-hamiltonian-generator-hamgen-h">5.4.3. Heisenberg spin Hamiltonian generator <code class="docutils literal notranslate"><span class="pre">hamgen_H</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bose-hubbard-model-generator-hamgen-b">5.4.4. Bose-Hubbard model generator <code class="docutils literal notranslate"><span class="pre">hamgen_B</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#algorithm-file-generator-dla-alg">5.4.5. Algorithm file generator <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#structure-factor-file-generator-sfgene">5.4.6. Structure factor file generator <code class="docutils literal notranslate"><span class="pre">sfgene</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#real-space-temperature-green-s-function-file-generator-cfgene">5.4.7. Real space temperature Green’s function file generator <code class="docutils literal notranslate"><span class="pre">cfgene</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="engine.html">5.3. Directed loop algorithm solvers, <code class="docutils literal notranslate"><span class="pre">dla_H</span></code> and <code class="docutils literal notranslate"><span class="pre">dla_B</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="output.html">5.4. Output of DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engine.html">5.5. Directed loop algorithm solvers, <code class="docutils literal notranslate"><span class="pre">dla_H</span></code> and <code class="docutils literal notranslate"><span class="pre">dla_B</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="output.html">5.6. Output of DSQSS/DLA</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tutorial.html">6. Tutorial of DSQSS/PMWA</a></li>
@@ -250,8 +252,8 @@ where <span class="math notranslate nohighlight">\(z\)</span> is the coordinatio
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
   <li><a href="index.html">5. User’s manual of DSQSS/DLA</a><ul>
-      <li>Previous: <a href="input.html" title="previous chapter">5.1. Input files for DSQSS/DLA</a></li>
-      <li>Next: <a href="engine.html" title="next chapter">5.3. Directed loop algorithm solvers, <code class="docutils literal notranslate"><span class="pre">dla_H</span></code> and <code class="docutils literal notranslate"><span class="pre">dla_B</span></code></a></li>
+      <li>Previous: <a href="input_expert.html" title="previous chapter">5.3. Input files for DSQSS/DLA</a></li>
+      <li>Next: <a href="engine.html" title="next chapter">5.5. Directed loop algorithm solvers, <code class="docutils literal notranslate"><span class="pre">dla_H</span></code> and <code class="docutils literal notranslate"><span class="pre">dla_B</span></code></a></li>
   </ul></li>
   </ul></li>
 </ul>
