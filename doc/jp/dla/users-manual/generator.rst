@@ -65,13 +65,17 @@ DLA は入力ファイルとして格子定義ファイル,アルゴリズム定
    dim = 1
    L = 8
 
+::
+
    # 2次元正方格子, 4x4 sites
    [lattice]
    lattice = "hypercubic"
    dim = 2
    L = 4
 
-   # leg はしご格子, 8x2 sites
+::
+
+   # 2本脚 はしご格子, 8x2 sites
    [lattice]
    lattice = "hypercubic"
    dim = 2
@@ -104,6 +108,8 @@ DLA は入力ファイルとして格子定義ファイル,アルゴリズム定
    M = 1
    Jz = -1.0
    Jxy = -1.0
+
+::
     
    # S=1 J1 AF J2 FM XY model under the field
    [hamiltonian]
@@ -112,12 +118,16 @@ DLA は入力ファイルとして格子定義ファイル,アルゴリズム定
    Jxy = [-1.0, 1.0]
    h = 1.0
 
+::
+
    # hardcore boson
    [hamiltonian]
    model = "boson"
    M = 1
    t = 1.0
    V = 1.0
+
+::
 
    # softcore boson (upto N=2)
    [hamiltonian]

@@ -55,7 +55,7 @@ DSQSS/PMWAを実行するには,
 
 ::
 
-  $ $DSQSS_ROOT/bin/dsqss_pre.py std.in
+  $ pmwa_pre std.in
 
 この結果, パラメータファイル param.in, 格子定義ファイル lattice.xmlが作成されます.
 
@@ -65,14 +65,14 @@ DSQSS/PMWAを実行するには,
 入力ファイルを作成したら, ``DSQSS/PMWA`` による計算を実行します.
 ::
 
-  $ $DSQSS_ROOT/bin/pmwa_H param.in
+  $ pmwa_H param.in
 
 
 なお, 計算を実行するときにMPI を用いることで, 乱数並列計算が可能です(入力ファイルの指定により空間分割, 虚時間方向の分割を行うこともできます. 詳細はDLAのユーザーマニュアルをご覧ください).
 
 ::
 
-  $ mpiexec -np 4 $DSQSS_ROOT/bin/pmwa_H param.in
+  $ mpiexec -np 4 pmwa_H param.in
 
 並列数 (今回は4) だけ独立に計算を行い, モンテカルロサンプル数を増やすことで計算精度を向上できます.
 

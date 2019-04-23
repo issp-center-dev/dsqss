@@ -6,7 +6,7 @@ DSQSS/DLA によるスピン鎖の帯磁率計算
 温度 :math:`T` を :math:`0.05` から :math:`2.0` まで動かしたときの
 帯磁率変化を計算します.
 
-次に示すのは, 入力ファイルの生成と本計算を自動で行い, 
+次に示すのは, 温度やスピンの大きさを変えながら入力ファイルの生成と本計算を自動で行い, 
 帯磁率の温度依存性をファイルに書き出す Pythonスクリプトです(sample/dla/02_spinchain/exec.py).
 ::
 
@@ -43,15 +43,15 @@ DSQSS/DLA によるスピン鎖の帯磁率計算
           output.write('{} {}\n'.format(T, res.to_str(name)))
       output.close()
 
-必要なパスを設定するために, ``dsqssvars-VERSION.sh`` を読み込んでから実行してください
-(``VERSION`` はDSQSS のバージョン番号, 例えば ``2.0.0`` に読み替えてください).
+
+このPython スクリプトを実行すると
 ::
 
-  $ source $DSQSS_INSTALL_DIR/share/dsqss/dsqssvars-VERSION.sh
   $ python exec.py
 
-:math:`S=1/2` の結果が xmzu_1.dat に, :math:`S=1` の結果が xmzu_2.dat にそれぞれ書き出されます (:numref:`fig_spinchain`).
-スピンの大きさによって, スピンギャップの有無が異なり, その結果として絶対零度付近での帯磁率の振る舞いが異なってくることがわかります.
+:math:`S=1/2` の結果が xmzu_1.dat に, :math:`S=1` の結果が xmzu_2.dat にそれぞれ書き出されます.
+ファイルの各行には温度, 帯磁率の期待値, 帯磁率の統計誤差が順に書き出されます.
+この2つのファイルをGnuplot などで図示すると(:numref:`fig_spinchain`), スピンの大きさによって, スピンギャップの有無が異なり, その結果として絶対零度付近での帯磁率の振る舞いが異なってくることがわかります.
 
 .. figure:: ../../../image/dla/tutorial/spinchain.*
   :name: fig_spinchain

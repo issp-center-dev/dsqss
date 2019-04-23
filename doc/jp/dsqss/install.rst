@@ -9,17 +9,16 @@
 DSQSSの使用には以下のプログラム・ライブラリが必要です. 
 
 - (Optional) MPI (PMWAを使用する場合には必須)
-- python 2.7 or 3.x
+- python 2.7 or 3.4+
 
    - numpy
    - scipy
    - toml
-   - pip (make install する場合には必須)
    
 
 ダウンロード
 ********************
-- zipファイルをダウンロードする場合
+- アーカイブファイル (tar.gz) をダウンロードする場合
   
   DSQSSの最新版は https://github.com/issp-center-dev/dsqss/releases からダウンロードできます. 
 
@@ -77,9 +76,9 @@ DSQSSのダウンロード後にzipファイルを解凍すると, ファイル�
    $ cmake ../ -DCMAKE_INSTALL_PREFIX=/path/to/install/to 
    $ make
 
-``/path/to/install/to`` をインストールしたい先のパスに設定してください. 
+``/path/to/install/to`` をインストールしたい先のパスに設定してください（例： ``$HOME/opt/dsqss`` ）. 
 指定しなかった場合のデフォルト値は ``/usr/local`` です.
-なお, cmakeがうまくいかない場合にも, コンパイラを直接指定するとうまくいくことがあります.
+なお, cmakeがうまくいかない場合, コンパイラを直接指定するとうまくいくことがあります.
 詳細については https://github.com/issp-center-dev/HPhi/wiki/FAQ をご覧ください. 
 
 これにより各実行ファイルが ``dsqss.build/src`` ディレクトリ以下に, 
@@ -98,6 +97,6 @@ DSQSSのダウンロード後にzipファイルを解凍すると, ファイル�
 実行バイナリが先に指定したインストールパスにある ``bin`` ディレクトリに,
 サンプルが ``share/dsqss/VERSION/samples`` にインストールされます.
 また, 補助ツールを含めたDSQSS の実行に必要な環境変数を設定するためのファイルが ``share/dsqss/dsqssvar-VERSION.sh`` に生成されます.
-このファイルを ``source`` コマンドで読み込んでください. ::
+DSQSS の実行前にはこのファイルを ``source`` コマンドで読み込んでください. ::
 
    $ source share/dsqss/dsqssvar-VERSION.sh
