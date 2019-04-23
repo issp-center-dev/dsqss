@@ -1,13 +1,17 @@
 .. highlight:: none
 
-DLA のシンプルモードファイル
-=================================
+DSQSS/DLA のシンプルモード
+===========================
+
+シンプルモードは DSQSS/DLA において最も簡便な計算モードです。
+シンプルモードでは、DSQSS/DLA であらかじめ定義されている模型、格子による計算を、ひとつの入力ファイル（シンプルモードファイル）から行うことができます。
+Fig.XXX はシンプルモードによる計算の流れ図です（ToDo）。
 
 
 .. _simple_mode_file:
 
 シンプルモードファイル 
-***********************
+*************************
 シンプルモードファイルは `TOML`_ 形式のテキストファイルです。
 ``dla_pre`` や ``dla_hamgen`` などのツールの入力ファイルとして使います。
 
@@ -108,7 +112,7 @@ kagome
     :widths: 1,1,1,4
 
     パラメータ名, 型, デフォルト値, 説明
-    model, string, --, "模型の種類. XXZ 模型 `spin' とボーズハバード模型 `boson' が利用可能です."
+    model, string, --, "模型の種類. XXZ 模型 \`spin' とボーズハバード模型 \`boson' が利用可能です."
     M, int, 1, "サイトあたりの取りうる状態数-1.  XXZ 模型では局所スピンの大きさ :math:`2S` を, ボーズハバード模型では粒子数カットオフを指定します."
 
 
@@ -135,7 +139,7 @@ XXZ 模型
 ボーズハバード 模型
 
 .. math::
-   \mathcal{H} = \sum_{\langle i, j \rangle} \left[ -t b_i^\dagger \cdot b_j + h.c. + V n_i n_j \right] + \sum_i \left[ \frac{U}{2} n_i(n_i-1) - \mu n_i \right]
+   \mathcal{H} = \sum_{\langle i, j \rangle} \left[ -t b_i^\dagger b_j + h.c. + V n_i n_j \right] + \sum_i \left[ \frac{U}{2} n_i(n_i-1) - \mu n_i \right]
 
 に特有のパラメータは次の通り.
 
@@ -165,6 +169,10 @@ XXZ 模型
     パラメータ名, 型, デフォルト値, 説明
     ksteps, list(int) or int, 0, "波数の増分. 0 の場合、格子サイズの半分が設定される."
 
+
+たとえば ``ksteps = [1,2]`` で格子のサイズが ``L = [4,4]`` のとき、
+波数点 :math:`\vec{k} = k_x \vec{g}_y + k_y \vec{g}_y` として :math:`(k_x,k_y) = (0,0), (1,0), (2,0), (0,2), (1,2), (2,2)` が生成されます。
+ここで :math:`\vec{g}` は基本逆格子ベクトルです。
 
 .. _simple_mode_algorithm:
 
