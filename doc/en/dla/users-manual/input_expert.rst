@@ -112,7 +112,6 @@ Lattice/NumberOfInteractionTypes
 
 Lattice/NumberOfBondDirections
   The number of bond directions.
-  ボンドの方向 Direction の数.
 
 Lattice/NumberOfEdgeInteractions
   The number of bonds connecting sites over the lattice's boundary.
@@ -199,11 +198,6 @@ Algorithm/General/WDiag
 Algorithm/Site
   This defines a site type, for example, the weight of worm heads on a site.
   This has children "SType", "NumberOfStates", "VertexTypeOfSource", and "InitialConfiguration".
-
-Algorithm/Site
-  1つのサイト型を定義します.具体的には, そのサイト型をもつサイトに対する操作を定義します.
-  サイトにワームを生成消滅する過程もここで定義します.
-  サブ要素として,  SType,  NumberOfStates,  VertexTypeOfSource,  InitialConfiguration があります.
   ::
 
     <Algorithm>
@@ -230,7 +224,7 @@ Algorithm/Site/NumberOfStates
   The number of states of the site.
 
 Algorithm/Site/LocalStates
-  Mapping from indecies of local states to values of states.
+  Mapping from indices of local states to values of states.
   For example, the z components of the spin operator in the usual spin case.
 
 Algorithm/Site/VertexTypeOfSource
@@ -415,7 +409,7 @@ Algorithm/Vertex/InitialConfiguration/Channel
 
   For the special case, the pair-annihilation of worm heads, let both the first and the second integer be -1.
 
-Wavevector XMLファイル ``wavevector.xml``
+Wavevector XML file ``wavevector.xml``
 ************************************************
 
 A wavevector XML file is a textfile written in a XML-like format.
@@ -430,7 +424,7 @@ dynamical structure factor
     S^{zz}(\vec{k},\tau) \equiv
       \left\langle M^z(\vec{k},\tau)M^z(-\vec{k},0) \right\rangle - \left\langle M^z(\vec{k},\tau)\right\rangle \left\langle M^z(-\vec{k},0)\right\rangle ,
 
-and momentum space temperatur Green's function
+and momentum space temperature Green's function
 
 .. math::
   G(\vec{k},\tau) \equiv \left\langle M^+(\vec{k}, \tau) M^-(-\vec{k},0) \right\rangle .
@@ -450,7 +444,7 @@ WaveVector/NumberOfSites
   The number of lattice sites.
 
 WaveVector/NumberOfWaveVectors
-  波数 :math:`\vec{k}` の数.
+  The number of Wavevectors :math:`\vec{k}`.
 
 WaveVector/RK
   The phase factor :math:`z = \exp{\vec{r}\cdot\vec{k}}` for a pair of a wave vector and a site.

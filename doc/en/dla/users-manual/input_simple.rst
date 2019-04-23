@@ -1,8 +1,17 @@
 .. highlight:: none
 
-DLA のシンプルモードファイル
+Simple mode of DSQSS/DLA
 =================================
 
+A simple mode of DSQSS/DLA is the simplest workflow for DSQSS/DLA.
+In this mode, users can simulate of a predefined model on a predefined lattice from one text file.
+:numref:`fig_flow_dla_simple` shows a workflow of the simple mode.
+
+.. figure:: ../../../image/dla/users-manual/flow_simple.*
+  :name: fig_flow_dla_simple
+  :alt: Simple mode of DSQSS/DLA.
+
+  Simple mode of DSQSS/DLA. Ellipses are files and rectangles are tools.
 
 .. _simple_mode_file:
 
@@ -97,7 +106,7 @@ kagome
 ``hamiltonian``
 ++++++++++++++++++++
 
-A table spefifying information of Hamiltonian.
+A table specifying information of Hamiltonian.
 This table is used in ``dla_pre`` and ``dla_hamgen``.
 
 Keys in the ``hamiltonian`` table are following:
@@ -183,7 +192,7 @@ wv.. csv-table::
     kernel, string, 'suwa todo',  "Algorithm for calculating the scattering probability of wormheads."
 
 
-``kernel`` として指定できる手法は次の通り。
+Available ``kernel`` s are following::
 
 ``suwa todo``
    Rejection minimized algorithm without detailed balance condition (irreversible) proposed by Suwa and Todo.

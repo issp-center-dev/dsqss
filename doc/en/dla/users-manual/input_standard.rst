@@ -3,6 +3,16 @@
 Standard input files for DSQSS/DLA
 ======================================
 
+In the standard model of DSQSS/DLA, users can define their own models and lattices.
+Of course, they can be combined with predefined ones.
+:numref:`fig_flow_dla_standard` shows a workflow of the standard mode.
+
+.. figure:: ../../../image/dla/users-manual/flow_std.*
+  :name: fig_flow_dla_standard
+  :alt: Standard mode of DSQSS/DLA.
+
+  Standard mode of DSQSS/DLA. Ellipses are files and rectangles are tools.
+
 List of files
 ************************
 
@@ -10,10 +20,10 @@ List of files
     :header-rows: 0
     :widths: 1,4
 
-    lattice.dat, "格子ファイル."
-    lattice.toml, "格子TOMLファイル."
-    hamiltonian.toml, "ハミルトニアンファイル."
-    kpoints.dat, "波数ファイル."
+    lattice.dat, "Lattice file."
+    lattice.toml, "Lattice TOML file."
+    hamiltonian.toml, "Hamiltonian TOML file."
+    kpoints.dat, "Wavevector file."
 
 
 .. _lattice_data_file:
@@ -25,7 +35,7 @@ This file is used as an input file of ``dla_alg``.
 
 From ``#`` mark to the end of the line is a comment and ignored.
 A blank line is also ignored.
-A "list" is written as spece separated elements in one line like ``2 2``.
+A "list" is written as space separated elements in one line like ``2 2``.
 
 The lattice datafile includes the five sections, 
 ``name``, ``lattice``, ``directions``, ``sites``, ``interactions``.
@@ -175,58 +185,61 @@ This has two tables, ``parameter`` and ``unitcell``.
 ``parameter``
    A table denoting general information of the lattice.
 
-   ``parameter.name``
+   ``name``
       A string denoting the name of lattice.
 
-   ``parameter.L``
+  ``dim``
+    An integer denoting the dimension of lattice.
+
+   ``L``
       An array of integers denoting the size of lattice.
 
-   ``parameter.bc``
+   ``bc``
       An array of booleans denoting the boundary condition of lattice.
       ``true`` means the periodic boundary condition and ``false`` means the open one.
 
-   ``parameter.basis``
+   ``basis``
       An two-dimensional array (array of array) of floating point numbers denoting the primitive translation vectors.
 
 ``unitcell``
    A table describing a unitcell.
 
-   ``unitcell.sites``
+   ``sites``
       An array of tables denoting sites in one unitcell.
       One table corresponding one site.
 
-      ``unitcell.sites.siteid``
+      ``siteid``
          An integer denoting the local index of the site in one unitcell.
 
-      ``unitcell.sites.type``
+      ``type``
          An integer denoting the type of the site.
 
-      ``unitcell.sites.coord``
+      ``coord``
          An array of floating point numbers denoting the coordinate of site in one unitcell.
 
-   ``unitcell.bonds``
+   ``bonds``
       An array of tables denoting bonds in one unitcell.
       One table corresponding one bond.
 
-      ``unitcell.bonds.bondid``
+      ``bondid``
          An integer denoting the local index of the bond in one unitcell.
 
-      ``unitcell.bonds.type``
+      ``type``
          An integer denoting the type of the bond.
 
-      ``unitcell.bonds.source``
+      ``source``
          A table denoting an end (source site) of the bond.
 
-         ``unitcell.bonds.source.siteid``
+         ``siteid``
             An integer denoting the local index of the source site.
 
-      ``unitcell.bonds.target``
+      ``target``
          A table denoting the other end (target site) of the bond.
 
-         ``unitcell.bonds.target.siteid``
+         ``siteid``
             An integer denoting the local index of the target site.
 
-         ``unitcell.bonds.target.offset``
+         ``offset``
             An array of integers denoting the relative coordinate of the unitcell where the target site belongs
             from the unitcell where the source site belongs.
 
@@ -261,8 +274,6 @@ The following is an example describing two dimensional square lattice.
 
 
 
-
-
 .. _hamiltonian_file:
 
 Hamiltonian file ``hamiltonian.toml``
@@ -279,67 +290,67 @@ A utility tool ``dla_hamgen`` generates Hamiltonian file for common models, XXZ 
    An array of tables denoting the site Hamiltonians.
    One table corresponds to one type of site hamiltonian.
 
-   ``sites.id``
+   ``type``
       An integer denoting the type of site Hamiltonian.
 
-   ``sites.N``
+   ``N``
       An integer denoting the number of states of the local degree of freedom.
       For example, for :math:`S=1/2` spin this is 2.
 
-   ``sites.values``
+   ``values``
       An array of floating point numbers denoting the elements of local basis such as :math:`S^z`.
 
 
-   ``sites.elements``
+   ``elements``
       An array of tables denoting the elements of the Hamiltonian matrix.
       One table corresponds to one element.
 
-      ``sites.elements.istate``
+      ``istate``
          An integer denoting the index of the initial state (before the Hamiltonian acts on.)
 
-      ``sites.elements.fstate``
+      ``fstate``
          An integer denoting the index of the final state (after the Hamiltonian acts on.)
 
-      ``sites.elements.value``
+      ``value``
          A floating point number denoting the matrix element.
 
-   ``sites.sources``
+   ``sources``
       An array of tables denoting the elements of the source Hamiltonian matrix, which is introduced to create and annihilate worm heads.
       One table corresponds to one element.
 
-      ``sites.elements.istate``
+      ``istate``
          An integer denoting the index of the initial state (before the Hamiltonian acts on.)
 
-      ``sites.elements.fstate``
+      ``fstate``
          An integer denoting the index of the final state (after the Hamiltonian acts on.)
 
-      ``sites.elements.value``
+      ``value``
          A floating point number denoting the matrix element.
 
 ``interactions``
    An array of tables denoting the many-body interaction Hamiltonians.
    One table corresponds to one type of interaction.
 
-   ``interactions.id``
+   ``type``
       An integer denoting the type of interaction.
 
-   ``interactions.nbody``
+   ``nbody``
       An integer denoting the number of involved sites.
 
-   ``interactions.N``
+   ``N``
       An array of integers denoting the number of local states on the involved sites.
 
-   ``interactions.elements``
+   ``elements``
       An array of tables denoting the elements of the Hamiltonian matrix.
       One table corresponds to one element.
 
-      ``interactions.elements.istate``
+      ``istate``
          An array of integers denoting the index of the initial state (before the Hamiltonian acts on.)
 
-      ``interactions.elements.fstate``
+      ``fstate``
          An array of integers denoting the index of the final state (after the Hamiltonian acts on.)
 
-      ``interactions.elements.value``
+      ``value``
          A floating point number denoting the matrix element.
 
 The following is an example describing :math:`S=1/2` antiferromagnetic Heisenberg spin model
@@ -351,58 +362,58 @@ The following is an example describing :math:`S=1/2` antiferromagnetic Heisenber
    N = 2
    values = [-0.5, 0.5]
    [[sites.elements]]
-   istate = [ 0,]
-   fstate = [ 0,]
+   istate = 0
+   fstate = 0
    value = 0.5
 
    [[sites.elements]]
-   istate = [ 1,]
-   fstate = [ 1,]
+   istate = 1
+   fstate = 1
    value = -0.5
 
    [[sites.sources]]
-   istate = [ 0,]
-   fstate = [ 1,]
+   istate = 0
+   fstate = 1
    value = 0.5
 
    [[sites.sources]]
-   istate = [ 1,]
-   fstate = [ 0,]
+   istate = 1
+   fstate = 0
    value = 0.5
 
 
    [[interactions]]
    id = 0
    nbody = 2
-   N = [ 2, 2,]
+   N = [ 2, 2]
    [[interactions.elements]]
-   istate = [ 0, 0,]
-   fstate = [ 0, 0,]
+   istate = [ 0, 0]
+   fstate = [ 0, 0]
    value = 0.25
 
    [[interactions.elements]]
-   istate = [ 0, 1,]
-   fstate = [ 0, 1,]
+   istate = [ 0, 1]
+   fstate = [ 0, 1]
    value = -0.25
 
    [[interactions.elements]]
-   istate = [ 0, 1,]
-   fstate = [ 1, 0,]
+   istate = [ 0, 1]
+   fstate = [ 1, 0]
    value = 0.5
 
    [[interactions.elements]]
-   istate = [ 1, 0,]
-   fstate = [ 1, 0,]
+   istate = [ 1, 0]
+   fstate = [ 1, 0]
    value = -0.25
 
    [[interactions.elements]]
-   istate = [ 1, 0,]
-   fstate = [ 0, 1,]
+   istate = [ 1, 0]
+   fstate = [ 0, 1]
    value = 0.5
 
    [[interactions.elements]]
-   istate = [ 1, 1,]
-   fstate = [ 1, 1,]
+   istate = [ 1, 1]
+   fstate = [ 1, 1]
    value = 0.25
 
 
@@ -424,7 +435,7 @@ where :math:`\vec{g}` is the set of the reciprocal vectors.
 
 From ``#`` mark to the end of the line is a comment and ignored.
 A blank line is also ignored.
-A "list" is written as spece separated elements in one line like ``2 2``.
+A "list" is written as space separated elements in one line like ``2 2``.
 
 The wavevector datafile includes the two sections, ``dim`` and ``kpoints``.
 
@@ -439,20 +450,17 @@ The wavevector datafile includes the two sections, ``dim`` and ``kpoints``.
    - Rest 
       - A list of integers denoting the wavevector.
         The first integer means the index of the wavevector.
-        The rest integers means the coordinates of the wavevector, :math:`n_d`.
+        The rest integers means the coordinates of the wavevector, :math:`k_d`.
 
-ベクトルの基底は逆格子ベクトルです。
-``lattice.dat`` などで座標が ``a_d`` と指定されるような格子点 :math:`r` と、
-``kpoints.dat`` で ``n_d`` で指定されるような波数 :math:`k` との内積は、
-:math:``
 
-正確には、格子の座標が :math:`\vec{r} = \sum r_d \vec{e}_d` で表現されて、
-波数が :math:`\vec{k} = \sum k_d \vec{g}_d` で表現されているとき、これらの内積は
-:math:`\vec{r}\cdot\vec{k} = \sum_d 2\pi r_d k_d / L_d` となります。
-ここで :math:`L_d` は :math:`d` 番目の次元における格子のサイズです。
+Wavevectors are represented by using the reciprocal vectors :math:`\vec{g}`.
+When the coordinate of a lattice site is :math:`\vec{r} = \sum r_d \vec{e}_d` and
+the wavevector is :math:`\vec{k} = \sum k_d \vec{g}_d`, 
+the innerproduct of them is :math:`\vec{r}\cdot\vec{k} = \sum_d 2\pi r_d k_d / L_d`,
+where :math:`L_d` is the length of the lattice along :math:`d` th dimension.
 
    
-二次元の例を示します. ::
+The following is an example of two dimensional case. ::
 
    dim
    2
