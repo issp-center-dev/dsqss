@@ -54,7 +54,7 @@ class Site(object):
                  id=None, N=None, values=None,
                  elements=None, sources=None):
         if param is not None:
-            self.id = param["id"]
+            self.id = param["type"]
             self.N = param["N"]
             self.values = param["values"]
             self.elements = {}
@@ -72,7 +72,7 @@ class Site(object):
 
     def to_dict(self):
         return {
-            "id": self.id,
+            "type": self.id,
             "N": self.N,
             "values": self.values,
             "elements": matelems_todict(self.elements),
@@ -83,7 +83,7 @@ class Site(object):
 class Interaction(object):
     def __init__(self, param=None, id=None, nbody=None, Ns=None, elements=None):
         if param is not None:
-            self.id = param["id"]
+            self.id = param["type"]
             self.nbody = param["nbody"]
             self.Ns = param["N"]
             self.elements = {}
@@ -97,7 +97,7 @@ class Interaction(object):
 
     def to_dict(self):
         return {
-            "id": self.id,
+            "type": self.id,
             "nbody": self.nbody,
             "N": self.Ns,
             "elements": matelems_todict(self.elements),
