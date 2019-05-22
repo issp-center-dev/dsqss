@@ -13,6 +13,7 @@ Requirements
    - numpy
    - scipy
    - toml
+   - pip (essential for ``make install``)
 
 Download
 ********************
@@ -81,7 +82,7 @@ please type the following command:
 
 
 After seeing that all tests are passed,
-type the following command :
+type the following command to install files:
 
 ::
    

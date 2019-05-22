@@ -15,14 +15,14 @@ The list of input files
     qmc.inp, "Parameter list for the simulation, e.g., the number of Monte Carlo sets."
     lattice.xml, "Definition of the lattice."
     algorithm.xml, "Definition of the algorithm (e.g., scattering rate of a worm)."
-    sf.xml, "Indication of wave vectors for structure factors. (optional)"
-    cf.xml, "Indexing directions between all the sites. (optional)"
+    wavevector.xml, "Indication of wave vectors for structure factors. (optional)"
+    displacement.xml, "Indexing directions between all the sites. (optional)"
 
 
 .. _expert_param_file:
 
-Parameter file ``qmc.inp``
-**********************************
+Parameter file
+***************
 The parameter file is a plain-text file with the following format,
 
 - One line stands for one parameter by the key-value style, ``<name> = <value>``.
@@ -49,6 +49,7 @@ The list of parameters are the following,
     nsegmax, int,  10000, "The maximum number of world-line segments."
     algfile, string,  algorithm.xml, "The filename of an algorithm file."
     latfile, string, lattice.xml, "The filename of a lattice file."
+    ntau, int, 10, "The number of the discretization of the imaginary time for calculating some observables as functions of imaginary time."
     wvfile, string, --,  "A wavevector XML file. If it is an empty string, observables as functions of wavevector will not be calculated."
     dispfile, string,  --, "A relative coordinates XML file. If it is an empty string, observables as functions of relative coordinates will not be calculated."
     outfile, string, sample.log, "The name of the main result file."
