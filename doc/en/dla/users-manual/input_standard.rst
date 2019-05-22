@@ -175,6 +175,8 @@ The following is an example describing :math:`4 \times 4` square lattice::
    31 0 2 15 3 1 1
 
 
+.. _lattice_toml_file:
+
 Lattice TOML file ``lattice.toml``
 *************************************
 A lattice TOML file is a `TOML`_ formatted file defining a lattice by using an unitcell and primitive translation vectors.

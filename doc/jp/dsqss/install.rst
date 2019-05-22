@@ -34,35 +34,28 @@ DSQSSのダウンロード後にzipファイルを解凍すると, ファイル�
 以下, 重要なファイル・フォルダについてその構成を記載します.
 
 ::
-   
-  ├── CMakeLists.txt
-  ├── LICENSE
-  ├── README.md
-  ├── config
-  │   ├── gcc.cmake
-  │   └── intel.cmake
-  ├── doc
-  │   ├── en
-  │   └── jp
-  ├── sample
-  │   ├── CMakeLists.txt
-  │   ├── dla
-  │   └── pmwa
-  ├── src
-  │   ├── common
-  │   ├── dla
-  │   ├── pmwa
-  │   └── third-party
-  ├── test
-  │   ├── CMakeLists.txt
-  │   ├── dla
-  │   ├── pmwa
-  │   └── tool
-  └── tool
-      ├── CMakeLists.txt
-      ├── cmake
-      ├── dsqss
-      └── setup.py
+ 
+  |-- CMakeLists.txt
+  |-- LICENSE
+  |-- README.md
+  |-- config/
+  |-- doc/
+  |-- sample/
+  |   |-- dla/
+  |   `-- pmwa/
+  |-- src/
+  |   |-- common/
+  |   |-- dla/
+  |   |-- pmwa/
+  |   `-- third-party/
+  |-- test/
+  |   |-- dla/
+  |   |-- pmwa/
+  |   `-- tool/
+  `-- tool/
+      |-- cmake/
+      |-- dsqss/
+      `-- setup.py
 
 インストール
 ********************

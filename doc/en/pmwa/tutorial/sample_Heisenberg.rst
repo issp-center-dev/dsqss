@@ -54,7 +54,7 @@ Next, type the following command:
 
 ::
 
-   $ $DSQSS_ROOT/bin/pmwa_pre std.in
+   $ pmwa_pre std.in
 
 Then, input files ``param.in`` and ``lattice.xml`` are generated.
 
@@ -64,13 +64,13 @@ Perform calculation
 After making input files, the calculation by  ``DSQSS/PMWA`` starts by typing the following command:
 ::
 
-  $ $DSQSS_ROOT/bin/pmwa_H param.in
+  $ pmwa_H param.in
 
 Random numbers parallel computation is possible by using MPI (it is also possible to perform parallel computation by dividing space/imaginary time. Please see DLA user manual for details ). 
 
 ::
 
-  $ mpiexec -np 4 $DSQSS_ROOT/bin/pmwa_H param.in
+  $ mpiexec -np 4 pmwa_H param.in
 
 Calculation can be done independently for parallel number (4 for the above example), and the accuracy can be improved by increasing the number of Monte Carlo samples.
 
