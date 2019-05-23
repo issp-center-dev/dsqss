@@ -102,9 +102,21 @@ $ make
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">/path/to/install/to</span></code> をインストールしたい先のパスに設定してください（例： <code class="docutils literal notranslate"><span class="pre">$HOME/opt/dsqss</span></code> ）.
-指定しなかった場合のデフォルト値は <code class="docutils literal notranslate"><span class="pre">/usr/local</span></code> です.
-なお, cmakeがうまくいかない場合, コンパイラを直接指定するとうまくいくことがあります.
-詳細については <a class="reference external" href="https://github.com/issp-center-dev/HPhi/wiki/FAQ">https://github.com/issp-center-dev/HPhi/wiki/FAQ</a> をご覧ください.</p>
+指定しなかった場合のデフォルト値は <code class="docutils literal notranslate"><span class="pre">/usr/local</span></code> です.</p>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>CMake はデフォルトで <code class="docutils literal notranslate"><span class="pre">/usr/bin/c++</span></code> を C++ コンパイラとして使用します.
+これ以外のコンパイラ、例えば インテルコンパイラ <code class="docutils literal notranslate"><span class="pre">icpc</span></code> を使いたい場合は,
+<code class="docutils literal notranslate"><span class="pre">-DCMAKE_CXX_COMPILER</span></code> オプションを用いて明示的に指定してください:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ cmake ../ -DCMAKE_CXX_COMPILER=icpc
+</pre></div>
+</div>
+<p>インテルコンパイラに関しては, コンパイルオプション込みで設定するためのオプションを DSQSS 側で用意してあります:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ cmake ../ -DCONFIG=intel
+</pre></div>
+</div>
+<p>詳細については <a class="reference external" href="https://github.com/issp-center-dev/HPhi/wiki/FAQ">https://github.com/issp-center-dev/HPhi/wiki/FAQ</a> をご覧ください.</p>
+</div>
 <p>これにより各実行ファイルが <code class="docutils literal notranslate"><span class="pre">dsqss.build/src</span></code> ディレクトリ以下に,
 入力ファイルの生成ツールが <code class="docutils literal notranslate"><span class="pre">dsqss.build/tool</span></code> ディレクトリ以下に作成されます.
 次に作成された実行ファイルが正常に動作するかテストするため, 以下のコマンドを打ちます.</p>

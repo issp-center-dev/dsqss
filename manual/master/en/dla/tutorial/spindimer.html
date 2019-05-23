@@ -57,11 +57,13 @@
 <span class="n">Jz</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>              <span class="c1"># coupling constant, negative for AF</span>
 <span class="n">Jxy</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>             <span class="c1"># coupling constant, negative for AF</span>
 <span class="n">h</span> <span class="o">=</span> <span class="mf">0.0</span>                <span class="c1"># magnetic field</span>
+
 <span class="p">[</span><span class="n">lattice</span><span class="p">]</span>
 <span class="n">lattice</span> <span class="o">=</span> <span class="s2">&quot;hypercubic&quot;</span> <span class="c1"># hypercubic, periodic</span>
 <span class="n">dim</span> <span class="o">=</span> <span class="mi">1</span>                <span class="c1"># dimension</span>
 <span class="n">L</span> <span class="o">=</span> <span class="mi">2</span>                  <span class="c1"># number of sites along each direction</span>
 <span class="n">bc</span> <span class="o">=</span> <span class="n">false</span>             <span class="c1"># open boundary</span>
+
 <span class="p">[</span><span class="n">parameter</span><span class="p">]</span>
 <span class="n">beta</span> <span class="o">=</span> <span class="mi">100</span>             <span class="c1"># inverse temperature</span>
 <span class="n">nset</span> <span class="o">=</span> <span class="mi">5</span>               <span class="c1"># set of Monte Carlo sweeps</span>
@@ -72,7 +74,7 @@
 </pre></div>
 </div>
 <p>Give this file to <code class="docutils literal notranslate"><span class="pre">dla_pre</span></code> as</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ $DSQSS_ROOT/bin/dla_pre std.in
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dla_pre std.toml
 </pre></div>
 </div>
 <p>This generates the following four files:
@@ -81,11 +83,11 @@ a parameter file <code class="docutils literal notranslate"><span class="pre">pa
 <div class="section" id="perform-qmc-calculation">
 <h2>3.2.2. Perform QMC calculation<a class="headerlink" href="#perform-qmc-calculation" title="Permalink to this headline">¶</a></h2>
 <p>Once input files are prepared, you can perform a quantum Monte Carlo calculation based on the directed loop algorithm (dla) by DSQSS/DLA.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ $DSQSS_ROOT/bin/dla param.in
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dla param.in
 </pre></div>
 </div>
 <p>You can perform random number parallelization by using MPI. <a class="footnote-reference brackets" href="#fn-ompi-macos" id="id1">1</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ mpiexec -np 4 $DSQSS_ROOT/bin/dla param.in
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ mpiexec -np 4 dla param.in
 </pre></div>
 </div>
 <p>By the above command, the total number of Monte Carlo samples times by four (equals to the number of process)

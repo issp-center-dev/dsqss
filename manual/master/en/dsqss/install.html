@@ -99,10 +99,22 @@ $ make
 </pre></div>
 </div>
 <p>Replace <code class="docutils literal notranslate"><span class="pre">/path/to/install/to</span></code> with the directory path where you want to install dsqss.
-It is noted that the default install directory is set as <code class="docutils literal notranslate"><span class="pre">/usr/local/bin</span></code> .
-When the build procedure failed, please try directly to set the compilers.
-For details, see <a class="reference external" href="https://github.com/issp-center-dev/HPhi/wiki/FAQ">https://github.com/issp-center-dev/HPhi/wiki/FAQ</a> .</p>
-<p>Each binary files for dsqss will be made in <cite>src</cite> directory.
+It is noted that the default install directory is set as <code class="docutils literal notranslate"><span class="pre">/usr/local/bin</span></code> .</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By default, CMake usually sets <code class="docutils literal notranslate"><span class="pre">/usr/bin/c++</span></code> as a C++ compiler for building DSQSS.
+If you want to use another C++ compiler like <code class="docutils literal notranslate"><span class="pre">icpc</span></code> (Intel compiler,)
+you should tell it to CMake by using <code class="docutils literal notranslate"><span class="pre">-DCMAKE_CXX_COMPILER</span></code> option:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ cmake ../ -DCMAKE_CXX_COMPILER=icpc
+</pre></div>
+</div>
+<p>For Intel compiler, DSQSS offers another option to set compiler options besides compiler itself as following:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ cmake ../ -DCONFIG=intel
+</pre></div>
+</div>
+<p>For details, see <a class="reference external" href="https://github.com/issp-center-dev/HPhi/wiki/FAQ">https://github.com/issp-center-dev/HPhi/wiki/FAQ</a> .</p>
+</div>
+<p>Each binary files for dsqss will be made in <code class="docutils literal notranslate"><span class="pre">src</span></code> and <code class="docutils literal notranslate"><span class="pre">tool</span></code> directories.
 To check whether the binary files are correctly made or not,
 please type the following command:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ make test
