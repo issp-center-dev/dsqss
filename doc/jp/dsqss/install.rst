@@ -71,8 +71,22 @@ DSQSSのダウンロード後にzipファイルを解凍すると, ファイル�
 
 ``/path/to/install/to`` をインストールしたい先のパスに設定してください（例： ``$HOME/opt/dsqss`` ）. 
 指定しなかった場合のデフォルト値は ``/usr/local`` です.
-なお, cmakeがうまくいかない場合, コンパイラを直接指定するとうまくいくことがあります.
-詳細については https://github.com/issp-center-dev/HPhi/wiki/FAQ をご覧ください. 
+
+
+.. note::
+
+  CMake はデフォルトで ``/usr/bin/c++`` を C++ コンパイラとして使用します.
+  これ以外のコンパイラ、例えば インテルコンパイラ ``icpc`` を使いたい場合は,
+  ``-DCMAKE_CXX_COMPILER`` オプションを用いて明示的に指定してください::
+
+    $ cmake ../ -DCMAKE_CXX_COMPILER=icpc
+
+  インテルコンパイラに関しては, コンパイルオプション込みで設定するためのオプションを DSQSS 側で用意してあります::
+
+    $ cmake ../ -DCONFIG=intel
+
+  詳細については https://github.com/issp-center-dev/HPhi/wiki/FAQ をご覧ください. 
+
 
 これにより各実行ファイルが ``dsqss.build/src`` ディレクトリ以下に, 
 入力ファイルの生成ツールが ``dsqss.build/tool`` ディレクトリ以下に作成されます. 

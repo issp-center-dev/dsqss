@@ -28,11 +28,13 @@ DSQSS/DLA requires the following input files:
   Jz = -1.0              # coupling constant, negative for AF
   Jxy = -1.0             # coupling constant, negative for AF
   h = 0.0                # magnetic field
+
   [lattice]
   lattice = "hypercubic" # hypercubic, periodic
   dim = 1                # dimension
   L = 2                  # number of sites along each direction
   bc = false             # open boundary
+
   [parameter]
   beta = 100             # inverse temperature
   nset = 5               # set of Monte Carlo sweeps
@@ -44,7 +46,7 @@ DSQSS/DLA requires the following input files:
 
 Give this file to ``dla_pre`` as ::
 
-  $ $DSQSS_ROOT/bin/dla_pre std.in
+  $ dla_pre std.toml
 
 This generates the following four files:
 a parameter file ``param.in``, a lattice file ``lattice.xml``, an algorithm file ``algorithm.xml``.
@@ -55,12 +57,12 @@ Perform QMC calculation
 Once input files are prepared, you can perform a quantum Monte Carlo calculation based on the directed loop algorithm (dla) by DSQSS/DLA.
 ::
 
-  $ $DSQSS_ROOT/bin/dla param.in
+  $ dla param.in
 
 You can perform random number parallelization by using MPI. [#fn_ompi_macos]_
 ::
 
-  $ mpiexec -np 4 $DSQSS_ROOT/bin/dla param.in
+  $ mpiexec -np 4 dla param.in
 
 By the above command, the total number of Monte Carlo samples times by four (equals to the number of process)
 and the obtained statistical error is expected to reduce to half (equals to the inverse square root of the number of process).

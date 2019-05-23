@@ -8,7 +8,7 @@ The following Python script (sample/dla/02_spinchain/exec.py) performs DSQSS/DLA
 
   import subprocess
 
-  from dsqss.parameter import dla_pre
+  from dsqss.dla_pre import dla_pre
   from dsqss.result import Results
 
   L = 30
@@ -25,18 +25,18 @@ The following Python script (sample/dla/02_spinchain/exec.py) performs DSQSS/DLA
       output = open("{0}_{1}.dat".format(name, M), "w")
       for i, T in enumerate(Ts):
           ofile = "res_{}_{}.dat".format(M, i)
-          pfile = 'param_{}_{}.in'.format(M, i)
+          pfile = "param_{}_{}.in".format(M, i)
           hamiltonian["M"] = M
           parameter["beta"] = 1.0 / T
           parameter["outfile"] = ofile
           dla_pre(
               {"parameter": parameter, "hamiltonian": hamiltonian, "lattice": lattice},
-              pfile
+              pfile,
           )
           cmd = ["dla", "param_{0}_{1}.in".format(M, i)]
           subprocess.call(cmd)
           res = Results(ofile)
-          output.write('{} {}\n'.format(T, res.to_str(name)))
+          output.write("{} {}\n".format(T, res.to_str(name)))
       output.close()
 
 Before executing this script, ``source`` a configuring file ``dsqssvars-VERSION.sh`` in order to set environment variables

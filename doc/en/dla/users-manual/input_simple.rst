@@ -184,7 +184,7 @@ This table is used in ``dla_pre``.
 
 Keys in the ``algorithm`` table are following:
 
-wv.. csv-table::
+.. csv-table::
   :header-rows: 1
   :widths: 1,1,1,4
 

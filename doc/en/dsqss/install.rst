@@ -69,10 +69,22 @@ In the following, we assume that you are in the root directory of dsqss.
 
 Replace ``/path/to/install/to`` with the directory path where you want to install dsqss.   
 It is noted that the default install directory is set as ``/usr/local/bin`` .
-When the build procedure failed, please try directly to set the compilers.
-For details, see https://github.com/issp-center-dev/HPhi/wiki/FAQ .
 
-Each binary files for dsqss will be made in `src` directory.
+.. note::
+
+  By default, CMake usually sets ``/usr/bin/c++`` as a C++ compiler for building DSQSS.
+  If you want to use another C++ compiler like ``icpc`` (Intel compiler,)
+  you should tell it to CMake by using ``-DCMAKE_CXX_COMPILER`` option::
+
+    $ cmake ../ -DCMAKE_CXX_COMPILER=icpc
+
+  For Intel compiler, DSQSS offers another option to set compiler options besides compiler itself as following::
+
+    $ cmake ../ -DCONFIG=intel
+
+  For details, see https://github.com/issp-center-dev/HPhi/wiki/FAQ .
+
+Each binary files for dsqss will be made in ``src`` and ``tool`` directories.
 To check whether the binary files are correctly made or not,  
 please type the following command:
 
