@@ -87,6 +87,7 @@ and documents (if built) to `${INSTALL_DIR}/share/dsqss/dsqss-${DSQSS_VERSION}/d
 ### Example
 
 ``` bash
+source ${INSTALL_DIR}/share/dsqss/dsqssvars-${DSQSS_VERSION}.sh
 cd sample/dla/01_spindimer
 dla_pre std.toml
 dla param.in
