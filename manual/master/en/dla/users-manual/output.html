@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>5.6. Output of DSQSS/DLA &#8212; DSQSS 2.0.0-DEV documentation</title>
+    <title>4.6. Output of DSQSS/DLA &#8212; DSQSS 2.0.0-Beta documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -15,8 +15,8 @@
     <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="6. Tutorial of DSQSS/PMWA" href="../../pmwa/tutorial/tutorial.html" />
-    <link rel="prev" title="5.5. Directed loop algorithm solvers, dla_H and dla_B" href="engine.html" />
+    <link rel="next" title="5. Tutorial of DSQSS/PMWA" href="../../pmwa/tutorial/tutorial.html" />
+    <link rel="prev" title="4.5. Directed loop algorithm solver dla" href="engine.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -34,9 +34,9 @@
           <div class="body" role="main">
             
   <div class="section" id="output-of-dsqss-dla">
-<h1>5.6. Output of DSQSS/DLA<a class="headerlink" href="#output-of-dsqss-dla" title="Permalink to this headline">¶</a></h1>
+<h1>4.6. Output of DSQSS/DLA<a class="headerlink" href="#output-of-dsqss-dla" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="format">
-<h2>5.6.1. Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h2>
+<h2>4.6.1. Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h2>
 <p>DSQSS/DLA generates the result of a simulation as a plain-text file.
 The first character stands for the meaning of the line.</p>
 <dl class="simple">
@@ -93,7 +93,7 @@ I [the maximum number of reg. vertex info.] = 3
 </pre></div>
 </div>
 <div class="section" id="notations">
-<h3>5.6.1.1. Notations<a class="headerlink" href="#notations" title="Permalink to this headline">¶</a></h3>
+<h3>4.6.1.1. Notations<a class="headerlink" href="#notations" title="Permalink to this headline">¶</a></h3>
 <dl>
 <dt><span class="math notranslate nohighlight">\(N_s\)</span></dt><dd><p>The number of sites.</p>
 </dd>
@@ -131,7 +131,7 @@ The longitudinal magnetic field for spin systems and the chemical potential for 
 </div>
 </div>
 <div class="section" id="main-results">
-<h2>5.6.2. Main results<a class="headerlink" href="#main-results" title="Permalink to this headline">¶</a></h2>
+<h2>4.6.2. Main results<a class="headerlink" href="#main-results" title="Permalink to this headline">¶</a></h2>
 <p>Main results are written in a file with the name specified by <code class="docutils literal notranslate"><span class="pre">outfile</span></code> keyword in the input parameter file.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">sign</span></code></dt><dd><p>The sign of the weights.</p>
@@ -172,26 +172,25 @@ N_s \left[ \left\langle (m^z)^2\right\rangle
 \beta N_s\left[ \left\langle \left(\tilde{m}^z\right)^2\right\rangle
 - \left\langle \tilde{m}^z\right\rangle^2 \right]\)</span></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">amzs</span></code></dt><dd><p>The “magnetization” (“staggered”, <span class="math notranslate nohighlight">\(\tau=0\)</span>)</p>
-<p><span class="math notranslate nohighlight">\(\left\langle m_s^z \right\rangle\)</span> , where
-<span class="math notranslate nohighlight">\(\displaystyle m_s^z \equiv \frac{1}{N_s} \sum_i^{N_s} M_i^z
-\cos\left( 2\pi \frac{\text{mtype}(i)}{N_\text{mtype}} \right)\)</span> ,
-<span class="math notranslate nohighlight">\(\text{mtype}(i)\)</span> is the kind of measurement of <span class="math notranslate nohighlight">\(i\)</span> site (see lattice file),
-and <span class="math notranslate nohighlight">\(N_\text{mtype}\)</span> is the number of kinds of measurements.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">amzsK</span></code></dt><dd><p>The “magnetization” (“staggered”, <span class="math notranslate nohighlight">\(\tau=0\)</span>)</p>
+<p><span class="math notranslate nohighlight">\(\left\langle m_s^z \right\rangle\)</span> where
+<span class="math notranslate nohighlight">\(\displaystyle m_K^z \equiv \frac{1}{N_s} \sum_i^{N_s} M_i^z \cos\left( \vec{k}\cdot\vec{r_i} \right)\)</span> .</p>
+<p><span class="math notranslate nohighlight">\(K\)</span> is an index of wavevector <span class="math notranslate nohighlight">\(k\)</span> specified in the wavevector XML file.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">bmzu</span></code></dt><dd><p>The “magnetization” (“staggered”, average over <span class="math notranslate nohighlight">\(\tau\)</span>). <span class="math notranslate nohighlight">\(\left\langle \tilde{m}_s^z \right\rangle\)</span> .</p>
+<dt><code class="docutils literal notranslate"><span class="pre">bmzu</span></code></dt><dd><p>The “magnetization” (“staggered”, average over <span class="math notranslate nohighlight">\(\tau\)</span>).
+<span class="math notranslate nohighlight">\(\left\langle \tilde{m}_K^z \right\rangle\)</span> .</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">smzs</span></code></dt><dd><p>The structure factor (“staggered”).</p>
-<p><span class="math notranslate nohighlight">\(\displaystyle S^{zz}(\vec{k}_s) = N_s \left[ \left\langle (m_s^z)^2 \right\rangle - \left\langle m_s^z \right\rangle^2 \right]\)</span></p>
+<p><span class="math notranslate nohighlight">\(\displaystyle S^{zz}(\vec{k}) = N_s \left[ \left\langle (m_K^z)^2 \right\rangle - \left\langle m_K^z \right\rangle^2 \right]\)</span></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">xmzs</span></code></dt><dd><p>The longitudinal susceptibility (“staggered”).</p>
-<p><span class="math notranslate nohighlight">\(\displaystyle \chi^{zz}(\vec{k}_s,  \omega=0)
-= \beta N_s \left[\left\langle (\tilde{m}_s^z)^2 \right\rangle - \left\langle \tilde{m}_s^z \right\rangle^2 \right]\)</span></p>
+<p><span class="math notranslate nohighlight">\(\displaystyle \chi^{zz}(\vec{k},  \omega=0)
+= \beta N_s \left[\left\langle (\tilde{m}_K^z)^2 \right\rangle - \left\langle \tilde{m}_K^z \right\rangle^2 \right]\)</span></p>
 </dd>
 </dl>
 </div>
 <div class="section" id="structure-factor-output">
-<h2>5.6.3. Structure factor output<a class="headerlink" href="#structure-factor-output" title="Permalink to this headline">¶</a></h2>
+<h2>4.6.3. Structure factor output<a class="headerlink" href="#structure-factor-output" title="Permalink to this headline">¶</a></h2>
 <p>The structure factor is written into a file with the name specified by <code class="docutils literal notranslate"><span class="pre">sfoutfile</span></code> keyword in the input file.
 The structure factor is defined as the following:</p>
 <div class="math notranslate nohighlight">
@@ -204,27 +203,27 @@ R C0t1 = 1.32500000e-03 1.40929454e-04
 R C1t0 = 7.35281032e-02 3.18028565e-04
 </pre></div>
 </div>
-<p>where <code class="docutils literal notranslate"><span class="pre">&lt;k&gt;</span></code> is an index of the wave vector specified by <code class="docutils literal notranslate"><span class="pre">kindex</span></code> (the last element of each <code class="docutils literal notranslate"><span class="pre">SF</span></code> tag) in the structure factor input file
+<p>where <code class="docutils literal notranslate"><span class="pre">&lt;k&gt;</span></code> is an index of the wave vector specified by <code class="docutils literal notranslate"><span class="pre">kindex</span></code> (the last element of each <code class="docutils literal notranslate"><span class="pre">RK</span></code> tag) in the wavevector XML file
 and <code class="docutils literal notranslate"><span class="pre">&lt;t&gt;</span></code> is an index of the discretized imaginary time.</p>
 </div>
 <div class="section" id="real-space-temperature-green-s-function-output">
-<h2>5.6.4. Real space temperature Green’s function output<a class="headerlink" href="#real-space-temperature-green-s-function-output" title="Permalink to this headline">¶</a></h2>
+<h2>4.6.4. Real space temperature Green’s function output<a class="headerlink" href="#real-space-temperature-green-s-function-output" title="Permalink to this headline">¶</a></h2>
 <p>The real space temperature Green’s function is written into a file with the name specified by <code class="docutils literal notranslate"><span class="pre">cfoutfile</span></code> keyword in the input file.
 The real space temperature Green’s function is defined as the following:</p>
 <div class="math notranslate nohighlight">
 \[G(\vec{r}_{ij}, \tau) \equiv \left\langle M_i^+(\tau) M_j^- \right\rangle\]</div>
 <p>Displacement <span class="math notranslate nohighlight">\(\vec{r}_{ij}\)</span> and imaginary time <span class="math notranslate nohighlight">\(\tau\)</span> are specified by the name <code class="docutils literal notranslate"><span class="pre">C&lt;k&gt;t&lt;t&gt;</span></code> as the same way of structure factor,
-where <code class="docutils literal notranslate"><span class="pre">&lt;k&gt;</span></code> is an index of the displacement specified by <code class="docutils literal notranslate"><span class="pre">kind</span></code> (the first element of each <code class="docutils literal notranslate"><span class="pre">CF</span></code> tag) in the real space temperature Green’s function input file,
+where <code class="docutils literal notranslate"><span class="pre">&lt;k&gt;</span></code> is an index of the displacement specified by <code class="docutils literal notranslate"><span class="pre">kind</span></code> (the first element of each <code class="docutils literal notranslate"><span class="pre">R</span></code> tag) in the relative coordinate XML file,
 and <code class="docutils literal notranslate"><span class="pre">&lt;t&gt;</span></code> is an index of the discretized imaginary time.</p>
 </div>
 <div class="section" id="momentum-space-temperature-green-s-function-output">
-<h2>5.6.5. Momentum space temperature Green’s function output<a class="headerlink" href="#momentum-space-temperature-green-s-function-output" title="Permalink to this headline">¶</a></h2>
+<h2>4.6.5. Momentum space temperature Green’s function output<a class="headerlink" href="#momentum-space-temperature-green-s-function-output" title="Permalink to this headline">¶</a></h2>
 <p>The momentum space temperature Green’s function is written into a file with the name specified by <code class="docutils literal notranslate"><span class="pre">ckoutfile</span></code> keyword in the input file.
 The momentum space temperature Green’s function is defined as the following:</p>
 <div class="math notranslate nohighlight">
 \[G(\vec{k}, \tau) \equiv \left\langle M^+(\vec{k},  \tau) M^-(-\vec{k}, 0) \right\rangle\]</div>
 <p>Wave vector <span class="math notranslate nohighlight">\(\vec{r}_{ij}\)</span> and imaginary time <span class="math notranslate nohighlight">\(\tau\)</span> are specified by the name <code class="docutils literal notranslate"><span class="pre">C&lt;k&gt;t&lt;t&gt;</span></code> as the same way of structure factor,
-where <code class="docutils literal notranslate"><span class="pre">&lt;k&gt;</span></code> is an index of the displacement specified by <code class="docutils literal notranslate"><span class="pre">kind</span></code> (the last element of each <code class="docutils literal notranslate"><span class="pre">SF</span></code> tag) in the momentum space temperature Green’s function input file,
+where <code class="docutils literal notranslate"><span class="pre">&lt;k&gt;</span></code> is an index of the displacement specified by <code class="docutils literal notranslate"><span class="pre">kind</span></code> (the last element of each <code class="docutils literal notranslate"><span class="pre">RK</span></code> tag) in the wavevector XML file,
 and <code class="docutils literal notranslate"><span class="pre">&lt;t&gt;</span></code> is an index of the discretized imaginary time.</p>
 </div>
 </div>
@@ -254,38 +253,37 @@ and <code class="docutils literal notranslate"><span class="pre">&lt;t&gt;</span
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. About DSQSS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. How to install</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../dsqss/usage.html">3. Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">4. Tutorial of DSQSS/DLA</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">5. User’s manual of DSQSS/DLA</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="input_simple.html">5.1. Simple mode of DSQSS/DLA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="input_standard.html">5.2. Standard input files for DSQSS/DLA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="input_expert.html">5.3. Input files for DSQSS/DLA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generator.html">5.4. Utility tools to generate the input files of DSQSS/DLA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="engine.html">5.5. Directed loop algorithm solvers, <code class="docutils literal notranslate"><span class="pre">dla_H</span></code> and <code class="docutils literal notranslate"><span class="pre">dla_B</span></code></a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">5.6. Output of DSQSS/DLA</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#format">5.6.1. Format</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#notations">5.6.1.1. Notations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">3. Tutorial of DSQSS/DLA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. User’s manual of DSQSS/DLA</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="input_simple.html">4.1. Simple mode of DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_standard.html">4.2. Standard input files for DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_expert.html">4.3. Input files for DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generator.html">4.4. Input file generators for DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engine.html">4.5. Directed loop algorithm solver <code class="docutils literal notranslate"><span class="pre">dla</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.6. Output of DSQSS/DLA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#format">4.6.1. Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#notations">4.6.1.1. Notations</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#main-results">5.6.2. Main results</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#structure-factor-output">5.6.3. Structure factor output</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#real-space-temperature-green-s-function-output">5.6.4. Real space temperature Green’s function output</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#momentum-space-temperature-green-s-function-output">5.6.5. Momentum space temperature Green’s function output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#main-results">4.6.2. Main results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#structure-factor-output">4.6.3. Structure factor output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#real-space-temperature-green-s-function-output">4.6.4. Real space temperature Green’s function output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#momentum-space-temperature-green-s-function-output">4.6.5. Momentum space temperature Green’s function output</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tutorial.html">6. Tutorial of DSQSS/PMWA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tu-index.html">7. User’s manual for DSQSS/PMWA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tutorial.html">5. Tutorial of DSQSS/PMWA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tu-index.html">6. User’s manual for DSQSS/PMWA</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="index.html">5. User’s manual of DSQSS/DLA</a><ul>
-      <li>Previous: <a href="engine.html" title="previous chapter">5.5. Directed loop algorithm solvers, <code class="docutils literal notranslate"><span class="pre">dla_H</span></code> and <code class="docutils literal notranslate"><span class="pre">dla_B</span></code></a></li>
-      <li>Next: <a href="../../pmwa/tutorial/tutorial.html" title="next chapter">6. Tutorial of DSQSS/PMWA</a></li>
+  <li><a href="index.html">4. User’s manual of DSQSS/DLA</a><ul>
+      <li>Previous: <a href="engine.html" title="previous chapter">4.5. Directed loop algorithm solver <code class="docutils literal notranslate"><span class="pre">dla</span></code></a></li>
+      <li>Next: <a href="../../pmwa/tutorial/tutorial.html" title="next chapter">5. Tutorial of DSQSS/PMWA</a></li>
   </ul></li>
   </ul></li>
 </ul>

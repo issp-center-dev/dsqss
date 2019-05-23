@@ -54,7 +54,7 @@
 <dt><code class="docutils literal notranslate"><span class="pre">inputfile</span></code></dt><dd><p>入力ファイル名. ファイル形式の詳細は <a class="reference internal" href="input_simple.html#simple-mode-file"><span class="std std-ref">シンプルモードファイル</span></a> を参照してください.</p>
 </dd>
 </dl>
-<p>格子XML ファイルなど、出力される XML ファイルの名前はパラメータから自動生成されます。</p>
+<p>格子XML ファイルなど, 出力される XML ファイルの名前はパラメータから自動生成されます.</p>
 </div>
 <div class="section" id="dla-latgen">
 <span id="dla-lat-gen"></span><h2>4.4.2. 格子生成ツール <code class="docutils literal notranslate"><span class="pre">dla_latgen</span></code><a class="headerlink" href="#dla-latgen" title="このヘッドラインへのパーマリンク">¶</a></h2>
@@ -70,7 +70,7 @@
 <dt><code class="docutils literal notranslate"><span class="pre">TOML</span></code></dt><dd><p>出力される格子TOMLファイルの名前. デフォルトは空文字列で, ファイルは出力されません.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">GNUPLOT</span></code></dt><dd><p>出力される格子Gnuplotファイルの名前. デフォルトは空文字列で, ファイルは出力されません.
-出力されたファイルを``gnuplot`` で <code class="docutils literal notranslate"><span class="pre">load</span></code> することで、格子を可視化することができます.</p>
+出力されたファイルを``gnuplot`` で <code class="docutils literal notranslate"><span class="pre">load</span></code> することで, 格子を可視化することができます.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">inputfile</span></code></dt><dd><p>入力ファイル名. ファイル形式の詳細は <a class="reference internal" href="input_simple.html#std-toml-lattice"><span class="std std-ref">lattice</span></a> を参照してください.</p>
 </dd>
@@ -203,20 +203,20 @@ mu = 1.0
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ALGXML</span></code></dt><dd><p>書き出されるアルゴリズム定義ファイル.省略した場合は <code class="docutils literal notranslate"><span class="pre">algorithm.xml</span></code> が指定されます.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">without_lattice</span></code></dt><dd><p>設定した場合、格子定義ファイルは書き出されません。
-なお、格子ファイル <code class="docutils literal notranslate"><span class="pre">LAT</span></code> そのものは、アルゴリズムなどの導出に必要なために読み込まれます。</p>
+<dt><code class="docutils literal notranslate"><span class="pre">without_lattice</span></code></dt><dd><p>設定した場合, 格子定義ファイルは書き出されません.
+なお, 格子ファイル <code class="docutils literal notranslate"><span class="pre">LAT</span></code> そのものは, アルゴリズムなどの導出に必要なために読み込まれます.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">without_algorithm</span></code></dt><dd><p>設定した場合、アルゴリズム定義ファイルは書き出されません。</p>
+<dt><code class="docutils literal notranslate"><span class="pre">without_algorithm</span></code></dt><dd><p>設定した場合, アルゴリズム定義ファイルは書き出されません.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">KPOINT</span></code></dt><dd><p>読み込む波数ファイル.省略した場合は波数ベクトルXML ファイルは出力されません.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">WV</span></code></dt><dd><p>書き出される波数ベクトルXMLファイル. 省略した場合は <code class="docutils literal notranslate"><span class="pre">wavevector.xml</span></code> が指定されます.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">DISP</span></code></dt><dd><p>書き出される相対座標定義ファイル。省略した場合は相対座標XML ファイルは出力されません.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">DISP</span></code></dt><dd><p>書き出される相対座標定義ファイル. 省略した場合は相対座標XML ファイルは出力されません.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">--distance-only</span></code></dt><dd><p>指定した場合、変位定義において変位 <span class="math notranslate nohighlight">\(\vec{r}_{ij}\)</span> ではなくその絶対値 <span class="math notranslate nohighlight">\(r_{ij}\)</span> でグループ化します。</p>
+<dt><code class="docutils literal notranslate"><span class="pre">--distance-only</span></code></dt><dd><p>指定した場合, 変位定義において変位 <span class="math notranslate nohighlight">\(\vec{r}_{ij}\)</span> ではなくその絶対値 <span class="math notranslate nohighlight">\(r_{ij}\)</span> でグループ化します.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">KERNEL</span></code></dt><dd><p>バーテックスにおけるワームヘッドの散乱確率の導出に使うアルゴリズム。省略した場合、 <code class="docutils literal notranslate"><span class="pre">suwa</span> <span class="pre">todo</span></code> が用いられます。
+<dt><code class="docutils literal notranslate"><span class="pre">KERNEL</span></code></dt><dd><p>バーテックスにおけるワームヘッドの散乱確率の導出に使うアルゴリズム. 省略した場合,  <code class="docutils literal notranslate"><span class="pre">suwa</span> <span class="pre">todo</span></code> が用いられます.
 利用できるアルゴリズムは <a class="reference internal" href="input_simple.html#simple-mode-algorithm"><span class="std std-ref">algorithm</span></a> を参照してください.</p>
 </dd>
 </dl>

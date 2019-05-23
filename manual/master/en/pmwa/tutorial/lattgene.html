@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>6.2.1. Make an input file for a lattice &#8212; DSQSS 2.0.0-DEV documentation</title>
+    <title>5.2.1. Make an input file for a lattice &#8212; DSQSS 2.0.0-Beta documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -15,8 +15,8 @@
     <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="6.2.2. Make an input file for DSQSS/PMWA" href="model.html" />
-    <link rel="prev" title="6.2. Usage" href="usage.html" />
+    <link rel="next" title="5.2.2. Make an input file for DSQSS/PMWA" href="model.html" />
+    <link rel="prev" title="5.2. Usage" href="usage.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -34,10 +34,10 @@
           <div class="body" role="main">
             
   <div class="section" id="make-an-input-file-for-a-lattice">
-<h1>6.2.1. Make an input file for a lattice<a class="headerlink" href="#make-an-input-file-for-a-lattice" title="Permalink to this headline">¶</a></h1>
-<p>In PMWA, as a simple tool <code class="docutils literal notranslate"><span class="pre">lattgene</span></code> is prepared for generating a lattice definition file <code class="docutils literal notranslate"><span class="pre">lattice.xml</span></code> for a standard model. In this section, the usage of
-<code class="docutils literal notranslate"><span class="pre">lattgene</span></code> is explained.</p>
-<p><code class="docutils literal notranslate"><span class="pre">lattgene</span></code> generates a lattice definition file for a cubic lattice.
+<h1>5.2.1. Make an input file for a lattice<a class="headerlink" href="#make-an-input-file-for-a-lattice" title="Permalink to this headline">¶</a></h1>
+<p>In PMWA, as a simple tool <code class="docutils literal notranslate"><span class="pre">lattgene_P</span></code> is prepared for generating a lattice definition file <code class="docutils literal notranslate"><span class="pre">lattice.xml</span></code> for a standard model. In this section, the usage of
+<code class="docutils literal notranslate"><span class="pre">lattgene_P</span></code> is explained.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lattgene_P</span></code> generates a lattice definition file for a cubic lattice.
 The parameters to be specified are as follows.</p>
 <table class="colwidths-given docutils align-center">
 <colgroup>
@@ -81,10 +81,10 @@ The parameters to be specified are as follows.</p>
 <p>Examples of use are described below.</p>
 <ol class="arabic">
 <li><p>One-dimensional 8-sites chain, inverse temperature 10.0, definition of lattice file when division number is 1:</p>
-<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">lattgene</span> <span class="pre">1</span> <span class="pre">8</span> <span class="pre">10.0</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">0</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">lattgene_P</span> <span class="pre">1</span> <span class="pre">8</span> <span class="pre">10.0</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">0</span></code></p>
 </li>
 <li><p>Two dimensional 4*4 sites lattice, reverse temperature 10.0, definition of lattice file when division number is 1:</p>
-<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">lattgene</span> <span class="pre">2</span> <span class="pre">4</span> <span class="pre">4</span> <span class="pre">10.0</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">0</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">lattgene_P</span> <span class="pre">2</span> <span class="pre">4</span> <span class="pre">4</span> <span class="pre">10.0</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">0</span></code></p>
 </li>
 </ol>
 </div>
@@ -114,32 +114,31 @@ The parameters to be specified are as follows.</p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. About DSQSS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. How to install</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../dsqss/usage.html">3. Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../dla/tutorial/index.html">4. Tutorial of DSQSS/DLA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../dla/users-manual/index.html">5. User’s manual of DSQSS/DLA</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="tutorial.html">6. Tutorial of DSQSS/PMWA</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="intro.html">6.1. About DSQSS/PMWA</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="usage.html">6.2. Usage</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">6.2.1. Make an input file for a lattice</a></li>
-<li class="toctree-l3"><a class="reference internal" href="model.html">6.2.2. Make an input file for DSQSS/PMWA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="output.html">6.2.3. Run DSQSS/PMWA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="output.html#output-files">6.2.4. Output files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dla/tutorial/index.html">3. Tutorial of DSQSS/DLA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dla/users-manual/index.html">4. User’s manual of DSQSS/DLA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tutorial.html">5. Tutorial of DSQSS/PMWA</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">5.1. About DSQSS/PMWA</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="usage.html">5.2. Usage</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.2.1. Make an input file for a lattice</a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html">5.2.2. Make an input file for DSQSS/PMWA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="output.html">5.2.3. Run DSQSS/PMWA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="output.html#output-files">5.2.4. Output files</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="sample_Heisenberg.html">6.3. Calculation of the energy on spin chain by DSQSS/PMWA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sample_Heisenberg.html">5.3. Calculation of the energy on spin chain by DSQSS/PMWA</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tu-index.html">7. User’s manual for DSQSS/PMWA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tu-index.html">6. User’s manual for DSQSS/PMWA</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="tutorial.html">6. Tutorial of DSQSS/PMWA</a><ul>
-  <li><a href="usage.html">6.2. Usage</a><ul>
-      <li>Previous: <a href="usage.html" title="previous chapter">6.2. Usage</a></li>
-      <li>Next: <a href="model.html" title="next chapter">6.2.2. Make an input file for DSQSS/PMWA</a></li>
+  <li><a href="tutorial.html">5. Tutorial of DSQSS/PMWA</a><ul>
+  <li><a href="usage.html">5.2. Usage</a><ul>
+      <li>Previous: <a href="usage.html" title="previous chapter">5.2. Usage</a></li>
+      <li>Next: <a href="model.html" title="next chapter">5.2.2. Make an input file for DSQSS/PMWA</a></li>
   </ul></li>
   </ul></li>
   </ul></li>

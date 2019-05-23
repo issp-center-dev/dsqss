@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>5.2. Standard input files for DSQSS/DLA &#8212; DSQSS 2.0.0-DEV documentation</title>
+    <title>4.2. Standard input files for DSQSS/DLA &#8212; DSQSS 2.0.0-Beta documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -15,8 +15,8 @@
     <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="5.3. Input files for DSQSS/DLA" href="input_expert.html" />
-    <link rel="prev" title="5.1. Simple mode of DSQSS/DLA" href="input_simple.html" />
+    <link rel="next" title="4.3. Input files for DSQSS/DLA" href="input_expert.html" />
+    <link rel="prev" title="4.1. Simple mode of DSQSS/DLA" href="input_simple.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -34,16 +34,16 @@
           <div class="body" role="main">
             
   <div class="section" id="standard-input-files-for-dsqss-dla">
-<h1>5.2. Standard input files for DSQSS/DLA<a class="headerlink" href="#standard-input-files-for-dsqss-dla" title="Permalink to this headline">¶</a></h1>
+<h1>4.2. Standard input files for DSQSS/DLA<a class="headerlink" href="#standard-input-files-for-dsqss-dla" title="Permalink to this headline">¶</a></h1>
 <p>In the standard model of DSQSS/DLA, users can define their own models and lattices.
 Of course, they can be combined with predefined ones.
-<a class="reference internal" href="#fig-flow-dla-standard"><span class="std std-numref">Fig. 5.2</span></a> shows a workflow of the standard mode.</p>
+<a class="reference internal" href="#fig-flow-dla-standard"><span class="std std-numref">Fig. 4.2</span></a> shows a workflow of the standard mode.</p>
 <div class="figure align-center" id="fig-flow-dla-standard">
 <img alt="Standard mode of DSQSS/DLA." src="../../_images/flow_std.png" />
-<p class="caption"><span class="caption-number">Fig. 5.2 </span><span class="caption-text">Standard mode of DSQSS/DLA. Ellipses are files and rectangles are tools.</span><a class="headerlink" href="#fig-flow-dla-standard" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 4.2 </span><span class="caption-text">Standard mode of DSQSS/DLA. Ellipses are files and rectangles are tools.</span><a class="headerlink" href="#fig-flow-dla-standard" title="Permalink to this image">¶</a></p>
 </div>
 <div class="section" id="list-of-files">
-<h2>5.2.1. List of files<a class="headerlink" href="#list-of-files" title="Permalink to this headline">¶</a></h2>
+<h2>4.2.1. List of files<a class="headerlink" href="#list-of-files" title="Permalink to this headline">¶</a></h2>
 <table class="colwidths-given docutils align-center">
 <colgroup>
 <col style="width: 20%" />
@@ -51,10 +51,10 @@ Of course, they can be combined with predefined ones.
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>lattice.dat</p></td>
-<td><p>Lattice file.</p></td>
+<td><p>lattice datafile.</p></td>
 </tr>
 <tr class="row-even"><td><p>lattice.toml</p></td>
-<td><p>Lattice TOML file.</p></td>
+<td><p>lattice TOML file.</p></td>
 </tr>
 <tr class="row-odd"><td><p>hamiltonian.toml</p></td>
 <td><p>Hamiltonian TOML file.</p></td>
@@ -65,8 +65,8 @@ Of course, they can be combined with predefined ones.
 </tbody>
 </table>
 </div>
-<div class="section" id="lattice-datafile-lattice-dat">
-<span id="lattice-data-file"></span><h2>5.2.2. Lattice datafile <code class="docutils literal notranslate"><span class="pre">lattice.dat</span></code><a class="headerlink" href="#lattice-datafile-lattice-dat" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="lattice-datafile">
+<span id="lattice-data-file"></span><h2>4.2.2. Lattice datafile<a class="headerlink" href="#lattice-datafile" title="Permalink to this headline">¶</a></h2>
 <p>A lattice datafile is a textfile describing information of space (lattice), such as the number of sites and links connecting some sites.
 This file is used as an input file of <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code>.</p>
 <p>From <code class="docutils literal notranslate"><span class="pre">#</span></code> mark to the end of the line is a comment and ignored.
@@ -75,8 +75,8 @@ A “list” is written as space separated elements in one line like <code class
 <p>The lattice datafile includes the five sections,
 <code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">lattice</span></code>, <code class="docutils literal notranslate"><span class="pre">directions</span></code>, <code class="docutils literal notranslate"><span class="pre">sites</span></code>, <code class="docutils literal notranslate"><span class="pre">interactions</span></code>.</p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">name</span></code></dt><dd><p>The name of lattice.
-This is just a comment or marker, and will not be used.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">name</span></code></dt><dd><p>A string denoting the name of lattice.
+This is just a comment or a marker, and will not be used.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">lattice</span></code></dt><dd><p>The section specifying general information of lattice.</p>
 <ul class="simple">
@@ -277,7 +277,7 @@ interactions
 </div>
 </div>
 <div class="section" id="lattice-toml-file-lattice-toml">
-<h2>5.2.3. Lattice TOML file <code class="docutils literal notranslate"><span class="pre">lattice.toml</span></code><a class="headerlink" href="#lattice-toml-file-lattice-toml" title="Permalink to this headline">¶</a></h2>
+<span id="lattice-toml-file"></span><h2>4.2.3. Lattice TOML file <code class="docutils literal notranslate"><span class="pre">lattice.toml</span></code><a class="headerlink" href="#lattice-toml-file-lattice-toml" title="Permalink to this headline">¶</a></h2>
 <p>A lattice TOML file is a <a class="reference external" href="https://github.com/toml-lang/toml/blob/master/versions/ja/toml-v0.5.0.md">TOML</a> formatted file defining a lattice by using an unitcell and primitive translation vectors.
 This is used as an input file of <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code>.</p>
 <p>This has two tables, <code class="docutils literal notranslate"><span class="pre">parameter</span></code> and <code class="docutils literal notranslate"><span class="pre">unitcell</span></code>.</p>
@@ -373,9 +373,9 @@ target = { siteid = 0, offset = [0,1] }
 </pre></div>
 </div>
 </div>
-<div class="section" id="hamiltonian-file-hamiltonian-toml">
-<span id="hamiltonian-file"></span><h2>5.2.4. Hamiltonian file <code class="docutils literal notranslate"><span class="pre">hamiltonian.toml</span></code><a class="headerlink" href="#hamiltonian-file-hamiltonian-toml" title="Permalink to this headline">¶</a></h2>
-<p>A Hamiltonian file is a <a class="reference external" href="https://github.com/toml-lang/toml/blob/master/versions/ja/toml-v0.5.0.md">TOML</a> formatted file describing the local Hamiltonian.
+<div class="section" id="hamiltonian-toml-file">
+<span id="hamiltonian-file"></span><h2>4.2.4. Hamiltonian TOML file<a class="headerlink" href="#hamiltonian-toml-file" title="Permalink to this headline">¶</a></h2>
+<p>A Hamiltonian TOML file is a <a class="reference external" href="https://github.com/toml-lang/toml/blob/master/versions/ja/toml-v0.5.0.md">TOML</a> formatted file describing the local Hamiltonian.
 This file is used as an input file of <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code>.
 A utility tool <code class="docutils literal notranslate"><span class="pre">dla_hamgen</span></code> generates Hamiltonian file for common models, XXZ spin model and Bose-Hubbard model.</p>
 <dl>
@@ -501,11 +501,11 @@ value = 0.25
 </pre></div>
 </div>
 </div>
-<div class="section" id="wavevector-datafile-kpoints-dat">
-<span id="wavevector-file"></span><h2>5.2.5. Wavevector datafile <code class="docutils literal notranslate"><span class="pre">kpoints.dat</span></code><a class="headerlink" href="#wavevector-datafile-kpoints-dat" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="wavevector-datafile">
+<span id="wavevector-file"></span><h2>4.2.5. Wavevector datafile<a class="headerlink" href="#wavevector-datafile" title="Permalink to this headline">¶</a></h2>
 <p>A wavevector datafile is a textfile describing wavevectors</p>
 <div class="math notranslate nohighlight">
-\[\vec{k}^{(i)} = \sum_{d=1}^{D} n_d^{(i)} \vec{g}_d,\]</div>
+\[\vec{k}^{(i)} = \sum_{d=1}^{D} k_d^{(i)} \vec{g}_d,\]</div>
 <p>where <span class="math notranslate nohighlight">\(\vec{g}\)</span> is the set of the reciprocal vectors.</p>
 <p>From <code class="docutils literal notranslate"><span class="pre">#</span></code> mark to the end of the line is a comment and ignored.
 A blank line is also ignored.
@@ -518,7 +518,7 @@ A “list” is written as space separated elements in one line like <code class
 <ul class="simple">
 <li><dl class="simple">
 <dt>First line</dt><dd><ul>
-<li><p>The number of wavevectors.</p></li>
+<li><p>An integer denoting the number of wavevectors.</p></li>
 </ul>
 </dd>
 </dl>
@@ -540,6 +540,10 @@ When the coordinate of a lattice site is <span class="math notranslate nohighlig
 the wavevector is <span class="math notranslate nohighlight">\(\vec{k} = \sum k_d \vec{g}_d\)</span>,
 the innerproduct of them is <span class="math notranslate nohighlight">\(\vec{r}\cdot\vec{k} = \sum_d 2\pi r_d k_d / L_d\)</span>,
 where <span class="math notranslate nohighlight">\(L_d\)</span> is the length of the lattice along <span class="math notranslate nohighlight">\(d\)</span> th dimension.</p>
+<p>The inner product between the coordinate <span class="math notranslate nohighlight">\(\vec{r} = \sum r_d \vec{e}_d\)</span> and
+the wavevector <span class="math notranslate nohighlight">\(\vec{k} = \sum k_d \vec{g}_d\)</span> is
+<span class="math notranslate nohighlight">\(\vec{r}\cdot\vec{k} = \sum_d 2\pi r_d k_d / L_d\)</span>,
+where <span class="math notranslate nohighlight">\(L_d\)</span> is the size of lattice along <span class="math notranslate nohighlight">\(d\)</span> th dimension.</p>
 <p>The following is an example of two dimensional case.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dim
 2
@@ -579,35 +583,34 @@ kpoints
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. About DSQSS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. How to install</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../dsqss/usage.html">3. Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">4. Tutorial of DSQSS/DLA</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">5. User’s manual of DSQSS/DLA</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="input_simple.html">5.1. Simple mode of DSQSS/DLA</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">5.2. Standard input files for DSQSS/DLA</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#list-of-files">5.2.1. List of files</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#lattice-datafile-lattice-dat">5.2.2. Lattice datafile <code class="docutils literal notranslate"><span class="pre">lattice.dat</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#lattice-toml-file-lattice-toml">5.2.3. Lattice TOML file <code class="docutils literal notranslate"><span class="pre">lattice.toml</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#hamiltonian-file-hamiltonian-toml">5.2.4. Hamiltonian file <code class="docutils literal notranslate"><span class="pre">hamiltonian.toml</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#wavevector-datafile-kpoints-dat">5.2.5. Wavevector datafile <code class="docutils literal notranslate"><span class="pre">kpoints.dat</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">3. Tutorial of DSQSS/DLA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. User’s manual of DSQSS/DLA</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="input_simple.html">4.1. Simple mode of DSQSS/DLA</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.2. Standard input files for DSQSS/DLA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#list-of-files">4.2.1. List of files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lattice-datafile">4.2.2. Lattice datafile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lattice-toml-file-lattice-toml">4.2.3. Lattice TOML file <code class="docutils literal notranslate"><span class="pre">lattice.toml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hamiltonian-toml-file">4.2.4. Hamiltonian TOML file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wavevector-datafile">4.2.5. Wavevector datafile</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="input_expert.html">5.3. Input files for DSQSS/DLA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generator.html">5.4. Utility tools to generate the input files of DSQSS/DLA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="engine.html">5.5. Directed loop algorithm solvers, <code class="docutils literal notranslate"><span class="pre">dla_H</span></code> and <code class="docutils literal notranslate"><span class="pre">dla_B</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="output.html">5.6. Output of DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_expert.html">4.3. Input files for DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generator.html">4.4. Input file generators for DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engine.html">4.5. Directed loop algorithm solver <code class="docutils literal notranslate"><span class="pre">dla</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="output.html">4.6. Output of DSQSS/DLA</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tutorial.html">6. Tutorial of DSQSS/PMWA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tu-index.html">7. User’s manual for DSQSS/PMWA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tutorial.html">5. Tutorial of DSQSS/PMWA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tu-index.html">6. User’s manual for DSQSS/PMWA</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="index.html">5. User’s manual of DSQSS/DLA</a><ul>
-      <li>Previous: <a href="input_simple.html" title="previous chapter">5.1. Simple mode of DSQSS/DLA</a></li>
-      <li>Next: <a href="input_expert.html" title="next chapter">5.3. Input files for DSQSS/DLA</a></li>
+  <li><a href="index.html">4. User’s manual of DSQSS/DLA</a><ul>
+      <li>Previous: <a href="input_simple.html" title="previous chapter">4.1. Simple mode of DSQSS/DLA</a></li>
+      <li>Next: <a href="input_expert.html" title="next chapter">4.3. Input files for DSQSS/DLA</a></li>
   </ul></li>
   </ul></li>
 </ul>
