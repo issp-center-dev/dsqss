@@ -28,6 +28,18 @@ cmake ../
 make
 ```
 
+To change compiler, add `-DCMAKE_CXX_COMPILER` like 
+
+``` bash
+cmake ../ -DCMAKE_CXX_COMPILER=`which icpc`
+```
+
+For Intel compiler, DSQSS offers another option `-DCONFIG=intel` for setting compiler and adding compiler options
+
+```bash
+cmake ../ -DCONFIG=intel
+```
+
 You can find executable files in `build/src/dla`, `build/tool` and `build/src/pmwa/`.
 
 ### build manual
@@ -71,6 +83,17 @@ After this process, executable files such as `dla` are installed to `${INSTALL_D
 a configuration file `dsqssvars-${DSQSS_VERSION}.sh` to `${INSTALL_DIR}/share/dsqss/`,
 sample files to `${INSTALL_DIR}/share/dsqss/dsqss-${DSQSS_VERSION}/sample`, 
 and documents (if built) to `${INSTALL_DIR}/share/dsqss/dsqss-${DSQSS_VERSION}/doc`.
+
+### Example
+
+``` bash
+cd sample/dla/01_spindimer
+dla_pre std.toml
+dla param.in
+cat sample.log | grep ene
+```
+
+For details, [see manual page](https://issp-center-dev.github.io/dsqss/manual/master/en/dla/tutorial/spindimer.html).
 
 ## License
 ### License of DSQSS
