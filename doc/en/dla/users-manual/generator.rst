@@ -1,194 +1,232 @@
 .. highlight:: none
 
-Utility tools to generate the input files of DSQSS/DLA
-=======================================================
+Input file generators for DSQSS/DLA
+====================================
 
-DSQSS/DLA needs several XML-formatted input files:
-lattice file, algorithm file, structure file, real space temperature Green's function file, and momentum space temperature Green's function file.
-By writing these files, you can simulate any model on any lattice.
-Since they are a little complicated, DSQSS/DLA prepares utility tools for generating them.
+DSQSS/DLA takes several input files;
+lattice XML file, algorithm XML file, and wavevector XML file,
+and users can simulate any model on any lattice (graph) by defining these files properly.
+They are, however, too complicated to be made by hand.
+To help users, DSQSS/DLA offers utility tools for generating these files for widely used lattices and models
+such as a hypercubic lattice and the Heisenberg model.
 
-Hypercubic lattice generator ``lattgene_C``
-*******************************************
-``lattgene_C`` is a utility tool to generate a lattice file describing a :math:`D` dimensional hypercubic lattice with the periodic boundary condition.::
+.. _dla_pre:
 
-  $ lattgene_C [-o filename] D L1 L2 ... LD
+Simple mode tool ``dla_pre``
+***********************************
+``dla_pre`` is a utility tool for generating :ref:`dla_expert_files` from :ref:`simple_mode_file`. ::
 
-The meaning of parameters are following:
+  $ dla_pre [-p paramfile] <inputfile>
 
-``D``
-  Dimension of lattice
+The meanings of the parameters are following.
 
-``L1 L2 ... LD``
-  Linear length of lattice in each dimension.
+``paramfile``
+  The name of the parameter file to be generated (default: ``qmc.inp``.)
 
-``filename``
-  Name of lattice file (default: ``lattice.xml`` ).
-
-Example::
-
-  ## Chain with 8 sites.
-  $ lattgene_C 1 8
-
-  ## Square lattice with 6x6 sites.
-  ## Name of the generated file is lat.xml
-  $ lattgene_C -o lat.xml 2 6 6
-
-Triangular lattice generator ``lattgene_T``
-*******************************************
-``lattgene_T`` is a utility tool to generate a lattice file describing a triangular lattice with the periodic boundary condition. ::
-
-  $ lattgene_T [-o filename] L1 L2
-
-The meaning of parameters are following:
-
-``L1 L2``
-  Linear length of lattice in each dimension.
-
-``filename``
-  Name of lattice file (default: ``lattice.xml`` ).
-
-Example::
-
-  ## Triangular lattice with 6x6 sites.
-  $ lattgene_T 1 6
+``inputfile``
+  The name of the input file.
+  For details of the input file, see :ref:`simple_mode_file` .
 
 
-Heisenberg spin Hamiltonian generator ``hamgen_H``
-***************************************************
+The names of the XML files such as the lattice XML file are automatically determined from parameters.
 
-``hamgen_H`` is a utility tool generating a hamiltonian file describing Heisenberg spin model
 
-.. math:
-   \mathcal{H} = -J  \sum_{\langle i, j \rangle} S_i \cdot S_j - h \sum_i S_i^z
+.. _dla_lat_gen:
+
+Lattice file generator ``dla_latgen``
+*****************************************
+``dla_latgen`` is a utility tool for generating :ref:`lattice_data_file` or :ref:`lattice_toml_file` from :ref:`simple_mode_file` . ::
+
+  $ dla_latgen [-o datafile] [-t TOML] [-g GNUPLOT] input
+
+The meanings of the parameters are following.
+
+``datafile``
+  The name of the generated lattice data file (default: ``lattice.dat`` .)
+  If empty, ``dla_latgen`` never generate any lattice data file.
+
+``TOML``
+  The name of the generated lattice TOML file (default: empty.)
+  If empty, ``dla_latgen`` never generate any lattice TOML file.
+
+``GNUPLOT``
+  The name of the generated lattice Gnuplot file (default: empty.)
+  If empty, ``dla_latgen`` never generate any lattice Gnuplot file.
+  Users can see the generated lattice by ``load`` the lattice Gnuplot file in ``gnuplot``.
+
+``inputfile``
+  The name of the input file.
+  For details of the input file, see :ref:`std_toml_lattice` .
+
+Examples
+::
+
+  # 1d chain with 8 sites
+  [lattice]
+  lattice = "hypercubic"
+  dim = 1
+  L = 8
 
 ::
 
-  $ hamgen_H [-o filename] M J F
+  # 2d square, 4x4 sites
+  [lattice]
+  lattice = "hypercubic"
+  dim = 2
+  L = 4
 
-The meaning of parameters is following:
+::
 
-``M``
-  Twice as the length of the local spin, :math:`2S`
+  # two leg ladder, 8x2 sites
+  [lattice]
+  lattice = "hypercubic"
+  dim = 2
+  L = [8,2]
+  bc = [true, false]
 
-``J``
-  The exchange interaction. Positive for ferromagnetic and negative for antiferromagnetic.
 
-``F``
-  The magnetic field on a site per a bond connected to the site, :math:`F = h/z` ,
-  where :math:`z` is the coordination number, for example, :math:`z=4` for the square lattice.
+
+Hamiltonian file generator ``dla_hamgen``
+**************************************************
+``dla_hamgen`` is a utility tool for generating :ref:`hamiltonian_file` from :ref:`simple_mode_file` ::
+
+  $ dla_hamgen [-o filename] <inputfile>
+
+The meanings of the parameters are following.
 
 ``filename``
-  Name of hamiltonian file (default: ``hamiltonian.xml`` ).
+  The name of the generated Hamiltonian file (default: ``hamiltonian.toml`` .)
 
-Example::
+``inputfile``
+  The name of the input file.
+  For details of the input file, see :ref:`std_toml_hamiltonian` .
 
-  ## S=1/2 antiferromagnetic Heisenberg model without magnetic field.
-  $ hamgen_H 1 -1.0 0.0
+Example ::
 
-  ## S=1 ferromagnetic Heisenberg model with magnetic field.
-  ## Name of the generated file ham.xml
-  $ hamgen_H -o ham.xml 2 1.0 1.0
+   # S=1/2 AF Heisenberg model
+   [hamiltonian]
+   model = "spin"
+   M = 1
+   Jz = -1.0
+   Jxy = -1.0
+
+::
+    
+   # S=1 J1 AF J2 FM XY model under the field
+   [hamiltonian]
+   model = "spin"
+   M = 2
+   Jxy = [-1.0, 1.0]
+   h = 1.0
+
+::
+
+   # hardcore boson
+   [hamiltonian]
+   model = "boson"
+   M = 1
+   t = 1.0
+   V = 1.0
+
+::
+
+   # softcore boson (upto N=2)
+   [hamiltonian]
+   model = "boson"
+   M = 2
+   t = 1.0
+   U = 1.0
+   V = 1.0
+   mu = 1.0
 
 
-Bose-Hubbard model generator ``hamgen_B``
+Parameter file generator ``dla_pgen``
 ******************************************
-
-``hamgen_B`` is a utility tool generating a hamiltonian file describing Bose-Hubbard model
-
-.. math:
-   \mathcal{H} = \sum_{\langle i, j \rangle} \left[ -t b_i^\dagger \cdot b_j + V n_i n_j \right] + \sum_i \left[ \frac{U}{2} n_i(n_i-1) - \mu n_i \right]
-
+``dla_pgen`` is utility tool for generating :ref:`expert_param_file` from :ref:`simple_mode_file` .
 ::
 
-  $ hamgen_B [-o filename] M t V U F
+  $ dla_pgen [-o filename] <inputfile>
 
-The meaning of parameters is following:
-
-``M``
-  The maximum number of sites on a site
-
-``t``
-  The hopping parameter
-
-``V``
-  The nearest neighbor interaction. Positive for repulsive potential and negative for attractive.
-
-``U``
-  The onsite interaction. Positive for repulsive potential and negative for attractive.
-
-``F``
-  The chemical potential on a site per a bond connected to the site, :math:`F = h/z` ,
-  where :math:`z` is the coordination number, for example, :math:`z=4` for the square lattice.
+The meanings of the parameters are following.
 
 ``filename``
-  Name of the Hamiltonian file (default: ``hamiltonian.xml`` ).
+  The name of the generated parameter file (default: ``param.in`` .)
+
+``inputfile``
+  The name of the input file. 
+  For details of the input file, see :ref:`std_toml_parameter` .
+
+
+Wavevector file generator ``dla_wvgen``
+**********************************************
+``dla_wvgen`` is a utility tool for generating :ref:`wavevector_file` from :ref:`simple_mode_file` .
+::
+
+  $ dla_wvgen [-o filename] [-s size] <inputfile>
+
+The meanings of the parameters are following.
+
+``filename``
+  The name of the generated wavevector file (default: ``kpoints.dat`` .)
+
+``size``
+  Space separated integers denoting the lattice size (e.g., ``-s "4 4"`` .)
+  If omitted, it will be detected from the ``[lattice]`` table of the input TOML file.
+
+``inputfile``
+  The name of the input file.
+  For details of the input file, see :ref:`std_toml_hamiltonian` .
+
+
 
 Algorithm file generator ``dla_alg``
-*************************************
-``dla_alg`` is an utility tool to convert a hamiltonian file to an algorithm file.::
-
-  $ dla_alg HFILE AFILE
-
-The meaning of parameters are following:
-
-``HFILE``
-  The Hamiltonian file to be loaded (default: ``hamiltonian.xml`` ).
-
-``AFILE``
-  The algorithm file to be generated (default: ``algorithm.xml`` ).
-
-Structure factor file generator ``sfgene``
 *********************************************
-``sfgene`` is a utility tool generating a structure factor file for a hypercubic lattice::
+``dla_alg`` is a utility tool for generating
+:ref:`lattice_xml_file`, :ref:`algorithm_xml_file`, :ref:`wavevector_xml_file`, and :ref:`relative_coordinate_xml_file`
+from :ref:`lattice_data_file`, :ref:`lattice_toml_file`, :ref:`hamiltonian_file`, and :ref:`wavevector_file` .
+::
 
-  $ sfgene [-o filename] D L_1 ... L_D Ntau Ntau_cutoff KTYPE
+   $ dla_alg [-l LAT] [-h HAM] [-L LATXML] [-A ALGXML]
+             [--without_lattice] [--without_algorithm] [-k KPOINT]
+             [--wv WV] [--disp DISP] [--distance-only]
+             [--kernel KERNEL]
 
-The meaning of parameters are following:
+The meanings of the parameters are following.
 
-``D``
-  Dimension of lattice
+``LAT``
+  The name of the lattice dat/TOML file (default: ``lattice.dat``.) 
+  The type whether dat or TOML is automatically detected.
 
-``L_1 ... L_D``
-  Linear length of lattice in each dimension.
+``HAM``
+  The name of the Hamiltonian TOML file (default: ``hamiltonian.toml`` .)
 
-``Ntau``
-  The number of discretization of imaginary time
+``LATXML``
+  The name of the generated lattice XML file (default: ``lattice.xml`` .)
 
-``Ntau_cutoff``
-  The maximum number of distance in imaginary time :math:`d\tau`
+``ALGXML``
+  The name of the generated algorithm XML file (default: ``algorithm.xml`` .)
 
-``KTYPE``
-  Pattern of wave vectors :math:`k`
+``without_lattice``
+  If set, ``dla_alg`` never generate a lattice XML file.
+  Even in this case, the lattice dat/TOML file is still required.
 
-  - ``KTYPE==0``
-    
-    Wave vectors with :math:`k_x = n\pi/L_x, n = 0, 2, \dots, L` are calculated (:math:`k_y` and :math:`k_z` are zero for all wave vectors).
+``without_algorithm``
+  If set, ``dla_alg`` never generate an algorithm XML file.
 
-  - ``KTYPE==1``
+``KPOINT``
+  The name of the wavevector file.
+  If omit, ``dla_alg`` never generate a wavevector XML file.
 
-    :math:`k/\pi = (0,0,0), (1,0,0), (0,1,0), (1,1,0), \dots, (1,1,1)` for three dimensional case.
+``WV``
+  The name of the generated wavevector XML file (default: ``wavevector.xml`` .)
 
-``filename``
-  The structure factor file to be generated (default: ``sf.xml`` ).
+``DISP``
+  The name of the generated relative coordinate XML file.
+  If omit, ``dla_alg`` never generate a relative coordinate XML file.
 
-Real space temperature Green's function file generator ``cfgene``
-*******************************************************************
-``cfgene`` is a utility tool generating a real space temperature Green's function file for a hypercubic lattice::
+``--distance-only``
+  If set, ``dla_alg`` groups pairs of sites by absolute distance instead of relative coordinate.
 
-  $ cfgene [-o filename] D L_1 ... L_D Ntau
-
-The meaning of parameters is following:
-
-``D``
-  The dimension of lattice
-
-``L_1 ... L_D``
-  The linear lengths of lattice in each dimension.
-
-``Ntau``
-  The number of discretization of imaginary time
-
-``filename``
-  The real space temperature Green's function file to be generated (default: ``sf.xml`` ).
-
+``KERNEL``
+  The name of the algorithm for calculating the scattering probability of a worm head at a vertex (default: ``"suwa todo"`` .)
+  For details, see :ref:`simple_mode_algorithm` .

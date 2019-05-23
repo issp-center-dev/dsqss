@@ -14,22 +14,22 @@ Of course, they can be combined with predefined ones.
   Standard mode of DSQSS/DLA. Ellipses are files and rectangles are tools.
 
 List of files
-************************
+**************
 
 .. csv-table::
     :header-rows: 0
     :widths: 1,4
 
-    lattice.dat, "Lattice file."
-    lattice.toml, "Lattice TOML file."
+    lattice.dat, "lattice datafile."
+    lattice.toml, "lattice TOML file."
     hamiltonian.toml, "Hamiltonian TOML file."
     kpoints.dat, "Wavevector file."
 
 
 .. _lattice_data_file:
 
-Lattice datafile ``lattice.dat``
-**************************************
+Lattice datafile 
+*****************
 A lattice datafile is a textfile describing information of space (lattice), such as the number of sites and links connecting some sites.
 This file is used as an input file of ``dla_alg``.
 
@@ -42,8 +42,8 @@ The lattice datafile includes the five sections,
 
 
 ``name``
-   The name of lattice.
-   This is just a comment or marker, and will not be used.
+   A string denoting the name of lattice.
+   This is just a comment or a marker, and will not be used.
 
 ``lattice``
    The section specifying general information of lattice.
@@ -175,6 +175,8 @@ The following is an example describing :math:`4 \times 4` square lattice::
    31 0 2 15 3 1 1
 
 
+.. _lattice_toml_file:
+
 Lattice TOML file ``lattice.toml``
 *************************************
 A lattice TOML file is a `TOML`_ formatted file defining a lattice by using an unitcell and primitive translation vectors.
@@ -273,12 +275,11 @@ The following is an example describing two dimensional square lattice.
    target = { siteid = 0, offset = [0,1] }
 
 
-
 .. _hamiltonian_file:
 
-Hamiltonian file ``hamiltonian.toml``
-***************************************************
-A Hamiltonian file is a `TOML`_ formatted file describing the local Hamiltonian.
+Hamiltonian TOML file 
+**********************
+A Hamiltonian TOML file is a `TOML`_ formatted file describing the local Hamiltonian.
 This file is used as an input file of ``dla_alg``.
 A utility tool ``dla_hamgen`` generates Hamiltonian file for common models, XXZ spin model and Bose-Hubbard model.
 
@@ -417,18 +418,15 @@ The following is an example describing :math:`S=1/2` antiferromagnetic Heisenber
    value = 0.25
 
 
-
-
-
 .. _wavevector_file:
 
-Wavevector datafile ``kpoints.dat``
-****************************************
+Wavevector datafile 
+********************
 
 A wavevector datafile is a textfile describing wavevectors
 
 .. math::
-   \vec{k}^{(i)} = \sum_{d=1}^{D} n_d^{(i)} \vec{g}_d,
+   \vec{k}^{(i)} = \sum_{d=1}^{D} k_d^{(i)} \vec{g}_d,
 
 
 where :math:`\vec{g}` is the set of the reciprocal vectors.
@@ -446,7 +444,7 @@ The wavevector datafile includes the two sections, ``dim`` and ``kpoints``.
    A section describing wavevectors.
 
    - First line
-      - The number of wavevectors.
+      - An integer denoting the number of wavevectors.
    - Rest 
       - A list of integers denoting the wavevector.
         The first integer means the index of the wavevector.
@@ -459,6 +457,10 @@ the wavevector is :math:`\vec{k} = \sum k_d \vec{g}_d`,
 the innerproduct of them is :math:`\vec{r}\cdot\vec{k} = \sum_d 2\pi r_d k_d / L_d`,
 where :math:`L_d` is the length of the lattice along :math:`d` th dimension.
 
+The inner product between the coordinate :math:`\vec{r} = \sum r_d \vec{e}_d` and
+the wavevector :math:`\vec{k} = \sum k_d \vec{g}_d` is
+:math:`\vec{r}\cdot\vec{k} = \sum_d 2\pi r_d k_d / L_d`,
+where :math:`L_d` is the size of lattice along :math:`d` th dimension.
    
 The following is an example of two dimensional case. ::
 

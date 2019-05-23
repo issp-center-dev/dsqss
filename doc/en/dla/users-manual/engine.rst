@@ -1,15 +1,12 @@
 .. highlight:: none
 
-Directed loop algorithm solvers, ``dla_H`` and ``dla_B``
+Directed loop algorithm solver ``dla``
 ========================================================
 
-``dla_H`` and ``dla_B`` are quantum Monte Carlo solvers with the directed loop algorithm.
-They take an input file as the command line argument.
-``dla_H`` is for spin system and ``dla_B`` is for Bosonic system.
+``dla`` is a quantum Monte Carlo solver with the directed loop algorithm.
+This takes an input file as the command line argument.::
 
-::
-
-  $ dla_H param.in
+  $ dla param.in
 
 
 DSQSS/DLA implements random number parallelization by using MPI.
@@ -19,5 +16,5 @@ and thus it is expected that the statistical error also reduces to :math:`1/\sqr
 
 ::
 
-  $ mpiexec -np 4 dla_B param.in
+  $ mpiexec -np 4 dla param.in
 

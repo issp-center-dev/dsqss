@@ -1,7 +1,7 @@
-
 Akiko
 BondDimension
 EBase
+Gnuplot
 Harada
 Hyogo
 ITYPE
@@ -68,6 +68,7 @@ Zeeman
 algfile
 antiferromagnetic
 arXiv
+arxiv
 bc
 bmmu
 bmpu
@@ -75,10 +76,8 @@ bmxu
 bool
 bosesquare
 bosonic
-cfinpfile
 cfoutfile
 cjob
-ckinpfile
 ckoutfile
 csv
 dat
@@ -101,6 +100,7 @@ latfile
 linebreak
 lxmx
 macOS
+metropolice
 multiworm
 ndecor
 neighbour
@@ -109,6 +109,7 @@ nmcs
 npre
 nsegmax
 nset
+ntau
 ntherm
 nver
 nvermax
@@ -123,7 +124,6 @@ py
 qmc
 reweighting
 runtype
-sfinpfile
 sfoutfile
 simulationtime
 spinchain

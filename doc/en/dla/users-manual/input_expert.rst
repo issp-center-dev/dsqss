@@ -15,14 +15,14 @@ The list of input files
     qmc.inp, "Parameter list for the simulation, e.g., the number of Monte Carlo sets."
     lattice.xml, "Definition of the lattice."
     algorithm.xml, "Definition of the algorithm (e.g., scattering rate of a worm)."
-    sf.xml, "Indication of wave vectors for structure factors. (optional)"
-    cf.xml, "Indexing directions between all the sites. (optional)"
+    wavevector.xml, "Indication of wave vectors for structure factors. (optional)"
+    displacement.xml, "Indexing directions between all the sites. (optional)"
 
 
-.. expert_param_file:
+.. _expert_param_file:
 
-Parameter file ``qmc.inp``
-**********************************
+Parameter file
+***************
 The parameter file is a plain-text file with the following format,
 
 - One line stands for one parameter by the key-value style, ``<name> = <value>``.
@@ -49,6 +49,7 @@ The list of parameters are the following,
     nsegmax, int,  10000, "The maximum number of world-line segments."
     algfile, string,  algorithm.xml, "The filename of an algorithm file."
     latfile, string, lattice.xml, "The filename of a lattice file."
+    ntau, int, 10, "The number of the discretization of the imaginary time for calculating some observables as functions of imaginary time."
     wvfile, string, --,  "A wavevector XML file. If it is an empty string, observables as functions of wavevector will not be calculated."
     dispfile, string,  --, "A relative coordinates XML file. If it is an empty string, observables as functions of relative coordinates will not be calculated."
     outfile, string, sample.log, "The name of the main result file."
@@ -70,7 +71,10 @@ The list of parameters are the following,
     - The checkpoint file is ignored. DSQSS/DLA never saves nor loads it.
 
 
-Lattice file ``lattice.xml``
+
+.. _lattice_xml_file:
+
+Lattice XML file ``lattice.xml``
 **************************************
 
 A lattice file is a textfile written in XML format.
@@ -144,8 +148,12 @@ Lattice/Direction
   The direction of bonds.
   This takes "index of the direction" and "coordinates of the direction."
 
-Algorithm file ``algorithm.xml``
-***********************************
+
+
+.. _algorithm_xml_file:
+
+Algorithm XML file ``algorithm.xml``
+********************************************
 
 An algorithm file is a textfile written in XML format.
 This defines the details of interactions, for example, the scattering probability of a worm head.
@@ -409,6 +417,9 @@ Algorithm/Vertex/InitialConfiguration/Channel
 
   For the special case, the pair-annihilation of worm heads, let both the first and the second integer be -1.
 
+
+.. _wavevector_xml_file:
+
 Wavevector XML file ``wavevector.xml``
 ************************************************
 
@@ -450,6 +461,10 @@ WaveVector/RK
   The phase factor :math:`z = \exp{\vec{r}\cdot\vec{k}}` for a pair of a wave vector and a site.
   This takes four figures, ":math:`\mathrm{Re}z`", ":math:`\mathrm{Im}z`", "the index of the site", "the index of the wave vector".
   "StructureFactor" should has this elements as many as the number specified by "StructureFactor/NumberOfElements".
+
+
+
+.. _relative_coordinate_xml_file:
 
 Relative coordinate XML file ``displacement.xml``
 ****************************************************

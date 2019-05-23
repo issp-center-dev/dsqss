@@ -7,15 +7,19 @@ How to install
 Requirements
 ********************
 
-- BLAS
-- LAPACK
 - (Optional) MPI (essential for PMWA)
+- python 2.7 or 3.4+
+
+   - numpy
+   - scipy
+   - toml
+   - pip (essential for ``make install``)
 
 Download
 ********************
 - Download zip file
   
-  The latest version of DSQSS can be obtained from  `here <https://github.com/issp-center-dev/dsqss/releases>`_ .
+  The latest version of DSQSS can be obtained from https://github.com/issp-center-dev/dsqss/releases
 
 - Use git
   
@@ -31,31 +35,23 @@ Directory structure
   |-- CMakeLists.txt
   |-- LICENSE
   |-- README.md
-  |-- config
-  |   |-- gcc.cmake
-  |   `-- intel.cmake
-  |-- doc
-  |   |-- CMakeLists.txt
-  |   |-- en
-  |   `-- jp
-  |-- sample
-  |   |-- CMakeLists.txt
-  |   |-- dla
-  |   `-- pmwa
-  |-- src
-  |   |-- common
-  |   |-- dla
-  |   |-- pmwa
-  |   `-- third-party
-  |-- test
-  |   |-- CMakeLists.txt
-  |   |-- dla
-  |   |-- pmwa
-  |   `-- tool
-  `-- tool
-      |-- CMakeLists.txt
-      |-- cmake
-      |-- dsqss
+  |-- config/
+  |-- doc/
+  |-- sample/
+  |   |-- dla/
+  |   `-- pmwa/
+  |-- src/
+  |   |-- common/
+  |   |-- dla/
+  |   |-- pmwa/
+  |   `-- third-party/
+  |-- test/
+  |   |-- dla/
+  |   |-- pmwa/
+  |   `-- tool/
+  `-- tool/
+      |-- cmake/
+      |-- dsqss/
       `-- setup.py
 
 
@@ -63,7 +59,7 @@ Install
 ********************
 
 The installation of DSQSS can be done by the following procedures.
-In the following, we assume the current directory is ``dsqss.src``.
+In the following, we assume that you are in the root directory of dsqss.
 
 ::
    
@@ -76,7 +72,7 @@ It is noted that the default install directory is set as ``/usr/local/bin`` .
 When the build procedure failed, please try directly to set the compilers.
 For details, see https://github.com/issp-center-dev/HPhi/wiki/FAQ .
 
-Each binary files for dsqss will be made in `src` folder.
+Each binary files for dsqss will be made in `src` directory.
 To check whether the binary files are correctly made or not,  
 please type the following command:
 
@@ -86,15 +82,19 @@ please type the following command:
 
 
 After seeing that all tests are passed,
-type the following command to install binary files:
+type the following command to install files:
 
 ::
    
    $ make install
 
-If the path for installation was changed, 
-it is convenient to export the path:
+This command installs executable files into the ``bin`` directory,
+the sample files into the ``share/dsqss/VERSION/samples`` directory,
+and the python package ``dsqss`` into the ``lib`` directory
+under the install path before you set.
+One configuration file for setting environment variables to perform DSQSS commands will also be installed as ``share/dsqss/dsqssvar-VERSION.sh`` .
+Before invoke DSQSS commands, please load this file by ``source`` command as ::
 
-::
-   
-   $ export PATH="/path/to/install/to:$PATH"
+   $ source share/dsqss/dsqssvar-VERSION.sh
+
+In the remaining, it is assumed that DSQSS is installed and this configuration file is loaded.
