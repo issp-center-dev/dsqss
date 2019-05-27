@@ -288,7 +288,7 @@ class Lattice:
             elif state == "dirs":
                 self.load_direction(body, count)
                 count += 1
-                if count == self.dim:
+                if count == self.ndir:
                     count = 0
                     state = "waiting"
             elif state == "nsites":
