@@ -28,6 +28,10 @@ cmake ../
 make
 ```
 
+#### Notes
+DSQSS requires some python packages, and if not found DSQSS installs them automatically into local while CMake process.
+If `pip` is too old and does not know `--prefix` option of `install`, please update `pip` .
+
 To change compiler, add `-DCMAKE_CXX_COMPILER` like 
 
 ``` bash
