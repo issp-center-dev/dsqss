@@ -45,6 +45,7 @@ class Interaction:
     def __init__(self, int_id, int_type, nbody, site_indices, edge_flag, direction):
         self.id = int_id
         self.itype = int_type
+        self.itype_org = self.itype
         self.nbody = nbody
         self.sites = site_indices
         self.edge = edge_flag
@@ -534,7 +535,7 @@ class Lattice:
                 for bond in self.ints:
                     if bond.nbody != 2:
                         continue
-                    if bond.itype != bt:
+                    if bond.itype_org != bt:
                         continue
                     v = np.dot(self.latvec, np.array(self.sites[bond.sites[0]].coord, dtype=float))
                     for x in v:
