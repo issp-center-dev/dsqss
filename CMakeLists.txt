@@ -124,9 +124,9 @@ if(BUILD_NEW_GENERATORS OR Testing OR Document)
       execute_process(COMMAND ${PYTHON_EXECUTABLE} -m pip install -U pip)
     endif(NOT PIP_FOUND)
     foreach(module_name ${missing_modules})
-      message(STATUS "${PYTHON_EXECUTABLE} -m pip install --prefix=${pythonpath_prefix} ${module_name}")
+      message(STATUS "PIP_USER=0 ${PYTHON_EXECUTABLE} -m pip install --prefix=${pythonpath_prefix} ${module_name}")
       execute_process(
-        COMMAND ${PYTHON_EXECUTABLE} -m pip install --prefix=${pythonpath_prefix} ${module_name}
+        COMMAND PIP_USER=0 ${PYTHON_EXECUTABLE} -m pip install --prefix=${pythonpath_prefix} ${module_name}
         )
     endforeach(module_name ${missing_modules})
   endif(num_missing_modules)
