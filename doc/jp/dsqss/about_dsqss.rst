@@ -92,7 +92,7 @@ DSQSSは, 以下のサブシステム群から構成されています.
    
 .. topic:: Acknowledgment Sample
 
-    Numerical results in the present paper were obtained by the quantum Monte Carlo program DSQSS(https://github.com/qmc/dsqss/wiki).
+    Numerical results in the present paper were obtained by the quantum Monte Carlo program DSQSS(https://github.com/issp-center-dev/dsqss).
     This package is distributed under GNU General Public License version 3 (GPL v3) or later. 
 
 
