@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>3.4. Number density of the hardcore Bosons on a square lattice &#8212; DSQSS 2.0.0-Beta documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4. User’s manual of DSQSS/DLA" href="../users-manual/index.html" />
+    <link rel="prev" title="3.3. Magnetic Susceptibility of antiferromagnetic spin chains" href="spinchain.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="number-density-of-the-hardcore-bosons-on-a-square-lattice">
+<h1>3.4. Number density of the hardcore Bosons on a square lattice<a class="headerlink" href="#number-density-of-the-hardcore-bosons-on-a-square-lattice" title="Permalink to this headline">¶</a></h1>
+<p>In this tutorial, we will calculate the chemical potential dependence of the number density of the hardcore Bose-Hubbard model with the nearest neighbor repulsive on a <span class="math notranslate nohighlight">\(8\times8\)</span> square lattice.</p>
+<p>The following Python script (sample/dla/03_bosesquare/exec.py) performs DSQSS/DLA work-flow for each parameter (chemical potential) automatically.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="kn">from</span> <span class="nn">dsqss.parameter</span> <span class="k">import</span> <span class="n">dla_pre</span>
+<span class="kn">from</span> <span class="nn">dsqss.result</span> <span class="k">import</span> <span class="n">Results</span>
+
+<span class="n">V</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">L</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">]</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="mf">10.0</span>
+
+<span class="n">lattice</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;lattice&quot;</span><span class="p">:</span> <span class="s2">&quot;hypercubic&quot;</span><span class="p">,</span> <span class="s2">&quot;dim&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">:</span> <span class="n">L</span><span class="p">}</span>
+<span class="n">hamiltonian</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;boson&quot;</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;V&quot;</span><span class="p">:</span> <span class="n">V</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">parameter</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;beta&quot;</span><span class="p">:</span> <span class="n">beta</span><span class="p">,</span> <span class="s2">&quot;nset&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;ntherm&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;ndecor&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;nmcs&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">}</span>
+
+<span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;amzu&#39;</span>
+<span class="n">mus</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">4.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mf">9.0</span><span class="p">,</span> <span class="mf">9.5</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">12.0</span><span class="p">,</span> <span class="mf">14.0</span><span class="p">]</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.dat&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">mu</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mus</span><span class="p">):</span>
+    <span class="n">ofile</span> <span class="o">=</span> <span class="s2">&quot;res_</span><span class="si">{}</span><span class="s2">.dat&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">pfile</span> <span class="o">=</span> <span class="s1">&#39;param_</span><span class="si">{}</span><span class="s1">.in&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">hamiltonian</span><span class="p">[</span><span class="s2">&quot;mu&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu</span>
+    <span class="n">parameter</span><span class="p">[</span><span class="s2">&quot;outfile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ofile</span>
+    <span class="n">dla_pre</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;parameter&quot;</span><span class="p">:</span> <span class="n">parameter</span><span class="p">,</span> <span class="s2">&quot;hamiltonian&quot;</span><span class="p">:</span> <span class="n">hamiltonian</span><span class="p">,</span> <span class="s2">&quot;lattice&quot;</span><span class="p">:</span> <span class="n">lattice</span><span class="p">},</span>
+        <span class="n">pfile</span>
+    <span class="p">)</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;dla&quot;</span><span class="p">,</span> <span class="n">pfile</span><span class="p">]</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">Results</span><span class="p">(</span><span class="n">ofile</span><span class="p">)</span>
+    <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">to_str</span><span class="p">(</span><span class="n">name</span><span class="p">)))</span>
+<span class="n">output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Before executing this script, <code class="docutils literal notranslate"><span class="pre">source</span></code> a configuring file <code class="docutils literal notranslate"><span class="pre">dsqssvars-VERSION.sh</span></code> in order to set environment variables
+(replace <code class="docutils literal notranslate"><span class="pre">VERSION</span></code> with the version of DSQSS, e.g., <cite>2.0.0</cite>.)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ source $DSQSS_INSTALL_DIR/share/dsqss/dsqssvars-VERSION.sh
+$ python exec.py
+</pre></div>
+</div>
+<p>The result is written to <code class="docutils literal notranslate"><span class="pre">amzu.dat</span></code> (<a class="reference internal" href="#fig-bosesquare"><span class="std std-numref">Fig. 3.2</span></a>).
+You can see a density plateau around <span class="math notranslate nohighlight">\(\mu=6\)</span> . In this region, a checker board solid phase due to repulsive interaction appears.</p>
+<div class="figure align-center" id="fig-bosesquare">
+<img alt="density plateau of two dimensional repulsive hardcore bosons." src="../../_images/bosesquare.png" />
+<p class="caption"><span class="caption-number">Fig. 3.2 </span><span class="caption-text">Chemical potential dependence of number density of repulsive hardcore bosons.</span><a class="headerlink" href="#fig-bosesquare" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. About DSQSS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. How to install</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. Tutorial of DSQSS/DLA</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">3.1. What’s DSQSS/DLA?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spindimer.html">3.2. Energy calculation of the antiferromagnetic Heisenberg dimer by DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spinchain.html">3.3. Magnetic Susceptibility of antiferromagnetic spin chains</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.4. Number density of the hardcore Bosons on a square lattice</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../users-manual/index.html">4. User’s manual of DSQSS/DLA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tutorial.html">5. Tutorial of DSQSS/PMWA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tu-index.html">6. User’s manual for DSQSS/PMWA</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">3. Tutorial of DSQSS/DLA</a><ul>
+      <li>Previous: <a href="spinchain.html" title="previous chapter">3.3. Magnetic Susceptibility of antiferromagnetic spin chains</a></li>
+      <li>Next: <a href="../users-manual/index.html" title="next chapter">4. User’s manual of DSQSS/DLA</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/dla/tutorial/bosesquare.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
