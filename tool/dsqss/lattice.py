@@ -552,4 +552,5 @@ class Lattice:
                 f.write('$SITES_{0} w p pt {1} ps 2 t "" , \\\n'.format(st, st + 4))
             for bt in range(self.nitypes):
                 f.write('$BONDS_{0} w l lw 2 lt {1} t "" , \\\n'.format(bt, bt + 1))
+            f.write('\n')
             f.write('pause -1\n')
