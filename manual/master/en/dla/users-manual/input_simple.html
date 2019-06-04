@@ -38,7 +38,7 @@
 <p>A simple mode of DSQSS/DLA is the simplest workflow for DSQSS/DLA.
 In this mode, users can simulate of a predefined model on a predefined lattice from one text file.
 <a class="reference internal" href="#fig-flow-dla-simple"><span class="std std-numref">Fig. 4.1</span></a> shows a workflow of the simple mode.</p>
-<div class="figure align-center" id="fig-flow-dla-simple">
+<div class="figure align-default" id="fig-flow-dla-simple">
 <img alt="Simple mode of DSQSS/DLA." src="../../_images/flow_simple.png" />
 <p class="caption"><span class="caption-number">Fig. 4.1 </span><span class="caption-text">Simple mode of DSQSS/DLA. Ellipses are files and rectangles are tools.</span><a class="headerlink" href="#fig-flow-dla-simple" title="Permalink to this image">¶</a></p>
 </div>
@@ -51,7 +51,7 @@ This is used as an input file of several tools such as <code class="docutils lit
 <p>A table specifying simulation parameters such as the inverse temperature.
 This table is used in <code class="docutils literal notranslate"><span class="pre">dla_pre</span></code> and <code class="docutils literal notranslate"><span class="pre">dla_pgen</span></code>.</p>
 <p>Keys in the <code class="docutils literal notranslate"><span class="pre">parameter</span></code> table are following:</p>
-<table class="colwidths-given docutils align-center">
+<table class="colwidths-given docutils align-default">
 <colgroup>
 <col style="width: 14%" />
 <col style="width: 14%" />
@@ -180,7 +180,7 @@ This table is used in <code class="docutils literal notranslate"><span class="pr
 <p>A table specifying information of lattice.
 This is used in <code class="docutils literal notranslate"><span class="pre">dla_pre</span></code> and <code class="docutils literal notranslate"><span class="pre">dla_latgen</span></code>.</p>
 <p>Keys in the <code class="docutils literal notranslate"><span class="pre">lattice</span></code> table are following:</p>
-<table class="colwidths-given docutils align-center">
+<table class="colwidths-given docutils align-default">
 <colgroup>
 <col style="width: 14%" />
 <col style="width: 14%" />
@@ -235,7 +235,7 @@ By using <code class="docutils literal notranslate"><span class="pre">bc</span><
 <p>A table specifying information of Hamiltonian.
 This table is used in <code class="docutils literal notranslate"><span class="pre">dla_pre</span></code> and <code class="docutils literal notranslate"><span class="pre">dla_hamgen</span></code>.</p>
 <p>Keys in the <code class="docutils literal notranslate"><span class="pre">hamiltonian</span></code> table are following:</p>
-<table class="colwidths-given docutils align-center">
+<table class="colwidths-given docutils align-default">
 <colgroup>
 <col style="width: 14%" />
 <col style="width: 14%" />
@@ -268,7 +268,7 @@ This table is used in <code class="docutils literal notranslate"><span class="pr
 + D \sum_i \left(S_i^z\right)^2
 - h \sum_i S_i^z\]</div>
 <p>has the following parameters:</p>
-<table class="colwidths-given docutils align-center">
+<table class="colwidths-given docutils align-default">
 <colgroup>
 <col style="width: 14%" />
 <col style="width: 14%" />
@@ -309,7 +309,7 @@ This table is used in <code class="docutils literal notranslate"><span class="pr
 <div class="math notranslate nohighlight">
 \[\mathcal{H} = \sum_{\langle i, j \rangle} \left[ -t b_i^\dagger \cdot b_j + h.c. + V n_i n_j \right] + \sum_i \left[ \frac{U}{2} n_i(n_i-1) - \mu n_i \right]\]</div>
 <p>has the following parameters:</p>
-<table class="colwidths-given docutils align-center">
+<table class="colwidths-given docutils align-default">
 <colgroup>
 <col style="width: 14%" />
 <col style="width: 14%" />
@@ -352,7 +352,7 @@ This table is used in <code class="docutils literal notranslate"><span class="pr
 <p>A table specifying information of wavevectors.
 This table is used in <code class="docutils literal notranslate"><span class="pre">dla_pre</span></code> and <code class="docutils literal notranslate"><span class="pre">dla_wvgen</span></code>.</p>
 <p>Keys in the <code class="docutils literal notranslate"><span class="pre">kpoints</span></code> table are following:</p>
-<table class="colwidths-given docutils align-center">
+<table class="colwidths-given docutils align-default">
 <colgroup>
 <col style="width: 14%" />
 <col style="width: 14%" />
@@ -380,7 +380,7 @@ This table is used in <code class="docutils literal notranslate"><span class="pr
 <p>A table specifying algorithm for calculating scattering probability of wormheads.
 This table is used in <code class="docutils literal notranslate"><span class="pre">dla_pre</span></code>.</p>
 <p>Keys in the <code class="docutils literal notranslate"><span class="pre">algorithm</span></code> table are following:</p>
-<table class="colwidths-given docutils align-center">
+<table class="colwidths-given docutils align-default">
 <colgroup>
 <col style="width: 14%" />
 <col style="width: 14%" />
@@ -480,10 +480,10 @@ This table is used in <code class="docutils literal notranslate"><span class="pr
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -505,7 +505,7 @@ This table is used in <code class="docutils literal notranslate"><span class="pr
       &copy;2018, DSQSS developers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
