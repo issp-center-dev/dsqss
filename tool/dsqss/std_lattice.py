@@ -74,13 +74,27 @@ def main():
     )
 
     args = parser.parse_args()
-    inp = toml.load(args.input)
-    lat, lattice_dict = std_lattice(inp, True)
+    istoml = True
+    try:
+        inp = toml.load(args.input)
+    except toml.TomlDecodeError:
+        istoml = False
+        print("Input file seems not to be TOML file.")
+
+    if istoml:
+        lat, lattice_dict = std_lattice(inp, True)
+    else:
+        lat = Lattice(args.input)
+
     if len(args.out) > 0:
         lat.save_dat(args.out)
     if len(args.toml) > 0:
-        with codecs.open(args.toml, "w", "utf-8") as f:
-            toml.dump(lattice_dict, f)
+        if istoml:
+            with codecs.open(args.toml, "w", "utf-8") as f:
+                toml.dump(lattice_dict, f)
+        else:
+            ERROR("Cannot generate a lattice TOML file from a lattice data file.")
+
     if len(args.gnuplot) > 0:
         lat.write_gnuplot(args.gnuplot)
 
