@@ -1,6 +1,6 @@
 .. highlight:: none
 
-.. _sec_dla_input:
+.. _dla_expert_files:
 
 Input files for DSQSS/DLA
 =========================
@@ -15,11 +15,14 @@ The list of input files
     qmc.inp, "Parameter list for the simulation, e.g., the number of Monte Carlo sets."
     lattice.xml, "Definition of the lattice."
     algorithm.xml, "Definition of the algorithm (e.g., scattering rate of a worm)."
-    sf.xml, "Indication of wave vectors for structure factors. (optional)"
-    cf.xml, "Indexing directions between all the sites. (optional)"
+    wavevector.xml, "Indication of wave vectors for structure factors. (optional)"
+    displacement.xml, "Indexing directions between all the sites. (optional)"
 
-Parameter file ``qmc.inp``
-**********************************
+
+.. _expert_param_file:
+
+Parameter file
+***************
 The parameter file is a plain-text file with the following format,
 
 - One line stands for one parameter by the key-value style, ``<name> = <value>``.
@@ -46,14 +49,13 @@ The list of parameters are the following,
     nsegmax, int,  10000, "The maximum number of world-line segments."
     algfile, string,  algorithm.xml, "The filename of an algorithm file."
     latfile, string, lattice.xml, "The filename of a lattice file."
-    sfinpfile, string, --,  "A structure factor file. If it is an empty string, structure factors will not be calculated."
-    cfinpfile, string,  --, "A real space temperature Green's function file. If it is an empty string, real space temperature Green's functions will not be calculated."
-    ckinpfile, string,  --, "A momentum space temperature Green's function file. If it is an empty string, momentum space temperature Green's functions will not be calculated."
+    ntau, int, 10, "The number of the discretization of the imaginary time for calculating some observables as functions of imaginary time."
+    wvfile, string, --,  "A wavevector XML file. If it is an empty string, observables as functions of wavevector will not be calculated."
+    dispfile, string,  --, "A relative coordinates XML file. If it is an empty string, observables as functions of relative coordinates will not be calculated."
     outfile, string, sample.log, "The name of the main result file."
     sfoutfile, string, sf.dat, "The name of the structure factor result file."
     cfoutfile, string, cf.dat, "The name of the real space temperature Green's function output file."
     ckoutfile, string, ck.dat, "The name of the momentum space temperature Green's function output file."
-    runtype, int, 0, "Method. This remains for backward compatibility."
 
 - About simulationtime
 
@@ -69,12 +71,15 @@ The list of parameters are the following,
     - The checkpoint file is ignored. DSQSS/DLA never saves nor loads it.
 
 
-Lattice file ``lattice.xml``
+
+.. _lattice_xml_file:
+
+Lattice XML file ``lattice.xml``
 **************************************
 
 A lattice file is a textfile written in XML format.
-This defines timespace to be simulation, for example, the number of sites, the connections between sites, the inverse temperature, and so on.
-This file can be very complicated, so DSQSS has a utility tool ``lattgene`` to generate lattice files describing common lattices, such as a hypercubic lattice.
+This defines space to be simulation, for example, the number of sites, the connections between sites, and so on.
+This file can be very complicated, so DSQSS has a utility tool ``dla_alg`` to generate lattice XML files from simpler files, lattice data files and lattice TOML files.
 
 The lattice file has a unique element named "Lattice". The other elements belong to "Lattice" as children.
 
@@ -95,8 +100,6 @@ Lattice/LinearSize
     <LinearSize> 3 4 </LinearSize>
     # unitcells are arranged in 3x4.
 
-Lattice/NumberOfCells
-  The number of unitcells.
 
 Lattice/NumberOfSites
   The number of sites.
@@ -111,22 +114,24 @@ Lattice/NumberOfSiteTypes
 Lattice/NumberOfInteractionTypes
   The number of interaction types.
 
-Lattice/BondDimension
-  Parameter for the winding number.
+Lattice/NumberOfBondDirections
+  The number of bond directions.
 
 Lattice/NumberOfEdgeInteractions
-  Parameter for the Winding number.
   The number of bonds connecting sites over the lattice's boundary.
+
+Lattice/Basis
+  The basic vectors spanning lattice space.
 
 Lattice/S
   Site information.
   "Lattice" should includes this element as many as the number specified by "Lattice/NumberOfSites".
-  This takes three positive integers, "index of site", "site type", and "measure type".
+  This takes two nonnegative integers, "index of site" and "site type".
   The detail of site type is defined in an algorithm file.
   ::
 
-    <S> 3 0 1 </S>
-    # the site with index 3 has the site type of 0 and the measure type of 1.
+    <S> 3 0 </S>
+    # the site with index 3 has the site type of 0.
 
 Lattice/I
   Interaction information.
@@ -139,9 +144,16 @@ Lattice/I
     <I> 5 1 2 8 12 </I>
     # the interaction with index 5 has the interaction type of 1 and connects 2 sites, 8 and 12.
 
+Lattice/Direction
+  The direction of bonds.
+  This takes "index of the direction" and "coordinates of the direction."
 
-Algorithm file ``algorithm.xml``
-***********************************
+
+
+.. _algorithm_xml_file:
+
+Algorithm XML file ``algorithm.xml``
+********************************************
 
 An algorithm file is a textfile written in XML format.
 This defines the details of interactions, for example, the scattering probability of a worm head.
@@ -173,6 +185,7 @@ Algorithm/General
       ...
     </Algorithm>
 
+
 Algorithm/General/NSType
   The number of site types.
 
@@ -187,13 +200,12 @@ Algorithm/General/NXMax
   For example, :math:`2S+1` for a spin system with local spin :math:`S`.
 
 Algorithm/General/WDiag
-  User can use this value for user's own purpose in "measure_specific.cc".
-  In the original "measure_specific.cc" uses this value as a coefficient to measure correlation functions from the length of worms.
+  A coefficient to measure correlation functions from the length of worms.
+
 
 Algorithm/Site
   This defines a site type, for example, the weight of worm heads on a site.
   This has children "SType", "NumberOfStates", "VertexTypeOfSource", and "InitialConfiguration".
-
   ::
 
     <Algorithm>
@@ -201,6 +213,7 @@ Algorithm/Site
       <Site>
         <STYPE> 0 </STYPE>
         <NumberOfStates> 2 </NumberOfStates>
+        <LocalStates> -0.5 0.5 </LocalStates>
         <VertexTypeOfSource> 0 </VertexTypeOfSource>
         <InitialConfiguration>
            ...
@@ -217,6 +230,10 @@ Algorithm/Site/SType
 
 Algorithm/Site/NumberOfStates
   The number of states of the site.
+
+Algorithm/Site/LocalStates
+  Mapping from indices of local states to values of states.
+  For example, the z components of the spin operator in the usual spin case.
 
 Algorithm/Site/VertexTypeOfSource
   The index of the vertex to be inserted here.
@@ -306,6 +323,7 @@ Algorithm/Interaction/Sign
   If the sign is equal to :math:`1.0`:, this element (``<Sign> ... </Sign>``) can be omitted.
 
   For example, ``<Sign> 0 1 1 0 -1.0 </Sign>`` means :math:`\langle 1 0 | \left(-\mathcal{H}\right) | 0 1 \rangle < 0`.
+
 
 Algorithm/Vertex
   This defines a vertex.
@@ -399,222 +417,84 @@ Algorithm/Vertex/InitialConfiguration/Channel
 
   For the special case, the pair-annihilation of worm heads, let both the first and the second integer be -1.
 
-Hamiltonian file ``hamiltonian.xml``
+
+.. _wavevector_xml_file:
+
+Wavevector XML file ``wavevector.xml``
 ************************************************
 
-A Hamiltonian file is a textfile written in XML format.
-This defines the local Hamiltonians, e.g., a bond Hamiltonian.
-This file is used as an input of ``dla_alg`` in order to generate ``algorithm.xml`` .
-DSQSS has utility tools ``hamgen_H`` and ``hamgen_B`` to generate hamiltonian files describing the Heisenberg spin model and the Bose-Hubbard model.
+A wavevector XML file is a textfile written in a XML-like format.
+This defines the wavevectors to calculate several observables: staggered magnetization
 
-The Hamiltonian file has a unique element named "Hamiltonian". The other elements belong to "Hamiltonian" as children.
+.. math::
+   M^{z}(\vec{k}) \equiv \frac{1}{N} \sum_i e^{-i\vec{k}\vec\vec{r}_i} \left\langle M^{z}_i \right\rangle,
 
-Hamiltonian
-  The root element.
-  This has children, "General", "Site", "Source", and "Interaction".
-
-Hamiltonian/General
-  General parameters such as the number of site types.
-  This has children, "NSTYPE", "NITYPE", "NXMAX", and "Comment".
-  ::
-
-     <Hamiltonian>
-        <General>
-          <Comment> SU(2) Heisenberg model with S=1/2 </Comment>
-          <NSTYPE> 1 </NSTYPE>
-          <NITYPE> 1 </NITYPE>
-          <NXMAX>  2 </NXMAX>
-        </General>
-       ...
-     </Hamiltonian>
-
-Hamiltonian/General/Comment
-  (Optional) Comment. DSQSS ignores this.
-
-Hamiltonian/General/NSTYPE
-  The number of site types.
-
-Hamiltonian/General/NITYPE
-  The number of interaction types.
-
-Hamiltonian/General/NXMAX
-  The maximum number of states on a site.
-  For example, :math:`2S+1` for a spin system with local spin :math:`S`.
-
-Hamiltonian/Site
-  This defines a site type, for example, the number of states.
-  This has children "STYPE", "TTYPE", and "NX".
-  ::
-
-    <Hamiltonian>
-      ...
-      <Site>
-        <STYPE> 0 </STYPE>
-        <TTYPE> 0 </TTYPE>
-        <NX>   2 </NX>
-      </Site>
-      ...
-    </Hamiltonian>
-
-Hamiltonian/Site/STYPE
-  The index of site type.
-
-Hamiltonian/Site/TTYPE
-  The index of the source type (type of pair creation/annihilation of worm-heads.)
-
-Hamiltonian/Site/NX
-  The number of states of the site.
-
-
-Hamiltonian/Source
-  This defines a source type, that is, the pair-creation/annihilation of worm-heads.
-  This has children "TTYPE", "STYPE", and "Weight".
-  ::
-
-      <Source>
-        <TTYPE> 0 </TTYPE>
-        <STYPE> 0 </STYPE>
-        <Weight> 0 1       0.5000000000000000 </Weight>
-        <Weight> 1 0       0.5000000000000000 </Weight>
-      </Source>
-   
-Hamiltonian/Source/TTYPE
-   The index of the source type.
-
-Hamiltonian/Source/STYPE
-   The index of the site type.
-
-Hamiltonian/Source/Weight
-  The weight of the creation/annihilation operator.
-  This takes two integers and one floating number.
-  The integers denote the states of the site before and after applying the operator, respectively.
-  The floating number denotes the matrix element.
-
-  For example, ``0 1 0.5`` means :math:`\langle 1 | \mathcal{H} | 0 \rangle = 0.5`.
-
-Hamiltonian/Interaction
-  This defines an interaction type.
-  This has children "ITYPE", "STYPE", "NBODY", and "Weight".
-  ::
-
-    <Hamiltonian>
-      ...
-      <Interaction>
-        <ITYPE> 0 </ITYPE>
-        <NBODY> 2 </NBODY>
-        <STYPE> 0 0 </STYPE>
-        <Weight> 0 0 0 0      -0.2500000000000000 </Weight>
-        <Weight> 1 1 0 0       0.2500000000000000 </Weight>
-        <Weight> 1 0 0 1      -0.5000000000000000 </Weight>
-        <Weight> 0 1 1 0      -0.5000000000000000 </Weight>
-        <Weight> 0 0 1 1       0.2500000000000000 </Weight>
-        <Weight> 1 1 1 1      -0.2500000000000000 </Weight>
-      </Interaction>
-      ...
-    </Hamiltonian>
-
-Hamiltonian/Interaction/ITYPE
-  The index of the interaction type.
-
-Hamiltonian/Interaction/NBODY
-  The number of sites involved in this interaction.
-  An onebody interaction such as the Zeeman term has 1 and a twobody interaction such as the exchange coupling has 2.
-  Three or higher body interaction can be treated.
-
-Hamiltonian/Interaction/ITYPE
-  The indices of sites involved in this interaction.
-  This takes NBODY integers.
-
-Hamiltonian/Interaction/Weight
-  The matrix elements of the local Hamiltonian.
-
-  This takes integers as many as :math:`2\times` NBODY and one preceding floating number.
-  The integers denote the states of sites before and after applying the local Hamiltonian.
-  The last floating number denotes the matrix element multiplied by :math:`-1`.
-
-  For example, ``0 0 1 1 0.25`` means :math:`\langle 0 1 | -\mathcal{H} | 0 1 \rangle = 0.25`
-  and ``0 1 1 0 -0.5`` means :math:`\langle 1 0 | -\mathcal{H} | 0 1 \rangle = -0.5`.
-
-Structure factor file ``sf.xml``
-*********************************
-
-A structure factor file is a textfile written in a XML-like format.
-This defines wave vectors and the discretization of imaginary time to calculate the dynamical structure factor
+dynamical structure factor
 
 .. math::
     S^{zz}(\vec{k},\tau) \equiv
-      \left\langle M^z(\vec{k},\tau)M^z(-\vec{k},0) \right\rangle - \left\langle M^z(\vec{k},\tau)\right\rangle \left\langle M^z(-\vec{k},0)\right\rangle .
+      \left\langle M^z(\vec{k},\tau)M^z(-\vec{k},0) \right\rangle - \left\langle M^z(\vec{k},\tau)\right\rangle \left\langle M^z(-\vec{k},0)\right\rangle ,
 
-DSQSS has a utility tool to generate a structure factor file, ``sfgene``.
-
-A structure factor file has only one element, "StructureFactor", and the other elements are children of this.
-
-StructureFactor
-  The root element.
-  This has children, "Ntau", "NumberOfElements", "CutoffOfNtau", "NumberOfInverseLattice", and "SF".
-
-StructureFactor/Comment
-  (Optional) Comment. DSQSS ignores this.
-
-StructureFactor/Ntau
-  The number of discretization of the imaginary time axis.
-
-StructureFactor/CutoffOfNtau
-  The maximum of the imaginary time distance of the dynamical structure factor, :math:`\tau`.
-  This takes an integer in :math:`0, 1, \dots, \mathrm{Ntau}`.
-
-StructureFactor/NumberOfInverseLattice
-  The number of wave vectors, :math:`\vec{k}`
-
-StructureFactor/NumberOfElements
-  The number of the combination of wave vectors and sites.
-
-StructureFactor/SF
-  The phase factor :math:`z = \exp{\vec{r}\cdot\vec{k}}` for a pair of a wave vector and a site.
-  This takes four figures, ":math:`\mathrm{Re}z`", ":math:`\mathrm{Im}z`", "the index of the site", "the index of the wave vector".
-  "StructureFactor" should has this elements as many as the number specified by "StructureFactor/NumberOfElements".
-
-Real space temperature Green's function file ``cf.xml``
-********************************************************
-
-Real space temperature Green's function file is a textfile written in a XML-like format.
-This defines relative coordinate between two sites, :math:`\vec{r}_{ij}`, to calculate real space temperature Green's function,
-
-.. math::
-  G(\vec{r},\tau) \equiv \frac{1}{N^2}\sum_{i,j}\left\langle M_i^+(\tau) M_j^- \right\rangle \delta(\vec{r}-\vec{r}_{ij}) .
-
-More precisely, this groups all the pair of sites by the relative coordinates.
-
-DSQSS has a utility tool to generate a real space temperature Green's function file, ``cfgene``.
-
-A real space temperature Green's function file has only one element, "CorrelationFunction", and the other elements belong to this as children.
-
-CorrelationFunction
-  The root element.
-  This has children, "Ntau", "NumberOfKinds", and "CF".
-
-CorrelationFunction/Comment
-  (Optional) Comment. DSQSS ignores this.
-
-CorrelationFunction/Ntau
-  The number of discretization of the imaginary time axis.
-
-CorrelationFunction/NumberOfKinds
-  The number of relative coordinates.
-
-CorrelationFunction/CF
-  This takes three integers, "the index of the relative coordinate", "the index of the site :math:`i`", and "the index of the site :math:`j`".
-  "CorrelationFunction" should has this elements as many as the number specified by "CorrelationFunction/NumberOfKinds".
-
-
-Momentum space temperature Green's function file ``ck.xml``
-************************************************************
-
-A momentum space temperature Green's function file is a textfile written in a XML-like format.
-This defines wave vectors and the discretization of imaginary time to calculate the momentum space temperature Green's function,
+and momentum space temperature Green's function
 
 .. math::
   G(\vec{k},\tau) \equiv \left\langle M^+(\vec{k}, \tau) M^-(-\vec{k},0) \right\rangle .
 
-Since this file has the format as same as that of the structure factor file including the names of elements,
-users can use the same file.
+This can be generated from a wavevector datafile via ``dla_alg``.
+
+A structure factor file has only one element, "WaveVector", and the other elements are children of this.
+
+WaveVector
+  The root element.
+  This has children, "Comment", "NumberOfSites", "NumberOfWaveVectors" and "RK".
+
+WaveVector/Comment
+  (Optional) Comment. DSQSS ignores this.
+
+WaveVector/NumberOfSites
+  The number of lattice sites.
+
+WaveVector/NumberOfWaveVectors
+  The number of Wavevectors :math:`\vec{k}`.
+
+WaveVector/RK
+  The phase factor :math:`z = \exp{\vec{r}\cdot\vec{k}}` for a pair of a wave vector and a site.
+  This takes four figures, ":math:`\mathrm{Re}z`", ":math:`\mathrm{Im}z`", "the index of the site", "the index of the wave vector".
+  "StructureFactor" should has this elements as many as the number specified by "StructureFactor/NumberOfElements".
+
+
+
+.. _relative_coordinate_xml_file:
+
+Relative coordinate XML file ``displacement.xml``
+****************************************************
+
+A relative coordinate XML file is a textfile written in a XML-like format.
+This defines relative coordinate between two sites, :math:`\vec{r}_{ij}`, to calculate real space temperature Green's function,
+
+.. math::
+  G(\vec{r}_{ij},\tau) \equiv \left\langle M_i^+(\tau) M_j^- \right\rangle .
+
+This file can be generated by using ``dla_alg``.
+
+A relative coordinate XML file has only one element,
+"Displacements", and the other elements belong to this as children.
+
+Displacements
+  The root element.
+  This has children, "Comment", "NumberOfKinds", "NumberOfSites", and "R".
+
+Displacements/Comment
+  (Optional) Comment. DSQSS ignores this.
+
+Displacements/NumberOfSites
+  The number of lattice sites.
+
+Displacements/NumberOfKinds
+  The number of relative coordinates.
+
+Displacements/R
+  This takes three integers, "the index of the relative coordinate", "the index of the site :math:`i`", and "the index of the site :math:`j`".
+  "CorrelationFunction" should has this elements as many as the number specified by "CorrelationFunction/NumberOfKinds".
+
+

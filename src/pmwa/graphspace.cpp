@@ -36,40 +36,40 @@ GraphSpace::GraphSpace(Size *N, int m_nmax, Lattice *m_LT, Probability *m_P, Par
   newcalls(w, V);
   newcalls(vertex, 2);
 
-  newcall(Switch, 4, 4);
-  newcall(After, 4, 4);
-  newcall(op, 2, 2);
+  newcall_zero(Switch, 4, 4);
+  newcall_zero(After, 4, 4);
+  newcall_zero(op, 2, 2);
 
-  newcall(p0_box, V);
-  newcall(p1_box, V);
-  newcall(i0_box, V);
-  newcall(i1_box, V);
+  newcall_zero(p0_box, V);
+  newcall_zero(p1_box, V);
+  newcall_zero(i0_box, V);
+  newcall_zero(i1_box, V);
 
-  newcall(NewVertex_th0, LT->Pd);
-  newcall(NewVertex_th1, LT->Pd);
+  newcall_zero(NewVertex_th0, LT->Pd);
+  newcall_zero(NewVertex_th1, LT->Pd);
 
   int alpha = (int)(sqrt(B));
   if (alpha == 0) alpha = 1;
 
-  newcall(BoxSpace_t_th0, LT->Pd, alpha * ES * boxsize);
-  newcall(BoxSpace_p_th0, LT->Pd, alpha * ES * boxsize);
-  newcall(BoxSpace_py_th0, alpha * ES * boxsize);
-  newcall(BoxSpace_type_th0, alpha * ES * boxsize);
+  newcall_zero(BoxSpace_t_th0, LT->Pd, alpha * ES * boxsize);
+  newcall_zero(BoxSpace_p_th0, LT->Pd, alpha * ES * boxsize);
+  newcall_zero(BoxSpace_py_th0, alpha * ES * boxsize);
+  newcall_zero(BoxSpace_type_th0, alpha * ES * boxsize);
 
-  newcall(BoxSpace_t_th1, LT->Pd, alpha * ES * boxsize);
-  newcall(BoxSpace_p_th1, LT->Pd, alpha * ES * boxsize);
-  newcall(BoxSpace_py_th1, alpha * ES * boxsize);
-  newcall(BoxSpace_type_th1, alpha * ES * boxsize);
+  newcall_zero(BoxSpace_t_th1, LT->Pd, alpha * ES * boxsize);
+  newcall_zero(BoxSpace_p_th1, LT->Pd, alpha * ES * boxsize);
+  newcall_zero(BoxSpace_py_th1, alpha * ES * boxsize);
+  newcall_zero(BoxSpace_type_th1, alpha * ES * boxsize);
 
-  newcall(wf, LT->Pd, ES);
-  newcall(newt, LT->Pd, ES);
-  newcall(newt_th1, LT->Pd, ES);
+  newcall_zero(wf, LT->Pd, ES);
+  newcall_zero(newt, LT->Pd, ES);
+  newcall_zero(newt_th1, LT->Pd, ES);
 
   newcalls(INmax, V);
-  newcall(dtn, WMAX);
+  newcall_zero(dtn, WMAX);
 
-  newcall(I, 4);
-  newcall(t, 4);
+  newcall_zero(I, 4);
+  newcall_zero(t, 4);
 
   initial_functions();
 

@@ -45,8 +45,8 @@ Quantities::Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT, Paral
 
   Nend = Nq - 3;  //Mx's number
 
-  newcall(Lmax, Nc);
-  newcall(Lsum, Nc);
+  newcall_zero(Lmax, Nc);
+  newcall_zero(Lsum, Nc);
 
   Lsum[mz] = Lmax[mz] = V;
   Lmax[cr2]           = Nxmax;
@@ -70,8 +70,8 @@ Quantities::Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT, Paral
   for (int i = 0; i < Nc; i++)
     Lsize += Lmax[i];
 
-  newcall(file, Nc + Nq, 128);
-  newcall(Qname, Nc + Nq, 128);
+  newcall_zero(file, Nc + Nq, 128);
+  newcall_zero(Qname, Nc + Nq, 128);
 
   int NVMAX, NWMAX;
 
@@ -113,29 +113,29 @@ Quantities::Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT, Paral
 
   int S = Nc + Nq;
 
- // newcall(values_S, Nq1);
-  newcall(values_S, Nq);
-  newcall(MCmean_S, Nq * 2);
-  newcall(BINmean_S, Nq * 2 * MC->Nbin);
-  //newcall(RNDmean_S,Nq*2*PR->Npara);
+ // newcall_zero(values_S, Nq1);
+  newcall_zero(values_S, Nq);
+  newcall_zero(MCmean_S, Nq * 2);
+  newcall_zero(BINmean_S, Nq * 2 * MC->Nbin);
+  //newcall_zero(RNDmean_S,Nq*2*PR->Npara);
 
-  newcall(values_L, Lsize);
-  newcall(MCmean_L, Lsize * 2);
-  newcall(BINmean_L, Lsize * MC->Nbin);
-  //  newcall(RNDmean_L,Lsize*PR->Npara);
+  newcall_zero(values_L, Lsize);
+  newcall_zero(MCmean_L, Lsize * 2);
+  newcall_zero(BINmean_L, Lsize * MC->Nbin);
+  //  newcall_zero(RNDmean_L,Lsize*PR->Npara);
 
-  newcall(m_val, max(Lsize, (int)Nq));
+  newcall_zero(m_val, max(Lsize, (int)Nq));
 
-  newcalls(EXPrk, 4 * Nkmax * V);
-  //  newcall(COSnp,V);
-  //  newcall(SINnp,V);
+  newcall_zero(EXPrk, 4 * Nkmax * V);
+  //  newcall_zero(COSnp,V);
+  //  newcall_zero(SINnp,V);
 
   Cknum  = 16;
   Nk_set = 5 + 2 * Nkmax * Cknum;
   Sk_set = 2;
 
-  newcalls(Ck, Nk_set + Sk_set);
-  newcalls(Ck_m, Nk_set + Sk_set);
+  newcall_zero(Ck, Nk_set + Sk_set);
+  newcall_zero(Ck_m, Nk_set + Sk_set);
 
   double PI = M_PI;
   for (int i = 0; i < V; i++) {
@@ -162,11 +162,11 @@ Quantities::Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT, Paral
     //SINnp[i]=sin(phasep);
   }
 
-  newcall(an, V);
-  newcall(cr, V);
-  newcall(ca, V);
-  newcall(ac, V);
-  newcall(Q, V * 3);
+  newcall_zero(an, V);
+  newcall_zero(cr, V);
+  newcall_zero(ca, V);
+  newcall_zero(ac, V);
+  newcall_zero(Q, V * 3);
 }
 
 Quantities::~Quantities() {

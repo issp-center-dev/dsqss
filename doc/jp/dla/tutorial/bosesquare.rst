@@ -42,14 +42,13 @@ DSQSS/DLA による正方格子上ハードコアボソン系の粒子数計算
       output.write('{} {}\n'.format(mu, res.to_str(name)))
   output.close()
 
-必要なパスを設定するために, ``dsqssvars-VERSION.sh`` を読み込んでから実行してください
-(``VERSION`` はDSQSS のバージョン番号, 例えば ``2.0.0`` に読み替えてください).
+このPython スクリプトを実行すると
 ::
 
-  $ source $DSQSS_INSTALL_DIR/share/dsqss/dsqssvars-VERSION.sh
   $ python exec.py
 
-結果は ``amzu.dat`` に書き出されます(:numref:`fig_bosesquare`).
+化学ポテンシャルごとに密度の期待値と統計誤差が ``amzu.dat`` に行ごとにスペース区切りで書き出されます. 
+このファイルをGnuplot などで図示すると(:numref:`fig_bosesquare`).
 :math:`\mu=6` 付近では密度プラトーが観測されます. ここでは近接サイト間の反発によりチェッカーボード固体相になっています.
 
 .. figure:: ../../../image/dla/tutorial/bosesquare.*

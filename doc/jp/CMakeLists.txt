@@ -8,6 +8,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/conf.py ${CMAKE_CURRENT_BINARY_DIR})
 
 add_custom_target(doc-jp-html ALL
   COMMAND
+    env PYTHONPATH="${pythonpath_build}:$ENV{PYTHONPATH}"
     ${SPHINX_EXECUTABLE}
     -b html
     -d ${SPHINX_CACHE_DIR}
@@ -18,6 +19,7 @@ add_custom_target(doc-jp-html ALL
 if(LATEX_FOUND)
   add_custom_target(doc-jp-pdf ALL
     COMMAND
+      env PYTHONPATH="${pythonpath_build}:$ENV{PYTHONPATH}"
       ${SPHINX_EXECUTABLE}
       -b latex
       -d ${SPHINX_CACHE_DIR}

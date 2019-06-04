@@ -1,3 +1,19 @@
+# DSQSS (Discrete Space Quantum Systems Solver)
+# Copyright (C) 2018- The University of Tokyo
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version. 
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 from __future__ import print_function
 
 import codecs
@@ -29,6 +45,7 @@ class Interaction:
     def __init__(self, int_id, int_type, nbody, site_indices, edge_flag, direction):
         self.id = int_id
         self.itype = int_type
+        self.itype_org = self.itype
         self.nbody = nbody
         self.sites = site_indices
         self.edge = edge_flag
@@ -288,7 +305,7 @@ class Lattice:
             elif state == "dirs":
                 self.load_direction(body, count)
                 count += 1
-                if count == self.dim:
+                if count == self.ndir:
                     count = 0
                     state = "waiting"
             elif state == "nsites":
@@ -518,7 +535,7 @@ class Lattice:
                 for bond in self.ints:
                     if bond.nbody != 2:
                         continue
-                    if bond.itype != bt:
+                    if bond.itype_org != bt:
                         continue
                     v = np.dot(self.latvec, np.array(self.sites[bond.sites[0]].coord, dtype=float))
                     for x in v:
@@ -535,3 +552,5 @@ class Lattice:
                 f.write('$SITES_{0} w p pt {1} ps 2 t "" , \\\n'.format(st, st + 4))
             for bt in range(self.nitypes):
                 f.write('$BONDS_{0} w l lw 2 lt {1} t "" , \\\n'.format(bt, bt + 1))
+            f.write('\n')
+            f.write('pause -1\n')

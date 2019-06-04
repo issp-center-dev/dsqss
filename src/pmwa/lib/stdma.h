@@ -35,7 +35,7 @@ void newcalls(T**& Array, int max_val1, int max_val2) {
 }
 
 template <class T>
-void newcall(T*& Array, int max_val) {
+void newcall_zero(T*& Array, int max_val) {
   Array = new T[max_val];
 
   for (int x = 0; x < max_val; x++)
@@ -43,7 +43,7 @@ void newcall(T*& Array, int max_val) {
 }
 
 template <class T>
-void newcall(T**& Array, int max_val1, int max_val2) {
+void newcall_zero(T**& Array, int max_val1, int max_val2) {
   Array = new T*[max_val1];
   for (int x = 0; x < max_val1; x++)
     Array[x] = new T[max_val2];
@@ -54,7 +54,7 @@ void newcall(T**& Array, int max_val1, int max_val2) {
 }
 
 template <class T>
-void newcall(T***& Array, int max_val1, int max_val2, int max_val3) {
+void newcall_zero(T***& Array, int max_val1, int max_val2, int max_val3) {
   Array = new T**[max_val1];
   for (int x = 0; x < max_val1; x++)
     Array[x] = new T*[max_val2];
@@ -69,7 +69,7 @@ void newcall(T***& Array, int max_val1, int max_val2, int max_val3) {
 }
 
 template <class T>
-void newcall(T****& Array, int max_val1, int max_val2, int max_val3, int max_val4) {
+void newcall_zero(T****& Array, int max_val1, int max_val2, int max_val3, int max_val4) {
   Array = new T***[max_val1];
   for (int x = 0; x < max_val1; x++)
     Array[x] = new T**[max_val2];
@@ -89,7 +89,7 @@ void newcall(T****& Array, int max_val1, int max_val2, int max_val3, int max_val
 }
 
 template <class T>
-void newcall(T*****& Array, int max_val1, int max_val2, int max_val3, int max_val4, int max_val5) {
+void newcall_zero(T*****& Array, int max_val1, int max_val2, int max_val3, int max_val4, int max_val5) {
   Array = new T****[max_val1];
   for (int x = 0; x < max_val1; x++)
     Array[x] = new T***[max_val2];
@@ -115,7 +115,7 @@ void newcall(T*****& Array, int max_val1, int max_val2, int max_val3, int max_va
 }
 
 template <class T>
-void newcall(T******& Array, int max_val1, int max_val2, int max_val3, int max_val4, int max_val5, int max_val6) {
+void newcall_zero(T******& Array, int max_val1, int max_val2, int max_val3, int max_val4, int max_val5, int max_val6) {
   Array = new T*****[max_val1];
   for (int x = 0; x < max_val1; x++)
     Array[x] = new T****[max_val2];

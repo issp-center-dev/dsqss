@@ -16,19 +16,19 @@ DSQSSは, 以下のサブシステム群から構成されています.
 
 - シリアル版 DSQSS/DLA
 
-    1. ハミルトニアン定義ファイルジェネレータ: ``dla_hamgen``
-    2. 格子定義ジェネレータ: ``dla_latgen``
-    3. アルゴリズムジェネレータ: ``dla_alg``
-    4. 量子モンテカルロ法エンジン(向き付きループアルゴリズム)： ``dla``
+    #. シンプルモード入力ファイルジェネレータ: ``dla_pre``
+    #. ハミルトニアンファイルジェネレータ: ``dla_hamgen``
+    #. 格子ファイルジェネレータ: ``dla_latgen``
+    #. 波数ファイルジェネレータ: ``dla_latgen``
+    #. パラメータファイルジェネレータ: ``dla_pgen``
+    #. アルゴリズムジェネレータ: ``dla_alg``
+    #. 量子モンテカルロ法エンジン(向き付きループアルゴリズム)： ``dla``
 
 - 非自明並列版 DSQSS/PMWA
 
-    1. 格子定義ジェネレータ： ``lattgene_P``
-    2. 量子モンテカルロ法エンジン(向き付きループアルゴリズム)： ``pmwa_H`` （XXZ模型）,  ``pmwa_B`` (ハードコアボソン系)
-
-- ツール
-
-    1. 入力一括作成ツール：dla_pre.py, pmwa_pre.py
+    #. 入力ファイルジェネレータ: ``pmwa_pre``
+    #. 格子定義ジェネレータ： ``lattgene_P``
+    #. 量子モンテカルロ法エンジン(向き付きループアルゴリズム)： ``pmwa_H`` （XXZ模型）,  ``pmwa_B`` (ハードコアボソン系)
 
 リリース情報
 ****************
@@ -94,7 +94,7 @@ DSQSSは, 以下のサブシステム群から構成されています.
    
 .. topic:: Acknowledgment Sample
 
-    Numerical results in the present paper were obtained by the quantum Monte Carlo program DSQSS(https://github.com/qmc/dsqss/wiki).
+    Numerical results in the present paper were obtained by the quantum Monte Carlo program DSQSS(https://github.com/issp-center-dev/dsqss).
     This package is distributed under GNU General Public License version 3 (GPL v3) or later. 
 
 

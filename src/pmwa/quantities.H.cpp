@@ -54,8 +54,8 @@ Quantities::Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT, Paral
 
   Nend = Nq - 3;  //Mx's number
 
-  newcall(Lmax, Nc);
-  newcall(Lsum, Nc);
+  newcall_zero(Lmax, Nc);
+  newcall_zero(Lsum, Nc);
 
   Lsum[mz] = Lmax[mz] = V;
   Lmax[cr2]           = Nxmax;
@@ -79,8 +79,8 @@ Quantities::Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT, Paral
   for (int i = 0; i < Nc; i++)
     Lsize += Lmax[i];
 
-  newcall(file, Nc + Nq, 128);
-  newcall(Qname, Nc + Nq, 128);
+  newcall_zero(file, Nc + Nq, 128);
+  newcall_zero(Qname, Nc + Nq, 128);
 
   //  int NVMAX, NWMAX;
 
@@ -123,26 +123,26 @@ Quantities::Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT, Paral
 
   //  int S=Nc+Nq;
 
-  newcall(values_S, Nq);
-  newcall(MCmean_S, Nq * 2);
-  newcall(BINmean_S, Nq * 2 * MC->Nbin);
-  //newcall(RNDmean_S,Nq*2*PR->Npara);
+  newcall_zero(values_S, Nq);
+  newcall_zero(MCmean_S, Nq * 2);
+  newcall_zero(BINmean_S, Nq * 2 * MC->Nbin);
+  //newcall_zero(RNDmean_S,Nq*2*PR->Npara);
 
-  newcall(values_L, Lsize);
-  newcall(MCmean_L, Lsize * 2);
-  newcall(BINmean_L, Lsize * MC->Nbin);
-  //  newcall(RNDmean_L,Lsize*PR->Npara);
+  newcall_zero(values_L, Lsize);
+  newcall_zero(MCmean_L, Lsize * 2);
+  newcall_zero(BINmean_L, Lsize * MC->Nbin);
+  //  newcall_zero(RNDmean_L,Lsize*PR->Npara);
 
-  newcall(m_val, max(Lsize, (int)Nq));
+  newcall_zero(m_val, max(Lsize, (int)Nq));
 
-  newcalls(EXPrk, 4 * Nkmax * V);
+  newcall_zero(EXPrk, 4 * Nkmax * V);
 
   Cknum  = 16;
   Nk_set = 5 + 2 * Nkmax * Cknum;
   Sk_set = 2;
 
-  newcalls(Ck, Nk_set + Sk_set);
-  newcalls(Ck_m, Nk_set + Sk_set);
+  newcall_zero(Ck, Nk_set + Sk_set);
+  newcall_zero(Ck_m, Nk_set + Sk_set);
 
   double PI = M_PI;
   for (int i = 0; i < V; i++) {
@@ -162,11 +162,11 @@ Quantities::Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT, Paral
     }
   }
 
-  newcall(an, V);
-  newcall(cr, V);
-  newcall(ca, V);
-  newcall(ac, V);
-  newcall(Q, V * 3);
+  newcall_zero(an, V);
+  newcall_zero(cr, V);
+  newcall_zero(ca, V);
+  newcall_zero(ac, V);
+  newcall_zero(Q, V * 3);
 
 #ifdef SF
   // printf("Measurement::Measurement> Reading %s\n",sfinfile );
@@ -248,15 +248,15 @@ void Quantities::read_sf() {
   NKMAX = X["NumberOfInverseLattice"].getInteger();
   NSF   = NKMAX * 2;
 
-  newcall(MCmean_SF, NSF, Ntau);
-  newcall(BINmean_SF, NSF, Ntau);
+  newcall_zero(MCmean_SF, NSF, Ntau);
+  newcall_zero(BINmean_SF, NSF, Ntau);
 
-  newcall(counter4SFC, NKMAX, Ntau1);
-  newcall(counter4SFS, NKMAX, Ntau1);
-  newcall(sfsamp, NKMAX, Ntau);
+  newcall_zero(counter4SFC, NKMAX, Ntau1);
+  newcall_zero(counter4SFS, NKMAX, Ntau1);
+  newcall_zero(sfsamp, NKMAX, Ntau);
 
-  newcall(COSrk, V, NKMAX);
-  newcall(SINrk, V, NKMAX);
+  newcall_zero(COSrk, V, NKMAX);
+  newcall_zero(SINrk, V, NKMAX);
 
   int count = 0;
 

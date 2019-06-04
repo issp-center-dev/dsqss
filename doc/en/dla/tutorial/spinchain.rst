@@ -6,54 +6,45 @@ In this tutorial, we will calculate the temperature dependence of the magnetic s
 The following Python script (sample/dla/02_spinchain/exec.py) performs DSQSS/DLA work-flow for each parameter (combination of spin length and temperature) automatically.
 ::
 
-  import sys
-  import os.path
   import subprocess
 
-  bindir = sys.argv[1] if len(sys.argv) > 1 else ''
+  from dsqss.dla_pre import dla_pre
+  from dsqss.result import Results
 
-  name = 'xmzu'
-  Ms = [1,2]
+  L = 30
+
+  lattice = {"lattice": "hypercubic", "dim": 1, "L": L}
+  hamiltonian = {"model": "spin", "Jz": -1, "Jxy": -1}
+  parameter = {"nset": 5, "ntherm": 1000, "ndecor": 1000, "nmcs": 1000}
+
+  name = "xmzu"
+  Ms = [1, 2]
   Ts = [0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.25, 1.5, 1.75, 2.0]
 
   for M in Ms:
-      output = open('{}_{}.dat'.format(name,M), 'w')
-      for i,T in enumerate(Ts):
-          with open('std_{}_{}.in'.format(M,i), 'w') as f:
-              f.write('''
-      solver = DLA
-      model_type = spin
-      J = -1
-      F = 0.0
-      lattice_type = square
-      D = 1
-      L = 30
-      nset = 5
-      ntherm = 1000
-      ndecor = 1000
-      nmcs = 1000
-      ''')
-              f.write('M = {}\n'.format(M))
-              f.write('beta = {}\n'.format(1.0/T))
-              f.write('outfile = res_{}_{}.dat\n'.format(M,i))
-          cmd = [os.path.join(bindir, 'dsqss_pre.py'),
-                 '-p', 'param_{}_{}.in'.format(M,i),
-                 '-i', 'std_{}_{}.in'.format(M,i)]
+      output = open("{0}_{1}.dat".format(name, M), "w")
+      for i, T in enumerate(Ts):
+          ofile = "res_{}_{}.dat".format(M, i)
+          pfile = "param_{}_{}.in".format(M, i)
+          hamiltonian["M"] = M
+          parameter["beta"] = 1.0 / T
+          parameter["outfile"] = ofile
+          dla_pre(
+              {"parameter": parameter, "hamiltonian": hamiltonian, "lattice": lattice},
+              pfile,
+          )
+          cmd = ["dla", "param_{0}_{1}.in".format(M, i)]
           subprocess.call(cmd)
-          cmd = [os.path.join(bindir, 'dla_H'), 'param_{}_{}.in'.format(M,i)]
-          subprocess.call(cmd)
-          with open('res_{}_{}.dat'.format(M,i)) as f:
-              for line in f:
-                  if not line.startswith('R'):
-                      continue
-                  words = line.split()
-                  if words[1] == name:
-                      output.write('{} {} {}\n'.format(T, words[3], words[4]))
+          res = Results(ofile)
+          output.write("{} {}\n".format(T, res.to_str(name)))
+      output.close()
 
-This script receives the binary directory as an argument (if an environment variable ``$DSQSS_ROOT`` is set correctly, the argument can be omitted).
+Before executing this script, ``source`` a configuring file ``dsqssvars-VERSION.sh`` in order to set environment variables
+(replace ``VERSION`` with the version of DSQSS, e.g., `2.0.0`.)
 ::
 
-  $ python exec.py $DSQSS_ROOT/bin
+  $ source $DSQSS_INSTALL_DIR/share/dsqss/dsqssvars-VERSION.sh
+  $ python exec.py
 
 The result of :math:`S=1/2,1` will be written to ``xmzu_1.dat`` and ``xmzu_2.dat``, respectively (:numref:`fig_spinchain`).
 The :math:`S=1/2` chain is gapless and so the magnetic susceptibility remains finite at absolute zero (note that in the simulation the finite size effect opens energy gap).

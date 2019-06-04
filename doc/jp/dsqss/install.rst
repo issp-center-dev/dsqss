@@ -9,17 +9,16 @@
 DSQSSの使用には以下のプログラム・ライブラリが必要です. 
 
 - (Optional) MPI (PMWAを使用する場合には必須)
-- python 2.7 or 3.x
+- python 2.7 or 3.4+
 
    - numpy
    - scipy
    - toml
-   - pip (make install する場合には必須)
    
 
 ダウンロード
 ********************
-- zipファイルをダウンロードする場合
+- アーカイブファイル (tar.gz) をダウンロードする場合
   
   DSQSSの最新版は https://github.com/issp-center-dev/dsqss/releases からダウンロードできます. 
 
@@ -35,36 +34,28 @@ DSQSSのダウンロード後にzipファイルを解凍すると, ファイル�
 以下, 重要なファイル・フォルダについてその構成を記載します.
 
 ::
-   
-  ├── CMakeLists.txt
-  ├── LICENSE
-  ├── README.md
-  ├── config                 #CMake用のconfigure fileを格納したフォルダ
-  │   ├── gcc.cmake
-  │   └── intel.cmake
-  ├── doc                    #マニュアルのソース一式を格納したフォルダ
-  │   ├── en
-  │   └── jp
-  ├── sample                 #サンプルファイルを格納したフォルダ
-  │   ├── CMakeLists.txt
-  │   ├── dla
-  │   └── pmwa
-  ├── src                    #ソースファイル一式を格納したフォルダ
-  │   ├── common
-  │   ├── dla
-  │   ├── pmwa
-  │   └── third-party
-  │       └── boost
-  ├── test                   #CTest用のファイル一式を格納したフォルダ
-  │   ├── CMakeLists.txt
-  │   ├── dla
-  │   ├── pmwa
-  │   └── tool
-  └── tool                  
-       ├── CMakeLists.txt
-       ├── setup.py          #DSQSS用のツールのセットアップ用スクリプト
-       └── dsqss             #DSQSS用のツールを格納したフォルダ
 
+  |-- CMakeLists.txt
+  |-- LICENSE
+  |-- README.md
+  |-- config/
+  |-- doc/
+  |-- sample/
+  |   |-- dla/
+  |   `-- pmwa/
+  |-- src/
+  |   |-- common/
+  |   |-- dla/
+  |   |-- pmwa/
+  |   `-- third-party/
+  |-- test/
+  |   |-- dla/
+  |   |-- pmwa/
+  |   `-- tool/
+  `-- tool/
+      |-- cmake/
+      |-- dsqss/
+      `-- setup.py
 
 インストール
 ********************
@@ -78,10 +69,24 @@ DSQSSのダウンロード後にzipファイルを解凍すると, ファイル�
    $ cmake ../ -DCMAKE_INSTALL_PREFIX=/path/to/install/to 
    $ make
 
-``/path/to/install/to`` をインストールしたい先のパスに設定してください. 
+``/path/to/install/to`` をインストールしたい先のパスに設定してください（例： ``$HOME/opt/dsqss`` ）. 
 指定しなかった場合のデフォルト値は ``/usr/local`` です.
-なお, cmakeがうまくいかない場合にも, コンパイラを直接指定するとうまくいくことがあります.
-詳細については https://github.com/issp-center-dev/HPhi/wiki/FAQ をご覧ください. 
+
+
+.. note::
+
+  CMake はデフォルトで ``/usr/bin/c++`` を C++ コンパイラとして使用します.
+  これ以外のコンパイラ、例えば インテルコンパイラ ``icpc`` を使いたい場合は,
+  ``-DCMAKE_CXX_COMPILER`` オプションを用いて明示的に指定してください::
+
+    $ cmake ../ -DCMAKE_CXX_COMPILER=icpc
+
+  インテルコンパイラに関しては, コンパイルオプション込みで設定するためのオプションを DSQSS 側で用意してあります::
+
+    $ cmake ../ -DCONFIG=intel
+
+  詳細については https://github.com/issp-center-dev/HPhi/wiki/FAQ をご覧ください. 
+
 
 これにより各実行ファイルが ``dsqss.build/src`` ディレクトリ以下に, 
 入力ファイルの生成ツールが ``dsqss.build/tool`` ディレクトリ以下に作成されます. 
@@ -99,6 +104,6 @@ DSQSSのダウンロード後にzipファイルを解凍すると, ファイル�
 実行バイナリが先に指定したインストールパスにある ``bin`` ディレクトリに,
 サンプルが ``share/dsqss/VERSION/samples`` にインストールされます.
 また, 補助ツールを含めたDSQSS の実行に必要な環境変数を設定するためのファイルが ``share/dsqss/dsqssvar-VERSION.sh`` に生成されます.
-このファイルを ``source`` コマンドで読み込んでください. ::
+DSQSS の実行前にはこのファイルを ``source`` コマンドで読み込んでください. ::
 
    $ source share/dsqss/dsqssvar-VERSION.sh

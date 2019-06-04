@@ -19,37 +19,37 @@ DSQSS/DLA requires the following input files:
 #. lattice file
 #. algorithm file
 
-``dsqss_pre.py`` is a utility tool to generate these files from one textfile such as the following (sample/dla/01_spindimer/std.in)
+``dla_pre`` is a utility tool to generate these files from one textfile such as the following (sample/dla/01_spindimer/std.toml)
 ::
 
-  [System]
-  solver = DLA
-  [Hamiltonian]
-  model_type = spin
+  [hamiltonian]
+  model = "spin"
   M =  1                 # S=1/2
-  J = -0.5               # coupling constant, negative for AF, not 1 but 1/2 due to PBC
-  F = 0.0                # magnetic field
-  [Lattice]
-  lattice_type = square  # hypercubic, periodic
-  D = 1                  # dimension
+  Jz = -1.0              # coupling constant, negative for AF
+  Jxy = -1.0             # coupling constant, negative for AF
+  h = 0.0                # magnetic field
+
+  [lattice]
+  lattice = "hypercubic" # hypercubic, periodic
+  dim = 1                # dimension
   L = 2                  # number of sites along each direction
-  Beta = 100             # inverse temperature
-  [Parameter]
+  bc = false             # open boundary
+
+  [parameter]
+  beta = 100             # inverse temperature
   nset = 5               # set of Monte Carlo sweeps
   npre = 10              # MCSteps to estimate hyperparameter
   ntherm = 10            # MCSweeps for thermalization
-  nmcs = 10              # MCSweeps for measurement
+  nmcs = 100             # MCSweeps for measurement
+  seed = 31415           # seed of RNG
 
-Note that the coupling constant `J` is set not to -1.0 but -0.5
-since this tool generates a lattice under the periodic boundary condition
-and in this case the lattice has two sites and two bonds in results.
 
-Give this file to dsqss_pre.py as ::
+Give this file to ``dla_pre`` as ::
 
-  $ python $DSQSS_ROOT/bin/dsqss_pre.py -i std.in
+  $ dla_pre std.toml
 
 This generates the following four files:
-a parameter file ``param.in``, a lattice file ``lattice.xml``, an algorithm file ``algorithm.xml``, and an auxiliary file for the algorithm file ``hamiltonian.xml``.
+a parameter file ``param.in``, a lattice file ``lattice.xml``, an algorithm file ``algorithm.xml``.
 
 Perform QMC calculation
 ************************
@@ -57,14 +57,12 @@ Perform QMC calculation
 Once input files are prepared, you can perform a quantum Monte Carlo calculation based on the directed loop algorithm (dla) by DSQSS/DLA.
 ::
 
-  $ $DSQSS_ROOT/bin/dla_H param.in
-
-``dla_H`` is a dla solver for spin systems. If you want to deal with Bose-Hubbard models, please use ``dla_B``.
+  $ dla param.in
 
 You can perform random number parallelization by using MPI. [#fn_ompi_macos]_
 ::
 
-  $ mpiexec -np 4 $DSQSS_ROOT/bin/dla_H param.in
+  $ mpiexec -np 4 dla param.in
 
 By the above command, the total number of Monte Carlo samples times by four (equals to the number of process)
 and the obtained statistical error is expected to reduce to half (equals to the inverse square root of the number of process).
@@ -78,7 +76,7 @@ you can for example draw this by the ``grep`` command by the following.
 ::
 
   $ grep ene sample.log
-  R ene = -3.75780000e-01 8.89848302e-04
+  R ene = -3.74380000e-01 5.19493985e-03
 
 The two figures stand for the expectation value and the statistical error, respectively.
 The result value is compatible with the exact solution, :math:`-3|J|/8 = -0.375|J|`, within the statistical error.

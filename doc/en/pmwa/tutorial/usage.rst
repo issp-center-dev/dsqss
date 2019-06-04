@@ -11,7 +11,7 @@ PMWA can be used by the following procedures:
 3. Execute PMWA (boson system:``pmwa_B`` , spin system:``pmwa_H`` )
 4. Generate output files.
 
-There is also a simple tool ``dsqss_pre.py`` for executing 1 and 2 at once.
+There is also a simple tool ``pmwa_pre`` for executing 1 and 2 at once.
 In this section, the usage and parameters are explained for each procedure.
 
 

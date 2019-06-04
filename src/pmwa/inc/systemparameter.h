@@ -5,6 +5,8 @@
 #define INF 1.0e+14
 #define EPS 1.0e-14
 
+#include <debug.hpp>
+
 struct Size {
   int x;        //the number of lattice for x.
   int y;        //the number of lattice for y.
@@ -13,6 +15,7 @@ struct Size {
   int d;        //dimension.
   double B;     //the inverse of temperature.
   double oldB;  //for annealing.
+  Size():x(0),y(0),z(0),V(0),d(0),B(0.0),oldB(0.0){}
 };
 
 struct System {
@@ -25,6 +28,7 @@ struct System {
   double Htr;  // the strenght of the transverse field for introducing worm.
   double Eu;   // arbitrary energy shift for Ubb.
   double Et;   // arbitrary energy shift for t-Vb1.
+  System():nmax(0),Ubb(0.0),Vb1(0.0),tb(0.0),mu(0.0),w_num(0),Htr(0.0),Eu(0.0),Et(0.0){}
 };
 
 struct MC_p {
@@ -36,6 +40,7 @@ struct MC_p {
   int Ntest;
   int nc;
   int runtype; //{0: normal, 1:restart, 2:annealing}
+  MC_p():seed(0),Nstep(0),Nthermal(0),Nsample(0),Nbin(0),Ntest(0),nc(0),runtype(0){}
 };
 
 struct Parallel {
@@ -84,6 +89,21 @@ struct Parallel {
   int lower;
   int right[3];
   int left[3];
+  Parallel():p_num(0),my_rank(0),
+             Ntdiv(0),Nsdiv(0),Nxdiv(0),Nydiv(0),Nzdiv(0),
+             NtNs(0),Npara(0),
+             B(0.0),oldB(0.0),
+             FlgAnneal(false),FlgRestart(false),
+             x(0),y(0),z(0),V(0),
+             np(0),Rpara(0),nq(0),nr(0),
+             nst(0),nt(0),ns(0),nx(0),ny(0),nz(0),
+             nst0(0),nt0(0),ns0(0),nx0(0),
+             upper(0),lower(0)
+  {
+    for(int i=0; i<3; ++i){
+      right[i] = left[i] = 0;
+    }
+  }
 };
 
 #endif

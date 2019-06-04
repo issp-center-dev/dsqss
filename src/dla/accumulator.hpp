@@ -1,3 +1,37 @@
+//######################################################################
+//####
+//####  World-Line Monte Carlo simulation
+//####                       by the Directed-Loop Algorithm
+//####
+//####                                 Mar.03 / 2005, Naoki Kawashima
+//####
+//######################################################################
+
+//######################################################################
+//####
+//####  World-Line Monte Carlo simulation
+//####                       by the non-Vertex Directed-Loop Algorithm
+//####
+//####                                 Nov.11 / 2007, Yasuyuki Kato
+//####
+//######################################################################
+
+// DSQSS (Discrete Space Quantum Systems Solver)
+// Copyright (C) 2018- The University of Tokyo
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 #ifndef ACCUMULATOR_H
 #define ACCUMULATOR_H
 
@@ -111,9 +145,14 @@ public:
 
 #ifdef MULTI
   void allreduce(MPI_Comm comm){
-    MPI_Allreduce(&s1, &s1, 1, MPI_DOUBLE, MPI_SUM, comm);
-    MPI_Allreduce(&s2, &s2, 1, MPI_DOUBLE, MPI_SUM, comm);
-    MPI_Allreduce(&n, &n, 1, MPI_INT, MPI_SUM, comm);
+    double s1_tmp, s2_tmp;
+    int n_tmp;
+    MPI_Allreduce(&s1, &s1_tmp, 1, MPI_DOUBLE, MPI_SUM, comm);
+    MPI_Allreduce(&s2, &s2_tmp, 1, MPI_DOUBLE, MPI_SUM, comm);
+    MPI_Allreduce(&n, &n_tmp, 1, MPI_INT, MPI_SUM, comm);
+    s1 = s1_tmp;
+    s2 = s2_tmp;
+    n = n_tmp;
   }
 #endif
 };

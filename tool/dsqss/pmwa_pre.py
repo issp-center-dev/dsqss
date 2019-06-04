@@ -1,5 +1,22 @@
 #!/usr/bin/env python
 
+# DSQSS (Discrete Space Quantum Systems Solver)
+# Copyright (C) 2018- The University of Tokyo
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version. 
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
 import argparse
 import os.path
 import subprocess
@@ -93,7 +110,7 @@ class info:
         self.prm = param()
         self.gendir = args.gendir
         if self.gendir is None:
-            self.gendir = os.path.abspath('./')
+            self.gendir = os.path.dirname(os.path.abspath(sys.argv[0]))
             print("use file generators in {0}".format(self.gendir))
         self._get_info(args.input)
         self._check_condition()
@@ -315,9 +332,7 @@ def main():
     parser.add_argument(
         "--hamfile", dest="hfile", default="hamiltonian.xml", help="Hamiltonian file"
     )
-    parser.add_argument(
-        "-i", "--input", dest="input", type=argparse.FileType("r"), help="Input file"
-    )
+    parser.add_argument("input", type=argparse.FileType("r"), help="Input file")
     parser.add_argument(
         "-s",
         "--stdin",
