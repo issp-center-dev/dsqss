@@ -20,13 +20,13 @@
 # -- Project information -----------------------------------------------------
 
 project = u'DSQSS'
-copyright = u'2018, DSQSS developers'
+copyright = u'2018-, DSQSS developers'
 author = u''
 
 # The short X.Y version
 version = u''
 # The full version, including alpha/beta/rc tags
-release = u'2.1.0-dev'
+release = u'2.0.1'
 
 
 # -- General configuration ---------------------------------------------------
