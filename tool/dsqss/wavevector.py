@@ -20,7 +20,7 @@ from itertools import product
 import numpy as np
 import scipy.special as spsp
 
-from .util import ERROR, get_as_list, tagged
+from .util import ERROR, get_as_list, tagged, dictkey_tolower
 
 
 class Wavevector:
@@ -154,9 +154,10 @@ def main():
 
     Ls = None
     inp = toml.load(args.input)
+    dictkey_tolower(inp)
     if "lattice" in inp:
         dim = inp["lattice"]["dim"]
-        Ls = get_as_list(inp["lattice"], "L", extendto=dim)
+        Ls = get_as_list(inp["lattice"], "l", extendto=dim)
     if "kpoints" in inp:
         inp = inp["kpoints"]
     if args.size is not None:

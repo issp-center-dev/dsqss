@@ -90,3 +90,17 @@ def tagged(tagname, values):
             s += " {0}".format(v)
     s += " </{0}>\n".format(tagname)
     return s
+
+
+def dictkey_tolower(d):
+    for k,v in d.items():
+        if isinstance(v, dict):
+            dictkey_tolower(v)
+        lk = k.lower()
+        if k == lk:
+            continue
+        if lk in d:
+            ERROR('Both "{}" and "{}" are specified.')
+        d[lk] = v
+        d.pop(k)
+

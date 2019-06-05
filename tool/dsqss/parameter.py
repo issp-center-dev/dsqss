@@ -21,7 +21,7 @@ from __future__ import print_function
 import codecs
 from copy import deepcopy
 
-from .util import ERROR, INFO
+from .util import ERROR, INFO, dictkey_tolower
 
 
 def set_default_values(param):
@@ -62,6 +62,7 @@ class Parameter(dict):
             p = deepcopy(param["parameter"])
         else:
             p = deepcopy(param)
+        dictkey_tolower(p)
         set_default_values(p)
         check_mandatories(p)
         self.update(p)

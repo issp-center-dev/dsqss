@@ -97,16 +97,16 @@ class XXZBond(Interaction):
 
 class XXZ_hamiltonian(Hamiltonian):
     def __init__(self, param):
-        M = param["M"]
-        Ds = get_as_list(param, "D", 0.0)
+        M = param["m"]
+        Ds = get_as_list(param, "d", 0.0)
         hs = get_as_list(param, "h", 0.0)
         nstypes = max(len(Ds), len(hs))
         extend_list(Ds, nstypes)
         extend_list(hs, nstypes)
         self.sites = [SpinSite(i, M, D, h) for i, (D, h) in enumerate(zip(Ds, hs))]
 
-        Jzs = get_as_list(param, "Jz", 0.0)
-        Jxys = get_as_list(param, "Jxy", 0.0)
+        Jzs = get_as_list(param, "jz", 0.0)
+        Jxys = get_as_list(param, "jxy", 0.0)
         nitypes = max(len(Jzs), len(Jxys))
         extend_list(Jzs, nitypes)
         extend_list(Jxys, nitypes)
