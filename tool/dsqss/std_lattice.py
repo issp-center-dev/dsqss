@@ -19,11 +19,10 @@ import codecs
 
 from .lattice import Lattice
 from .lattice_factory import honeycomb, hypercubic, kagome, triangular
-from .util import ERROR, dictkey_tolower
+from .util import ERROR
 
 
 def std_lattice(param, ret_dict=False):
-    dictkey_tolower(param)
     if "lattice" in param and not isinstance(param["lattice"], str):
         param = param["lattice"]
     if "unitcell" in param:

@@ -98,8 +98,8 @@ class BoseBond(Interaction):
 
 class BoseHubbard_hamiltonian(Hamiltonian):
     def __init__(self, param):
-        M = param["m"]
-        Us = get_as_list(param, "u", 0.0)
+        M = param["M"]
+        Us = get_as_list(param, "U", 0.0)
         mus = get_as_list(param, "mu", 0.0)
         nstypes = max(len(Us), len(mus))
         extend_list(Us, nstypes)
@@ -108,7 +108,7 @@ class BoseHubbard_hamiltonian(Hamiltonian):
                       for i, (U, mu) in enumerate(zip(Us, mus))]
 
         ts = get_as_list(param, "t", 0.0)
-        Vs = get_as_list(param, "v", 0.0)
+        Vs = get_as_list(param, "V", 0.0)
         nitypes = max(len(ts), len(Vs))
         extend_list(ts, nitypes)
         extend_list(Vs, nitypes)

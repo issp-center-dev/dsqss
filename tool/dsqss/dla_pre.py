@@ -29,12 +29,12 @@ from .prob_kernel import (heat_bath, metropolice, reversible_suwa_todo,
                           suwa_todo)
 from .std_lattice import std_lattice
 from .std_model import std_model
-from .util import ERROR, INFO, dictkey_tolower
+from .util import ERROR, INFO
 from .wavevector import Wavevector
 
 
 def dla_pre(param, pfile):
-    dictkey_tolower(param)
+
     p = Parameter(param)
 
     lat = std_lattice(param)

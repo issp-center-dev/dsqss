@@ -22,7 +22,7 @@ from ..util import get_as_list
 
 def generate(param):
     dim = 2
-    L = get_as_list(param, "l", extendto=dim)
+    L = get_as_list(param, "L", extendto=dim)
     bc = get_as_list(param, "bc", default=True, extendto=dim)
     basis = [[1.0, 0.0], [cosdg(120), sindg(120)]]
 
