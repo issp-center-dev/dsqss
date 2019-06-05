@@ -4,7 +4,7 @@
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version. 
+# (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -24,7 +24,15 @@ import toml
 
 import numpy as np
 
-from .util import ERROR, WARN, coord2index, get_as_list, index2coord, tagged
+from .util import (
+    ERROR,
+    WARN,
+    coord2index,
+    get_as_list,
+    index2coord,
+    tagged,
+    dictkey_tolower,
+)
 
 
 class Site:
@@ -83,13 +91,14 @@ class Lattice:
             self.load_dat(inp)
 
     def load_dict(self, param):
+        dictkey_tolower(param)
         if "lattice" in param and not isinstance(param["lattice"], str):
             return self.load_dict(param["lattice"])
 
         parameter = param["parameter"]
         self.name = parameter["name"]
         self.dim = parameter["dim"]
-        self.size = get_as_list(parameter, "L", extendto=self.dim)
+        self.size = get_as_list(parameter, "l", extendto=self.dim)
         self.bc = get_as_list(parameter, "bc", default=True, extendto=self.dim)
         ncells = np.product(self.size)
         self.latvec = np.array(parameter["basis"], dtype=float).transpose()
@@ -537,7 +546,10 @@ class Lattice:
                         continue
                     if bond.itype_org != bt:
                         continue
-                    v = np.dot(self.latvec, np.array(self.sites[bond.sites[0]].coord, dtype=float))
+                    v = np.dot(
+                        self.latvec,
+                        np.array(self.sites[bond.sites[0]].coord, dtype=float),
+                    )
                     for x in v:
                         f.write("{0} ".format(x))
                     f.write("\n")
@@ -552,5 +564,5 @@ class Lattice:
                 f.write('$SITES_{0} w p pt {1} ps 2 t "" , \\\n'.format(st, st + 4))
             for bt in range(self.nitypes):
                 f.write('$BONDS_{0} w l lw 2 lt {1} t "" , \\\n'.format(bt, bt + 1))
-            f.write('\n')
-            f.write('pause -1\n')
+            f.write("\n")
+            f.write("pause -1\n")

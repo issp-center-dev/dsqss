@@ -21,7 +21,7 @@ from ..util import get_as_list
 
 def generate(param):
     dim = param["dim"]
-    L = get_as_list(param, "L", extendto=dim)
+    L = get_as_list(param, "l", extendto=dim)
     bc = get_as_list(param, "bc", default=True, extendto=dim)
     basis = np.eye(dim)
 
