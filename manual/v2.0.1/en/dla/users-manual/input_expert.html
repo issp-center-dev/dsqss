@@ -1,0 +1,654 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>4.3. Input files for DSQSS/DLA &#8212; DSQSS 2.0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4.4. Input file generators for DSQSS/DLA" href="generator.html" />
+    <link rel="prev" title="4.2. Standard input files for DSQSS/DLA" href="input_standard.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="input-files-for-dsqss-dla">
+<span id="dla-expert-files"></span><h1>4.3. Input files for DSQSS/DLA<a class="headerlink" href="#input-files-for-dsqss-dla" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="the-list-of-input-files">
+<h2>4.3.1. The list of input files<a class="headerlink" href="#the-list-of-input-files" title="Permalink to this headline">¶</a></h2>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 80%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>qmc.inp</p></td>
+<td><p>Parameter list for the simulation, e.g., the number of Monte Carlo sets.</p></td>
+</tr>
+<tr class="row-even"><td><p>lattice.xml</p></td>
+<td><p>Definition of the lattice.</p></td>
+</tr>
+<tr class="row-odd"><td><p>algorithm.xml</p></td>
+<td><p>Definition of the algorithm (e.g., scattering rate of a worm).</p></td>
+</tr>
+<tr class="row-even"><td><p>wavevector.xml</p></td>
+<td><p>Indication of wave vectors for structure factors. (optional)</p></td>
+</tr>
+<tr class="row-odd"><td><p>displacement.xml</p></td>
+<td><p>Indexing directions between all the sites. (optional)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="parameter-file">
+<span id="expert-param-file"></span><h2>4.3.2. Parameter file<a class="headerlink" href="#parameter-file" title="Permalink to this headline">¶</a></h2>
+<p>The parameter file is a plain-text file with the following format,</p>
+<ul class="simple">
+<li><p>One line stands for one parameter by the key-value style, <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span> <span class="pre">=</span> <span class="pre">&lt;value&gt;</span></code>.</p></li>
+<li><p>Cases are insensitive except for file names.</p></li>
+<li><p>White spaces and blank lines are ignored.</p></li>
+<li><p>Parts between “#” symbol and the linebreak are ignored as comments.</p></li>
+</ul>
+<p>The list of parameters are the following,</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 57%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>default</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>beta</p></td>
+<td><p>double</p></td>
+<td><p>–</p></td>
+<td><p>Inverse temperature.</p></td>
+</tr>
+<tr class="row-odd"><td><p>npre</p></td>
+<td><p>int</p></td>
+<td><p>1000</p></td>
+<td><p>The number of Monte Carlo steps in the pre-calculation phase where the number of creation trials of a pair of worms in one Monte Carlo sweep is defined.</p></td>
+</tr>
+<tr class="row-even"><td><p>ntherm</p></td>
+<td><p>int</p></td>
+<td><p>1000</p></td>
+<td><p>The number of Monte Carlo sweeps to thermalize the system.</p></td>
+</tr>
+<tr class="row-odd"><td><p>ndecor</p></td>
+<td><p>int</p></td>
+<td><p>1000</p></td>
+<td><p>The number of Monte Carlo sweeps to reduce autocorrelation time between two preceding sets.</p></td>
+</tr>
+<tr class="row-even"><td><p>nmcs</p></td>
+<td><p>int</p></td>
+<td><p>1000</p></td>
+<td><p>The number of Monte Carlo sweeps to calculate mean values of observables.</p></td>
+</tr>
+<tr class="row-odd"><td><p>nset</p></td>
+<td><p>int</p></td>
+<td><p>10</p></td>
+<td><p>The number of Monte Carlo sets.</p></td>
+</tr>
+<tr class="row-even"><td><p>simulationtime</p></td>
+<td><p>double</p></td>
+<td><p>0.0</p></td>
+<td><p>Simulation time in second.</p></td>
+</tr>
+<tr class="row-odd"><td><p>seed</p></td>
+<td><p>int</p></td>
+<td><p>198212240</p></td>
+<td><p>The seed of the random number generator.</p></td>
+</tr>
+<tr class="row-even"><td><p>nvermax</p></td>
+<td><p>int</p></td>
+<td><p>10000</p></td>
+<td><p>The maximum number of vertices.</p></td>
+</tr>
+<tr class="row-odd"><td><p>nsegmax</p></td>
+<td><p>int</p></td>
+<td><p>10000</p></td>
+<td><p>The maximum number of world-line segments.</p></td>
+</tr>
+<tr class="row-even"><td><p>algfile</p></td>
+<td><p>string</p></td>
+<td><p>algorithm.xml</p></td>
+<td><p>The filename of an algorithm file.</p></td>
+</tr>
+<tr class="row-odd"><td><p>latfile</p></td>
+<td><p>string</p></td>
+<td><p>lattice.xml</p></td>
+<td><p>The filename of a lattice file.</p></td>
+</tr>
+<tr class="row-even"><td><p>ntau</p></td>
+<td><p>int</p></td>
+<td><p>10</p></td>
+<td><p>The number of the discretization of the imaginary time for calculating some observables as functions of imaginary time.</p></td>
+</tr>
+<tr class="row-odd"><td><p>wvfile</p></td>
+<td><p>string</p></td>
+<td><p>–</p></td>
+<td><p>A wavevector XML file. If it is an empty string, observables as functions of wavevector will not be calculated.</p></td>
+</tr>
+<tr class="row-even"><td><p>dispfile</p></td>
+<td><p>string</p></td>
+<td><p>–</p></td>
+<td><p>A relative coordinates XML file. If it is an empty string, observables as functions of relative coordinates will not be calculated.</p></td>
+</tr>
+<tr class="row-odd"><td><p>outfile</p></td>
+<td><p>string</p></td>
+<td><p>sample.log</p></td>
+<td><p>The name of the main result file.</p></td>
+</tr>
+<tr class="row-even"><td><p>sfoutfile</p></td>
+<td><p>string</p></td>
+<td><p>sf.dat</p></td>
+<td><p>The name of the structure factor result file.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cfoutfile</p></td>
+<td><p>string</p></td>
+<td><p>cf.dat</p></td>
+<td><p>The name of the real space temperature Green’s function output file.</p></td>
+</tr>
+<tr class="row-even"><td><p>ckoutfile</p></td>
+<td><p>string</p></td>
+<td><p>ck.dat</p></td>
+<td><p>The name of the momentum space temperature Green’s function output file.</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>About simulationtime</p>
+<ul>
+<li><p>When simulationtime &gt; 0.0</p>
+<ul>
+<li><dl class="simple">
+<dt>DSQSS/DLA loads the checkpoint file and resumes the simulation if the checkpoint file exists.</dt><dd><ul>
+<li><p>If not, DSQSS/DLA starts a new simulation.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>After the time specified by “simulationtime” (in seconds) has elapsed, DSQSS/DLA saves the state of the simulation into the checkpoint file and halts the simulation.</p></li>
+<li><p>The name of the checkpoint file is that of the main result file with a suffix “.cjob”.</p></li>
+</ul>
+</li>
+<li><p>When simulationtime &lt;= 0.0</p>
+<ul>
+<li><p>The checkpoint file is ignored. DSQSS/DLA never saves nor loads it.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="lattice-xml-file-lattice-xml">
+<span id="lattice-xml-file"></span><h2>4.3.3. Lattice XML file <code class="docutils literal notranslate"><span class="pre">lattice.xml</span></code><a class="headerlink" href="#lattice-xml-file-lattice-xml" title="Permalink to this headline">¶</a></h2>
+<p>A lattice file is a textfile written in XML format.
+This defines space to be simulation, for example, the number of sites, the connections between sites, and so on.
+This file can be very complicated, so DSQSS has a utility tool <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> to generate lattice XML files from simpler files, lattice data files and lattice TOML files.</p>
+<p>The lattice file has a unique element named “Lattice”. The other elements belong to “Lattice” as children.</p>
+<dl>
+<dt>Lattice</dt><dd><p>The root element.</p>
+</dd>
+<dt>Lattice/Comment</dt><dd><p>(Optional) Comment. DSQSS ignores this element.</p>
+</dd>
+<dt>Lattice/Dimension</dt><dd><p>The dimension of the lattice.</p>
+</dd>
+<dt>Lattice/LinearSize</dt><dd><p>The size of the lattice in units of the unitcell.
+This takes space-separated positive integers as many as specified by “Lattice/Dimension”.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;LinearSize&gt; 3 4 &lt;/LinearSize&gt;
+# unitcells are arranged in 3x4.
+</pre></div>
+</div>
+</dd>
+<dt>Lattice/NumberOfSites</dt><dd><p>The number of sites.</p>
+</dd>
+<dt>Lattice/NumberOfInteractions</dt><dd><p>The number of the interactions.
+When all the interactions are two-body ones, this is nothing but the number of bonds.</p>
+</dd>
+<dt>Lattice/NumberOfSiteTypes</dt><dd><p>The number of site types.</p>
+</dd>
+<dt>Lattice/NumberOfInteractionTypes</dt><dd><p>The number of interaction types.</p>
+</dd>
+<dt>Lattice/NumberOfBondDirections</dt><dd><p>The number of bond directions.</p>
+</dd>
+<dt>Lattice/NumberOfEdgeInteractions</dt><dd><p>The number of bonds connecting sites over the lattice’s boundary.</p>
+</dd>
+<dt>Lattice/Basis</dt><dd><p>The basic vectors spanning lattice space.</p>
+</dd>
+<dt>Lattice/S</dt><dd><p>Site information.
+“Lattice” should includes this element as many as the number specified by “Lattice/NumberOfSites”.
+This takes two nonnegative integers, “index of site” and “site type”.
+The detail of site type is defined in an algorithm file.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;S&gt; 3 0 &lt;/S&gt;
+# the site with index 3 has the site type of 0.
+</pre></div>
+</div>
+</dd>
+<dt>Lattice/I</dt><dd><p>Interaction information.
+“Lattice” should includes this element as many as the number specified by “Lattice/NumberOfInteractions”.
+This takes space-separated integers, “index of the interaction”, “interaction type”, “the number of sites involved in the interaction”, “indices of involved sites”.
+The details of interaction type, e.g., the strength, are defined in an algorithm file.
+The order of the indices of sites should be compatible with the order of sites specified in “Algorithm/Vertex/InitialConfiguration” in the algorithm file.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;I&gt; 5 1 2 8 12 &lt;/I&gt;
+# the interaction with index 5 has the interaction type of 1 and connects 2 sites, 8 and 12.
+</pre></div>
+</div>
+</dd>
+<dt>Lattice/Direction</dt><dd><p>The direction of bonds.
+This takes “index of the direction” and “coordinates of the direction.”</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="algorithm-xml-file-algorithm-xml">
+<span id="algorithm-xml-file"></span><h2>4.3.4. Algorithm XML file <code class="docutils literal notranslate"><span class="pre">algorithm.xml</span></code><a class="headerlink" href="#algorithm-xml-file-algorithm-xml" title="Permalink to this headline">¶</a></h2>
+<p>An algorithm file is a textfile written in XML format.
+This defines the details of interactions, for example, the scattering probability of a worm head.
+This file can be very complicated, so DSQSS has a utility tool <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> to generate algorithm files from more simple file, the Hamiltonian file introduced later.</p>
+<p>The algorithm file has a unique element named “Algorithm”. The other elements belong to “Algorithm” as children.</p>
+<dl>
+<dt>Algorithm</dt><dd><p>The root element.
+This has children, “General”, “Site”, “Interaction”, and “Vertex”.</p>
+</dd>
+<dt>Algorithm/Comment</dt><dd><p>(Optional) Comment. DSQSS ignores this.</p>
+</dd>
+<dt>Algorithm/General</dt><dd><p>General parameters such as the number of site types.
+This has children, “NSType”, “NIType”, “NVType”, “NXMax”, and “WDiag”.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Algorithm&gt;
+  &lt;General&gt;
+    &lt;NSType&gt;  1 &lt;/NSType&gt;
+    &lt;NIType&gt;  1 &lt;/NIType&gt;
+    &lt;NVType&gt;  2 &lt;/NVType&gt;
+    &lt;NXMax&gt;   2 &lt;/NXMax&gt;
+    &lt;WDiag&gt;   0.25 &lt;/WDiag&gt;
+  &lt;/General&gt;
+  ...
+&lt;/Algorithm&gt;
+</pre></div>
+</div>
+</dd>
+<dt>Algorithm/General/NSType</dt><dd><p>The number of site types.</p>
+</dd>
+<dt>Algorithm/General/NIType</dt><dd><p>The number of interaction types.</p>
+</dd>
+<dt>Algorithm/General/NVType</dt><dd><p>The number of vertex types.</p>
+</dd>
+<dt>Algorithm/General/NXMax</dt><dd><p>The maximum number of states on a site.
+For example, <span class="math notranslate nohighlight">\(2S+1\)</span> for a spin system with local spin <span class="math notranslate nohighlight">\(S\)</span>.</p>
+</dd>
+<dt>Algorithm/General/WDiag</dt><dd><p>A coefficient to measure correlation functions from the length of worms.</p>
+</dd>
+<dt>Algorithm/Site</dt><dd><p>This defines a site type, for example, the weight of worm heads on a site.
+This has children “SType”, “NumberOfStates”, “VertexTypeOfSource”, and “InitialConfiguration”.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Algorithm&gt;
+  ...
+  &lt;Site&gt;
+    &lt;STYPE&gt; 0 &lt;/STYPE&gt;
+    &lt;NumberOfStates&gt; 2 &lt;/NumberOfStates&gt;
+    &lt;LocalStates&gt; -0.5 0.5 &lt;/LocalStates&gt;
+    &lt;VertexTypeOfSource&gt; 0 &lt;/VertexTypeOfSource&gt;
+    &lt;InitialConfiguration&gt;
+       ...
+    &lt;/InitialConfiguration&gt;
+    &lt;InitialConfiguration&gt;
+       ...
+    &lt;/InitialConfiguration&gt;
+  &lt;/Site&gt;
+  ...
+&lt;/Algorithm&gt;
+</pre></div>
+</div>
+</dd>
+<dt>Algorithm/Site/SType</dt><dd><p>The index of site type.</p>
+</dd>
+<dt>Algorithm/Site/NumberOfStates</dt><dd><p>The number of states of the site.</p>
+</dd>
+<dt>Algorithm/Site/LocalStates</dt><dd><p>Mapping from indices of local states to values of states.
+For example, the z components of the spin operator in the usual spin case.</p>
+</dd>
+<dt>Algorithm/Site/VertexTypeOfSource</dt><dd><p>The index of the vertex to be inserted here.</p>
+</dd>
+<dt>Algorithm/Site/InitialConfiguration</dt><dd><p>The process of pair creation/annihilation of worm heads.
+This has children, “State”, “NumberOfChannels”, and “Channel”</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Algorithm&gt;
+  ...
+  &lt;Site&gt;
+    ...
+    &lt;InitialConfiguration&gt;
+      &lt;State&gt; 0 &lt;/State&gt;
+      &lt;NumberOfChannels&gt; 2 &lt;/NumberOfChannels&gt;
+      &lt;Channel&gt; 0 1 0.5 &lt;/Channel&gt;
+      &lt;Channel&gt; 1 1 0.5 &lt;/Channel&gt;
+    &lt;/InitialConfiguration&gt;
+    ...
+  &lt;/Site&gt;
+  ...
+&lt;/Algorithm&gt;
+</pre></div>
+</div>
+</dd>
+<dt>Algorithm/Site/InitialConfiguration/State</dt><dd><p>The state index of the site without worms (before creation or after annihilation).</p>
+</dd>
+<dt>Algorithm/Site/InitialConfiguration/NumberOfChannels</dt><dd><p>The number of the channels (result of creation/annihilation).</p>
+</dd>
+<dt>Algorithm/Site/InitialConfiguration/Channel</dt><dd><p>Channels.
+This takes two integers and one floating number.</p>
+<ul class="simple">
+<li><p>First figure denotes the direction of the worm head ( 0 for negative and 1 for positive in the imaginary time direction).</p></li>
+<li><p>Second figure denotes the state between worms.</p></li>
+<li><p>Third figure denotes the probability of this channel.</p></li>
+</ul>
+<p>If the result has no worm heads, let both the first and the second integers be -1.</p>
+</dd>
+<dt>Algorithm/Interaction</dt><dd><p>This defines an interaction.
+This has children, “IType”, “VType”, “NBody”, “EBase”, “VertexDensity”, and “Sign”.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Algorithm&gt;
+  ...
+  &lt;Interaction&gt;
+    &lt;IType&gt; 0 &lt;/IType&gt;
+    &lt;VType&gt; 1 &lt;/VType&gt;
+    &lt;NBody&gt; 2 &lt;/NBody&gt;
+    &lt;EBase&gt; 0.125 &lt;/EBase&gt;
+    &lt;VertexDensity&gt; 0 0 0.25 &lt;/VertexDensity&gt;
+    &lt;VertexDensity&gt; 1 1 0.25 &lt;/VertexDensity&gt;
+    &lt;Sign&gt; 0 1 1 0 -1.0 &lt;/Sign&gt;
+    &lt;Sign&gt; 1 0 0 1 -1.0 &lt;/Sign&gt;
+  &lt;/Interaction&gt;
+  ...
+&lt;/Algorithm&gt;
+</pre></div>
+</div>
+</dd>
+<dt>Algorithm/Interaction/IType</dt><dd><p>The index of the interaction.</p>
+</dd>
+<dt>Algorithm/Interaction/VType</dt><dd><p>The index of the vertex to be inserted.</p>
+</dd>
+<dt>Algorithm/Interaction/NBody</dt><dd><p>The number of sites involved in this interaction.
+An onebody interaction such as the Zeeman term has 1 and a twobody interaction such as the exchange coupling has 2.
+Three or higher body interaction can be treated.</p>
+</dd>
+<dt>Algorithm/Interaction/EBase</dt><dd><p>The offset of the local energy.
+This value does not contribute to the simulation, but to the value of energy in the final result.</p>
+</dd>
+<dt>Algorithm/Interaction/VertexDensity</dt><dd><p>The density of vertex to be inserted.
+This takes integers as many as “Algorithm/Interaction/NBody” and one preceding floating number.
+The integers denote the states of sites (the order should be compatible with the order of sites in “I” of the lattice file).
+The last floating number represents the density.</p>
+</dd>
+<dt>Algorithm/Interaction/Sign</dt><dd><p>The sign of the local weight, <span class="math notranslate nohighlight">\(\textrm{Sgn}(\langle f | -\mathcal{H} | i \rangle)\)</span> .
+This takes integers as many as <span class="math notranslate nohighlight">\(2\times\)</span> “Algorithm/Interaction/NBody” and one preceding floating number.
+The integers denote the states of sites before and after applying the local Hamiltonian.
+The last floating number represents the sign.
+If the sign is equal to <span class="math notranslate nohighlight">\(1.0\)</span>:, this element (<code class="docutils literal notranslate"><span class="pre">&lt;Sign&gt;</span> <span class="pre">...</span> <span class="pre">&lt;/Sign&gt;</span></code>) can be omitted.</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">&lt;Sign&gt;</span> <span class="pre">0</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">0</span> <span class="pre">-1.0</span> <span class="pre">&lt;/Sign&gt;</span></code> means <span class="math notranslate nohighlight">\(\langle 1 0 | \left(-\mathcal{H}\right) | 0 1 \rangle &lt; 0\)</span>.</p>
+</dd>
+<dt>Algorithm/Vertex</dt><dd><p>This defines a vertex.
+This has children, “VType”, “VCategory”, “NBody”, “NumberOfInitialConfigurations”, and “InitialConfiguration”.
+Vertices belongs to a category specified by “Algorithm/Vertex/VCategory”.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Algorithm&gt;
+  ...
+  &lt;Vertex&gt;
+    &lt;VTYPE&gt; 0 &lt;/VTYPE&gt;
+    &lt;VCATEGORY&gt; 1 &lt;/VCATEGORY&gt;
+    &lt;NBODY&gt; 1 &lt;/NBODY&gt;
+    &lt;NumberOfInitialConfigurations&gt; 4 &lt;/NumberOfInitialConfigurations&gt;
+    &lt;InitialConfiguration&gt;
+      ...
+    &lt;/InitialConfiguration&gt;
+    ...
+    &lt;InitialConfiguration&gt;
+      ...
+    &lt;/InitialConfiguration&gt;
+  &lt;/Vertex&gt;
+  ...
+&lt;/Algorithm&gt;
+</pre></div>
+</div>
+</dd>
+<dt>Algorithm/Vertex/VType</dt><dd><p>The index of the vertex.</p>
+</dd>
+<dt>Algorithm/Vertex/VCategory</dt><dd><ol class="arabic simple" start="0">
+<li><p>Boundary of imaginary time. Users need not define this.</p></li>
+<li><p>Worm tail.</p></li>
+<li><p>Interaction.</p></li>
+</ol>
+</dd>
+<dt>Algorithm/Vertex/NBody</dt><dd><p>The number of sites involved.</p>
+</dd>
+<dt>Algorithm/Vertex/NumberOfInitialConfigurations</dt><dd><p>The number of initial states.</p>
+</dd>
+<dt>Algorithm/Vertex/InitialConfiguration</dt><dd><blockquote>
+<div><p>This defines scattering results of a worm head for each initial states.
+“Algorithm/Vertex” should has this elements as many as the number specified by “Algorithm/Vertex/NumberOfInitialConfigurations”.
+This has children, “State”, “IncomingDirection”, “NewState”, “NumberOfChannels”, “Channel”.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Algorithm&gt;
+  ...
+  &lt;Vertex&gt;
+    ...
+    &lt;InitialConfiguration&gt;
+      &lt;State&gt;  1 0 0 1 &lt;/State&gt;
+      &lt;IncomingDirection&gt; 0 &lt;/IncomingDirection&gt;
+      &lt;NewState&gt; 0 &lt;/NewState&gt;
+      &lt;NumberOfChannels&gt; 1 &lt;/NumberOfChannels&gt;
+      &lt;Channel&gt;    3    0       1.0000000000000000 &lt;/Channel&gt;
+    &lt;/InitialConfiguration&gt;
+    ...
+  &lt;/Vertex&gt;
+  ...
+&lt;/Algorithm&gt;
+</pre></div>
+</div>
+</div></blockquote>
+<p>This example represents the following scenario;</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Initial states of bottom-left(0), top-left(0), bottom-right(2), and top-right(3) are 1, 0, 0, and 1, respectively.</p></li>
+<li><p>A worm head comes from bottom-left(0) and changes the state of this leg to 0.</p></li>
+<li><p>The worm head will be scattered to leg(3) and the state of outgoing leg will be changed to 0 with the probability 1.</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt>Algorithm/Vertex/InitialConfiguration/State</dt><dd><p>The initial states of the legs of the vertex.
+Since the number of the legs is as twice as the number specified by “Algorithm/Vertex/NBody”, say <span class="math notranslate nohighlight">\(m\)</span>,
+this takes <span class="math notranslate nohighlight">\(2m\)</span> integers.
+Legs are in the same order as the corresponding sites.
+For two legs on the same site, the leg with the smaller imaginary time comes first.</p>
+</dd>
+<dt>Algorithm/Vertex/InitialConfiguration/IncomingDirection</dt><dd><p>The index of the leg from which a worm head comes.</p>
+</dd>
+<dt>Algorithm/Vertex/InitialConfiguration/NewState</dt><dd><p>The state of the “Algorithm/Vertex/InitialConfiguration/IncomingDirection” leg after a worm head comes.</p>
+</dd>
+<dt>Algorithm/Vertex/InitialConfiguration/NumberOfChannels</dt><dd><p>The number of scattering channels (final results).</p>
+</dd>
+<dt>Algorithm/Vertex/InitialConfiguration/Channel</dt><dd><p>A scattering channel.
+This takes two integers and one floating number.</p>
+<ul class="simple">
+<li><p>First figure denotes the <strong>index</strong> of the leg where the scattered worm head goes out.</p></li>
+<li><p>Second figure denotes the <strong>state</strong> of the leg where the scattered worm head goes out after the scattering.</p></li>
+<li><p>Last figure denotes the probability of this channel.</p></li>
+</ul>
+<p>For the special case, the pair-annihilation of worm heads, let both the first and the second integer be -1.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="wavevector-xml-file-wavevector-xml">
+<span id="wavevector-xml-file"></span><h2>4.3.5. Wavevector XML file <code class="docutils literal notranslate"><span class="pre">wavevector.xml</span></code><a class="headerlink" href="#wavevector-xml-file-wavevector-xml" title="Permalink to this headline">¶</a></h2>
+<p>A wavevector XML file is a textfile written in a XML-like format.
+This defines the wavevectors to calculate several observables: staggered magnetization</p>
+<div class="math notranslate nohighlight">
+\[M^{z}(\vec{k}) \equiv \frac{1}{N} \sum_i e^{-i\vec{k}\vec\vec{r}_i} \left\langle M^{z}_i \right\rangle,\]</div>
+<p>dynamical structure factor</p>
+<div class="math notranslate nohighlight">
+\[S^{zz}(\vec{k},\tau) \equiv
+  \left\langle M^z(\vec{k},\tau)M^z(-\vec{k},0) \right\rangle - \left\langle M^z(\vec{k},\tau)\right\rangle \left\langle M^z(-\vec{k},0)\right\rangle ,\]</div>
+<p>and momentum space temperature Green’s function</p>
+<div class="math notranslate nohighlight">
+\[G(\vec{k},\tau) \equiv \left\langle M^+(\vec{k}, \tau) M^-(-\vec{k},0) \right\rangle .\]</div>
+<p>This can be generated from a wavevector datafile via <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code>.</p>
+<p>A structure factor file has only one element, “WaveVector”, and the other elements are children of this.</p>
+<dl class="simple">
+<dt>WaveVector</dt><dd><p>The root element.
+This has children, “Comment”, “NumberOfSites”, “NumberOfWaveVectors” and “RK”.</p>
+</dd>
+<dt>WaveVector/Comment</dt><dd><p>(Optional) Comment. DSQSS ignores this.</p>
+</dd>
+<dt>WaveVector/NumberOfSites</dt><dd><p>The number of lattice sites.</p>
+</dd>
+<dt>WaveVector/NumberOfWaveVectors</dt><dd><p>The number of Wavevectors <span class="math notranslate nohighlight">\(\vec{k}\)</span>.</p>
+</dd>
+<dt>WaveVector/RK</dt><dd><p>The phase factor <span class="math notranslate nohighlight">\(z = \exp{\vec{r}\cdot\vec{k}}\)</span> for a pair of a wave vector and a site.
+This takes four figures, “<span class="math notranslate nohighlight">\(\mathrm{Re}z\)</span>”, “<span class="math notranslate nohighlight">\(\mathrm{Im}z\)</span>”, “the index of the site”, “the index of the wave vector”.
+“StructureFactor” should has this elements as many as the number specified by “StructureFactor/NumberOfElements”.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="relative-coordinate-xml-file-displacement-xml">
+<span id="relative-coordinate-xml-file"></span><h2>4.3.6. Relative coordinate XML file <code class="docutils literal notranslate"><span class="pre">displacement.xml</span></code><a class="headerlink" href="#relative-coordinate-xml-file-displacement-xml" title="Permalink to this headline">¶</a></h2>
+<p>A relative coordinate XML file is a textfile written in a XML-like format.
+This defines relative coordinate between two sites, <span class="math notranslate nohighlight">\(\vec{r}_{ij}\)</span>, to calculate real space temperature Green’s function,</p>
+<div class="math notranslate nohighlight">
+\[G(\vec{r}_{ij},\tau) \equiv \left\langle M_i^+(\tau) M_j^- \right\rangle .\]</div>
+<p>This file can be generated by using <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code>.</p>
+<p>A relative coordinate XML file has only one element,
+“Displacements”, and the other elements belong to this as children.</p>
+<dl class="simple">
+<dt>Displacements</dt><dd><p>The root element.
+This has children, “Comment”, “NumberOfKinds”, “NumberOfSites”, and “R”.</p>
+</dd>
+<dt>Displacements/Comment</dt><dd><p>(Optional) Comment. DSQSS ignores this.</p>
+</dd>
+<dt>Displacements/NumberOfSites</dt><dd><p>The number of lattice sites.</p>
+</dd>
+<dt>Displacements/NumberOfKinds</dt><dd><p>The number of relative coordinates.</p>
+</dd>
+<dt>Displacements/R</dt><dd><p>This takes three integers, “the index of the relative coordinate”, “the index of the site <span class="math notranslate nohighlight">\(i\)</span>”, and “the index of the site <span class="math notranslate nohighlight">\(j\)</span>”.
+“CorrelationFunction” should has this elements as many as the number specified by “CorrelationFunction/NumberOfKinds”.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. About DSQSS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">3. Tutorial of DSQSS/DLA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. User’s manual of DSQSS/DLA</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="input_simple.html">4.1. Simple mode of DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_standard.html">4.2. Standard input files for DSQSS/DLA</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.3. Input files for DSQSS/DLA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-list-of-input-files">4.3.1. The list of input files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parameter-file">4.3.2. Parameter file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lattice-xml-file-lattice-xml">4.3.3. Lattice XML file <code class="docutils literal notranslate"><span class="pre">lattice.xml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#algorithm-xml-file-algorithm-xml">4.3.4. Algorithm XML file <code class="docutils literal notranslate"><span class="pre">algorithm.xml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wavevector-xml-file-wavevector-xml">4.3.5. Wavevector XML file <code class="docutils literal notranslate"><span class="pre">wavevector.xml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#relative-coordinate-xml-file-displacement-xml">4.3.6. Relative coordinate XML file <code class="docutils literal notranslate"><span class="pre">displacement.xml</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="generator.html">4.4. Input file generators for DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engine.html">4.5. Directed loop algorithm solver <code class="docutils literal notranslate"><span class="pre">dla</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="output.html">4.6. Output of DSQSS/DLA</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tutorial.html">5. Tutorial of DSQSS/PMWA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tu-index.html">6. User’s manual for DSQSS/PMWA</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">4. User’s manual of DSQSS/DLA</a><ul>
+      <li>Previous: <a href="input_standard.html" title="previous chapter">4.2. Standard input files for DSQSS/DLA</a></li>
+      <li>Next: <a href="generator.html" title="next chapter">4.4. Input file generators for DSQSS/DLA</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/dla/users-manual/input_expert.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

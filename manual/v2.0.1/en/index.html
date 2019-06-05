@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>DSQSS – Discrete Space Quantum Systems Solver &#8212; DSQSS 2.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="dsqss/index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="dsqss-discrete-space-quantum-systems-solver">
+<h1>DSQSS – Discrete Space Quantum Systems Solver<a class="headerlink" href="#dsqss-discrete-space-quantum-systems-solver" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dsqss/about_dsqss.html">1. About DSQSS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dsqss/about_dsqss.html#overview">1.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dsqss/about_dsqss.html#developers">1.2. Developers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dsqss/about_dsqss.html#collaborators">1.3. Collaborators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dsqss/about_dsqss.html#license">1.4. License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dsqss/about_dsqss.html#acknowledgment">1.5. Acknowledgment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dsqss/about_dsqss.html#contact">1.6. Contact</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dsqss/install.html">2. How to install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dsqss/install.html#requirements">2.1. Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dsqss/install.html#download">2.2. Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dsqss/install.html#directory-structure">2.3. Directory structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dsqss/install.html#install">2.4. Install</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dla/tutorial/index.html">3. Tutorial of DSQSS/DLA</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dla/tutorial/intro.html">3.1. What’s DSQSS/DLA?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dla/tutorial/spindimer.html">3.2. Energy calculation of the antiferromagnetic Heisenberg dimer by DSQSS/DLA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dla/tutorial/spindimer.html#prepare-the-input-files">3.2.1. Prepare the input files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dla/tutorial/spindimer.html#perform-qmc-calculation">3.2.2. Perform QMC calculation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dla/tutorial/spindimer.html#analyze-the-result">3.2.3. Analyze the result</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dla/tutorial/spinchain.html">3.3. Magnetic Susceptibility of antiferromagnetic spin chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dla/tutorial/bosesquare.html">3.4. Number density of the hardcore Bosons on a square lattice</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dla/users-manual/index.html">4. User’s manual of DSQSS/DLA</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dla/users-manual/input_simple.html">4.1. Simple mode of DSQSS/DLA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/input_simple.html#simple-mode-file-std-toml">4.1.1. Simple mode file <code class="docutils literal notranslate"><span class="pre">std.toml</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dla/users-manual/input_simple.html#parameter">4.1.1.1. <code class="docutils literal notranslate"><span class="pre">parameter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dla/users-manual/input_simple.html#lattice">4.1.1.2. <code class="docutils literal notranslate"><span class="pre">lattice</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dla/users-manual/input_simple.html#hamiltonian">4.1.1.3. <code class="docutils literal notranslate"><span class="pre">hamiltonian</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dla/users-manual/input_simple.html#kpoints">4.1.1.4. <code class="docutils literal notranslate"><span class="pre">kpoints</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dla/users-manual/input_simple.html#algorithm">4.1.1.5. <code class="docutils literal notranslate"><span class="pre">algorithm</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dla/users-manual/input_standard.html">4.2. Standard input files for DSQSS/DLA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/input_standard.html#list-of-files">4.2.1. List of files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/input_standard.html#lattice-datafile">4.2.2. Lattice datafile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/input_standard.html#lattice-toml-file-lattice-toml">4.2.3. Lattice TOML file <code class="docutils literal notranslate"><span class="pre">lattice.toml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/input_standard.html#hamiltonian-toml-file">4.2.4. Hamiltonian TOML file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/input_standard.html#wavevector-datafile">4.2.5. Wavevector datafile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dla/users-manual/input_expert.html">4.3. Input files for DSQSS/DLA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/input_expert.html#the-list-of-input-files">4.3.1. The list of input files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/input_expert.html#parameter-file">4.3.2. Parameter file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/input_expert.html#lattice-xml-file-lattice-xml">4.3.3. Lattice XML file <code class="docutils literal notranslate"><span class="pre">lattice.xml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/input_expert.html#algorithm-xml-file-algorithm-xml">4.3.4. Algorithm XML file <code class="docutils literal notranslate"><span class="pre">algorithm.xml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/input_expert.html#wavevector-xml-file-wavevector-xml">4.3.5. Wavevector XML file <code class="docutils literal notranslate"><span class="pre">wavevector.xml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/input_expert.html#relative-coordinate-xml-file-displacement-xml">4.3.6. Relative coordinate XML file <code class="docutils literal notranslate"><span class="pre">displacement.xml</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dla/users-manual/generator.html">4.4. Input file generators for DSQSS/DLA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/generator.html#simple-mode-tool-dla-pre">4.4.1. Simple mode tool <code class="docutils literal notranslate"><span class="pre">dla_pre</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/generator.html#lattice-file-generator-dla-latgen">4.4.2. Lattice file generator <code class="docutils literal notranslate"><span class="pre">dla_latgen</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/generator.html#hamiltonian-file-generator-dla-hamgen">4.4.3. Hamiltonian file generator <code class="docutils literal notranslate"><span class="pre">dla_hamgen</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/generator.html#parameter-file-generator-dla-pgen">4.4.4. Parameter file generator <code class="docutils literal notranslate"><span class="pre">dla_pgen</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/generator.html#wavevector-file-generator-dla-wvgen">4.4.5. Wavevector file generator <code class="docutils literal notranslate"><span class="pre">dla_wvgen</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/generator.html#algorithm-file-generator-dla-alg">4.4.6. Algorithm file generator <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dla/users-manual/engine.html">4.5. Directed loop algorithm solver <code class="docutils literal notranslate"><span class="pre">dla</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dla/users-manual/output.html">4.6. Output of DSQSS/DLA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/output.html#format">4.6.1. Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dla/users-manual/output.html#notations">4.6.1.1. Notations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/output.html#main-results">4.6.2. Main results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/output.html#structure-factor-output">4.6.3. Structure factor output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/output.html#real-space-temperature-green-s-function-output">4.6.4. Real space temperature Green’s function output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dla/users-manual/output.html#momentum-space-temperature-green-s-function-output">4.6.5. Momentum space temperature Green’s function output</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pmwa/tutorial/tutorial.html">5. Tutorial of DSQSS/PMWA</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pmwa/tutorial/intro.html">5.1. About DSQSS/PMWA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pmwa/tutorial/usage.html">5.2. Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pmwa/tutorial/lattgene.html">5.2.1. Make an input file for a lattice</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pmwa/tutorial/model.html">5.2.2. Make an input file for DSQSS/PMWA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pmwa/tutorial/output.html">5.2.3. Run DSQSS/PMWA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pmwa/tutorial/output.html#output-files">5.2.4. Output files</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pmwa/tutorial/sample_Heisenberg.html">5.3. Calculation of the energy on spin chain by DSQSS/PMWA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pmwa/tutorial/sample_Heisenberg.html#make-an-input-file">5.3.1. Make an input file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pmwa/tutorial/sample_Heisenberg.html#perform-calculation">5.3.2. Perform calculation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pmwa/tutorial/sample_Heisenberg.html#analyze-calculation-results">5.3.3. Analyze calculation results</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pmwa/tutorial/tu-index.html">6. User’s manual for DSQSS/PMWA</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pmwa/tutorial/input_file.html">6.1. Input files for DSQSS/PMWA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pmwa/tutorial/output_file.html">6.2. Output files for DSQSS/PMWA</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="#">
+    <img class="logo" src="_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dsqss/about_dsqss.html">1. About DSQSS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dsqss/install.html">2. How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dla/tutorial/index.html">3. Tutorial of DSQSS/DLA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dla/users-manual/index.html">4. User’s manual of DSQSS/DLA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pmwa/tutorial/tutorial.html">5. Tutorial of DSQSS/PMWA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pmwa/tutorial/tu-index.html">6. User’s manual for DSQSS/PMWA</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="dsqss/index.html" title="next chapter">&lt;no title&gt;</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

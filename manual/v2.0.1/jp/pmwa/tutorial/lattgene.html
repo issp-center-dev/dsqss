@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>5.2.1. 格子定義ファイルの作成 &#8212; DSQSS 2.0.1 ドキュメント</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="検索" href="../../search.html" />
+    <link rel="next" title="5.2.2. DSQSS/PMWAの入力ファイルの作成" href="model.html" />
+    <link rel="prev" title="5.2. 使用方法" href="usage.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>5.2.1. 格子定義ファイルの作成<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>PMWAでは標準的な模型に対して格子定義ファイル <code class="docutils literal notranslate"><span class="pre">lattice.xml</span></code> を生成するための簡易ツールとして
+<code class="docutils literal notranslate"><span class="pre">lattgene_P</span></code> を用意しています.ここでは <code class="docutils literal notranslate"><span class="pre">lattgene_P</span></code> の使用方法について説明します.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lattgene_P</span></code> ではcubic latticeに関する格子定義ファイルを作成することが出来ます.
+指定するパラメータは下記の通りです.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>備考</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>D</p></td>
+<td><p>int</p></td>
+<td><p>次元数</p></td>
+</tr>
+<tr class="row-odd"><td><p>L</p></td>
+<td><p>int</p></td>
+<td><p>格子のサイズ(各次元について連続で指定します)</p></td>
+</tr>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>double</p></td>
+<td><p>逆温度</p></td>
+</tr>
+<tr class="row-odd"><td><p>NLdiv</p></td>
+<td><p>int</p></td>
+<td><p>Lの分割数 (各次元についてそれぞれ NLdiv分割します)</p></td>
+</tr>
+<tr class="row-even"><td><p>NBdiv</p></td>
+<td><p>int</p></td>
+<td><p>Bの分割数</p></td>
+</tr>
+<tr class="row-odd"><td><p>NFIELD</p></td>
+<td><p>int</p></td>
+<td><p>磁場の種類の数(基本的には0に設定)</p></td>
+</tr>
+</tbody>
+</table>
+<p>使用例を以下に記載します.</p>
+<ol class="arabic">
+<li><p>1次元8サイト, 逆温度10.0, 分割数は1の場合の格子ファイルを定義</p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">lattgene_P</span> <span class="pre">1</span> <span class="pre">8</span> <span class="pre">10.0</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">0</span></code></p>
+</li>
+<li><p>2次元4*4サイト, 逆温度10.0, 分割数は1の場合の格子ファイルを定義</p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">lattgene_P</span> <span class="pre">2</span> <span class="pre">4</span> <span class="pre">4</span> <span class="pre">10.0</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">0</span></code></p>
+</li>
+</ol>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>ナビゲーション</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. DSQSSとは？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. インストール</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dla/tutorial/index.html">3. DLAのチュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dla/users-manual/index.html">4. DSQSS/DLAのユーザーマニュアル</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tutorial.html">5. DSQSS/PMWAのチュートリアル</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">5.1. DSQSS/PMWAとは？</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="usage.html">5.2. 使用方法</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.2.1. 格子定義ファイルの作成</a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html">5.2.2. DSQSS/PMWAの入力ファイルの作成</a></li>
+<li class="toctree-l3"><a class="reference internal" href="output.html">5.2.3. 計算実行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="output.html#id2">5.2.4. 出力ファイル</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sample_Heisenberg.html">5.3. DSQSS/PMWAによるスピン鎖のエネルギー計算</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tu-index.html">6. DSQSS/PMWAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/algorithm.html">7. アルゴリズム</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="tutorial.html">5. DSQSS/PMWAのチュートリアル</a><ul>
+  <li><a href="usage.html">5.2. 使用方法</a><ul>
+      <li>Previous: <a href="usage.html" title="前の章へ">5.2. 使用方法</a></li>
+      <li>Next: <a href="model.html" title="次の章へ">5.2.2. DSQSS/PMWAの入力ファイルの作成</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="検索" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/pmwa/tutorial/lattgene.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>5.2.3. 計算実行 &#8212; DSQSS 2.0.1 ドキュメント</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="検索" href="../../search.html" />
+    <link rel="next" title="5.3. DSQSS/PMWAによるスピン鎖のエネルギー計算" href="sample_Heisenberg.html" />
+    <link rel="prev" title="5.2.2. DSQSS/PMWAの入力ファイルの作成" href="model.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>5.2.3. 計算実行<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>入力ファイル作成後,以下のコマンドを入力することで実行できます(入力ファイルは <code class="docutils literal notranslate"><span class="pre">param.in</span></code> としています).
+スピン系とハードコアボソン系に応じて,</p>
+<p>それぞれ実行ファイルが異なります.</p>
+<ol class="arabic simple">
+<li><p>スピン系の場合</p></li>
+</ol>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">$pmwa_H</span> <span class="pre">param.in</span></code></p>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>ハードコアボソンの場合</p></li>
+</ol>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">$pmwa_B</span> <span class="pre">param.in</span></code></p>
+</div></blockquote>
+<p>計算終了後,結果ファイル1つとリスタート用の一時ファイル2つ(evout_sample.log, RND_evout_sample.log)が出力されます.</p>
+</div>
+<div class="section" id="id2">
+<h1>5.2.4. 出力ファイル<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>ここでは結果ファイル1つとリスタート用の一時ファイル2つについて,
+PMWAに特有のパラメータをそれぞれ記載します.</p>
+<ul>
+<li><p>結果ファイル</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Kind</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>P</p></td>
+<td><p>L</p></td>
+<td><p>三次元の格子情報</p></td>
+</tr>
+<tr class="row-odd"><td><p>P</p></td>
+<td><p>DOML</p></td>
+<td><p>並列化により分割されたドメインの大きさ</p></td>
+</tr>
+<tr class="row-even"><td><p>P</p></td>
+<td><p>DOMBETA</p></td>
+<td><p>並列化により分割された逆温度のドメインサイズ</p></td>
+</tr>
+<tr class="row-odd"><td><p>P</p></td>
+<td><p>NDIVL</p></td>
+<td><p>格子の分割数</p></td>
+</tr>
+<tr class="row-even"><td><p>P</p></td>
+<td><p>NTEST</p></td>
+<td><p>テストをするサンプルの数(詳細はモンテカルロ計算の箇所で説明)</p></td>
+</tr>
+<tr class="row-odd"><td><p>R</p></td>
+<td><p>nver</p></td>
+<td><p>キンクとワームの数</p></td>
+</tr>
+<tr class="row-even"><td><p>R</p></td>
+<td><p>nkin</p></td>
+<td><p>キンクの数</p></td>
+</tr>
+<tr class="row-odd"><td><p>R</p></td>
+<td><p>wndx</p></td>
+<td><p>x方向のワインディング数の二乗の期待値</p></td>
+</tr>
+<tr class="row-even"><td><p>R</p></td>
+<td><p>wndy</p></td>
+<td><p>y方向のワインディング数の二乗の期待値</p></td>
+</tr>
+<tr class="row-odd"><td><p>R</p></td>
+<td><p>wndz</p></td>
+<td><p>z方向のワインディング数の二乗の期待値</p></td>
+</tr>
+<tr class="row-even"><td><p>R</p></td>
+<td><p>wnd2</p></td>
+<td><p>ワインディング数の二乗の総数(wndx+wndy+wndz)</p></td>
+</tr>
+<tr class="row-odd"><td><p>R</p></td>
+<td><p>bmxu</p></td>
+<td><p><span class="math notranslate nohighlight">\(S_x\)</span> の期待値 (uniform <span class="math notranslate nohighlight">\(\tau\)</span> 積分)</p></td>
+</tr>
+<tr class="row-even"><td><p>R</p></td>
+<td><p>bmpu</p></td>
+<td><p><span class="math notranslate nohighlight">\(S_+\)</span> の期待値 (uniform <span class="math notranslate nohighlight">\(\tau\)</span> 積分)</p></td>
+</tr>
+<tr class="row-odd"><td><p>R</p></td>
+<td><p>bmmu</p></td>
+<td><p><span class="math notranslate nohighlight">\(S_-\)</span> の期待値 (uniform <span class="math notranslate nohighlight">\(\tau\)</span> 積分)</p></td>
+</tr>
+<tr class="row-even"><td><p>R</p></td>
+<td><p>comp</p></td>
+<td><p>圧縮率</p></td>
+</tr>
+<tr class="row-odd"><td><p>R</p></td>
+<td><p>lxmx</p></td>
+<td><p>各サイトの局所的なワーム数の揺らぎ</p></td>
+</tr>
+<tr class="row-even"><td><p>I</p></td>
+<td><p>the maximum number of vertices</p></td>
+<td><p>バーテックスの最大数</p></td>
+</tr>
+<tr class="row-odd"><td><p>I</p></td>
+<td><p>the maximum number of worms</p></td>
+<td><p>ワームの最大数</p></td>
+</tr>
+</tbody>
+</table>
+<p>ここで種別は出力の各行の先頭に付与される文字で, P, R, I はそれぞれParameter, Result, Informationを示します.</p>
+</li>
+<li><p>リスタート用のファイル</p>
+<p>PMWAではリスタート機能が実装されており,下記の2ファイルが存在する場合には強制的にリスタートが行われます.
+以下,各ファイルの出力内容について簡単に説明します.</p>
+<ol class="arabic simple">
+<li><p>evout_sample.log</p></li>
+</ol>
+<p>計算終了時のサイクル数,ワールドラインの情報,バーテックスの情報について出力したファイル.
+再計算時には読み込んだ配置を始条件として計算が行われます.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>26 : 計算終了時のサイクル数
+0 1 : ドメイン内のサイト0のワールドラインの情報
+i/N beta, (i+1)/N beta 区間のワールドラインの情報 : 0: down, 1: up
+0 0 : ドメイン内のサイト1のワールドラインの情報
+1 1  :ドメイン内のサイト2のワールドラインの情報
+...
+8 0.056997107 2 1 4 :バーテックスのラベル, tau, バーテックスの種類 , ワールドラインの本数, ボンド番号
+9 0.056997107 2 0 5
+44 0.28066013 2 1 3
+</pre></div>
+</div>
+<p>ここでバーテックスの種類については以下のものが定義されています.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 80%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>バーテックスの種類</p></th>
+<th class="head"><p>説明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>-5</p></td>
+<td><p>各ドメインにおける虚時間方向の始点及び終点.ドメイン分割しなくても有効.</p></td>
+</tr>
+<tr class="row-odd"><td><p>-4(右), -2(左)</p></td>
+<td><p>ドメインをまたぐ対角的バーテックス.ドメイン分割しなくても有効.</p></td>
+</tr>
+<tr class="row-even"><td><p>-3(右), -1(左)</p></td>
+<td><p>ドメインをまたぐ非対角的バーテックス(キンク).ドメイン分割しなくても有効.</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>オンサイトバーテックス(ワーム以外).</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>2サイトバーテックス.</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>キンク.</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>2サイトバーテックス(次近接)(互換性のために残してあります).</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>その時動いているワーム(消滅演算子).</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>その時動いているワーム(生成演算子).</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>その時止まっているワーム(生成消滅関係なし),もしくは不要なバーテックス.</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>マーカー(虚時間相関関数測定用).</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="2">
+<li><p>RNDevout_sample.log</p></li>
+</ol>
+<p>乱数生成を行っているオブジェクトをバイナリ形式で出力したファイル.
+再計算時には読み込んだ乱数情報を始条件として計算が行われます.</p>
+</li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>ナビゲーション</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. DSQSSとは？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. インストール</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dla/tutorial/index.html">3. DLAのチュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dla/users-manual/index.html">4. DSQSS/DLAのユーザーマニュアル</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tutorial.html">5. DSQSS/PMWAのチュートリアル</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">5.1. DSQSS/PMWAとは？</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="usage.html">5.2. 使用方法</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="lattgene.html">5.2.1. 格子定義ファイルの作成</a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html">5.2.2. DSQSS/PMWAの入力ファイルの作成</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.2.3. 計算実行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">5.2.4. 出力ファイル</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sample_Heisenberg.html">5.3. DSQSS/PMWAによるスピン鎖のエネルギー計算</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tu-index.html">6. DSQSS/PMWAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/algorithm.html">7. アルゴリズム</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="tutorial.html">5. DSQSS/PMWAのチュートリアル</a><ul>
+  <li><a href="usage.html">5.2. 使用方法</a><ul>
+      <li>Previous: <a href="model.html" title="前の章へ">5.2.2. DSQSS/PMWAの入力ファイルの作成</a></li>
+      <li>Next: <a href="sample_Heisenberg.html" title="次の章へ">5.3. DSQSS/PMWAによるスピン鎖のエネルギー計算</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="検索" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/pmwa/tutorial/output.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
