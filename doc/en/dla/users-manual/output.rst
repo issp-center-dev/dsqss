@@ -21,46 +21,61 @@ The first character stands for the meaning of the line.
 The following one is a result of an antiferromagnetic Heisenberg chain.
 ::
 
-  C This is DSQSS ver.1.2.0
+  C This is DSQSS ver.v2.0.0
 
+  I N_PROC = 1
   P D       =            1
   P L       =            8
   P BETA    =      10.0000000000000000
   P NSET    =           10
-  P NMCSE   =         1000
-  P NMCSD   =         1000
+  P NPRE    =         1000
+  P NTHERM  =         1000
+  P NDECOR  =         1000
   P NMCS    =         1000
   P SEED    =    198212240
   P NSEGMAX =        10000
   P NVERMAX =        10000
+  P BETA    = 10.000000000000
+  P NTAU    =           10
   P NCYC    =            7
   P ALGFILE = algorithm.xml
   P LATFILE = lattice.xml
-  P CFINPFILE  = cf.xml
-  P SFINPFILE  = sf.xml
-  P CKINPFILE  = sf.xml
-  P OUTFILE    = res.dat.000
-  P CFOUTFILE  = cfout.dat.000
-  P SFOUTFILE  = sfout.dat.000
-  P CKOUTFILE  = ckout.dat.000
+  P WVFILE = wv.xml
+  P DISPFILE  = disp.xml
+  P OUTFILE    = sample.log
+  P CFOUTFILE  = cf.dat
+  P SFOUTFILE  = sf.dat
+  P CKOUTFILE  = ck.dat
   P SIMULATIONTIME   =     0.000000
+  R sign = 1.00000000e+00 0.00000000e+00
   R anv = 3.03805000e+00 1.25395375e-02
   R ene = -4.55991910e-01 1.20267537e-03
   R spe = -1.76672204e-02 4.09064489e-02
+  R som = -1.76672204e-01 4.09064489e-01
   R len = 1.20014021e+01 4.78403202e-02
   R xmx = 3.00035053e-01 1.19600800e-03
   R amzu = -2.00000000e-04 1.08972474e-04
   R bmzu = -2.00000000e-04 1.08972474e-04
   R smzu = 1.32382500e-03 1.40792745e-04
   R xmzu = 1.32382500e-02 1.40792745e-03
-  R amzs = -9.25000000e-04 4.02247160e-03
-  R bmzs = -2.03918502e-04 2.22828174e-03
-  R smzs = 8.72503175e-01 8.93939492e-03
-  R xmzs = 3.00500011e+00 2.99056535e-02
-  R time = 9.01378000e-08 1.61529255e-09
+  R ds1 = -1.32954309e-03 7.87178338e-04
+  R wi2 = 2.31040000e+01 3.83762890e-01
+  R rhos = 1.44400000e-01 2.39851806e-03
+  R rhof = inf nan
+  R comp = 2.43165481e+35 1.71412709e+35
+  R amzs0 = -2.00000000e-04 1.08972474e-04
+  R bmzs0 = 1.65625000e-04 1.76161818e-05
+  R smzs0 = 1.32382500e-03 1.40792745e-04
+  R xmzs0 = 1.32382500e-02 1.40792745e-03
+  R amzs1 = -9.25000000e-04 4.02247160e-03
+  R bmzs1 = 1.09209375e-01 1.12051866e-03
+  R smzs1 = 8.72503175e-01 8.93939492e-03
+  R xmzs1 = 3.00500011e+00 2.99056535e-02
+  R time = 1.03679300e-07 1.22794234e-09
   I [the maximum number of segments]          = 123
   I [the maximum number of vertices]          = 66
   I [the maximum number of reg. vertex info.] = 3
+
 
 Notations
 -----------
@@ -131,10 +146,18 @@ Main results are written in a file with the name specified by ``outfile`` keywor
   The specific heat
 
   :math:`\displaystyle C_V \equiv \frac{\partial \epsilon}{\partial T}`
+
+``som``
+  The ratio of the specific heat and the temperature.
+
+  :math:`\displaystyle \gamma \equiv \frac{C_V}{T} = \beta C_V`
+
 ``len``
   The mean length of worm
+
 ``xmx``
   The transverse susceptibility
+
 ``amzu``
   The "magnetization" (uniform, :math:`\tau=0`).
 
@@ -186,6 +209,34 @@ Main results are written in a file with the name specified by ``outfile`` keywor
 
   :math:`\displaystyle \chi^{zz}(\vec{k},  \omega=0) 
   = \beta N_s \left[\left\langle (\tilde{m}_K^z)^2 \right\rangle - \left\langle \tilde{m}_K^z \right\rangle^2 \right]`
+
+
+``wi2``
+  The winding number.
+
+  :math:`\displaystyle W^2 = \sum_{d=1}^D L_d^2 \left\langle W_d^2 \right\rangle`
+
+``rhos``
+  The superfluid density.
+
+  :math:`\displaystyle \rho_s = \frac{W^2}{2DV\beta}`
+
+
+``rhof``
+  The superfluid fraction.
+
+  :math:`\displaystyle \frac{\rho_s}{\left\langle m^z \right\rangle}`
+
+
+``comp``
+  The compressibility.
+
+  :math:`\displaystyle \frac{\chi^{zz}(\vec{k}=0,\omega=0)} {\left\langle \tilde{m}^z \right\rangle^2}`
+
+
+``time``
+  The time in a Monte Carlo sweep (in seconds.)
+
 
 Structure factor output
 ****************************************
