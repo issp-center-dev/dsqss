@@ -21,7 +21,7 @@ from copy import deepcopy
 import toml
 
 from .lattice import Lattice
-from .util import tagged, dictkey_tolower
+from .util import tagged
 
 
 def keystate(istate, fstate):
@@ -70,9 +70,8 @@ class Site(object):
                  id=None, N=None, values=None,
                  elements=None, sources=None):
         if param is not None:
-            dictkey_tolower(param)
             self.id = param["type"]
-            self.N = param["n"]
+            self.N = param["N"]
             self.values = param["values"]
             self.elements = {}
             for x in param["elements"]:
@@ -90,7 +89,7 @@ class Site(object):
     def to_dict(self):
         return {
             "type": self.id,
-            "n": self.N,
+            "N": self.N,
             "values": self.values,
             "elements": matelems_todict(self.elements),
             "sources": matelems_todict(self.sources),
@@ -100,10 +99,9 @@ class Site(object):
 class Interaction(object):
     def __init__(self, param=None, id=None, nbody=None, Ns=None, elements=None):
         if param is not None:
-            dictkey_tolower(param)
             self.id = param["type"]
             self.nbody = param["nbody"]
-            self.Ns = param["n"]
+            self.Ns = param["N"]
             self.elements = {}
             for x in param["elements"]:
                 append_matelem(self.elements, param=x)
@@ -117,7 +115,7 @@ class Interaction(object):
         return {
             "type": self.id,
             "nbody": self.nbody,
-            "n": self.Ns,
+            "N": self.Ns,
             "elements": matelems_todict(self.elements),
         }
 
@@ -149,7 +147,6 @@ class Hamiltonian(object):
     def __init__(self, ham_dict):
         if type(ham_dict) == str:
             ham_dict = toml.load(ham_dict)
-        dictkey_tolower(ham_dict)
         self.name = ham_dict.get("name", "")
 
         self.nstypes = len(ham_dict["sites"])

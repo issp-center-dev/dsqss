@@ -15,13 +15,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from .bosehubbard import BoseHubbard_hamiltonian
-from .util import ERROR, dictkey_tolower
+from .util import ERROR
 from .xxz import XXZ_hamiltonian
 from .hamiltonian import Hamiltonian
 
 
 def std_model(param):
-    dictkey_tolower(param)
     if "hamiltonian" in param:
         param = param["hamiltonian"]
     if "model" in param:
