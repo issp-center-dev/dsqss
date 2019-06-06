@@ -9,7 +9,8 @@ beta = 10.0
 
 lattice = {"lattice": "hypercubic", "dim": 2, "L": L}
 hamiltonian = {"model": "boson", "t": 1, "V": V, "M": 1}
-parameter = {"beta": beta, "nset": 4, "ntherm": 100, "ndecor": 100, "nmcs": 100}
+parameter = {"beta": beta, "nset": 4, "ntherm": 100, "ndecor": 100,
+             "nmcs": 100, "wvfile": "wv.xml", "dispfile": "disp.xml"}
 
 name = "amzu"
 mus = [-4.0, -2.0, 0.0, 2.0, 2.5, 3.0, 6.0, 9.0, 9.5, 10.0, 12.0, 14.0]
@@ -18,8 +19,15 @@ output = open("{}.dat".format(name), "w")
 for i, mu in enumerate(mus):
     ofile = "res_{}.dat".format(i)
     pfile = "param_{}.in".format(i)
+    sfoutfile = "sf_{}.dat".format(i)
+    cfoutfile = "cf_{}.dat".format(i)
+    ckoutfile = "ck_{}.dat".format(i)
+
     hamiltonian["mu"] = mu
     parameter["outfile"] = ofile
+    parameter["sfoutfile"] = sfoutfile
+    parameter["cfoutfile"] = cfoutfile
+    parameter["ckoutfile"] = ckoutfile
     dla_pre(
         {"parameter": parameter, "hamiltonian": hamiltonian, "lattice": lattice}, pfile
     )
