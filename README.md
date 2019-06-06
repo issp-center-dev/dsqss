@@ -1,8 +1,8 @@
 # dsqss
 
 [![Build Status](https://travis-ci.org/issp-center-dev/dsqss.svg?branch=master)](https://travis-ci.org/issp-center-dev/dsqss)
-[![doc latest_stable en](https://img.shields.io/badge/doc--en-v2.0.0-blue.svg)](https://issp-center-dev.github.io/dsqss/manual/v2.0.0/en/index.html)
-[![doc latest_stable jp](https://img.shields.io/badge/doc--jp-v2.0.0-blue.svg)](https://issp-center-dev.github.io/dsqss/manual/v2.0.0/jp/index.html)
+[![doc latest_stable en](https://img.shields.io/badge/doc--en-v2.0.1-blue.svg)](https://issp-center-dev.github.io/dsqss/manual/v2.0.1/en/index.html)
+[![doc latest_stable jp](https://img.shields.io/badge/doc--jp-v2.0.1-blue.svg)](https://issp-center-dev.github.io/dsqss/manual/v2.0.1/jp/index.html)
 [![doc master](https://img.shields.io/badge/doc-dev-blue.svg)](https://issp-center-dev.github.io/dsqss/manual/master/en/index.html)
 [![doc master jp](https://img.shields.io/badge/doc--jp-dev-blue.svg)](https://issp-center-dev.github.io/dsqss/manual/master/jp/index.html)
 
