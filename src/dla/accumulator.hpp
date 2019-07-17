@@ -59,11 +59,15 @@ private:
   double error;
   double s1, s2;
   int n;
-
+  std::vector<double> raw;
+  bool save_raw;
 
 public:
-  Accumulator() : k("Unset"){};
-  explicit Accumulator(std::string const& s) : k(s){};
+  Accumulator(bool save_raw=false) : save_raw(save_raw){reset();}
+  Accumulator(std::string const& s, bool save_raw=false) : save_raw(save_raw){reset(s);}
+
+  void to_saveraw(bool save_raw){ this->save_raw=save_raw; }
+  std::vector<double> const & rawdata() const { return raw; }
 
   void reset() {
     k = "Unset";
@@ -72,6 +76,7 @@ public:
     s1 = 0.0;
     s2 = 0.0;
     n  = 0;
+    raw.clear();
   };
   void reset(std::string const& s) {
     reset();
@@ -83,6 +88,7 @@ public:
     n++;
     s1 += x;
     s2 += (x * x);
+    if(save_raw) raw.push_back(x);
   };
 
   void average() {

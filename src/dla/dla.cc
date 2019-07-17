@@ -292,7 +292,7 @@ void Simulation::Set(int ntherm, int nmcs) {
 
   MSR.setsummary();
   calctimer.setsummary();
-  sf.setsummary();
+  sf.setsummary(MSR);
   cf.setsummary();
   ck.setsummary();
 }

@@ -75,6 +75,7 @@ struct PHY_smag{
       ss << names[i];
       ss << k;
       Q[i]->reset(ss.str());
+      Q[i]->to_saveraw(true);
     }
   }
   void average(){

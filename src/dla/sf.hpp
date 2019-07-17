@@ -27,6 +27,7 @@
 #include "wavevector.hpp"
 #include "algorithm.hpp"
 #include "lattice.hpp"
+#include "measure.hpp"
 
 class SF {
 private:
@@ -49,7 +50,7 @@ public:
   SF(Parameter const& param, Lattice& lat, Algorithm& alg, WaveVector& wv);
   void setinit();
   void measure(double sgn);
-  void setsummary();
+  void setsummary(Measurement const& MSR);
   void summary();
 #ifdef MULTI
   void allreduce(MPI_Comm comm);
@@ -179,7 +180,7 @@ inline void SF::summary() {
       PHY[i][itau].average();
 }
 
-void SF::setsummary() {
+void SF::setsummary(Measurement const& MSR) {
   if (!to_be_calc) { return; }
   AutoDebugDump("SF::setsummary");
   const double invV = 1.0 / LAT.NSITE;
@@ -190,8 +191,9 @@ void SF::setsummary() {
     for (int ik = 0; ik < NK; ik++) {
       for (int it = 0; it < Ntau; it++) {
         ACC[ik][it].average();
-        const double Q = ACC[ik][it].mean();
-        PHY[ik][it].accumulate(invsign * invV * Q);
+        const double Q = invsign * invV * ACC[ik][it].mean();
+        const double q = MSR.PHY_SMAG[ik].B.rawdata().back();
+        PHY[ik][it].accumulate(Q - q*q);
       }
     }
   }
