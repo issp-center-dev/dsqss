@@ -41,6 +41,7 @@ private:
   Accumulator SIGN;
   std::vector<std::vector<Accumulator> > ACC;
   std::vector<std::vector<Accumulator> > PHY;
+  std::vector<std::vector<double> > Q;
 
   std::vector<std::vector<int> > counter;
 
@@ -56,6 +57,7 @@ public:
   void allreduce(MPI_Comm comm);
 #endif 
   void show(FILE*);
+  void show_bin(FILE*);
 
   void save(std::ofstream& F) const; 
   void load(std::ifstream& F);
@@ -80,6 +82,7 @@ CF::CF(Parameter const& param, Lattice& lat, Algorithm& alg, Displacement& disp)
     for (int i = 0; i < nkinds; i++) {
       ACC.push_back(std::vector<Accumulator>(Ntau));
       PHY.push_back(std::vector<Accumulator>(Ntau));
+      Q.push_back(std::vector<double>(Ntau));
       for (int it = 0; it < Ntau; it++) {
         std::stringstream ss;
         ss << "C" << i << "t" << it;
@@ -112,8 +115,19 @@ inline void CF::show(FILE* F) {
     }
     std::fprintf(F,"\n");
   }
+}
 
+inline void CF::show_bin(FILE* F) {
+  if (!to_be_calc) { return; }
+  AutoDebugDump("CF::show");
+  for (int i = 0; i < nkinds; i++){
+    for (int it = 0; it < Ntau; it++){
+      fprintf(F, "R C%dt%d = %.15lf\n", i, it, Q[i][it]);
+    }
+    std::fprintf(F,"\n");
+  }
 };
+
 
 inline void CF::accumulate(int NCYC, double sgn) {
   if (!to_be_calc) { return; }
@@ -186,7 +200,8 @@ void CF::setsummary() {
       const double factor = 2 * testDIAG * V / DISP.NR[icf];
       for (int it = 0; it < Ntau; it++) {
         ACC[icf][it].average();
-        PHY[icf][it].accumulate(invsign * ACC[icf][it].mean() * factor);
+        Q[icf][it] = invsign * ACC[icf][it].mean() * factor;
+        PHY[icf][it].accumulate(Q[icf][it]);
       }
     }
   }

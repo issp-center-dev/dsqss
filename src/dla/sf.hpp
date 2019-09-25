@@ -42,6 +42,8 @@ private:
   std::vector<std::vector<Accumulator> > ACC;
   std::vector<std::vector<Accumulator> > PHY;
 
+  std::vector<std::vector<double> > Q;
+
   std::vector<std::vector<double> > counterC;
   std::vector<std::vector<double> > counterS;
 
@@ -55,6 +57,7 @@ public:
   void allreduce(MPI_Comm comm);
 #endif
   void show(FILE*);
+  void show_bin(FILE*);
 
   void reset() {
     AutoDebugDump("SF::reset()");
@@ -88,6 +91,7 @@ SF::SF(Parameter const& param, Lattice& lat, Algorithm& alg, WaveVector& wv)
     for (int i = 0; i < NK; i++) {
       ACC.push_back(std::vector<Accumulator>(Ntau));
       PHY.push_back(std::vector<Accumulator>(Ntau));
+      Q.push_back(std::vector<double>(Ntau));
       for (int it = 0; it < Ntau; it++) {
         std::stringstream ss;
         ss << "C" << i << "t" << it;
@@ -171,6 +175,17 @@ inline void SF::show(FILE* F) {
   }
 };
 
+inline void SF::show_bin(FILE* F) {
+  if (!to_be_calc) { return; }
+  AutoDebugDump("SF::show_bin");
+  for (int i = 0; i < NK; i++) {
+    for (int it = 0; it < Ntau; it++) {
+      fprintf(F, "R C%dt%d = %.15lf\n", i, it, Q[i][it]);
+    }
+    fprintf(F, "\n");
+  }
+};
+
 inline void SF::summary() {
   if (!to_be_calc) { return; }
   AutoDebugDump("SF::summary");
@@ -190,8 +205,8 @@ void SF::setsummary() {
     for (int ik = 0; ik < NK; ik++) {
       for (int it = 0; it < Ntau; it++) {
         ACC[ik][it].average();
-        const double Q = ACC[ik][it].mean();
-        PHY[ik][it].accumulate(invsign * invV * Q);
+        Q[ik][it] = invsign * invV * ACC[ik][it].mean();
+        PHY[ik][it].accumulate(Q[ik][it]);
       }
     }
   }

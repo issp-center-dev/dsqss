@@ -106,6 +106,8 @@ public:
 
   std::string CKOUTFILE;  // output file name
   FILE* FOUT4CK;         // file handler for the output file
+
+  int save_set_obs;   // if true, save observables of each set
 };
 
 void Parameter::readfile(std::string const& filename) {
@@ -149,6 +151,7 @@ void Parameter::readfile(std::string const& filename) {
   SFOUTFILE = dict["sfoutfile"];
   CFOUTFILE = dict["cfoutfile"];
   CKOUTFILE = dict["ckoutfile"];
+  save_set_obs = lexical_cast<int>(dict["savesetobs"]);
 
   RUNTYPE = lexical_cast<int>(dict["runtype"]);
 };
@@ -201,7 +204,7 @@ void Parameter::init(std::map<std::string, std::string>& dict) {
   dict["seed"]           = "198212240";
   dict["nvermax"]        = "10000";
   dict["nsegmax"]        = "10000";
-  dict["ntau"]           = 10;
+  dict["ntau"]           = "10";
   dict["algfile"]        = "algorithm.xml";
   dict["latfile"]        = "lattice.xml";
   dict["wvfile"]         = "wavevector.xml";
@@ -210,6 +213,7 @@ void Parameter::init(std::map<std::string, std::string>& dict) {
   dict["sfoutfile"]      = "sf.dat";
   dict["cfoutfile"]      = "cf.dat";
   dict["ckoutfile"]      = "ck.dat";
+  dict["savesetobs"]     = "0";
   dict["runtype"]        = "0";
 }
 
@@ -235,6 +239,7 @@ inline void Parameter::dump() {
   cout << "CFOUTFILE  = " << CFOUTFILE << endl;
   cout << "SFOUTFILE  = " << SFOUTFILE << endl;
   cout << "CKOUTFILE  = " << CKOUTFILE << endl;
+  cout << "SAVESETOBS = " << save_set_obs << endl;
   cout << "SIMULATIONTIME   = " << SIMTIME << endl;
 
   cout << "+++++++++ input data +++++++++" << endl;
@@ -260,6 +265,7 @@ inline void Parameter::dump(FILE* F) {
   fprintf(F, "P CFOUTFILE  = %s\n", CFOUTFILE.c_str());
   fprintf(F, "P SFOUTFILE  = %s\n", SFOUTFILE.c_str());
   fprintf(F, "P CKOUTFILE  = %s\n", CKOUTFILE.c_str());
+  fprintf(F, "P SAVESETOBS = %d\n", save_set_obs);
   fprintf(F, "P SIMULATIONTIME   = %12lf\n", SIMTIME);
 }
 #endif

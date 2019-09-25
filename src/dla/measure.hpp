@@ -120,6 +120,7 @@ private:
   Algorithm& ALG;
   WaveVector& WV;
   std::vector<double> Q;
+  std::vector<double> smag_bin;
 
 public:
   std::vector<Accumulator> ACC;        // accumurator of snapshot values
@@ -147,9 +148,13 @@ public:
   void accumulate_length(double len, double sgn);
   void dump();
   void show(FILE*);
+  void show_bin(FILE*);
 
   void save(std::ofstream& F) const;
   void load(std::ifstream& F);
+
+  std::vector<double> phys_bin() const { return Q; }
+  std::vector<double> smag() const { return smag_bin; }
 };
 
 inline Measurement::Measurement(Parameter& P0, Lattice& L, Algorithm& A, WaveVector& W)
@@ -163,7 +168,8 @@ inline Measurement::Measurement(Parameter& P0, Lattice& L, Algorithm& A, WaveVec
       ACC(NACC),
       PHY(NPHY),
       ACC_SMAG(WV.NK),
-      PHY_SMAG(WV.NK)
+      PHY_SMAG(WV.NK),
+      smag_bin(WV.NK)
 {
   AutoDebugDump("Measurement::Measurement");
 
@@ -479,9 +485,29 @@ void Measurement::setsummary() {
       PHY_SMAG[k].B.accumulate(a2);
       PHY_SMAG[k].S.accumulate((a2 - a1*a1)*V);
       PHY_SMAG[k].X.accumulate((b2 - b1*b1)*B*V);
+      smag_bin[k] = a2;
     }
   }else{ // sgn == 0.0
     PHY[SGN].accumulate(0.0);
+  }
+}
+
+void Measurement::show_bin(FILE* fp){
+  for (int i = 0; i < NPHY; i++) {
+    fprintf(fp, "R %s = %.15lf\n", Specific::PNAME[i].c_str(), Q[i]);
+  }
+  const double invsign = 1.0 / Q[Specific::SIGN];
+  const double B    = LAT.BETA;
+  const double V    = LAT.NSITE;
+  for (int k=0; k<WV.NK; ++k){
+    const double a1 = ACC_SMAG[k].A1.mean() * invsign;
+    const double a2 = ACC_SMAG[k].A2.mean() * invsign;
+    const double b1 = ACC_SMAG[k].B1.mean() * invsign;
+    const double b2 = ACC_SMAG[k].B2.mean() * invsign;
+    fprintf(fp, "R amxs%d = %.15lf\n", k, a1);
+    fprintf(fp, "R bmxs%d = %.15lf\n", k, a2);
+    fprintf(fp, "R smxs%d = %.15lf\n", k, (a2 - a1*a1)*V);
+    fprintf(fp, "R xmxs%d = %.15lf\n", k, (b2 - b1*b1)*B*V);
   }
 }
 

@@ -131,6 +131,57 @@ Simulation::Simulation(Parameter& P0)
     Set((ISET==0 ? P.NTHERM : P.NDECOR), P.NMCS);
     double elapsed = timer.elapsed();
     double ETR = elapsed*(P.NSET-ISET-1)/(ISET-ISETstart+1);
+
+    if(P.save_set_obs != 0){
+      {
+        std::stringstream ss;
+        ss << P.OUTFILE << "." << ISET << "." << I_PROC;
+        FILE* fp = fopen(ss.str().c_str(), "w");
+        fprintf(fp, "C This is DSQSS ver.%s\n\n", DSQSS_VERSION);
+        fprintf(fp, "I N_PROC = %d\n", N_PROC);
+        LAT.show_param(fp);
+        P.dump(fp);
+        MSR.show_bin(fp);
+        fclose(fp);
+      }
+      if (P.FOUT4SF) {
+        std::stringstream ss;
+        ss << P.SFOUTFILE << "." << ISET << "." << I_PROC;
+        FILE* fp = fopen(ss.str().c_str(), "w");
+        fprintf(fp, "C This is DSQSS ver.%s\n\n", DSQSS_VERSION);
+        fprintf(fp, "I N_PROC = %d\n", N_PROC);
+        LAT.show_param(fp);
+        P.dump(fp);
+
+        sf.show_bin(fp);
+        fclose(fp);
+      }
+      if (P.FOUT4CK) {
+        std::stringstream ss;
+        ss << P.CKOUTFILE << "." << ISET << "." << I_PROC;
+        FILE* fp = fopen(ss.str().c_str(), "w");
+        fprintf(fp, "C This is DSQSS ver.%s\n\n", DSQSS_VERSION);
+        fprintf(fp, "I N_PROC = %d\n", N_PROC);
+        LAT.show_param(fp);
+        P.dump(fp);
+
+        ck.show_bin(fp);
+        fclose(fp);
+      }
+      if (P.FOUT4CF) {
+        std::stringstream ss;
+        ss << P.CFOUTFILE << "." << ISET << "." << I_PROC;
+        FILE* fp = fopen(ss.str().c_str(), "w");
+        fprintf(fp, "C This is DSQSS ver.%s\n\n", DSQSS_VERSION);
+        fprintf(fp, "I N_PROC = %d\n", N_PROC);
+        LAT.show_param(fp);
+        P.dump(fp);
+
+        cf.show_bin(fp);
+        fclose(fp);
+      }
+    }
+
     if(I_PROC==0){
       std::cout << ISET+1 << " / " << P.NSET << " done. [Elapsed: " << elapsed << " sec. ETR: " << ETR << " sec.]" << std::endl;
     }

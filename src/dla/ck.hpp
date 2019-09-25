@@ -40,6 +40,7 @@ private:
   Accumulator SIGN;
   std::vector<std::vector<Accumulator> > ACC;
   std::vector<std::vector<Accumulator> > PHY;
+  std::vector<std::vector<double> > Q;
 
   std::vector<std::vector<double> >  counterC;
 
@@ -56,6 +57,7 @@ public:
   void allreduce(MPI_Comm comm);
 #endif 
   void show(FILE*);
+  void show_bin(FILE*);
 
   void save(std::ofstream& F) const;
   void load(std::ifstream& F);
@@ -78,6 +80,7 @@ CK::CK(Parameter const& param, Lattice& lat, Algorithm& alg, WaveVector& wv)
     for (int i = 0; i < NK; i++) {
       ACC.push_back(std::vector<Accumulator>(Ntau));
       PHY.push_back(std::vector<Accumulator>(Ntau));
+      Q.push_back(std::vector<double>(Ntau));
       for (int it = 0; it < Ntau; it++) {
         std::stringstream ss;
         ss << "C" << i << "t" << it;
@@ -107,6 +110,17 @@ inline void CK::show(FILE* F) {
   for (int i = 0; i < NK; i++) {
     for (int it = 0; it < Ntau; it++) {
       PHY[i][it].show(F,"R");
+    }
+    fprintf(F, "\n");
+  }
+};
+
+inline void CK::show_bin(FILE* F) {
+  if (!to_be_calc) { return; }
+  AutoDebugDump("CK::show");
+  for (int i = 0; i < NK; i++) {
+    for (int it = 0; it < Ntau; it++) {
+      fprintf(F, "R C%dt%d = %.15lf\n", i, it, Q[i][it]);
     }
     fprintf(F, "\n");
   }
@@ -184,7 +198,8 @@ void CK::setsummary() {
     for (int ik = 0; ik < NK; ik++) {
       for (int it = 0; it < Ntau; it++) {
         ACC[ik][it].average();
-        PHY[ik][it].accumulate(invsign * ACC[ik][it].mean() * factor);
+        Q[ik][it] = invsign * ACC[ik][it].mean() * factor;
+        PHY[ik][it].accumulate(Q[ik][it]);
       }
     }
   }
