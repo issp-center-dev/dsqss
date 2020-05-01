@@ -1,0 +1,20 @@
+[System]
+solver = PMWA
+[Lattice]
+lattice_type = square
+D = 2
+L = 4, 4
+Beta = 10
+[Parameter]
+NPRE = 10
+NTHERM = 1000
+NDECOR = 1000
+NMCS = 1000
+NVERMAX = 10000000
+SEED = 31415
+CB = 1
+Jxy = -1
+Jz = -1
+G = 0.1
+H = 0
+MU= 0
