@@ -1,19 +1,19 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<html lang="ja">
   <head>
     <meta charset="utf-8" />
     <title>4.4. DLA の入力ファイル生成ツール &#8212; DSQSS 2.1.0-dev ドキュメント</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
-    <script type="text/javascript" src="../../_static/translations.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="検索" href="../../search.html" />
     <link rel="next" title="4.5. 向き付きループアルゴリズムソルバ dla" href="engine.html" />
@@ -35,14 +35,14 @@
           <div class="body" role="main">
             
   <div class="section" id="dla">
-<h1>4.4. DLA の入力ファイル生成ツール<a class="headerlink" href="#dla" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<h1><span class="section-number">4.4. </span>DLA の入力ファイル生成ツール<a class="headerlink" href="#dla" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <p>DLA は入力ファイルとして格子定義ファイル,アルゴリズム定義ファイル,
 波数ベクトル定義ファイルを, それぞれXML 形式ファイルとして受け取ります.
 これらをうまく定義することで, 計算機資源の許す範囲で任意の格子や模型を計算できますが,
 手で定義するには複雑になっています.
 そのため,超立方格子やハイゼンベルグ模型などのよく使われるような格子・模型については生成ツールが用意されています.</p>
 <div class="section" id="dla-pre">
-<span id="id1"></span><h2>4.4.1. シンプルモードツール <code class="docutils literal notranslate"><span class="pre">dla_pre</span></code><a class="headerlink" href="#dla-pre" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<span id="id1"></span><h2><span class="section-number">4.4.1. </span>シンプルモードツール <code class="docutils literal notranslate"><span class="pre">dla_pre</span></code><a class="headerlink" href="#dla-pre" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">dla_pre</span></code> は <a class="reference internal" href="input_simple.html#simple-mode-file"><span class="std std-ref">シンプルモードファイル</span></a> から <a class="reference internal" href="input_expert.html#dla-expert-files"><span class="std std-ref">DSQSS/DLA のエキスパートモード入力ファイル</span></a> を生成するツールです.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dla_pre [-p paramfile] &lt;inputfile&gt;
 </pre></div>
@@ -57,7 +57,7 @@
 <p>格子XML ファイルなど, 出力される XML ファイルの名前はパラメータから自動生成されます.</p>
 </div>
 <div class="section" id="dla-latgen">
-<span id="dla-lat-gen"></span><h2>4.4.2. 格子生成ツール <code class="docutils literal notranslate"><span class="pre">dla_latgen</span></code><a class="headerlink" href="#dla-latgen" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<span id="dla-lat-gen"></span><h2><span class="section-number">4.4.2. </span>格子生成ツール <code class="docutils literal notranslate"><span class="pre">dla_latgen</span></code><a class="headerlink" href="#dla-latgen" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">dla_latgen</span></code> は <a class="reference internal" href="input_simple.html#simple-mode-file"><span class="std std-ref">シンプルモードファイル</span></a> から <a class="reference internal" href="input_standard.html#lattice-data-file"><span class="std std-ref">格子データファイル</span></a> や <a class="reference internal" href="input_standard.html#lattice-toml-file"><span class="std std-ref">格子TOML ファイル</span></a> を生成するツールです.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dla_latgen [-o datafile] [-t TOML] [-g GNUPLOT] input
 </pre></div>
@@ -101,7 +101,7 @@ bc = [true, false]
 </div>
 </div>
 <div class="section" id="dla-hamgen">
-<h2>4.4.3. ハミルトニアン生成ツール <code class="docutils literal notranslate"><span class="pre">dla_hamgen</span></code><a class="headerlink" href="#dla-hamgen" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2><span class="section-number">4.4.3. </span>ハミルトニアン生成ツール <code class="docutils literal notranslate"><span class="pre">dla_hamgen</span></code><a class="headerlink" href="#dla-hamgen" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">dla_hamgen</span></code> は <a class="reference internal" href="input_simple.html#simple-mode-file"><span class="std std-ref">シンプルモードファイル</span></a> から <a class="reference internal" href="input_standard.html#hamiltonian-file"><span class="std std-ref">ハミルトニアンTOMLファイル</span></a> を生成するツールです.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dla_hamgen [-o filename] &lt;inputfile&gt;
 </pre></div>
@@ -151,7 +151,7 @@ mu = 1.0
 </div>
 </div>
 <div class="section" id="dla-pgen">
-<h2>4.4.4. パラメータファイル生成ツール <code class="docutils literal notranslate"><span class="pre">dla_pgen</span></code><a class="headerlink" href="#dla-pgen" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2><span class="section-number">4.4.4. </span>パラメータファイル生成ツール <code class="docutils literal notranslate"><span class="pre">dla_pgen</span></code><a class="headerlink" href="#dla-pgen" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">dla_pgen</span></code> は <a class="reference internal" href="input_simple.html#simple-mode-file"><span class="std std-ref">シンプルモードファイル</span></a> から <a class="reference internal" href="input_expert.html#expert-param-file"><span class="std std-ref">パラメータファイル</span></a> を生成するツールです.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dla_pgen [-o filename] &lt;inputfile&gt;
 </pre></div>
@@ -165,7 +165,7 @@ mu = 1.0
 </dl>
 </div>
 <div class="section" id="dla-wvgen">
-<h2>4.4.5. 波数ファイル生成ツール <code class="docutils literal notranslate"><span class="pre">dla_wvgen</span></code><a class="headerlink" href="#dla-wvgen" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2><span class="section-number">4.4.5. </span>波数ファイル生成ツール <code class="docutils literal notranslate"><span class="pre">dla_wvgen</span></code><a class="headerlink" href="#dla-wvgen" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">dla_wvgen</span></code> は <a class="reference internal" href="input_simple.html#simple-mode-file"><span class="std std-ref">シンプルモードファイル</span></a> から <a class="reference internal" href="input_standard.html#wavevector-file"><span class="std std-ref">波数ファイル</span></a> を生成するツールです.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dla_wvgen [-o filename] [-s size] &lt;inputfile&gt;
 </pre></div>
@@ -183,7 +183,7 @@ mu = 1.0
 <p>実行すると filename で指定した名前の波数ファイルが生成されます.</p>
 </div>
 <div class="section" id="dla-alg">
-<h2>4.4.6. アルゴリズム生成ツール <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code><a class="headerlink" href="#dla-alg" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2><span class="section-number">4.4.6. </span>アルゴリズム生成ツール <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code><a class="headerlink" href="#dla-alg" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> は
 <a class="reference internal" href="input_standard.html#lattice-data-file"><span class="std std-ref">格子データファイル</span></a>, <a class="reference internal" href="input_standard.html#lattice-toml-file"><span class="std std-ref">格子TOML ファイル</span></a>, <a class="reference internal" href="input_standard.html#hamiltonian-file"><span class="std std-ref">ハミルトニアンTOMLファイル</span></a>, <a class="reference internal" href="input_standard.html#wavevector-file"><span class="std std-ref">波数ファイル</span></a> から
 <a class="reference internal" href="input_expert.html#lattice-xml-file"><span class="std std-ref">格子XMLファイル</span></a>, <a class="reference internal" href="input_expert.html#algorithm-xml-file"><span class="std std-ref">アルゴリズム定義ファイル</span></a>, <a class="reference internal" href="input_expert.html#wavevector-xml-file"><span class="std std-ref">波数ベクトルXMLファイル</span></a>, <a class="reference internal" href="input_expert.html#relative-coordinate-xml-file"><span class="std std-ref">相対座標定義ファイル</span></a> を生成するツールです.</p>
@@ -275,9 +275,9 @@ mu = 1.0
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="index.html">4. DSQSS/DLAのユーザーマニュアル</a><ul>
-      <li>Previous: <a href="input_expert.html" title="前の章へ">4.3. DSQSS/DLA のエキスパートモード入力ファイル</a></li>
-      <li>Next: <a href="engine.html" title="次の章へ">4.5. 向き付きループアルゴリズムソルバ dla</a></li>
+  <li><a href="index.html"><span class="section-number">4. </span>DSQSS/DLAのユーザーマニュアル</a><ul>
+      <li>Previous: <a href="input_expert.html" title="前の章へ"><span class="section-number">4.3. </span>DSQSS/DLA のエキスパートモード入力ファイル</a></li>
+      <li>Next: <a href="engine.html" title="次の章へ"><span class="section-number">4.5. </span>向き付きループアルゴリズムソルバ dla</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -291,7 +291,7 @@ mu = 1.0
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -308,7 +308,7 @@ mu = 1.0
       &copy;2018, DSQSS developers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

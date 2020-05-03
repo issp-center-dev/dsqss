@@ -1,19 +1,19 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<html lang="ja">
   <head>
     <meta charset="utf-8" />
     <title>4.3. DSQSS/DLA のエキスパートモード入力ファイル &#8212; DSQSS 2.1.0-dev ドキュメント</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
-    <script type="text/javascript" src="../../_static/translations.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="検索" href="../../search.html" />
     <link rel="next" title="4.4. DLA の入力ファイル生成ツール" href="generator.html" />
@@ -35,12 +35,12 @@
           <div class="body" role="main">
             
   <div class="section" id="dsqss-dla">
-<span id="dla-expert-files"></span><h1>4.3. DSQSS/DLA のエキスパートモード入力ファイル<a class="headerlink" href="#dsqss-dla" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<span id="dla-expert-files"></span><h1><span class="section-number">4.3. </span>DSQSS/DLA のエキスパートモード入力ファイル<a class="headerlink" href="#dsqss-dla" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <p>DSQSS/DLA のエキスパートモード入力ファイルは, DSQSS/DLA の実行バイナリ <code class="docutils literal notranslate"><span class="pre">dla</span></code> が直接扱う入力ファイルです.
 シンプルモードやスタンダードモードはこれらエキスパートモード入力ファイルを前処理として生成する工程です.
 このファイルをユーザが直接生成, 編集する必要は, 普通はありません.</p>
 <div class="section" id="id1">
-<h2>4.3.1. 入力ファイル一覧<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2><span class="section-number">4.3.1. </span>入力ファイル一覧<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <table class="colwidths-given docutils align-default">
 <colgroup>
 <col style="width: 20%" />
@@ -66,7 +66,7 @@
 </table>
 </div>
 <div class="section" id="expert-param-file">
-<span id="id2"></span><h2>4.3.2. パラメータファイル<a class="headerlink" href="#expert-param-file" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<span id="id2"></span><h2><span class="section-number">4.3.2. </span>パラメータファイル<a class="headerlink" href="#expert-param-file" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>パラメータファイルは次に示すような書式のプレーンテキストファイルです.</p>
 <ul class="simple">
 <li><p>1行あたり1パラメータを, <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span> <span class="pre">=</span> <span class="pre">&lt;value&gt;</span></code> という形式で表します.</p></li>
@@ -207,7 +207,7 @@
 </ul>
 </div>
 <div class="section" id="xml">
-<span id="lattice-xml-file"></span><h2>4.3.3. 格子XMLファイル<a class="headerlink" href="#xml" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<span id="lattice-xml-file"></span><h2><span class="section-number">4.3.3. </span>格子XMLファイル<a class="headerlink" href="#xml" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>格子ファイルは空間の情報, たとえばサイトの数やサイト同士のつながりかたなどを定義するための,
 XML ライクな形式で記述されるテキストファイルです.
 これは一般に複雑になりますが, より単純な格子データファイルや格子TOML ファイルから
@@ -267,7 +267,7 @@ XML ライクな形式で記述されるテキストファイルです.
 </dl>
 </div>
 <div class="section" id="algorithm-xml-file">
-<span id="id3"></span><h2>4.3.4. アルゴリズム定義ファイル<a class="headerlink" href="#algorithm-xml-file" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<span id="id3"></span><h2><span class="section-number">4.3.4. </span>アルゴリズム定義ファイル<a class="headerlink" href="#algorithm-xml-file" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>アルゴリズム定義ファイルは相互作用ごとのワームの散乱確率などを定義する,
 XML ライクな形式で記述されるテキストファイルです.
 これは一般に複雑になりえるので, より簡単なハミルトニアン定義ファイルから自動生成するためのツール <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> が用意されています.</p>
@@ -489,7 +489,7 @@ Algorithm/Vertex/InitialConfiguration/NumberOfChannels の個数だけこの要�
 </dl>
 </div>
 <div class="section" id="wavevector-xml-file">
-<span id="id4"></span><h2>4.3.5. 波数ベクトルXMLファイル<a class="headerlink" href="#wavevector-xml-file" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<span id="id4"></span><h2><span class="section-number">4.3.5. </span>波数ベクトルXMLファイル<a class="headerlink" href="#wavevector-xml-file" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>波数ベクトルXMLファイルは, スタッガード秩序変数</p>
 <div class="math notranslate nohighlight">
 \[M^{z}(\vec{k}) \equiv \frac{1}{N} \sum_i e^{-i\vec{k}\vec\vec{r}_i} \left\langle M^{z}_i \right\rangle\]</div>
@@ -526,7 +526,7 @@ NumberOfSites と NumberOfWaveVectors の積だけ指定する必要がありま
 </dl>
 </div>
 <div class="section" id="relative-coordinate-xml-file">
-<span id="id5"></span><h2>4.3.6. 相対座標定義ファイル<a class="headerlink" href="#relative-coordinate-xml-file" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<span id="id5"></span><h2><span class="section-number">4.3.6. </span>相対座標定義ファイル<a class="headerlink" href="#relative-coordinate-xml-file" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>相対座標定義ファイルは,実空間表示温度グリーン関数</p>
 <div class="math notranslate nohighlight">
 \[G(\vec{r}_{ij},\tau) \equiv \left\langle M_i^+(\tau) M_j^- \right\rangle\]</div>
@@ -602,9 +602,9 @@ NumberOfSites と NumberOfWaveVectors の積だけ指定する必要がありま
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="index.html">4. DSQSS/DLAのユーザーマニュアル</a><ul>
-      <li>Previous: <a href="input_standard.html" title="前の章へ">4.2. DSQSS/DLA のスタンダードモード</a></li>
-      <li>Next: <a href="generator.html" title="次の章へ">4.4. DLA の入力ファイル生成ツール</a></li>
+  <li><a href="index.html"><span class="section-number">4. </span>DSQSS/DLAのユーザーマニュアル</a><ul>
+      <li>Previous: <a href="input_standard.html" title="前の章へ"><span class="section-number">4.2. </span>DSQSS/DLA のスタンダードモード</a></li>
+      <li>Next: <a href="generator.html" title="次の章へ"><span class="section-number">4.4. </span>DLA の入力ファイル生成ツール</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -618,7 +618,7 @@ NumberOfSites と NumberOfWaveVectors の積だけ指定する必要がありま
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -635,7 +635,7 @@ NumberOfSites と NumberOfWaveVectors の積だけ指定する必要がありま
       &copy;2018, DSQSS developers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
