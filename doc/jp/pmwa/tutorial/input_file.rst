@@ -45,6 +45,17 @@ DSQSS/DLAとDSQSS/PMWAの入力ファイルでは, 共通するパラメータ�
      G, double, "ボソン系では :math:`\Gamma` を, スピン系では :math:`\Gamma/2` を表す."
      NMAX, \-, "1に固定"
 
+- 格子関連のパラメータ
+
+.. csv-table::
+     :header-rows: 1
+     :widths: 2,1,4
+
+     Parameter, type, default, 備考 
+     NLdiv, int, 1, Lの分割数 (各次元についてそれぞれ NLdiv分割します)
+     NBdiv, int, 1, Bの分割数
+     NFIELD, int, 0, 磁場の種類の数(基本的には0に設定)
+
 
 入力ファイル例を以下に示します.
 ::

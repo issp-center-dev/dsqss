@@ -33,6 +33,16 @@ In the input file of DSQSS/DLA and DSQSS/PMWA, there are many common parameters.
      G, double, " :math:`\Gamma` in boson system. :math:`\Gamma/2` in spin system."
      NMAX, \-, "This value is not used (always fixed to be 1)."
 
+- Parameters for the lattice
+
+.. csv-table::
+     :header-rows: 1
+     :widths: 2,1,1,4
+
+     Parameter, type, default, description
+     NLdiv, int, 1, The number of divisions of L (divide NLdiv for each dimension)
+     NBdiv, int, 1, The number of divisions of L
+     NFIELD, int, 0, The type of magnetic field (basically set to 0)
 
 An example of the input file is shown as follows:
 ::
