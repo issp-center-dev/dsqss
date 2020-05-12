@@ -3,7 +3,7 @@ import subprocess
 from dsqss.dla_pre import dla_pre
 from dsqss.result import Results
 
-L = 30
+L = 32
 
 lattice = {"lattice": "hypercubic", "dim": 1, "L": L}
 hamiltonian = {"model": "spin", "Jz": -1, "Jxy": -1}
