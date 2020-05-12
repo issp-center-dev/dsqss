@@ -25,7 +25,7 @@ from .displacement import Displacement
 from .hamiltonian import GraphedHamiltonian
 from .lattice import Lattice
 from .parameter import Parameter
-from .prob_kernel import (heat_bath, metropolice, reversible_suwa_todo,
+from .prob_kernel import (heat_bath, metropolis, reversible_suwa_todo,
                           suwa_todo)
 from .std_lattice import std_lattice
 from .std_model import std_model
@@ -53,8 +53,10 @@ def dla_pre(param, pfile):
         kernel = reversible_suwa_todo
     elif kernel == "heat bath":
         kernel = heat_bath
-    elif kernel == "metropolice":
-        kernel = metropolice
+    elif kernel == "metropolis":
+        kernel = metropolis
+    elif args.kernel == "metropolice":
+        ERROR('kenel = "metropolice" is now an invalid option because this is a typographic error in old DSQSS. Use "metropolis".')
     else:
         ERROR("unknown kernel: {0}".format(kernel))
 

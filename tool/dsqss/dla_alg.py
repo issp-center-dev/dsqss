@@ -24,7 +24,7 @@ from .algorithm import Algorithm
 from .displacement import Displacement
 from .hamiltonian import GraphedHamiltonian
 from .lattice import Lattice
-from .prob_kernel import (heat_bath, metropolice, reversible_suwa_todo,
+from .prob_kernel import (heat_bath, metropolis, reversible_suwa_todo,
                           suwa_todo)
 from .util import ERROR
 from .wavevector import Wavevector
@@ -124,7 +124,7 @@ def main():
         help=(
             "transition kernel of Monte Carlo: "
             '"suwa todo", "reversible suwa todo", '
-            '"heat bath", or "metropolice".'
+            '"heat bath", or "metropolis".'
         ),
     )
     parser.add_argument(
@@ -143,8 +143,10 @@ def main():
         kernel = reversible_suwa_todo
     elif args.kernel == "heat bath":
         kernel = heat_bath
+    elif args.kernel == "metropolis":
+        kernel = metropolis
     elif args.kernel == "metropolice":
-        kernel = metropolice
+        ERROR('kenel = "metropolice" is now an invalid option because this is a typographic error in old DSQSS. Use "metropolis".')
     else:
         ERROR("unknown kernel: {0}".format(args.kernel))
 

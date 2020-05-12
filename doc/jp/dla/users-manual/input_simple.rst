@@ -207,7 +207,7 @@ XXZ 模型
 ``heat bath``
    熱浴法.
 
-``metropolice``
+``metropolis``
    メトロポリスアルゴリズム.
 
 

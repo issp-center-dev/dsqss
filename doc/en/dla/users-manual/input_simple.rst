@@ -205,8 +205,8 @@ Available ``kernel`` s are following:
 ``heat bath``
   Heat bath method (Gibbs sampler).
 
-``metropolice``
-  Metropolice-Hasting algorithm.
+``metropolis``
+  Metropolis-Hasting algorithm.
 
 
 .. _TOML: https://github.com/toml-lang/toml/blob/master/versions/en/toml-v0.5.0.md

@@ -100,7 +100,7 @@ latfile
 linebreak
 lxmx
 macOS
-metropolice
+metropolis
 multiworm
 ndecor
 neighbour

@@ -30,7 +30,7 @@ def heat_bath(weights, cutoff=1e-10):
     return np.array([ws for i in range(len(ws))])
 
 
-def metropolice(weights, cutoff=1e-10):
+def metropolis(weights, cutoff=1e-10):
     """
     return an array W,
     where W[i,j] is the probability of a transition i=>j
