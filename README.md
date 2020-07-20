@@ -1,4 +1,4 @@
-# dsqss
+# DSQSS
 
 [![Build Status](https://travis-ci.org/issp-center-dev/dsqss.svg?branch=master)](https://travis-ci.org/issp-center-dev/dsqss)
 [![doc latest_stable en](https://img.shields.io/badge/doc--en-v2.0.1-blue.svg)](https://issp-center-dev.github.io/dsqss/manual/v2.0.1/en/index.html)
@@ -8,6 +8,20 @@
 
 DSQSS (Discrete Space Quantum Systems Solver) is a software package for calculating expectation values of several observables of quantum lattice systems in finite temperature.
 DSQSS implements the path-integral Monte Carlo method with the directed loop algorithm.
+
+## Structure of directories
+- src
+  - source codes of the main programs, DSQSS/DLA and DSQSS/PMWA
+- tool
+  - utility tools (input file generators)
+- sample
+  - examples of application
+- test
+  - test suite
+- doc
+  - document
+- config
+  - configuration files used in CMake
 
 ## Build and Install
 
