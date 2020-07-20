@@ -231,82 +231,8 @@ class info:
             print("\n " + " ".join(cmd))
             subprocess.call(cmd)
         else:
-            dsqss.generate_lattice(self.prm.info_dict, self.prm.param_dict["latfile"])
-
-        # Genelate Hamiltonian and Algorithm xml files (only used for DLA)
-        if self.prm.info_dict["solver"] == "DLA":
-            hfile = self.args.hfile
-            dsqss.generate_hamiltonian(self.prm.info_dict, hfile)
-
-            """
-            model_type = self.prm.info_dict["model_type"]
-            genpath = os.path.join(self.gendir, self.dict_hamgen[model_type])
-            if not os.path.exists(genpath):
-                raise RuntimeError('{0} is not found: use correct --generator_dir.'.format(genpath))
-            if model_type == "spin":
-                cmd = [genpath,
-                       '-o', hfile,
-                       str(self.prm.info_dict["m"]),
-                       str(self.prm.info_dict["j"]),
-                       str(self.prm.info_dict["f"])]
-            elif model_type == "boson":
-                cmd = [genpath,
-                       '-o', hfile,
-                       str(self.prm.info_dict["m"]),
-                       str(self.prm.info_dict["j"]),
-                       str(self.prm.info_dict["v"]),
-                       str(self.prm.info_dict["u"]),
-                       str(self.prm.info_dict["f"])]
-            print("\n " + ' '.join(cmd))
-            subprocess.call(cmd)
-            genpath = os.path.join(self.gendir, 'dla_alg')
-            if not os.path.exists(genpath):
-                raise RuntimeError('{0} is not found: use correct --generator_dir.'.format(genpath))
-            cmd = [genpath, hfile, self.prm.param_dict["algfile"]]
-            print("\n" + ' '.join(cmd))
-            subprocess.call(cmd)
-            """
-
-            if len(self.prm.param_dict["sfinpfile"]) > 0:
-                genpath = os.path.join(self.gendir, "sfgene")
-                if not os.path.exists(genpath):
-                    raise RuntimeError(
-                        "{0} is not found: use correct --generator_dir.".format(genpath)
-                    )
-                cmd = [genpath, "-o", self.prm.param_dict["sfinpfile"]]
-                for l in LatticeInfo:
-                    cmd.append(str(l))
-                cmd.append(str(self.prm.info_dict["ntau"]))
-                cmd.append(str(self.prm.info_dict["ntau_cutoff"]))
-                cmd.append(str(self.prm.info_dict["ktype"]))
-                print("\n" + " ".join(cmd))
-                subprocess.call(cmd)
-            if len(self.prm.param_dict["cfinpfile"]) > 0:
-                genpath = os.path.join(self.gendir, "cfgene")
-                if not os.path.exists(genpath):
-                    raise RuntimeError(
-                        "{0} is not found: use correct --generator_dir.".format(genpath)
-                    )
-                cmd = [genpath, "-o", self.prm.param_dict["cfinpfile"]]
-                for l in LatticeInfo:
-                    cmd.append(str(l))
-                cmd.append(str(self.prm.info_dict["ntau"]))
-                print("\n " + " ".join(cmd))
-                subprocess.call(cmd)
-            if len(self.prm.param_dict["ckinpfile"]) > 0:
-                genpath = os.path.join(self.gendir, "sfgene")
-                if not os.path.exists(genpath):
-                    raise RuntimeError(
-                        "{0} is not found: use correct --generator_dir.".format(genpath)
-                    )
-                cmd = [genpath, "-o", self.prm.param_dict["ckinpfile"]]
-                for l in LatticeInfo:
-                    cmd.append(str(l))
-                cmd.append(str(self.prm.info_dict["ntau"]))
-                cmd.append(str(self.prm.info_dict["ntau_cutoff"]))
-                cmd.append(str(self.prm.info_dict["ktype"]))
-                print("\n " + " ".join(cmd))
-                subprocess.call(cmd)
+            msg = "pmwa_pre treats only PMWA."
+            sys.exit(1)
 
     def print_init_param(self):
         with open(self.args.pfile, mode="w") as f:
