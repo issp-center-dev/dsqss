@@ -18,7 +18,7 @@ from setuptools import setup
 
 setup(
     name="dsqss",
-    version="2.0.2dev",
+    version="2.0.2",
     description="DSQSS input files generator",
     url="https://github.com/issp-center-dev/dsqss",
     author="DSQSS developers",
