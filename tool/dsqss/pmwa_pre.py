@@ -175,7 +175,7 @@ class info:
                 self._replace_keyword(tmp_dict, "v", "jz")
                 self._replace_keyword(tmp_dict, "mu", "h")
                 self._replace_keyword(tmp_dict, "g", "gamma")
-                tmp_dict["g"] = float(tmp_dict["g"]) * 2.0
+                tmp_dict["g"] = float(tmp_dict["g"]) * 0.5
             else:
                 self._replace_keyword(tmp_dict, "g", "gamma")
 
