@@ -17,6 +17,6 @@
 #ifndef VERSION_H
 #define VERSION_H
 
-#define DSQSS_VERSION "v2.0.2"
+#define DSQSS_VERSION "v2.0.3"
 
 #endif
