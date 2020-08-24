@@ -202,6 +202,8 @@ class info:
 
     def _get_latticeinfo(self):
         linfo = self.prm.info_dict["l"]
+        if not isinstance(linfo, list):
+            linfo = [linfo]
         if self.prm.info_dict["lattice_type"] == "triangular":
             LatticeInfo = []
         else:
