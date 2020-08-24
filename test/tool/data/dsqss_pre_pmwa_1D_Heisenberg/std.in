@@ -3,7 +3,7 @@ solver = PMWA
 [Lattice]
 lattice_type = square
 D = 1
-L = 8
+L = 16
 Beta = 10
 [Parameter]
 NPRE = 10
