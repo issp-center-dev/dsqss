@@ -14,7 +14,7 @@ install:
     sudo apt-get install -y texlive-latex-recommended texlive-latex-extra \
          texlive-lang-japanese texlive-fonts-recommended texlive-fonts-extra latexmk
   - kanji-config-updmap-sys ipaex
-  - python3 -m pip install -U pip
+  - pip3 install -U pip
 script:
   - cd ${ROOTDIR}
   - mkdir build
