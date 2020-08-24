@@ -1,0 +1,23 @@
+[hamiltonian]
+model = "spin"
+M = 1
+Jz = -1.0
+Jxy = -1.0
+h = 0.0
+[lattice]
+lattice = "hypercubic"
+dim = 1
+L = 32
+bc = true
+[parameter]
+beta = 16.0
+nset = 5
+npre = 1000
+ntherm = 1000
+ndecor = 1000
+nmcs = 10000
+ntau = 256
+seed = 31415
+wvfile = "Sqtau.xml"
+[kpoints]
+ksteps = 1
