@@ -5,16 +5,16 @@
 </Comment>
 
 <Dimension> 1 </Dimension>
-<LinearSize> 8 </LinearSize>
+<LinearSize> 16 </LinearSize>
 <NumberOfLDecomposition> 1 </NumberOfLDecomposition>
-<LinearDomainSize> 8 </LinearDomainSize>
+<LinearDomainSize> 16 </LinearDomainSize>
 <Beta> 10 </Beta>
 <OldBeta> 10 </OldBeta>
 <NumberOfBDecomposition> 1 </NumberOfBDecomposition>
 <BetaOfDomain> 10 </BetaOfDomain>
-<NumberOfCells> 8 </NumberOfCells>
-<NumberOfSites> 8 </NumberOfSites>
-<NumberOfInteractions> 8 </NumberOfInteractions>
+<NumberOfCells> 16 </NumberOfCells>
+<NumberOfSites> 16 </NumberOfSites>
+<NumberOfInteractions> 16 </NumberOfInteractions>
 <NumberOfSiteTypes> 1 </NumberOfSiteTypes>
 <NumberOfInteractionTypes> 1 </NumberOfInteractionTypes>
 <NumberOfExternalField> 0 </NumberOfExternalField>
@@ -29,6 +29,14 @@
 <S> 5 0 1 </S>
 <S> 6 0 0 </S>
 <S> 7 0 1 </S>
+<S> 8 0 0 </S>
+<S> 9 0 1 </S>
+<S> 10 0 0 </S>
+<S> 11 0 1 </S>
+<S> 12 0 0 </S>
+<S> 13 0 1 </S>
+<S> 14 0 0 </S>
+<S> 15 0 1 </S>
 
 <!-- <I> [id] [itype] [nbody] [edge id] [s0] [s1] ... </I> -->
 
@@ -39,6 +47,14 @@
 <I> 4 0 2 -1 4 5 </I>
 <I> 5 0 2 -1 5 6 </I>
 <I> 6 0 2 -1 6 7 </I>
-<I> 7 0 2 0 7 0 </I>
+<I> 7 0 2 -1 7 8 </I>
+<I> 8 0 2 -1 8 9 </I>
+<I> 9 0 2 -1 9 10 </I>
+<I> 10 0 2 -1 10 11 </I>
+<I> 11 0 2 -1 11 12 </I>
+<I> 12 0 2 -1 12 13 </I>
+<I> 13 0 2 -1 13 14 </I>
+<I> 14 0 2 -1 14 15 </I>
+<I> 15 0 2 0 15 0 </I>
 
 </LATTICE>
