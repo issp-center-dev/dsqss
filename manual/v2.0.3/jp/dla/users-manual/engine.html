@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>4.5. 向き付きループアルゴリズムソルバ dla &#8212; DSQSS 2.0.3 ドキュメント</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="検索" href="../../search.html" />
+    <link rel="next" title="4.6. DLA の出力ファイル" href="output.html" />
+    <link rel="prev" title="4.4. DLA の入力ファイル生成ツール" href="generator.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="dla">
+<h1><span class="section-number">4.5. </span>向き付きループアルゴリズムソルバ dla<a class="headerlink" href="#dla" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">dla</span></code> は向き付きループアルゴリズムを実装した量子モンテカルロプログラムです.
+コマンドライン引数として入力ファイルをとります.</p>
+<p>MPI 実行した場合, 指定したプロセスの数 <span class="math notranslate nohighlight">\(N_\text{proc}\)</span> だけ乱数並列を行います.
+各プロセスは独立に, 入力ファイル中の <code class="docutils literal notranslate"><span class="pre">NSET</span></code> で指定したセット数だけモンテカルロ計算をします.
+その結果, 合計のセット数が <span class="math notranslate nohighlight">\(N_\text{proc}\)</span> 倍され, 統計誤差は <span class="math notranslate nohighlight">\(1/\sqrt{N_\text{proc}}\)</span> 倍になることが期待されます.</p>
+<p>実行例</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dla param.in
+$ mpiexec -np 4 dla param.in
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>ナビゲーション</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. DSQSSとは？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. インストール</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">3. DLAのチュートリアル</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. DSQSS/DLAのユーザーマニュアル</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="input_simple.html">4.1. DSQSS/DLA のシンプルモード</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_standard.html">4.2. DSQSS/DLA のスタンダードモード</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_expert.html">4.3. DSQSS/DLA のエキスパートモード入力ファイル</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generator.html">4.4. DLA の入力ファイル生成ツール</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.5. 向き付きループアルゴリズムソルバ dla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="output.html">4.6. DLA の出力ファイル</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tutorial.html">5. DSQSS/PMWAのチュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tu-index.html">6. DSQSS/PMWAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/algorithm.html">7. アルゴリズム</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="index.html"><span class="section-number">4. </span>DSQSS/DLAのユーザーマニュアル</a><ul>
+      <li>Previous: <a href="generator.html" title="前の章へ"><span class="section-number">4.4. </span>DLA の入力ファイル生成ツール</a></li>
+      <li>Next: <a href="output.html" title="次の章へ"><span class="section-number">4.6. </span>DLA の出力ファイル</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="検索" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/dla/users-manual/engine.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

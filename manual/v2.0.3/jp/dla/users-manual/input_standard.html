@@ -1,0 +1,658 @@
+
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>4.2. DSQSS/DLA のスタンダードモード &#8212; DSQSS 2.0.3 ドキュメント</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="検索" href="../../search.html" />
+    <link rel="next" title="4.3. DSQSS/DLA のエキスパートモード入力ファイル" href="input_expert.html" />
+    <link rel="prev" title="4.1. DSQSS/DLA のシンプルモード" href="input_simple.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="dsqss-dla">
+<h1><span class="section-number">4.2. </span>DSQSS/DLA のスタンダードモード<a class="headerlink" href="#dsqss-dla" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>DSQSS/DLA のスタンダードモードでは, ユーザが模型や格子を定義して計算することができます.
+あらかじめ定義された模型や格子と組み合わせたり, 拡張することも可能です.
+<a class="reference internal" href="input_simple.html#fig-flow-dla-simple"><span class="std std-numref">図 4.1</span></a> はスタンダードモードによる計算の流れ図です.</p>
+<div class="figure align-default" id="fig-flow-dla-std">
+<img alt="DSQSS/DLA のスタンダードモード." src="../../_images/flow_std.png" />
+<p class="caption"><span class="caption-number">図 4.2 </span><span class="caption-text">DSQSS/DLA のスタンダードモード. 丸囲みがファイルを, 四角囲みがツールを表す.</span><a class="headerlink" href="#fig-flow-dla-std" title="この画像へのパーマリンク">¶</a></p>
+</div>
+<div class="section" id="id1">
+<h2><span class="section-number">4.2.1. </span>入力ファイル一覧<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 80%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>lattice.dat</p></td>
+<td><p>格子datファイル.</p></td>
+</tr>
+<tr class="row-even"><td><p>lattice.toml</p></td>
+<td><p>格子TOMLファイル. 格子ファイルはどちらか一方があればよい.</p></td>
+</tr>
+<tr class="row-odd"><td><p>hamiltonian.toml</p></td>
+<td><p>ハミルトニアンTOMLファイル.</p></td>
+</tr>
+<tr class="row-even"><td><p>kpoints.dat</p></td>
+<td><p>波数ファイル.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="lattice-data-file">
+<span id="id2"></span><h2><span class="section-number">4.2.2. </span>格子データファイル<a class="headerlink" href="#lattice-data-file" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>格子データファイルは空間の情報, たとえばサイトの数やサイト同士のつながりかたなどを定義するためのテキストファイルです.
+<code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> の入力ファイルとして扱われます.</p>
+<p><code class="docutils literal notranslate"><span class="pre">#</span></code> から行末まではコメントとして読み飛ばされます. また, 空白行も飛ばされます.
+<code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">lattice</span></code>, <code class="docutils literal notranslate"><span class="pre">directions</span></code>, <code class="docutils literal notranslate"><span class="pre">sites</span></code>, <code class="docutils literal notranslate"><span class="pre">interactions</span></code> の5つのセクションから構成されます.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">name</span></code></dt><dd><p>格子の名前です.  1行のテキストからなります.  コメントや識別用であり, 実際の計算では利用されません.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">lattice</span></code></dt><dd><p>格子の情報を指定するセクションです.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>1行目</dt><dd><ul>
+<li><p>格子の次元を表す整数.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>2行目</dt><dd><ul>
+<li><p>格子のサイズを表す, 空白区切りで次元の数だけ並べられた整数の組.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>3行目</dt><dd><ul>
+<li><p>格子の境界条件を表す, 空白区切りで次元の数だけ並べられた整数の組.
+1 で周期的境界条件を,  0 で開放端境界条件を示します.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>4行目以降</dt><dd><ul>
+<li><p>空間の基底ベクトル <span class="math notranslate nohighlight">\(\vec{e}^i\)</span> を表す, 空白区切りで次元の数+1 だけ並べられた数の組.
+最初の整数はベクトルの番号 <span class="math notranslate nohighlight">\(i\)</span> を, 残りの数はベクトルのデカルト座標 <span class="math notranslate nohighlight">\(e_d^i\)</span> を示します.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">directions</span></code></dt><dd><p>ボンド（二体相互作用）の向きを指定するセクションです.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>1行目</dt><dd><ul>
+<li><p>ボンドの向きの総数.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>2行目以降</dt><dd><ul>
+<li><p>各向きを表すベクトルを表す, 空白区切りで次元の数+1 だけ並べられた数の組.
+最初の整数は向きの番号を, 残りの数はベクトルの要素を示します.
+<code class="docutils literal notranslate"><span class="pre">lattice</span></code> で指定されたベクトルを基底とします.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">sites</span></code></dt><dd><p>サイトの情報を指定するセクションです.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>1行目</dt><dd><ul>
+<li><p>格子に含まれるサイトの総数を表す整数.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>2行目以降</dt><dd><ul>
+<li><p>各サイトの情報を表す空白区切りで次元の数+2 だけ並べられた数の組. 意味は次表の通り.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 80%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>列</p></th>
+<th class="head"><p>説明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>サイト番号. 格子全体における通し番号.</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>サイトタイプ. ハミルトニアンTOML ファイルにおけるサイトタイプと対応する.</p></td>
+</tr>
+<tr class="row-even"><td><p>3 ...</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">lattice</span></code> で指定されたベクトルを基底とするサイトの座標.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">interactions</span></code></dt><dd><p>相互作用の空間情報を指定するセクションです.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>1行目</dt><dd><ul>
+<li><p>格子に含まれる多体相互作用の総数を表す整数.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>2行目以降</dt><dd><ul>
+<li><p><span class="math notranslate nohighlight">\(N = \text{関与サイト数} + 5\)</span> 個の整数の組. 意味は次表の通り.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 80%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>列</p></th>
+<th class="head"><p>説明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>相互作用番号. 格子全体における通し番号.</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>相互作用タイプ. ハミルトニアン TOML ファイルにおける相互作用タイプと対応する.</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>関与サイト数</p></td>
+</tr>
+<tr class="row-odd"><td><p>4 ... (N-2)</p></td>
+<td><p>サイト番号</p></td>
+</tr>
+<tr class="row-even"><td><p>N-1</p></td>
+<td><p>ボンドが周期境界をまたぐ場合には1, そうでなければ0</p></td>
+</tr>
+<tr class="row-odd"><td><p>N</p></td>
+<td><p>ボンドの方向番号</p></td>
+</tr>
+</tbody>
+</table>
+<p>二次元正方格子の例を示します.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>name
+2 dimensional hypercubic lattice
+
+lattice
+2 # dim
+4 4 # size
+1 1 # 0:open boundary, 1:periodic boundary
+0 1.0 0.0 # latvec_0
+1 0.0 1.0 # latvec_1
+
+directions
+2 # ndirections
+# id, coords...
+0 1.0 0.0
+1 0.0 1.0
+
+sites
+16 # nsites
+# id, type, coord...
+0 0 0 0
+1 0 1 0
+2 0 2 0
+3 0 3 0
+4 0 0 1
+5 0 1 1
+6 0 2 1
+7 0 3 1
+8 0 0 2
+9 0 1 2
+10 0 2 2
+11 0 3 2
+12 0 0 3
+13 0 1 3
+14 0 2 3
+15 0 3 3
+
+interactions
+32 # nints
+# id, type, nbody, sites..., edge_flag, direction
+0 0 2 0 1 0 0
+1 0 2 0 4 0 1
+2 0 2 1 2 0 0
+3 0 2 1 5 0 1
+4 0 2 2 3 0 0
+5 0 2 2 6 0 1
+6 0 2 3 0 1 0
+7 0 2 3 7 0 1
+8 0 2 4 5 0 0
+9 0 2 4 8 0 1
+10 0 2 5 6 0 0
+11 0 2 5 9 0 1
+12 0 2 6 7 0 0
+13 0 2 6 10 0 1
+14 0 2 7 4 1 0
+15 0 2 7 11 0 1
+16 0 2 8 9 0 0
+17 0 2 8 12 0 1
+18 0 2 9 10 0 0
+19 0 2 9 13 0 1
+20 0 2 10 11 0 0
+21 0 2 10 14 0 1
+22 0 2 11 8 1 0
+23 0 2 11 15 0 1
+24 0 2 12 13 0 0
+25 0 2 12 0 1 1
+26 0 2 13 14 0 0
+27 0 2 13 1 1 1
+28 0 2 14 15 0 0
+29 0 2 14 2 1 1
+30 0 2 15 12 1 0
+31 0 2 15 3 1 1
+</pre></div>
+</div>
+</div>
+<div class="section" id="toml">
+<span id="lattice-toml-file"></span><h2><span class="section-number">4.2.3. </span>格子TOML ファイル<a class="headerlink" href="#toml" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>格子TOML ファイルはユニットセルと基本並進ベクトルを用いて空間の情報を定義するための,
+<a class="reference external" href="https://github.com/toml-lang/toml/blob/master/versions/ja/toml-v0.5.0.md">TOML</a> 形式のファイルです.
+<code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> の入力ファイルとして扱われます.</p>
+<p><code class="docutils literal notranslate"><span class="pre">parameter</span></code> と <code class="docutils literal notranslate"><span class="pre">unitcell</span></code> のふたつのテーブルから構成されます.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">parameter</span></code></dt><dd><p>格子の情報を記述するテーブルです.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">name</span></code></dt><dd><p>格子の名前です. 実際の計算には用いられません.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dim</span></code></dt><dd><p>格子の空間次元を表す整数です.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">L</span></code></dt><dd><p>格子の大きさを表す整数配列です.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bc</span></code></dt><dd><p>格子の境界条件を表すブーリアンの配列です.
+<code class="docutils literal notranslate"><span class="pre">true</span></code> が周期的境界条件を,  <code class="docutils literal notranslate"><span class="pre">false</span></code> が開放端境界条件を示します.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">basis</span></code></dt><dd><p>格子の基本並進ベクトルを表す2次元配列（配列の配列）です.</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">unitcell</span></code></dt><dd><p>ユニットセルの情報を記述するテーブルです.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">sites</span></code></dt><dd><p>ユニットセル内のサイトを示すテーブルの配列です.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">siteid</span></code></dt><dd><p>サイトのユニットセル内での識別番号です.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>サイトタイプを示す整数です.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">coord</span></code></dt><dd><p>ユニットセル内におけるサイトの局所座標を示す配列です.</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bonds</span></code></dt><dd><p>ユニットセル内のボンドを示すテーブルの配列です.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">bondid</span></code></dt><dd><p>ボンドのユニットセル内での識別番号です.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>相互作用タイプを示す整数です.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">source</span></code></dt><dd><p>ボンドの始点サイトの情報を表すテーブルです.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">siteid</span></code></dt><dd><p>サイトのユニットセル内での識別番号です.</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">target</span></code></dt><dd><p>ボンドの終点サイトの情報を表すテーブルです.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">siteid</span></code></dt><dd><p>サイトのユニットセル内での識別番号です.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">offset</span></code></dt><dd><p>始点サイトの属するユニットセルから見た,
+終点サイトの属するユニットセルの相対座標です.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>二次元正方格子の例を示します.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[parameter]
+name = &quot;square lattice&quot;
+dim = 2
+L = [4,4]
+bc = [true, true]
+basis = [[1,0], [0,1]]
+
+[unitcell]
+
+[[unitcell.sites]]
+siteid = 0
+type = 0
+coord = [0,0]
+
+[[unitcell.bonds]]
+bondid = 0
+type = 0
+source = { siteid = 0 }
+target = { siteid = 0, offset = [1,0] }
+[[unitcell.bonds]]
+bondid = 1
+type = 0
+source = { siteid = 0 }
+target = { siteid = 0, offset = [0,1] }
+</pre></div>
+</div>
+</div>
+<div class="section" id="hamiltonian-file">
+<span id="id3"></span><h2><span class="section-number">4.2.4. </span>ハミルトニアンTOMLファイル<a class="headerlink" href="#hamiltonian-file" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ハミルトニアンTOMLファイルは局所ハミルトニアン, 例えばボンドハミルトニアン, を指定する,
+<a class="reference external" href="https://github.com/toml-lang/toml/blob/master/versions/ja/toml-v0.5.0.md">TOML</a> 形式で記述されるテキストファイルです.
+<code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> の入力として, アルゴリズム定義ファイルを作成するために用いる補助入力ファイルとなっています.
+ハイゼンベルグ模型などのよく用いられる模型については,
+補助ツール <code class="docutils literal notranslate"><span class="pre">dla_hamgen</span></code> が用意されています.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">name</span></code></dt><dd><p>ハミルトニアンの名前です. シミュレーション中で使われることはありません.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">sites</span></code></dt><dd><p>サイトハミルトニアンの情報を記述するテーブルの配列です.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>サイトタイプを示す整数です.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">N</span></code></dt><dd><p>局所自由度が取りうる状態の数を示す整数です.
+例えば <span class="math notranslate nohighlight">\(S=1/2\)</span> スピンでは 2 です.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">values</span></code></dt><dd><p>局所自由度の基底演算子の対角要素.
+例えば <span class="math notranslate nohighlight">\(S=1/2\)</span> スピンでは <code class="docutils literal notranslate"><span class="pre">[-0.5,</span> <span class="pre">0.5]</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">elements</span></code></dt><dd><p>サイトハミルトニアンの行列要素を示すテーブルの配列です.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">istate</span></code></dt><dd><p>ハミルトニアンが作用する前のサイトの状態番号です.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fstate</span></code></dt><dd><p>ハミルトニアンが作用した後のサイトの状態番号です.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">value</span></code></dt><dd><p>ハミルトニアンの行列要素の値です.</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">sources</span></code></dt><dd><p>ワームを導入するためのソースハミルトニアンの行列要素を示すテーブルの配列です.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">istate</span></code></dt><dd><p>ハミルトニアンが作用する前のサイトの状態番号です.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fstate</span></code></dt><dd><p>ハミルトニアンが作用した後のサイトの状態番号です.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">value</span></code></dt><dd><p>ハミルトニアンの行列要素の値です.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">interactions</span></code></dt><dd><p>多体相互作用の情報を記述するテーブルの配列です.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>相互作用タイプを示す整数です.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">nbody</span></code></dt><dd><p>相互作用に関与するサイトの数を示す整数です.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">N</span></code></dt><dd><p>相互作用に関与するサイトそれぞれで, 局所自由度が取りうる状態の数です.
+整数の配列で指定します.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">elements</span></code></dt><dd><p>相互作用ハミルトニアンの行列要素を記述するテーブルの配列です.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">istate</span></code></dt><dd><p>相互作用ハミルトニアンが作用する前のサイトの状態を指定する整数の配列です.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fstate</span></code></dt><dd><p>相互作用ハミルトニアンが作用した後のサイトの状態を指定する整数の配列です.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">value</span></code></dt><dd><p>相互作用ハミルトニアンの行列要素の値です.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<p><span class="math notranslate nohighlight">\(S=1/2\)</span> 反強磁性ハイゼンベルグ模型の例を示します.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>name = &quot;S=1/2 XXZ model&quot;
+[[sites]]
+id = 0
+N = 2
+[[sites.elements]]
+istate = 0
+fstate = 0
+value = 0.5
+
+[[sites.elements]]
+istate = 1
+fstate = 1
+value = -0.5
+
+[[sites.sources]]
+istate = 0
+fstate = 1
+value = 0.5
+
+[[sites.sources]]
+istate = 1
+fstate = 0
+value = 0.5
+
+
+[[interactions]]
+id = 0
+nbody = 2
+N = [ 2, 2]
+[[interactions.elements]]
+istate = [ 0, 0]
+fstate = [ 0, 0]
+value = 0.25
+
+[[interactions.elements]]
+istate = [ 0, 1]
+fstate = [ 0, 1]
+value = -0.25
+
+[[interactions.elements]]
+istate = [ 0, 1]
+fstate = [ 1, 0]
+value = 0.5
+
+[[interactions.elements]]
+istate = [ 1, 0]
+fstate = [ 1, 0]
+value = -0.25
+
+[[interactions.elements]]
+istate = [ 1, 0]
+fstate = [ 0, 1]
+value = 0.5
+
+[[interactions.elements]]
+istate = [ 1, 1]
+fstate = [ 1, 1]
+value = 0.25
+</pre></div>
+</div>
+</div>
+<div class="section" id="wavevector-file">
+<span id="id4"></span><h2><span class="section-number">4.2.5. </span>波数ファイル<a class="headerlink" href="#wavevector-file" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>波数ファイルは, 波数ベクトル</p>
+<div class="math notranslate nohighlight">
+\[\vec{k}^{(i)} = \sum_{d=1}^{D} n_d^{(i)} \vec{g}_d\]</div>
+<p>の <span class="math notranslate nohighlight">\(\vec{n}^{(i)}\)</span> を指定するテキストファイルです.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">dim</span></code></dt><dd><p>格子の次元を示す整数です.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">kpoints</span></code></dt><dd><p>波数ベクトルを指定するセクションです.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>1行目</dt><dd><ul>
+<li><p>波数ベクトルの総数.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>2行目以降</dt><dd><ul>
+<li><p>波数ベクトルを表す, 空白区切りで次元の数+1 だけ並べられた数の組.
+最初の整数は波数ベクトルの番号を, 残りの数はベクトルの要素 <span class="math notranslate nohighlight">\(k_d\)</span> を示します.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<p>ベクトルの基底は逆格子ベクトル <span class="math notranslate nohighlight">\(\vec{g}\)</span> です.
+格子の座標が <span class="math notranslate nohighlight">\(\vec{r} = \sum r_d \vec{e}_d\)</span> で表現されて,
+波数が <span class="math notranslate nohighlight">\(\vec{k} = \sum k_d \vec{g}_d\)</span> で表現されているとき, これらの内積は
+<span class="math notranslate nohighlight">\(\vec{r}\cdot\vec{k} = \sum_d 2\pi r_d k_d / L_d\)</span> となります.
+ここで <span class="math notranslate nohighlight">\(L_d\)</span> は <span class="math notranslate nohighlight">\(d\)</span> 番目の次元における格子のサイズです.</p>
+<p>二次元の例を示します.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dim
+2
+
+kpoints
+3
+0 0 0
+1 2 0
+2 4 0
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>ナビゲーション</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. DSQSSとは？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. インストール</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">3. DLAのチュートリアル</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. DSQSS/DLAのユーザーマニュアル</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="input_simple.html">4.1. DSQSS/DLA のシンプルモード</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.2. DSQSS/DLA のスタンダードモード</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">4.2.1. 入力ファイル一覧</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lattice-data-file">4.2.2. 格子データファイル</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#toml">4.2.3. 格子TOML ファイル</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hamiltonian-file">4.2.4. ハミルトニアンTOMLファイル</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wavevector-file">4.2.5. 波数ファイル</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="input_expert.html">4.3. DSQSS/DLA のエキスパートモード入力ファイル</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generator.html">4.4. DLA の入力ファイル生成ツール</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engine.html">4.5. 向き付きループアルゴリズムソルバ dla</a></li>
+<li class="toctree-l2"><a class="reference internal" href="output.html">4.6. DLA の出力ファイル</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tutorial.html">5. DSQSS/PMWAのチュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tu-index.html">6. DSQSS/PMWAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/algorithm.html">7. アルゴリズム</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="index.html"><span class="section-number">4. </span>DSQSS/DLAのユーザーマニュアル</a><ul>
+      <li>Previous: <a href="input_simple.html" title="前の章へ"><span class="section-number">4.1. </span>DSQSS/DLA のシンプルモード</a></li>
+      <li>Next: <a href="input_expert.html" title="次の章へ"><span class="section-number">4.3. </span>DSQSS/DLA のエキスパートモード入力ファイル</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="検索" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/dla/users-manual/input_standard.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

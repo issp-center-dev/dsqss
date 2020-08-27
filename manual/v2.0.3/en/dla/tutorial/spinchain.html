@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3.3. Magnetic Susceptibility of antiferromagnetic spin chains &#8212; DSQSS 2.0.3 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.4. Number density of the hardcore Bosons on a square lattice" href="bosesquare.html" />
+    <link rel="prev" title="3.2. Energy calculation of the antiferromagnetic Heisenberg dimer by DSQSS/DLA" href="spindimer.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="magnetic-susceptibility-of-antiferromagnetic-spin-chains">
+<h1><span class="section-number">3.3. </span>Magnetic Susceptibility of antiferromagnetic spin chains<a class="headerlink" href="#magnetic-susceptibility-of-antiferromagnetic-spin-chains" title="Permalink to this headline">¶</a></h1>
+<p>In this tutorial, we will calculate the temperature dependence of the magnetic susceptibility for two kinds of antiferromagnetic spin chains with the local spin length <span class="math notranslate nohighlight">\(S=1/2, 1\)</span>.</p>
+<p>The following Python script (sample/dla/02_spinchain/exec.py) performs DSQSS/DLA work-flow for each parameter (combination of spin length and temperature) automatically.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="kn">from</span> <span class="nn">dsqss.dla_pre</span> <span class="kn">import</span> <span class="n">dla_pre</span>
+<span class="kn">from</span> <span class="nn">dsqss.result</span> <span class="kn">import</span> <span class="n">Results</span>
+
+<span class="n">L</span> <span class="o">=</span> <span class="mi">30</span>
+
+<span class="n">lattice</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;lattice&quot;</span><span class="p">:</span> <span class="s2">&quot;hypercubic&quot;</span><span class="p">,</span> <span class="s2">&quot;dim&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">:</span> <span class="n">L</span><span class="p">}</span>
+<span class="n">hamiltonian</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;spin&quot;</span><span class="p">,</span> <span class="s2">&quot;Jz&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Jxy&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">}</span>
+<span class="n">parameter</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;nset&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;ntherm&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span> <span class="s2">&quot;ndecor&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span> <span class="s2">&quot;nmcs&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+             <span class="s2">&quot;wvfile&quot;</span><span class="p">:</span> <span class="s2">&quot;wv.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;dispfile&quot;</span><span class="p">:</span> <span class="s2">&quot;disp.xml&quot;</span><span class="p">}</span>
+
+<span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;xmzu&quot;</span>
+<span class="n">Ms</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">Ts</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.75</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">M</span> <span class="ow">in</span> <span class="n">Ms</span><span class="p">:</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">_</span><span class="si">{1}</span><span class="s2">.dat&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">M</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">T</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">Ts</span><span class="p">):</span>
+        <span class="n">ofile</span> <span class="o">=</span> <span class="s2">&quot;res_</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">.dat&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">pfile</span> <span class="o">=</span> <span class="s2">&quot;param_</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">.in&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">sfoutfile</span> <span class="o">=</span> <span class="s2">&quot;sf_</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">.dat&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">cfoutfile</span> <span class="o">=</span> <span class="s2">&quot;cf_</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">.dat&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">ckoutfile</span> <span class="o">=</span> <span class="s2">&quot;ck_</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">.dat&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">hamiltonian</span><span class="p">[</span><span class="s2">&quot;M&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">M</span>
+        <span class="n">parameter</span><span class="p">[</span><span class="s2">&quot;beta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">T</span>
+        <span class="n">parameter</span><span class="p">[</span><span class="s2">&quot;outfile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ofile</span>
+        <span class="n">parameter</span><span class="p">[</span><span class="s2">&quot;sfoutfile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sfoutfile</span>
+        <span class="n">parameter</span><span class="p">[</span><span class="s2">&quot;cfoutfile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cfoutfile</span>
+        <span class="n">parameter</span><span class="p">[</span><span class="s2">&quot;ckoutfile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ckoutfile</span>
+        <span class="n">dla_pre</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">&quot;parameter&quot;</span><span class="p">:</span> <span class="n">parameter</span><span class="p">,</span> <span class="s2">&quot;hamiltonian&quot;</span><span class="p">:</span> <span class="n">hamiltonian</span><span class="p">,</span> <span class="s2">&quot;lattice&quot;</span><span class="p">:</span> <span class="n">lattice</span><span class="p">},</span>
+            <span class="n">pfile</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;dla&quot;</span><span class="p">,</span> <span class="s2">&quot;param_</span><span class="si">{0}</span><span class="s2">_</span><span class="si">{1}</span><span class="s2">.in&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">i</span><span class="p">)]</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">Results</span><span class="p">(</span><span class="n">ofile</span><span class="p">)</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">to_str</span><span class="p">(</span><span class="n">name</span><span class="p">)))</span>
+    <span class="n">output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Before executing this script, <code class="docutils literal notranslate"><span class="pre">source</span></code> a configuring file <code class="docutils literal notranslate"><span class="pre">dsqssvars-VERSION.sh</span></code> in order to set environment variables
+(replace <code class="docutils literal notranslate"><span class="pre">VERSION</span></code> with the version of DSQSS, e.g., <cite>2.0.0</cite>.)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ source $DSQSS_INSTALL_DIR/share/dsqss/dsqssvars-VERSION.sh
+$ python exec.py
+</pre></div>
+</div>
+<p>The result of <span class="math notranslate nohighlight">\(S=1/2,1\)</span> will be written to <code class="docutils literal notranslate"><span class="pre">xmzu_1.dat</span></code> and <code class="docutils literal notranslate"><span class="pre">xmzu_2.dat</span></code>, respectively (<a class="reference internal" href="#fig-spinchain"><span class="std std-numref">Fig. 3.1</span></a>).
+The <span class="math notranslate nohighlight">\(S=1/2\)</span> chain is gapless and so the magnetic susceptibility remains finite at absolute zero (note that in the simulation the finite size effect opens energy gap).
+On the other hand the magnetic susceptibility of the <span class="math notranslate nohighlight">\(S=1\)</span> chain drops to zero at finite temperature due to the spin gap.</p>
+<div class="figure align-default" id="fig-spinchain">
+<img alt="magnetic susceptibility curves of antiferromagnetic spin chain" src="../../_images/spinchain.png" />
+<p class="caption"><span class="caption-number">Fig. 3.1 </span><span class="caption-text">Temperature v.s. susceptibility curves for <span class="math notranslate nohighlight">\(S=1/2\)</span> (blue) and <span class="math notranslate nohighlight">\(S=1\)</span> (red) antiferromagnetic Heisenberg chain.</span><a class="headerlink" href="#fig-spinchain" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. About DSQSS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. How to install</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. Tutorial of DSQSS/DLA</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">3.1. What’s DSQSS/DLA?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spindimer.html">3.2. Energy calculation of the antiferromagnetic Heisenberg dimer by DSQSS/DLA</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.3. Magnetic Susceptibility of antiferromagnetic spin chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bosesquare.html">3.4. Number density of the hardcore Bosons on a square lattice</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../users-manual/index.html">4. User’s manual of DSQSS/DLA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tutorial.html">5. Tutorial of DSQSS/PMWA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tu-index.html">6. User’s manual for DSQSS/PMWA</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="index.html"><span class="section-number">3. </span>Tutorial of DSQSS/DLA</a><ul>
+      <li>Previous: <a href="spindimer.html" title="previous chapter"><span class="section-number">3.2. </span>Energy calculation of the antiferromagnetic Heisenberg dimer by DSQSS/DLA</a></li>
+      <li>Next: <a href="bosesquare.html" title="next chapter"><span class="section-number">3.4. </span>Number density of the hardcore Bosons on a square lattice</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/dla/tutorial/spinchain.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
