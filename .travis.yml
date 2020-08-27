@@ -27,14 +27,3 @@ script:
 after_success:
   - cd ${ROOTDIR}
   - /bin/bash -x ${ROOTDIR}/.travis_scripts/deploy_docs.sh
-before_deploy:
-  - cd ${ROOTDIR}
-  - /bin/bash -x ${ROOTDIR}/.travis_scripts/make_tarball.sh
-deploy:
-  provider: releases
-  api_key:
-    secure: Ouz4H3hFt47uGBU3Ppn3nTjLl/e6RByTLIXnO1vJdATWnCG7IM34EXHW9vtBbRarLn3sW1zC4m5nTfNuIuEvQEz0WGeHg5qrp+vwEoz7tKRzos9IQWwIP5i3mQG7JDpbwnJ8CTBYCwZbzUvY1s6DTvIkiu6yDcsqJnkNQZzHCgWDFLgg3nSssIaAWfX94PoGegAdlfAcfOwYkN68P6h8dAjC9fHz6me6x0U1JfPRLxNUpLQh+qcS1GnYpTi0c9r+46cAy3vhqcIywX9/eHW2aXp5jeFam2ljPBidqGoHhXpHOuLwDbNTLIR2ecCPTOapQcXmNapYi8ngqyRD6ExORbH1hEUDfHMB8BOguljyqUDf7t/4vHEqNjUTaszyrk+VRwdZn7LwyxLflbBVNo2o1zXCOwZkT7U0Kedr95pY1u5D2KkEM457zT6eNUXqnmxxFJa/sQL8TwzYdXSMiw2lYvIhpxZlfN0BclppO+weeRQLtt1wp+7HvAURVQ6EmSf4I2HSXHTvf+gibrfmGpEFbI92mHuMwoxCwNu6O+viyYReIDyAsaP61+e+nolWwjyQCF1YsP2N42w85CKDTl2gdFG1ZMp/UjcjXbU0grAgyB7b1BouoMSbhPugPbNLVMwuJBbCDTqetPu/5DfQYYTC1VOQpqUARwnHhPUZtdhWDUQ=
-  file_glob: true
-  file: '*.tar.gz'
-  on:
-    tags: on
