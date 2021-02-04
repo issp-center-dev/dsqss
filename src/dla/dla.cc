@@ -1,3 +1,19 @@
+// DSQSS (Discrete Space Quantum Systems Solver)
+// Copyright (C) 2018- The University of Tokyo
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 //######################################################################
 //####
 //####  World-Line Monte Carlo simulation
@@ -16,31 +32,16 @@
 //####
 //######################################################################
 
-// DSQSS (Discrete Space Quantum Systems Solver)
-// Copyright (C) 2018- The University of Tokyo
-//
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-#include "dla.hpp"
-
 #include <cmath>
 #include <string>
+#include <vector>
 
 #include "../common/version.h"
 #include "chainjob.hpp"
 #include "debug.hpp"
 #include "util.hpp"
+
+#include "dla.hpp"
 
 //######################################################################
 
@@ -236,7 +237,7 @@ void Simulation::set_NCYC() {
     }
 
     ncycSAMP[IMCSE % NSAMP] = ncyc;
-  };
+  }
 
   int ncycSUM = 0;
   for (int isamp = 0; isamp < NSAMP; isamp++) {
@@ -311,14 +312,14 @@ void Simulation::Sweep(bool thermalized) {
   for (ICYC = 0; ICYC < P.NCYC; ICYC++) {
     len += Cycle(thermalized);
   }
-  AMP = len / (double)P.NCYC;
-};
+  AMP = len / P.NCYC;
+}
 
 double Simulation::Cycle(bool thermalized) {
   AutoDebugDump("Simulation::Cycle");
   if (!PlaceWorm()) return 0.0;
   return MoveHead(thermalized);
-};
+}
 
 /*
  * Try to place a pair of wormheads uniform randomly
@@ -409,7 +410,7 @@ double Simulation::MoveHead(bool thermalized) {
 
   W.remove();
   return len;
-};
+}
 
 double Simulation::UP_ONESTEP(bool thermalized) {
   AutoDebugDump("Simulation::UP_ONESTEP");
@@ -613,7 +614,7 @@ double Simulation::UP_ONESTEP(bool thermalized) {
     RegVInfo& DRVI = RingRVI.first();
     DRVI.remove();
     TheRVIPool.push(DRVI);
-  };
+  }
 
   if (thermalized) {
     const int head_site = c_Site.id() - 1;
@@ -827,7 +828,7 @@ double Simulation::DOWN_ONESTEP(bool thermalized) {
     RegVInfo& DRVI = RingRVI.first();
     DRVI.remove();
     TheRVIPool.push(DRVI);
-  };
+  }
 
   if (thermalized) {
     const int head_site = c_Site.id() - 1;

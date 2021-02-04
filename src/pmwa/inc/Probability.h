@@ -1,5 +1,5 @@
-#ifndef PROB_H
-#define PROB_H
+#ifndef SRC_PMWA_INC_PROBABILITY_H_
+#define SRC_PMWA_INC_PROBABILITY_H_
 
 #include <simtype.h>
 #include <stdma.h>
@@ -67,4 +67,4 @@ class Probability {
   double Tuab(int i, int j, int x);
 };
 
-#endif
+#endif  // SRC_PMWA_INC_PROBABILITY_H_

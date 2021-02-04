@@ -1,5 +1,5 @@
-#ifndef SYSTEMPARAM_H
-#define SYSTEMPARAM_H
+#ifndef SRC_PMWA_INC_SYSTEMPARAMETER_H_
+#define SRC_PMWA_INC_SYSTEMPARAMETER_H_
 
 #define VAL 10
 #define INF 1.0e+14
@@ -48,7 +48,7 @@ struct MC_p {
   int Nbin;
   int Ntest;
   int nc;
-  int runtype;  //{0: normal, 1:restart, 2:annealing}
+  int runtype;  // {0: normal, 1:restart, 2:annealing}
   MC_p()
       : seed(0),
         Nstep(0),
@@ -147,4 +147,4 @@ struct Parallel {
   }
 };
 
-#endif
+#endif  // SRC_PMWA_INC_SYSTEMPARAMETER_H_

@@ -1,10 +1,8 @@
-
-#ifndef IO_H
-#define IO_H
+#ifndef SRC_DLA_IO_H_
+#define SRC_DLA_IO_H_
 
 //######################################################################
 
-#include <boost/lexical_cast.hpp>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -14,17 +12,15 @@
 #include <stdexcept>
 #include <string>
 
+#include <boost/lexical_cast.hpp>
+
 #include "../common/tostring.h"
 #include "array.h"
 #include "util.hpp"
 
 #define BLEN 256
 
-//######################################################################
-
-std::string EOL = "_E_O_L_";
-
-//======================================================================
+static const char EOL[] = "_E_O_L_";
 
 inline void reform_end_of_line(std::string& line) {
   int n = line.size();
@@ -34,19 +30,14 @@ inline void reform_end_of_line(std::string& line) {
   }
 }
 
-//======================================================================
-
 inline int line_split(char* line, std::string* w) {
   std::string s(line);
   std::istringstream ist(s);
   int nw = 0;
-  while (ist >> w[nw++])
-    ;
+  while (ist >> w[nw++]){;}
   nw--;
   return nw;
 }
-
-//======================================================================
 
 inline void get_line(FILE* F, char* line) {
   char buff[256];
@@ -66,8 +57,6 @@ inline void get_line(FILE* F, char* line) {
   }
 }
 
-//======================================================================
-
 inline void get_nbl(FILE* F, char* line) {  // get the next non-blank line
   strcpy(line, "");
   while (!strcmp(line, "")) {
@@ -76,8 +65,6 @@ inline void get_nbl(FILE* F, char* line) {  // get the next non-blank line
     //  printf("%s\n",line);
   }
 }
-
-//======================================================================
 
 inline int break_into_words(char* line, char* delim, char** word) {
   char* last = line + strlen(line) - 1;
@@ -99,8 +86,6 @@ inline int break_into_words(char* line, char* delim, char** word) {
   }
   return n;
 }
-
-//######################################################################
 
 class FileReader {
  private:
@@ -124,23 +109,23 @@ class FileReader {
     }
     top = INS.tellg();
     IL = 0;
-  };
+  }
 
-  FileReader(){};
+  FileReader(){}
 
-  FileReader(const char* name) { open(name); };
+  FileReader(const char* name) { open(name); }
 
   void rewind() {
     INS.clear();
     INS.seekg(top);
-  };
+  }
 
-  void set_mark() { mark = INS.tellg(); };
+  void set_mark() { mark = INS.tellg(); }
 
   void goto_mark() {
     INS.clear();
     INS.seekg(mark);
-  };
+  }
 
   bool read() {
     bool b = static_cast<bool>(INS.getline(LINE, BLEN));
@@ -148,14 +133,14 @@ class FileReader {
       IL++;
     }
     return b;
-  };
+  }
 
-  char* line() { return LINE; };
+  char* line() { return LINE; }
 
   int split() {
     NW = line_split(LINE, WORD);
     return NW;
-  };
+  }
 
   std::string& word(int i) {
     if (i < 0 && i >= NW) {
@@ -164,13 +149,13 @@ class FileReader {
       throw std::runtime_error(msg);
     }
     return WORD[i];
-  };
+  }
 
-  int as_int(int i) { return atoi(WORD[i].c_str()); };
+  int as_int(int i) { return atoi(WORD[i].c_str()); }
 
-  double as_double(int i) { return (double)atof(WORD[i].c_str()); };
+  double as_double(int i) { return (double)atof(WORD[i].c_str()); }
 
-  void show() { std::cout << LINE << std::endl; };
+  void show() { std::cout << LINE << std::endl; }
 
   void dump() {
     std::cout << NAME << "[" << IL << "]> ";
@@ -178,7 +163,7 @@ class FileReader {
       std::cout << " " << WORD[i];
     }
     std::cout << std::endl;
-  };
+  }
 
   std::string get(char* key);
 
@@ -208,8 +193,6 @@ inline void FileReader::getWordList(int& NW, std::string*& W) {
   W[NW] = EOL;
 }
 
-//======================================================================
-
 inline std::string FileReader::get(char* key) {
   std::string ans;
   char key_open[BLEN];
@@ -237,8 +220,6 @@ inline std::string FileReader::get(char* key) {
   }
   return ans;
 }
-
-//======================================================================
 
 inline int FileReader::makeIndex(const char* scope, const char* field,
                                  const char* k0, Array<int>& index) {
@@ -305,4 +286,4 @@ inline int FileReader::makeIndex(const char* scope, const char* field,
   return n;
 }
 
-#endif
+#endif  // SRC_DLA_IO_H_

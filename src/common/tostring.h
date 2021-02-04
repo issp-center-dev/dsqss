@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef DSQSS_TOSTRING_H
-#define DSQSS_TOSTRING_H
+#ifndef SRC_COMMON_TOSTRING_H_
+#define SRC_COMMON_TOSTRING_H_
 
 #include <sstream>
 #include <string>
@@ -27,4 +27,4 @@ std::string tostring(T const& x) {
   return ss.str();
 }
 
-#endif
+#endif  // SRC_COMMON_TOSTRING_H_

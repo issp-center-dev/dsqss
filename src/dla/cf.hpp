@@ -14,13 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef CF_H
-#define CF_H
+#ifndef SRC_DLA_CF_HPP_
+#define SRC_DLA_CF_HPP_
 
 #include <cmath>
 #include <cstdio>
 #include <fstream>
 #include <sstream>
+#include <vector>
 
 #include "accumulator.hpp"
 #include "algorithm.hpp"
@@ -93,7 +94,7 @@ CF::CF(Parameter const& param, Lattice& lat, Algorithm& alg, Displacement& disp)
       counter.push_back(std::vector<int>(Ntau));
     }
   }
-};
+}
 
 inline void CF::setinit() {
   if (!to_be_calc) {
@@ -116,7 +117,7 @@ inline void CF::show(FILE* F) {
     }
     std::fprintf(F, "\n");
   }
-};
+}
 
 inline void CF::accumulate(int NCYC, double sgn) {
   if (!to_be_calc) {
@@ -128,7 +129,7 @@ inline void CF::accumulate(int NCYC, double sgn) {
   for (int icf = 0; icf < nkinds; icf++)
     for (int it = 0; it < Ntau; it++)
       ACC[icf][it].accumulate(sgn * invNCYC * counter[icf][it]);
-};
+}
 
 inline void CF::summary() {
   if (!to_be_calc) {
@@ -191,7 +192,7 @@ void CF::setsummary() {
   AutoDebugDump("CF::setsummary");
   const double V = LAT.NSITE;
   const double testDIAG = ALG.getBlock(
-      "WDIAG", (double)1.0);  // ALG.X["General"]["WDIAG" ].getDouble(); // 0.25
+      "WDIAG", 1.0);  // ALG.X["General"]["WDIAG" ].getDouble(); // 0.25
   SIGN.average();
   const double sgn = SIGN.mean();
   if (sgn != 0.0) {
@@ -242,4 +243,4 @@ void CF::load(std::ifstream& F) {
   Serialize::load(F, PHY);
 }
 
-#endif  // CF_H
+#endif  // SRC_DLA_CF_HPP_

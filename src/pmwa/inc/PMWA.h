@@ -1,5 +1,5 @@
-#ifndef PMWA_H
-#define PMWA_H
+#ifndef SRC_PMWA_INC_PMWA_H_
+#define SRC_PMWA_INC_PMWA_H_
 
 #include <Configuration.h>
 #include <Probability.h>
@@ -97,7 +97,7 @@ class Dla {
          << ", lower= " << PR.lower << ", right(x)= " << PR.right[0]
          << ", left(x)= " << PR.left[0] << ", right(y)= " << PR.right[1]
          << ", left(y)= " << PR.left[1] << endl;
-  };
+  }
 
   inline void show_SP() {
     std::cout << "step =" << MC.Nstep << " thermal=" << MC.Nthermal
@@ -110,7 +110,7 @@ class Dla {
               << "  Htr=" << sp.Htr << "  Ntvid=" << PR.Ntdiv
               << "  Npara=" << PR.Npara << "  Nsdiv=" << PR.Nsdiv
               << " outfile=" << outfile << std::endl;
-  };
+  }
 
   inline void show_TIME() {
     ftest << "Testing Time for Ncyc = " << pend - pstart << endl;
@@ -120,4 +120,4 @@ class Dla {
   }
 };
 
-#endif
+#endif  // SRC_PMWA_INC_PMWA_H_

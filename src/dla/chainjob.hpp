@@ -14,14 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef CHAINJOB_HPP
-#define CHAINJOB_HPP
+#ifndef SRC_DLA_CHAINJOB_HPP_
+#define SRC_DLA_CHAINJOB_HPP_
 
 // BINARY FILE
-#include <boost/lexical_cast.hpp>
 #include <cstring>
 #include <fstream>
 #include <map>
+#include <string>
+#include <utility>
+
+#include <boost/lexical_cast.hpp>
 
 #include "../common/timer.hpp"
 #include "dla.hpp"
@@ -42,9 +45,7 @@ void Simulation::BinaryIO() {
     isChainjob = true;
     load();
   }
-};
-
-//-----------------------------------------------------------------------------------------
+}
 
 void Simulation::save() {
   using Serialize::save;
@@ -87,7 +88,7 @@ void Simulation::save() {
   }
 
   int NVER_ =
-      P.NVERMAX - TheVertexPool.count() - LAT.NSITE - 1;  //-1 means warm's tail
+      P.NVERMAX - TheVertexPool.count() - LAT.NSITE - 1;  // -1 means warm's tail
   save(cjobout, NVER_);
   int NVER_count = 0;
   for (int interaction_ = 0; interaction_ < LAT.NINT; interaction_++) {
@@ -156,7 +157,7 @@ void Simulation::save() {
   ck.save(cjobout);
 
   cjobout.close();
-};
+}
 
 void Simulation::load() {
   using Serialize::load;
@@ -248,7 +249,7 @@ void Simulation::load() {
       int NLEG_ = load<int>(cjobin);
       if (VPID_ == VTYPE::UNDEF) {
         std::cout << "NLEG_" << NLEG_ << std::endl;
-      };
+      }
       for (int leg = 0; leg < NLEG_; leg++) {
         int SID_ = load<int>(cjobin);
         Segment *findingS = (oldID_S.find(SID_))->second;
@@ -317,8 +318,8 @@ void Simulation::load() {
   oldID_V.clear();
   oldID_S.clear();
   newID2V.clear();
-};
-//-----------------------------------------------------------------------------------------
+}
+
 void Simulation::end_cjob() {
   cjobout.close();
   cjobout.open(CJOBFILE.c_str(), std::ios::out | std::ios::binary);  // reset
@@ -326,8 +327,8 @@ void Simulation::end_cjob() {
   cjobout.close();
   std::cout << "Save checkpoint file and stop the simulation." << std::endl;
   end_job();
-};
-//-----------------------------------------------------------------------------------------
+}
+
 void Simulation::end_job() {
   std::cout << cjob_timer.elapsed() << " seconds have passed." << std::endl;
 
@@ -336,6 +337,6 @@ void Simulation::end_job() {
   MPI_Finalize();
 #endif
   exit(0);
-};
+}
 
-#endif  // CHAINJOB_HPP
+#endif  // SRC_DLA_CHAINJOB_HPP_

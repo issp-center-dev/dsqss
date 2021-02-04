@@ -115,9 +115,9 @@ void Measurement::measure(double sgn) {
         Segment& S = *p;
         if (xlast != S.X()) {
           if ((*S.bottom().S(0).getONSITE()).id() - 1 == Bsite) {
-            wind[dim] += (double)(S.bottom().S(1).X() - S.bottom().S(0).X());
+            wind[dim] += static_cast<double>(S.bottom().S(1).X() - S.bottom().S(0).X());
           } else if ((*S.bottom().S(2).getONSITE()).id() - 1 == Bsite) {
-            wind[dim] += (double)(S.bottom().S(3).X() - S.bottom().S(2).X());
+            wind[dim] += static_cast<double>(S.bottom().S(3).X() - S.bottom().S(2).X());
           }
           xlast = S.X();
         }

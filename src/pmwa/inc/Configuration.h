@@ -1,5 +1,5 @@
-#ifndef CONFIGURATION_H
-#define CONFIGURATION_H
+#ifndef SRC_PMWA_INC_CONFIGURATION_H_
+#define SRC_PMWA_INC_CONFIGURATION_H_
 
 #include <float.h>
 #include <math.h>
@@ -16,6 +16,7 @@
 #include <list>
 #include <stack>
 #include <vector>
+#include <string>
 
 #include "mpi.h"
 
@@ -347,4 +348,4 @@ class Configuration : public GraphSpace {
   //  void update( int MCS, My_rdm *MR, int &Wnum );
 };
 
-#endif
+#endif  // SRC_PMWA_INC_CONFIGURATION_H_

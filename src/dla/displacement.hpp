@@ -14,13 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef DISPLACEMENT_H
-#define DISPLACEMENT_H
+#ifndef SRC_DLA_DISPLACEMENT_HPP_
+#define SRC_DLA_DISPLACEMENT_HPP_
 
 #include <cmath>
 #include <cstdio>
 #include <fstream>
 #include <sstream>
+#include <vector>
 
 #include "accumulator.hpp"
 #include "debug.hpp"
@@ -35,7 +36,7 @@ struct Displacement {
   std::vector<int> NR;                // the number of pairs with the same dR
   std::vector<std::vector<int> > IR;  // IR[isite][jsite] == disp_index
 
-  Displacement(Parameter const& param);
+  explicit Displacement(Parameter const& param);
   void read(XML::Block const& X);
 };
 
@@ -66,6 +67,6 @@ Displacement::Displacement(Parameter const& param)
       }
     }
   }
-};
+}
 
-#endif  // DISPLACEMENT_H
+#endif  // SRC_DLA_DISPLACEMENT_HPP_

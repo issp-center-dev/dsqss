@@ -14,15 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef READ_KEYVALUES_H
-#define READ_KEYVALUES_H
+#ifndef SRC_COMMON_READ_KEYVALUES_H_
+#define SRC_COMMON_READ_KEYVALUES_H_
 
-#include <algorithm>
-#include <boost/xpressive/xpressive_static.hpp>
 #include <cctype>
+#include <algorithm>
 #include <exception>
 #include <map>
 #include <string>
+#include <boost/xpressive/xpressive_static.hpp>
 
 void read_keyvalues(std::map<std::string, std::string>& dict,
                     std::string const& filename);
@@ -98,4 +98,4 @@ bool parse_kvline(std::string& key, std::string& value,
     dict[new] = dict[old];                                                 \
   }
 
-#endif  // READ_KEYVALUES_H
+#endif  // SRC_COMMON_READ_KEYVALUES_H_

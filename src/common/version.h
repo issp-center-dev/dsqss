@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef VERSION_H
-#define VERSION_H
+#ifndef SRC_COMMON_VERSION_H_
+#define SRC_COMMON_VERSION_H_
 
 #define DSQSS_VERSION "v2.0.3"
 
-#endif
+#endif  // SRC_COMMON_VERSION_H_

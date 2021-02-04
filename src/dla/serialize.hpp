@@ -14,10 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SERIALIZE_H
-#define SERIALIZE_H
+#ifndef SRC_DLA_SERIALIZE_HPP_
+#define SRC_DLA_SERIALIZE_HPP_
 
 #include <cstring>
+
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -86,4 +87,4 @@ void load(std::ifstream& ifs, std::vector<T>& val) {
 
 }  // namespace Serialize
 
-#endif  // SERIALIZE_H
+#endif  // SRC_DLA_SERIALIZE_HPP_

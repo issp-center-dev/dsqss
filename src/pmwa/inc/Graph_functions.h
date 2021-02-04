@@ -165,14 +165,16 @@ void GraphSpace::All(Vertex *wl, int d, int i, int rnum) {
   wl->dir = !wl->dir;
   wl->next[1]->dir = !wl->next[1]->dir;
   BoxSpace_py_th1[f(d, i, rnum + 1)] =
-      !((bool)BoxSpace_py_th1[f(d, i, rnum + 1)]);
-  BoxSpace_py_th1[f(d, i, rnum)] = !((bool)BoxSpace_py_th1[f(d, i, rnum)]);
+      !(static_cast<bool>(BoxSpace_py_th1[f(d, i, rnum + 1)]));
+  BoxSpace_py_th1[f(d, i, rnum)] =
+      !(static_cast<bool>(BoxSpace_py_th1[f(d, i, rnum)]));
 }
 
 void GraphSpace::Right(Vertex *wl, int d, int i, int rnum) {
   BoxSpace_py_th1[f(d, i, rnum + 1)] =
-      !((bool)BoxSpace_py_th1[f(d, i, rnum + 1)]);
-  BoxSpace_py_th1[f(d, i, rnum)] = !((bool)BoxSpace_py_th1[f(d, i, rnum)]);
+      !(static_cast<bool>(BoxSpace_py_th1[f(d, i, rnum + 1)]));
+  BoxSpace_py_th1[f(d, i, rnum)] =
+      !(static_cast<bool>(BoxSpace_py_th1[f(d, i, rnum)]));
 }
 
 void GraphSpace::Left(Vertex *wl, int d, int i, int rnum) {
@@ -183,23 +185,25 @@ void GraphSpace::Left(Vertex *wl, int d, int i, int rnum) {
 void GraphSpace::LdRu(Vertex *wl, int d, int i, int rnum) {
   wl->dir = !wl->dir;
   BoxSpace_py_th1[f(d, i, rnum + 1)] =
-      !((bool)BoxSpace_py_th1[f(d, i, rnum + 1)]);
+      !(static_cast<bool>(BoxSpace_py_th1[f(d, i, rnum + 1)]));
 }
 
 void GraphSpace::LuRd(Vertex *wl, int d, int i, int rnum) {
   wl->next[1]->dir = !wl->next[1]->dir;
-  BoxSpace_py_th1[f(d, i, rnum)] = !((bool)BoxSpace_py_th1[f(d, i, rnum)]);
+  BoxSpace_py_th1[f(d, i, rnum)] =
+      !(static_cast<bool>(BoxSpace_py_th1[f(d, i, rnum)]));
 }
 
 void GraphSpace::LuRu(Vertex *wl, int d, int i, int rnum) {
   wl->next[1]->dir = !wl->next[1]->dir;
   BoxSpace_py_th1[f(d, i, rnum + 1)] =
-      !((bool)BoxSpace_py_th1[f(d, i, rnum + 1)]);
+      !(static_cast<bool>(BoxSpace_py_th1[f(d, i, rnum + 1)]));
 }
 
 void GraphSpace::LdRd(Vertex *wl, int d, int i, int rnum) {
   wl->dir = !wl->dir;
-  BoxSpace_py_th1[f(d, i, rnum)] = !((bool)BoxSpace_py_th1[f(d, i, rnum)]);
+  BoxSpace_py_th1[f(d, i, rnum)] =
+      !(static_cast<bool>(BoxSpace_py_th1[f(d, i, rnum)]));
 }
 
 //#######################################################################################################

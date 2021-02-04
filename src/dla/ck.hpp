@@ -14,12 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef CK_H
-#define CK_H
+#ifndef SRC_DLA_CK_HPP_
+#define SRC_DLA_CK_HPP_
 
 #include <cstring>
 #include <fstream>
 #include <sstream>
+#include <vector>
 
 #include "accumulator.hpp"
 #include "algorithm.hpp"
@@ -89,7 +90,7 @@ CK::CK(Parameter const& param, Lattice& lat, Algorithm& alg, WaveVector& wv)
       counterC.push_back(std::vector<double>(Ntau));
     }
   }
-};
+}
 
 inline void CK::setinit() {
   if (!to_be_calc) {
@@ -112,7 +113,7 @@ inline void CK::show(FILE* F) {
     }
     fprintf(F, "\n");
   }
-};
+}
 
 inline void CK::accumulate(int NCYC, double sgn) {
   if (!to_be_calc) {
@@ -125,7 +126,7 @@ inline void CK::accumulate(int NCYC, double sgn) {
   for (int ik = 0; ik < NK; ik++)
     for (int it = 0; it < Ntau; it++)
       ACC[ik][it].accumulate(sgn * invNCYC * counterC[ik][it]);
-};
+}
 
 inline void CK::summary() {
   if (!to_be_calc) {
@@ -168,7 +169,7 @@ void CK::count(int s, double tT, double bT, double tail_tau) {
       }
     }
   }
-};
+}
 
 void CK::reset() {
   if (!to_be_calc) {
@@ -181,7 +182,7 @@ void CK::reset() {
       // counterS[ik][it] = 0.0;
     }
   }
-};
+}
 void CK::setsummary() {
   if (!to_be_calc) {
     return;
@@ -190,7 +191,7 @@ void CK::setsummary() {
   const double factor =
       2 * ALG.getBlock(
               "WDIAG",
-              (double)1.0);  // ALG.X["General"]["WDIAG" ].getDouble(); // 0.25
+              1.0);  // ALG.X["General"]["WDIAG" ].getDouble(); // 0.25
   SIGN.average();
   const double sgn = SIGN.mean();
   if (sgn != 0.0) {
@@ -240,4 +241,4 @@ void CK::load(std::ifstream& F) {
   Serialize::load(F, PHY);
 }
 
-#endif  // CK_H
+#endif  // SRC_DLA_CK_HPP_

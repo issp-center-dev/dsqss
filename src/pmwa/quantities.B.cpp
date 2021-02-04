@@ -1,8 +1,8 @@
-//#include<stdma.h>
+// #include<stdma.h>
 #include <Configuration.h>
-//#define KSTEPALL
-//#define XSTEPALL
-//#include <cmath>
+// #define KSTEPALL
+// #define XSTEPALL
+// #include <cmath>
 
 Quantities::Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT,
                        Parallel *m_PR, std::string const &outfile) {
@@ -53,11 +53,11 @@ Quantities::Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT,
   Lmax[cr2] = Nxmax;
   //  Lmax[sk]=Nkmax*2;//i.e. real and imaginary part
   Lmax[ck2] = Nkmax * 2;
-  //#ifdef GF22Gk2
+  // #ifdef GF22Gk2
   //  Lmax[cr4]=N->x*N->x;
-  //#else
-  // Lmax[cr4]=Nxmax*PR->Nxdiv;
-  //#endif
+  // #else
+  //  Lmax[cr4]=Nxmax*PR->Nxdiv;
+  // #endif
   Lmax[ck4] = Nkxmax * Nkkmax * 2;
   Lmax[dkk] = Nkxmax * Nkkmax;
   Lmax[nw] = V;
@@ -121,13 +121,13 @@ Quantities::Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT,
   newcall_zero(values_L, Lsize);
   newcall_zero(MCmean_L, Lsize * 2);
   newcall_zero(BINmean_L, Lsize * MC->Nbin);
-  //  newcall_zero(RNDmean_L,Lsize*PR->Npara);
+  // newcall_zero(RNDmean_L,Lsize*PR->Npara);
 
-  newcall_zero(m_val, max(Lsize, (int)Nq));
+  newcall_zero(m_val, max(Lsize, static_cast<int>(Nq)));
 
   newcall_zero(EXPrk, 4 * Nkmax * V);
-  //  newcall_zero(COSnp,V);
-  //  newcall_zero(SINnp,V);
+  // newcall_zero(COSnp,V);
+  // newcall_zero(SINnp,V);
 
   Cknum = 16;
   Nk_set = 5 + 2 * Nkmax * Cknum;
@@ -139,17 +139,17 @@ Quantities::Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT,
   double PI = M_PI;
   for (int i = 0; i < V; i++) {
     int x = (i % Nx) + PR->nx * Nx;
-    int y = (int)(i / Nx) % PR->y + PR->ny * PR->y;
-    int z = (int)(i / (Nx * PR->y)) + PR->nz * PR->z;
+    int y = static_cast<int>(i / Nx) % PR->y + PR->ny * PR->y;
+    int z = static_cast<int>(i / (Nx * PR->y)) + PR->nz * PR->z;
 
     for (int k = -Nkmax + 1; k < Nkmax; k++) {  // max(kx+kk)=Nkkmax-1 +
                                                 // Nkxmax-1
 
-      double phase = 2.0 * PI * x * k / (double)Nkxmax;  // kx!=0,ky=kz=0
+      double phase = (2.0 * PI * x * k) / Nkxmax;  // kx!=0,ky=kz=0
       complex<double> phase_c(0.0, phase);
       EXPrk[theta(i, k, 0)] = exp(phase_c);
 
-      phase = 2.0 * PI * (x + y + z) * k / (double)Nkxmax;  // kx=ky
+      phase = (2.0 * PI * (x + y + z) * k) / Nkxmax;  // kx=ky
       phase_c = complex<double>(0.0, phase);
       EXPrk[theta(i, k, 1)] = exp(phase_c);
     }
@@ -233,9 +233,9 @@ void Quantities::Measure(int Nv, int Nk, vector<GraphSpace::Vertex> &ev,
 
   ////////////////////////
   MCsum_S();
-  //#ifdef CFOUT
+  // #ifdef CFOUT
   MCsum_L();
-  //#endif
+  // #endif
   ////////////////////////
 }
 
@@ -266,17 +266,16 @@ void Quantities::Average(double *g, int Nval, int S, double *MCmean,
       error += g[(k + i * S) / kstep] * g[(k + i * S) / kstep];
     }
 
-    mean /= (double)Nval;
-    error /= (double)Nval;
+    mean /= Nval;
+    error /= Nval;
 
     MCmean[k] = mean;
     MCmean[k + 1] =
-        (Nval == 1) ? 0 : sqrt((error - mean * mean) / (double)(Nval - 1.0));
+        (Nval == 1) ? 0 : sqrt((error - mean * mean) / (Nval - 1));
   }
 }
 
-void Quantities::show_S(ofstream &F) {  //ÄÌ¾ï
-
+void Quantities::show_S(ofstream &F) {
   int S = Nq * 2;
 
   for (int k = 0; k < S; k += 2)
@@ -388,8 +387,8 @@ void Quantities::show_L() {
   F << setprecision(16);
   for (int l = 0; l < Lmax[ck2]; l++) {
     R = l % Nkxmax;
-    Ry = ((int)(l / Nkxmax) % 2) * R;
-    ll = ((bool)(l / Nkmax)) ? "imag" : "real";
+    Ry = (static_cast<int>(l / Nkxmax) % 2) * R;
+    ll = (static_cast<bool>(l / Nkmax)) ? "imag" : "real";
     k = f_nk(l) * 2;
     Cname = ll + "_" + tostr(R * Nkstep) + "_" + tostr(Ry * Nkstep);
     F << "R " << Cname << " = " << MCmean_L[k] << " " << MCmean_L[k + 1]
@@ -405,7 +404,7 @@ void Quantities::show_L() {
   for (int l = 0; l < Lmax[ck4]; l++) {
     k = f_gk2(l) * 2;
     R = l % Nkxmax;
-    R_ = (int)(l / Nkxmax) % Nkkmax;
+    R_ = static_cast<int>(l / Nkxmax) % Nkkmax;
     bool kl = l / (Nkkmax * Nkxmax);
     ll = (kl) ? "imag" : "real";  // real or imag
     Cname = ll + "_" + tostr(R * Nkstep) + "_" + tostr(R_ * Nkstep);
@@ -424,7 +423,7 @@ void Quantities::show_L() {
   for (int l = 0; l < Lmax[dkk]; l++) {
     k = f_noise(l) * 2;
     R = l % Nkxmax;
-    R_ = (int)(l / Nkxmax);
+    R_ = l / Nkxmax;
     ll = "real";
     Cname = ll + "_" + tostr(R * Nkstep) + "_" + tostr(R_ * Nkstep);
     F << "R " << Cname << " = " << MCmean_L[k] << " " << MCmean_L[k + 1]
@@ -464,16 +463,15 @@ void Quantities::show(ofstream &F, FILE *SFF) {
   }
 }
 
-//////
 void Quantities::Output(std::string const &fname, double g) {
   std::ofstream file(fname.c_str(), std::ios::app);
   file << sp->Htr << " " << sp->mu << " " << sp->Vb1 << " " << sp->tb << " "
        << N->B << " " << g << std::endl;
 }
 
-//##########################################################################################
+// ##########################################################################################
 
-//*******************TYPEA************************
+// *******************TYPEA************************
 
 void Quantities::WindingNumber(vector<GraphSpace::Vertex> &ev, int mcs) {
   int Wi[3] = {0, 0, 0};
@@ -495,8 +493,8 @@ void Quantities::WindingNumber(vector<GraphSpace::Vertex> &ev, int mcs) {
   }
 
   for (int d = 0; d < N->d; d++) {
-    values_S[wndx + d] = (double)Wi[d];
-  }  //(double)NL[d]; }
+    values_S[wndx + d] = Wi[d];
+  }  // (double)NL[d]; }
 }
 
 void Quantities::WindingNumber2() {
@@ -544,14 +542,14 @@ void Quantities::Compressibility() {
   MCmean_S[comp * 2] =
       N->B * N->V *
       (MCmean_S[smzu * 2] /
-           (MCmean_S[amzu * 2] * MCmean_S[amzu * 2] * (double)N->V) -
+           (MCmean_S[amzu * 2] * MCmean_S[amzu * 2] * N->V) -
        1.0);
   MCmean_S[comp * 2 + 1] = MCmean_S[comp * 2] * MCmean_S[comp * 2];
 }
 
 void Quantities::Energy() {
   MCmean_S[ene * 2] =
-      (sp->Eu + sp->Et - MCmean_S[nver * 2] / N->B) / (double)N->V;
+      (sp->Eu + sp->Et - MCmean_S[nver * 2] / N->B) / N->V;
   MCmean_S[ene * 2 + 1] = MCmean_S[ene * 2] * MCmean_S[ene * 2];
 }
 
@@ -563,7 +561,7 @@ void Quantities::SpecificHeat() {
   MCmean_S[spe * 2] =
       (MCmean_S[nver * 2 + 1] - MCmean_S[nver * 2] * MCmean_S[nver * 2] -
        MCmean_S[nver * 2]) /
-      (double)N->V;
+      N->V;
   MCmean_S[spe * 2 + 1] = MCmean_S[spe * 2] * MCmean_S[spe * 2];
 }
 
@@ -596,7 +594,7 @@ void Quantities::Susceptibility() {
     lx += MCmean_L[f_nw2(i)];
   }
 
-  MCmean_S[lxmx * 2] = lx / (double)V;
+  MCmean_S[lxmx * 2] = lx / V;
   MCmean_S[lxmx * 2 + 1] = MCmean_S[lxmx * 2] * MCmean_S[lxmx * 2];
 
   MCmean_S[xmx * 2] =
@@ -632,7 +630,6 @@ void Quantities::CorrelationLength(double length) { values_S[len] = length; }
 
 void Quantities::SUM_OVER_T() {
   if (PR->nt == 0) {  // Sum over t
-
     for (int tag = 1; tag < PR->Ntdiv; tag++) {
       MPI_Recv(m_val, V * 2, MPI_DOUBLE, tag + PR->nt0, 0, MPI_COMM_WORLD,
                &status);
@@ -653,7 +650,6 @@ void Quantities::SUM_OVER_T() {
 
 void Quantities::SUM_OVER_S() {
   if (PR->ns == 0) {  // Sum over s at same tau
-
     double Norm = PR->Ntdiv;
 
     for (int tag = 1; tag < PR->Nsdiv; tag++) {
@@ -681,7 +677,6 @@ void Quantities::SUM_OVER_S() {
 
 void Quantities::SUM_OVER_ST() {
   if (PR->nst == 0) {  // Sum over t and s
-
     for (int tag = 1; tag < PR->NtNs; tag++) {
       MPI_Recv(m_val, Nq1, MPI_DOUBLE, tag + PR->nst0, 0, MPI_COMM_WORLD,
                &status);
@@ -694,17 +689,16 @@ void Quantities::SUM_OVER_ST() {
     MPI_Send(values_S, Nq1, MPI_DOUBLE, PR->nst0, 0, MPI_COMM_WORLD);
   }
 
-  values_S[xmzu] = values_S[bmzu] * values_S[bmzu] / (double)N->V;
-  values_S[xmzs] = values_S[xmzs] * values_S[xmzs] / (double)N->V;
-  values_S[smzu] /= (double)N->V;
-  values_S[smzs] /= (double)N->V;
-  values_S[amzu] /= (double)N->V;
-  values_S[bmzu] /= (double)N->V;
+  values_S[xmzu] = values_S[bmzu] * values_S[bmzu] / N->V;
+  values_S[xmzs] = values_S[xmzs] * values_S[xmzs] / N->V;
+  values_S[smzu] /= N->V;
+  values_S[smzs] /= N->V;
+  values_S[amzu] /= N->V;
+  values_S[bmzu] /= N->V;
 }
 
 void Quantities::CorrelationFunction1() {  // real space
-
-  //***MPI sum for G
+  // ***MPI sum for G
   double ntot = 0.0;
   int Lcr2 = Lmax[cr2];
   int ixmax = Lcr2 / PR->Nxdiv;
@@ -713,7 +707,6 @@ void Quantities::CorrelationFunction1() {  // real space
   for (int i = 0; i < Lcr2; i++) values_L[f_gf(i)] = 0.0;
 
   if (PR->nx == 0) {  // Sum over x at same tau
-
     for (int i = 0; i < ixmax; i++) {
       int ixx = i * Nxstep;
       this->Q[i] = an[ixx];
@@ -755,7 +748,6 @@ void Quantities::CorrelationFunction1() {  // real space
   }
 
   if (PR->nst == 0) {  // Sum over t at x=0
-
     for (int tag = 1; tag < PR->NtNs; tag++) {
       if ((tag / PR->Ntdiv) % PR->Nxdiv != 0) continue;
 
@@ -775,11 +767,11 @@ void Quantities::CorrelationFunction2(
 
   MPI_Status status;
   complex<double> Nk2;
-  ////G2///
+  // G2
 
   for (int i = 0; i < Nk_set; i++) Ck[i] = complex<double>(0.0, 0.0);
 
-  double rootV = sqrt((double)N->V);
+  double rootV = sqrt(static_cast<double>(N->V));
   double rootV2 = N->V;
   double rootV3 = rootV2 * rootV;
   double rootV4 = rootV2 * rootV2;
@@ -831,7 +823,6 @@ void Quantities::CorrelationFunction2(
   }
 
   if (PR->ns == 0) {  // Sum over site at same tau
-
     for (int tag = 1; tag < PR->Nsdiv; tag++) {
       MPI_Recv(Ck_m, Nk_set + Sk_set, MPI_DOUBLE_COMPLEX,
                tag * PR->Ntdiv + PR->ns0, 0, MPI_COMM_WORLD, &status);
@@ -841,7 +832,7 @@ void Quantities::CorrelationFunction2(
     ///////////////// Gk //////////////////////
     for (int a = 0; a < 2; a++) {
       for (int k = 0; k < Nkxmax; k++) {
-        Nk2 = (Ck[f_ck(k, 0, a)] * Ck[f_ck(k, 1, a)] - Ck[0]) / (double)N->V;
+        Nk2 = (Ck[f_ck(k, 0, a)] * Ck[f_ck(k, 1, a)] - Ck[0]) / static_cast<double>(N->V);
         values_L[f_nkr(k + a * Nkxmax)] = real(Nk2);
         values_L[f_nki(k + a * Nkxmax)] = imag(Nk2);
       }
@@ -854,15 +845,12 @@ void Quantities::CorrelationFunction2(
              MPI_COMM_WORLD);
   }
 
-  //
   complex<double> Gk2, Dkkk;
   if (PR->ns == 0) {
     for (int kx = 0; kx < Nkxmax;
-         kx++) {  //(kx,ky,kz)=(0~Nkmax,0,0); (0~Nkmax,kx,kx)
-
+         kx++) {  // (kx,ky,kz)=(0~Nkmax,0,0); (0~Nkmax,kx,kx)
       for (int kk = 0; kk < Nkkmax;
-           kk++) {  //(k'x,k'y,k'z)=(0,0,0);...(depends on CKK)...; (kx,ky,kz)
-
+           kk++) {  // (k'x,k'y,k'z)=(0,0,0);...(depends on CKK)...; (kx,ky,kz)
         Gk2 =
             Ck[f_ck(kx, 0)] * Ck[f_ck(kx, 1)] * Ck[f_ck(kk, 0)] *
                 Ck[f_ck(kk, 1)]
@@ -906,7 +894,7 @@ void Quantities::CorrelationFunction2(
 
         Dkkk = Gk2;  // vol2;
 
-        //	  for(int kky=0; kky<1; kky++){ //ky=kky= 0 or kx(kkx)
+        // for(int kky=0; kky<1; kky++){ //ky=kky= 0 or kx(kkx)
         values_L[f_gk2r(kx, kk)] = real(Dkkk);
         values_L[f_gk2i(kx, kk)] = imag(Dkkk);
         // }
@@ -918,14 +906,13 @@ void Quantities::CorrelationFunction2(
   int L3 = Lmax[ck2] + Lmax[ck4];  // for nk, gk2
 
   if (PR->nst == 0) {  // Sum over t=0
-
     for (int tag = 1; tag < PR->Ntdiv; tag++) {
       MPI_Recv(m_val, L3, MPI_DOUBLE, tag + PR->nst0, 0, MPI_COMM_WORLD,
                &status);
       for (int i = 0; i < L3; i++) values_L[f_nk(i)] += m_val[i];
     }
 
-    for (int i = 0; i < L3; i++) values_L[f_nk(i)] /= (double)PR->Ntdiv;
+    for (int i = 0; i < L3; i++) values_L[f_nk(i)] /= PR->Ntdiv;
 
   } else if (PR->ns == 0) {  // Ntdiv prosessors for nk, gf2, gk2
     MPI_Send(&(values_L[f_nk(0)]), L3, MPI_DOUBLE, PR->nst0, 0, MPI_COMM_WORLD);
@@ -946,12 +933,12 @@ void Quantities::NoiseCorrelation() {
 }
 #endif
 
-//****MC sum
+// MC sum
 void Quantities::MCsum_S() {
   if (PR->nst == 0) {
     for (int i = 0; i < Nq1; i++) {
-      MCmean_S[2 * i] += values_S[i] / (double)MC->Nsample;
-      MCmean_S[2 * i + 1] += values_S[i] * values_S[i] / (double)MC->Nsample;
+      MCmean_S[2 * i] += values_S[i] / MC->Nsample;
+      MCmean_S[2 * i + 1] += values_S[i] * values_S[i] / MC->Nsample;
     }
   }
 }
@@ -961,7 +948,7 @@ void Quantities::MCsum_SF() {
   for (int isf = 0; isf < NKMAX; isf++)
     for (int it = 0; it < Ntau; it++)
       MCmean_SF[2 * isf][it] +=
-          sfsamp[isf][it] / (double)N->V / (double)MC->Nsample;
+          sfsamp[isf][it] / static_cast<double>(N->V * MC->Nsample);
 }
 #endif
 
@@ -970,13 +957,13 @@ void Quantities::MCsum_L() {
 
   if (PR->nt == 0) {
     for (int i = 0; i < ltoc; i++) {
-      MCmean_L[i] += values_L[i] / (double)MC->Nsample;
+      MCmean_L[i] += values_L[i] / MC->Nsample;
     }
   }
 
   if (PR->nst == 0) {
     for (int i = ltoc; i < Lsize; i++) {
-      MCmean_L[i] += values_L[i] / (double)MC->Nsample;
+      MCmean_L[i] += values_L[i] / MC->Nsample;
     }
   }
 }

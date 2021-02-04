@@ -76,7 +76,7 @@ void Probability::look(Size *N, System *sp) {
   for (int tag = 0; tag < PR->NtNs; tag++) {
     sp->Eu += peu[tag];
   }
-  sp->Eu /= (double)PR->Ntdiv;  // double count for Ntdiv
+  sp->Eu /= PR->Ntdiv;  // double count for Ntdiv
   delcall(peu);
 
   MPI_Comm_free(&comm_nst0);
@@ -87,13 +87,13 @@ void Probability::look(Size *N, System *sp) {
   rh_odd = sp->Htr;
   rh_even = sp->Htr;
 
-  //************ at **************
+  // ************ at **************
   for (int i = 0; i <= nmax; i++)
     for (int j = 0; j <= nmax; j++)
       for (int x = 0; x < XMAX; x++) at[i][j][x] = at_make(i, j, x);
   for (int i = 0; i <= nmax; i++)
     for (int x = 0; x < PR->V; x++) ru[i][x] = au_make(i, x);
-  //*************romax******************
+  // *************romax******************
   rtmax = rmin;
   for (int i = 0; i <= nmax; i++)
     for (int j = 0; j <= nmax; j++)
@@ -120,28 +120,25 @@ void Probability::look(Size *N, System *sp) {
           u[b][i][x] = Tuab(i, j, x);  // when i is larger(L), if L->S then P =
                                        // S/L, if L->L then 1.0 - S/L.
 
-        //	if(PR->my_rank==0)cout <<"x="<<x<<",  b="<<b<<", ni="<<i<<",
-        //nj="<<j<<", u="<<u[b][i][x]<<endl;
+        // if(PR->my_rank==0)cout <<"x="<<x<<",  b="<<b<<", ni="<<i<<",
+        // nj="<<j<<", u="<<u[b][i][x]<<endl;
       }
 
-  //****************** scattering prob against t
-  //*********************************
+  // ****************** scattering prob against t
+  // *********************************
 
   int flaver = 4;
   for (int x = 0; x < XMAX; x++) {
     for (h = 0; h < 2; h++) {  // head operator
-
       oh = h * 2 - 1;
 
       for (int i = 0; i <= nmax; i++) {  // # of particles on the left site
-
         sql = sqrt(i - h + 1.0);
 
         for (int j = 0; j <= nmax; j++) {  // # of particles on the right site
-
-          if (h == i)
+          if (h == i) {
             type = 5;
-          else {
+          } else {
             type = 0;
             Om[0].val = at[i][j][x];
             Om[1].val = at[i + oh][j][x];
@@ -158,8 +155,7 @@ void Probability::look(Size *N, System *sp) {
 
           for (int b = 0; b < 4; b++)      // before update
             for (int a = 0; a < 4; a++) {  // after update
-
-              //******************* scattering against t ******************
+              // ******************* scattering against t ******************
               if (type == 5)
                 t[h][a][b][i][j][x] = 0.0;
               else if (Om[Tr[b]].val != 0.0)
@@ -260,15 +256,15 @@ void Probability::SolveWeightEquation(int cmax) {
       // introduce a transition between the max state and the second
       // and reduce weights of these states
       double x = V_first - V_second;
-      double y = (double)(N_second - 1) * (V_second - V_third);
+      double y = (N_second - 1) * (V_second - V_third);
       if (x < y) {
-        dw1 = (V_first - V_second) / (1.0 - 1.0 / (double)(N_second));
-        dw2 = dw1 / (double)N_second;
+        dw1 = (V_first - V_second) / (1.0 - 1.0 / N_second);
+        dw2 = dw1 / N_second;
         V_second_new = V_second - dw2;
         V_first_new = V_second_new;
       } else {
         dw2 = V_second - V_third;
-        dw1 = dw2 * (double)N_second;
+        dw1 = dw2 * N_second;
         V_second_new = V_third;
         V_first_new = V_first - dw1;
       }
@@ -282,7 +278,7 @@ void Probability::SolveWeightEquation(int cmax) {
       // When the maximum weight state is degenerated
       // introduce a transition between these states
       // and reduce weights of these states to the weight of the second largest.
-      dw1 = (V_first - V_second) / (double)(N_first - 1);
+      dw1 = (V_first - V_second) / (N_first - 1);
       for (int i = 0; i < N_first; i++) {
         ex_Wall[i] = V_second;
         for (int j = 0; j < N_first; j++) {
@@ -299,15 +295,14 @@ void Probability::SolveWeightEquation(int cmax) {
 }
 
 double Probability::Tuab(int p, int q, int x) {  // p(L)->q(S)
-
   return au_make(q, x) / au_make(p, x);
 }
 
 // return t vertex density
 double Probability::at_make(int p, int q, int x) {
   // double Ht = dim*(double)( p + q ) - V1*(double)(p*q);
-  //  double Ht = (double)( mu1[x]*p + mu2[x]*q )/z - V1*(double)(p*q);
-  double Ht = V1 * ((double)p - 0.5) * ((double)q - 0.5);
+  // double Ht = (double)( mu1[x]*p + mu2[x]*q )/z - V1*(double)(p*q);
+  double Ht = V1 * (p - 0.5) * (q - 0.5);
   // if(Ht + local_Et < 0.0){cout<<"negative sign! (Hv)"<<endl; exit(1);}
 
   return (Ht + local_Et);

@@ -38,15 +38,15 @@ void WriteXML(int D, int L[], int Ntau, int CutoffOfNtau, int KTYPE) {
   }
   int KMAX;
 
-  if (KTYPE == 0)
+  if (KTYPE == 0) {
     KMAX = L[0] / 2 + 1;
-  else if (KTYPE == 1)
+  } else if (KTYPE == 1) {
     KMAX = 4;
-  else if (KTYPE == 2)
+  } else if (KTYPE == 2) {
     KMAX = 3;
-  else if (KTYPE == 3)
+  } else if (KTYPE == 3) {
     KMAX = 3;
-  else {
+  } else {
     cout << " available  KTYPE=0: kx/pi = n/L, n=0,2, 4,,,, L";
     cout << " available  KTYPE=1: k/pi = (1,0),(1,1),(0,1),(1/2,1/2)";
     cout << " available  KTYPE=2: AFMBZ";
@@ -107,9 +107,9 @@ void WriteXML(int D, int L[], int Ntau, int CutoffOfNtau, int KTYPE) {
     for (int q = 0; q < KMAX; q++) {
       int rx = i % L[0];
       double phase;
-      if (KTYPE == 0)
-        phase = rx * ksite[q] * PI / (double)L[0];  // r_x * q_x
-      else if (KTYPE == 1) {
+      if (KTYPE == 0) {
+        phase = rx * ksite[q] * PI / L[0];  // r_x * q_x
+      } else if (KTYPE == 1) {
         int ry = (i / L[0]) % L[1];
         double qx;
         double qy;

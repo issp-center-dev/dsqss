@@ -26,9 +26,7 @@
 int main(int argc, char **argv) {
   Dla Sim(argc, argv);
 
-  ////////////////////////////////////////////////////////////
   Sim.PMWA();
-  ////////////////////////////////////////////////////////////
 
   return 0;
 }
@@ -291,8 +289,8 @@ void Dla::init_paramdict(std::map<std::string, std::string> &dict) {
 }
 
 void Dla::set_Parallel() {
-  PR.B = N.B / (double)PR.Ntdiv;        // beta for a domain.
-  PR.oldB = N.oldB / (double)PR.Ntdiv;  // for annealing.
+  PR.B = N.B / PR.Ntdiv;        // beta for a domain.
+  PR.oldB = N.oldB / PR.Ntdiv;  // for annealing.
 
   PR.Nsdiv =
       PR.Nxdiv * PR.Nydiv * PR.Nzdiv;  // the number of spatial decompositions.
@@ -309,7 +307,7 @@ void Dla::set_Parallel() {
 
   PR.nt =
       PR.my_rank % PR.Ntdiv;  // the temporal domain number for the processor.
-  PR.ns = (int)(PR.my_rank / PR.Ntdiv) %
+  PR.ns = static_cast<int>(PR.my_rank / PR.Ntdiv) %
           PR.Nsdiv;  // the spatial domain number for the processor.
 
   PR.nx =

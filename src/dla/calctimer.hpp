@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef CALCTIMER_HPP
-#define CALCTIMER_HPP
+#ifndef SRC_DLA_CALCTIMER_HPP_
+#define SRC_DLA_CALCTIMER_HPP_
 
 #include "../common/timer.hpp"
 #include "accumulator.hpp"
@@ -27,7 +27,7 @@ class CalcTimer {
   Accumulator PHY;
 
  public:
-  CalcTimer(int nmcs) : NMCS(nmcs) { PHY.reset("time"); }
+  explicit CalcTimer(int nmcs) : NMCS(nmcs) { PHY.reset("time"); }
   void reset_timer() { timer.reset(); }
   void setinit() { ACC.reset("time"); }
   void measure() { ACC.accumulate(timer.elapsed() / NMCS); }
@@ -50,4 +50,4 @@ class CalcTimer {
   }
 };
 
-#endif  // TIMER_HPP
+#endif  // SRC_DLA_CALCTIMER_HPP_
