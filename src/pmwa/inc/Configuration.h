@@ -1,24 +1,23 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
-#include <stdio.h>
-
 #include <float.h>
 #include <math.h>
+#include <simtype.h>
+#include <stdio.h>
 #include <stdlib.h>
-#include <fstream>
-#include <iostream>
-#include <iomanip>
+#include <string.h>
+#include <systemparameter.h>
 
+#include <algorithm>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <list>
 #include <stack>
 #include <vector>
-#include <list>
-#include <algorithm>
-#include <systemparameter.h>
-#include "mpi.h"
-#include <string.h>
 
-#include <simtype.h>
+#include "mpi.h"
 
 #define G_NMIN 1.0e-8
 #define NSAMPLE 100000
@@ -29,13 +28,12 @@ using namespace XML;
 
 #include <lattice.hpp>
 
-
 class Quantities;
 
 class Probability;
 
 class GraphSpace {
-public:
+ public:
   double NMIN;
 
   double msh(double);
@@ -54,17 +52,20 @@ public:
 
   // worm, an onsite vertex, moves with reconnection of bidirectional list
   class Vertex {
-  public:
-    double t;  //imaginary time
-    short p;   //the number of bosons
-    int i;     //bond index = site + d*V
+   public:
+    double t;  // imaginary time
+    short p;   // the number of bosons
+    int i;     // bond index = site + d*V
     short type;
-    //  -5: temporal edge, -2(left),-4(right),:inter-domain vertex, -1(l),-3(r),:inter-domain kink,
-    //    0:on-site, 1: 2-site vertex, 2:kink, 3:2site-vertex(second nearest), 4:active "annihilation"-worm, 5:active "creation"-worm,  6:nonactive worm or other, 7:marker
-    bool dir;  //for worm, moving direction. for vertex, parity.
+    //  -5: temporal edge, -2(left),-4(right),:inter-domain vertex,
+    //  -1(l),-3(r),:inter-domain kink,
+    //    0:on-site, 1: 2-site vertex, 2:kink, 3:2site-vertex(second nearest),
+    //    4:active "annihilation"-worm, 5:active "creation"-worm,  6:nonactive
+    //    worm or other, 7:marker
+    bool dir;  // for worm, moving direction. for vertex, parity.
 
-    Vertex *next[2];  //doubly-linked list
-    Vertex *nleg;     //the opposite side of the 2-site vertex.
+    Vertex *next[2];  // doubly-linked list
+    Vertex *nleg;     // the opposite side of the 2-site vertex.
   };
 
   Parallel *PR;
@@ -83,7 +84,7 @@ public:
   short sgn[2];
 
   double rtb_i, rt_i, rtb_tot, rt_tot, rt_frame, rtot;
-  double Pv1,  PBv1;
+  double Pv1, PBv1;
   double Wlen;
   long Ncyc;
   int Nv, Nk, Nu;
@@ -111,22 +112,23 @@ public:
   std::string LATFILE;
   std::string ALGFILE;
 
-public:
-  GraphSpace(Size *N, int m_nmax, Lattice *m_LT, Probability *m_P, Parallel *PR, long long m_IMAX, long long m_WMAX,
-             std::string const& m_Eventfile, My_rdm *MR, int cb, std::string const& m_outfile);
+ public:
+  GraphSpace(Size *N, int m_nmax, Lattice *m_LT, Probability *m_P, Parallel *PR,
+             long long m_IMAX, long long m_WMAX, std::string const &m_Eventfile,
+             My_rdm *MR, int cb, std::string const &m_outfile);
 
   ~GraphSpace();
 
   void Output(std::string const &fname, My_rdm *MR);
 
-protected:
+ protected:
   void Worm_Update(My_rdm *MR);
 
   bool Diagonal_Update(My_rdm *MR, Quantities *QNT);
 
   void DLA_Update(My_rdm *MR);
 
-private:
+ private:
   double *dtn;
   Vertex **w;
 
@@ -155,7 +157,7 @@ private:
   double *ver_time;
   int *INmax;  // the number of segments at site i
 
-  double *I, *t, tA;  
+  double *I, *t, tA;
   //  t[1]|    |t[2]
   //      |----|
   //  t[0]|    |t[3]
@@ -164,7 +166,7 @@ private:
   // world: (x coordinate , y coordinate)
   // Box: (coordinate, vertex)
 
-  //worm
+  // worm
   bool Next_event(My_rdm *MR);
 
   void transition(My_rdm *MR);
@@ -197,10 +199,12 @@ private:
 
   void turn(bool oh, bool dir, int b, int a, double dla);
 
-  void (GraphSpace::*Transition[4])(bool oh, bool dir, int b, int a, double dla);
+  void (GraphSpace::*Transition[4])(bool oh, bool dir, int b, int a,
+                                    double dla);
 
-  //vertex
-  void initialev(std::string const& m_Eventfile, My_rdm *MR, int cb, double oldB);
+  // vertex
+  void initialev(std::string const &m_Eventfile, My_rdm *MR, int cb,
+                 double oldB);
 
   void Remove_Vertex();
 
@@ -216,11 +220,13 @@ private:
 
   void connect_after(Vertex **wl, Vertex *el, int x);
 
-  void parity_check(My_rdm *MR, int py, double *x, int &j, double topt, double bottomt);
+  void parity_check(My_rdm *MR, int py, double *x, int &j, double topt,
+                    double bottomt);
 
   int NumberOfVertex(My_rdm *MR, double m, int py);
 
-  void CondensateFraction(int site, Quantities *QNT, bool py0, bool py1, double exp0, double exp1);
+  void CondensateFraction(int site, Quantities *QNT, bool py0, bool py1,
+                          double exp0, double exp1);
 
   void OldBox();
 
@@ -228,18 +234,20 @@ private:
 
   void release(Vertex *wx);
 
-  void insert(Vertex *vl, Vertex *vr, short type, double targ_time, int xl, int xr, int pl, int pr, int d);
+  void insert(Vertex *vl, Vertex *vr, short type, double targ_time, int xl,
+              int xr, int pl, int pr, int d);
 
   void insert(Vertex *v, short type, double targ_time, int xl, int pl, int d);
 
-  void insert_NewEvent(Vertex *v, int new_type, double new_time, int xx, int px, int d);
+  void insert_NewEvent(Vertex *v, int new_type, double new_time, int xx, int px,
+                       int d);
 
-  void Renew_Vertex(Vertex *v, int new_type, double new_time, int xx, int px, int d);
+  void Renew_Vertex(Vertex *v, int new_type, double new_time, int xx, int px,
+                    int d);
 
   void relink(Vertex *v1, Vertex *v2, Vertex *v3);
 
   void initial_functions();
-
 
   void (GraphSpace::*Parity_Update[6][6])(Vertex *wl, int d, int i, int rnum);
 
@@ -271,23 +279,32 @@ private:
 
   void t10(Vertex *wl, int d, int i, int rnum);
 
-  double (GraphSpace::*Form[6][6])(double I1, double I2, double I3, double I4, bool py1, bool py2, bool py3, bool py4);
+  double (GraphSpace::*Form[6][6])(double I1, double I2, double I3, double I4,
+                                   bool py1, bool py2, bool py3, bool py4);
 
-  double P_All(double I1, double I2, double I3, double I4, bool py1, bool py2, bool py3, bool py4);
+  double P_All(double I1, double I2, double I3, double I4, bool py1, bool py2,
+               bool py3, bool py4);
 
-  double P_Right(double I1, double I2, double I3, double I4, bool py1, bool py2, bool py3, bool py4);
+  double P_Right(double I1, double I2, double I3, double I4, bool py1, bool py2,
+                 bool py3, bool py4);
 
-  double P_Left(double I1, double I2, double I3, double I4, bool py1, bool py2, bool py3, bool py4);
+  double P_Left(double I1, double I2, double I3, double I4, bool py1, bool py2,
+                bool py3, bool py4);
 
-  double P_LuRu(double I1, double I2, double I3, double I4, bool py1, bool py2, bool py3, bool py4);
+  double P_LuRu(double I1, double I2, double I3, double I4, bool py1, bool py2,
+                bool py3, bool py4);
 
-  double P_LdRd(double I1, double I2, double I3, double I4, bool py1, bool py2, bool py3, bool py4);
+  double P_LdRd(double I1, double I2, double I3, double I4, bool py1, bool py2,
+                bool py3, bool py4);
 
-  double P_LdRu(double I1, double I2, double I3, double I4, bool py1, bool py2, bool py3, bool py4);
+  double P_LdRu(double I1, double I2, double I3, double I4, bool py1, bool py2,
+                bool py3, bool py4);
 
-  double P_LuRd(double I1, double I2, double I3, double I4, bool py1, bool py2, bool py3, bool py4);
+  double P_LuRd(double I1, double I2, double I3, double I4, bool py1, bool py2,
+                bool py3, bool py4);
 
-  double P_Stay(double I1, double I2, double I3, double I4, bool py1, bool py2, bool py3, bool py4);
+  double P_Stay(double I1, double I2, double I3, double I4, bool py1, bool py2,
+                bool py3, bool py4);
 
   void SpatialDomainBoundary(My_rdm *MR);
 
@@ -308,11 +325,13 @@ class Configuration : public GraphSpace {
   int p_num;
   MC_p *MC;
 
-public:
+ public:
   void dump(ofstream &F);
 
-  Configuration(MC_p *m_MC, Size *N, int m_nmax, Lattice *m_LT, Probability *m_P, Parallel *PR, long long m_IMAX,
-                long long m_WMAX, std::string const& m_Eventfile, My_rdm *MR, bool cb, std::string const& m_outfile);
+  Configuration(MC_p *m_MC, Size *N, int m_nmax, Lattice *m_LT,
+                Probability *m_P, Parallel *PR, long long m_IMAX,
+                long long m_WMAX, std::string const &m_Eventfile, My_rdm *MR,
+                bool cb, std::string const &m_outfile);
 
   ~Configuration();
 

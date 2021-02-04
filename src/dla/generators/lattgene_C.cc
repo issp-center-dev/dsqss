@@ -4,12 +4,12 @@
 
 ----------------------------------------------*/
 
-#include <cstdlib>
 #include <cmath>
+#include <cstdlib>
+#include <cstring>
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <cstring>
 
 using namespace std;
 
@@ -29,17 +29,17 @@ void ShowUsage(std::string const& exename) {
 void WriteXML(int D, int L[], std::string const& filename) {
   ofstream fout(filename.c_str());
   fout.precision(15);
-  int N = 1;  //number of sites.
+  int N = 1;  // number of sites.
   for (int i = 0; i < D; i++) {
     N *= L[i];
   }
 
-  int NumberOfInteractions     = N * D;
-  int NumberOfSiteTypes        = 1;
+  int NumberOfInteractions = N * D;
+  int NumberOfSiteTypes = 1;
   int NumberOfInteractionTypes = 1;
   int NumberOfEdgeInteractions = 0;
 
-  //Hypercubic
+  // Hypercubic
   int* Lext = new int[D];
 
   for (int di = 0; di < D; di++) {
@@ -49,10 +49,9 @@ void WriteXML(int D, int L[], std::string const& filename) {
     }
   }
 
-  for (int di = 0; di < D; di++)
-    NumberOfEdgeInteractions += Lext[di];
+  for (int di = 0; di < D; di++) NumberOfEdgeInteractions += Lext[di];
 
-  int BD = D;  //Hypercubic
+  int BD = D;  // Hypercubic
 
   fout << "<LATTICE>" << endl << endl;
   fout << "<Comment>" << endl;
@@ -84,9 +83,9 @@ void WriteXML(int D, int L[], std::string const& filename) {
   int mtype = 0;
 
   for (int id = 0; id < N; id++) {
-    int p  = id;
+    int p = id;
     int Nt = N;
-    mtype  = 0;
+    mtype = 0;
     for (int q = D - 1; q >= 0; q--) {
       Nt /= L[q];
       mtype += p / Nt;
@@ -102,11 +101,11 @@ void WriteXML(int D, int L[], std::string const& filename) {
        << endl
        << endl;
 
-  int NB    = D * N;  // number of bonds
-  int* x    = new int[D];
+  int NB = D * N;  // number of bonds
+  int* x = new int[D];
   int itype = 0;
   int nbody = 2;
-  NB        = 0;
+  NB = 0;
   int etype;
   int eid = 0;
 
@@ -124,7 +123,7 @@ void WriteXML(int D, int L[], std::string const& filename) {
       } else
         etype = -1;
 
-      x[p]  = (x[p] + 1) % L[p];
+      x[p] = (x[p] + 1) % L[p];
       int j = 0;
       for (int q = D - 1; q >= 0; q--) {
         j *= L[q];
@@ -159,15 +158,15 @@ void WriteXML(int D, int L[], std::string const& filename) {
 
 int main(int argc, char** argv) {
   std::string exename(argv[0]);
-  if (argc < 3 ){
+  if (argc < 3) {
     ShowUsage(exename);
     exit(0);
   }
   std::string filename("lattice.xml");
-  if (std::strcmp(argv[1], "-o") == 0){
+  if (std::strcmp(argv[1], "-o") == 0) {
     filename = argv[2];
     argc -= 2;
-    argv = argv+2;
+    argv = argv + 2;
   }
   int NARG = 3;
   if (argc < NARG) {
@@ -176,7 +175,7 @@ int main(int argc, char** argv) {
   }
   const int D = atoi(argv[1]);
   //  int        L[D] ;
-  int* L   = new int[D];  //edit sakakura
+  int* L = new int[D];  // edit sakakura
 
   if (argc == NARG) {
     int lx = atoi(argv[2]);
@@ -201,7 +200,9 @@ int main(int argc, char** argv) {
     EvenOrOdd += L[i] % 2;
   }
 
-  if (EvenOrOdd) { cout << "Warnig: L should be an even number." << endl; }
+  if (EvenOrOdd) {
+    cout << "Warnig: L should be an even number." << endl;
+  }
 
   WriteXML(D, L, filename);
   cout << "... done." << endl;

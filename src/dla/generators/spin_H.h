@@ -4,7 +4,7 @@
 //============================================================================
 
 class HeisenbergSpin {
-public:
+ public:
   int K;
   int D;
   cmatrix I;
@@ -40,8 +40,8 @@ HeisenbergSpin::HeisenbergSpin(int K0) {
   DN = t(UP);
   //  X = 0.5 * (UP + DN);
   cmatrix temp = UP + DN;
-  X            = 0.5 * temp;
-  Y            = ((-0.5) * IUNIT) * (UP - DN);
+  X = 0.5 * temp;
+  Y = ((-0.5) * IUNIT) * (UP - DN);
   for (int i = 0; i < D; i++) {
     I.re(i, i) = 1.0;
     Z.re(i, i) = -0.5 * (double)K + (double)i;
@@ -51,7 +51,7 @@ HeisenbergSpin::HeisenbergSpin(int K0) {
 //----------------------------------------------------------------------------
 
 class HeisenbergSpinSet {
-public:
+ public:
   int DS;     // the dimension of the 1-spin Hilbert space
   int N;      // "N" in SU(N)
   int K;      // the number of bosons on each site
@@ -66,15 +66,15 @@ public:
   HeisenbergSpinSet(int K0, int NSITE0) {
     printf("SpinSet> start.\n");
 
-    K     = K0;
+    K = K0;
     NSITE = NSITE0;
 
     HeisenbergSpin S(K);
 
     DS = S.D;
-    X  = new cmatrix[NSITE];
-    Y  = new cmatrix[NSITE];
-    Z  = new cmatrix[NSITE];
+    X = new cmatrix[NSITE];
+    Y = new cmatrix[NSITE];
+    Z = new cmatrix[NSITE];
 
     printf("  definig spins ...\n");
     DIM = 1;

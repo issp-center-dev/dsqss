@@ -38,12 +38,12 @@
 //######################################################################
 
 #include <cstdio>
-#include <iostream>
-#include <string>
 #include <cstring>
-#include <sstream>
 #include <fstream>
 #include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <string>
 
 #ifdef MULTI
 #include "mpi.h"
@@ -52,16 +52,15 @@
 #include "name.h"
 #include "serialize.hpp"
 
-class Accumulator{
-private:
+class Accumulator {
+ private:
   std::string k;
   double value;
   double error;
   double s1, s2;
   int n;
 
-
-public:
+ public:
   Accumulator() : k("Unset"){};
   explicit Accumulator(std::string const& s) : k(s){};
 
@@ -71,7 +70,7 @@ public:
     error = 0.0;
     s1 = 0.0;
     s2 = 0.0;
-    n  = 0;
+    n = 0;
   };
   void reset(std::string const& s) {
     reset();
@@ -104,14 +103,15 @@ public:
   const char* ckey() const { return k.c_str(); }
   std::string key() const { return k; }
   double mean() const { return value; }
-  double std_error() const { return error;}
+  double std_error() const { return error; }
 
   std::string dump() const {
     std::stringstream ss;
-    ss << k << " = " << std::setprecision(8) << std::scientific << value << " " << error;
+    ss << k << " = " << std::setprecision(8) << std::scientific << value << " "
+       << error;
     return ss.str();
   }
-  void show() const { std::cout << dump() << std::endl;}
+  void show() const { std::cout << dump() << std::endl; }
   void show(FILE* F) const {
     std::string s = dump();
     std::fprintf(F, "%s\n", s.c_str());
@@ -124,7 +124,7 @@ public:
     std::fprintf(F, "%s %s\n", prefix, s.c_str());
   }
 
-  std::ofstream& save(std::ofstream& F) const{
+  std::ofstream& save(std::ofstream& F) const {
     Serialize::save(F, k);
     Serialize::save(F, value);
     Serialize::save(F, error);
@@ -133,7 +133,7 @@ public:
     Serialize::save(F, n);
     return F;
   }
-  std::ifstream& load(std::ifstream& F){
+  std::ifstream& load(std::ifstream& F) {
     Serialize::load(F, k);
     Serialize::load(F, value);
     Serialize::load(F, error);
@@ -144,7 +144,7 @@ public:
   }
 
 #ifdef MULTI
-  void allreduce(MPI_Comm comm){
+  void allreduce(MPI_Comm comm) {
     double s1_tmp, s2_tmp;
     int n_tmp;
     MPI_Allreduce(&s1, &s1_tmp, 1, MPI_DOUBLE, MPI_SUM, comm);
@@ -157,15 +157,15 @@ public:
 #endif
 };
 
-namespace Serialize{
+namespace Serialize {
 template <>
-void save(std::ofstream& F, Accumulator const& acc){
+void save(std::ofstream& F, Accumulator const& acc) {
   acc.save(F);
 }
 template <>
-void load(std::ifstream& F, Accumulator & acc){
+void load(std::ifstream& F, Accumulator& acc) {
   acc.load(F);
 }
-}
+}  // namespace Serialize
 
-#endif // ACCUMULATOR_H
+#endif  // ACCUMULATOR_H

@@ -15,11 +15,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #if 0
-#if defined(MEASURE_BOSON) && !defined(MEASURE_SPIN) && !defined(MEASURE_USER_SPECIFIC)
+#if defined(MEASURE_BOSON) && !defined(MEASURE_SPIN) && \
+    !defined(MEASURE_USER_SPECIFIC)
 #include "SPECIFIC/Boson/measure_specific.h"
-#elif !defined(MEASURE_BOSON) && defined(MEASURE_SPIN) && !defined(MEASURE_USER_SPECIFIC)
+#elif !defined(MEASURE_BOSON) && defined(MEASURE_SPIN) && \
+    !defined(MEASURE_USER_SPECIFIC)
 #include "SPECIFIC/Heisenberg/measure_specific.h"
-#elif !defined(MEASURE_BOSON) && !defined(MEASURE_SPIN) && defined(MEASURE_USER_SPECIFIC)
+#elif !defined(MEASURE_BOSON) && !defined(MEASURE_SPIN) && \
+    defined(MEASURE_USER_SPECIFIC)
 #include "SPECIFIC/User/measure_specific.h"
 #else
 #error You should define ONE of the following tokens: MEASURE_BOSON, MEASURE_SPIN, or MEASURE_USER_SPECIFIC.
@@ -51,17 +54,18 @@ enum {
   Wxy2,
   NACC,  // number of quantities measured at each MC step
 };
-static std::string ANAME[NACC] = {"sgn", "nv1",   "eb1",   "eb2",   "le1",   "mzua1", "mzua2", "mzub1", "mzub2",
-                                  "nh1",   "wxy2"};
+static std::string ANAME[NACC] = {"sgn",   "nv1",   "eb1",   "eb2",
+                                  "le1",   "mzua1", "mzua2", "mzub1",
+                                  "mzub2", "nh1",   "wxy2"};
 
 // observable specifier
 enum {
-  SIGN, // Sign of weight
-  ANV,  // (site) Average of the Number of Vertices
-  ENE,  // ENErgy per site
-  SPE,  // SPEcific heat
-  SOM,  // SOMmerfeld coeff
-  LEN,  // LENgth of worm pair
+  SIGN,  // Sign of weight
+  ANV,   // (site) Average of the Number of Vertices
+  ENE,   // ENErgy per site
+  SPE,   // SPEcific heat
+  SOM,   // SOMmerfeld coeff
+  LEN,   // LENgth of worm pair
   XMX,
 
   // observables about Magnetization Z per site
@@ -83,7 +87,8 @@ enum {
 
   NPHY,  // number of quantities computed at each set
 };
-static std::string PNAME[NPHY] = {"sign", "anv",  "ene",  "spe",  "som", "len",  "xmx", "amzu", "bmzu", "smzu", "xmzu",
-                                  "ds1", "wi2",  "rhos", "rhof", "comp"};
+static std::string PNAME[NPHY] = {"sign", "anv",  "ene",  "spe",  "som",  "len",
+                                  "xmx",  "amzu", "bmzu", "smzu", "xmzu", "ds1",
+                                  "wi2",  "rhos", "rhof", "comp"};
 
 }  // namespace Specific

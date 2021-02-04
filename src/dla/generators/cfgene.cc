@@ -7,9 +7,9 @@
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
-#include <string>
 #include <fstream>
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -28,13 +28,13 @@ void ShowUsage(std::string const& exename) {
 void WriteXML(int D, int L[], int Ntau, std::string const& filename) {
   ofstream fout(filename.c_str());
   fout.precision(15);
-  int N = 1;  //number of sites.
+  int N = 1;  // number of sites.
   for (int i = 0; i < D; i++) {
     N *= L[i];
   }
 
   int NumberOfElements = N * N;
-  int NumberOfKinds    = N;
+  int NumberOfKinds = N;
 
   fout << "<CorrelationFunction>" << endl << endl;
   fout << "<Comment>" << endl;
@@ -49,8 +49,8 @@ void WriteXML(int D, int L[], int Ntau, std::string const& filename) {
 
   fout << "<!-- <CF> [kind] [isite] [jsite] </CF> -->" << endl << endl;
 
-  int NB  = 0;  //3 * N ;   // number of bonds
-  int* x  = new int[D];
+  int NB = 0;  // 3 * N ;   // number of bonds
+  int* x = new int[D];
   int* dx = new int[D];
 
   int kind = 0;
@@ -91,11 +91,11 @@ void WriteXML(int D, int L[], int Ntau, std::string const& filename) {
 int main(int argc, char** argv) {
   std::string exename(argv[0]);
   std::string filename("cf.xml");
-  if(argc < 3){
+  if (argc < 3) {
     ShowUsage(exename);
     exit(0);
   }
-  if(std::strcmp(argv[1], "-o")==0){
+  if (std::strcmp(argv[1], "-o") == 0) {
     filename = argv[2];
     argc -= 2;
     argv += 2;
@@ -105,7 +105,7 @@ int main(int argc, char** argv) {
     ShowUsage(exename);
     exit(0);
   }
-  int iarg    = 1;
+  int iarg = 1;
   const int D = atoi(argv[iarg]);
   iarg++;
   if (argc != D + 3) {
@@ -129,7 +129,9 @@ int main(int argc, char** argv) {
     EvenOrOdd += L[i] % 2;
   }
 
-  if (EvenOrOdd) { cout << "Warnig: L should be an even number." << endl; }
+  if (EvenOrOdd) {
+    cout << "Warnig: L should be an even number." << endl;
+  }
 
   WriteXML(D, L, Ntau, filename);
   cout << "... done." << endl;

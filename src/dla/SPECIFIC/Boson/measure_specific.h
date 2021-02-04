@@ -38,16 +38,17 @@ enum {
   Wxy2,
   NACC,  // number of quantities measured at each MC step
 };
-static std::string ANAME[NACC] = {"sgn", "nv1",   "eb1",   "eb2",   "le1",   "mzua1", "mzua2", "mzub1", "mzub2",
-                                  "mzsa1", "mzsa2", "mzsb1", "mzsb2", "nh1",   "wxy2"};
+static std::string ANAME[NACC] = {"sgn",   "nv1",   "eb1",   "eb2",   "le1",
+                                  "mzua1", "mzua2", "mzub1", "mzub2", "mzsa1",
+                                  "mzsa2", "mzsb1", "mzsb2", "nh1",   "wxy2"};
 
 // observable specifier
 enum {
-  SIGN, // Sign of weight
-  ANV,  // (site) Average of the Number of Vertices
-  ENE,  // ENErgy per site
-  SPE,  // SPEcific heat
-  LEN,  // LENgth of worm pair
+  SIGN,  // Sign of weight
+  ANV,   // (site) Average of the Number of Vertices
+  ENE,   // ENErgy per site
+  SPE,   // SPEcific heat
+  LEN,   // LENgth of worm pair
   XMX,
 
   // observables about Magnetization Z per site
@@ -72,8 +73,9 @@ enum {
 
   NPHY,  // number of quantities computed at each set
 };
-static std::string PNAME[NPHY] = {"sign", "anv",  "ene",  "spe",  "len",  "xmx", "amzu", "bmzu", "smzu", "xmzu",
-                                  "amzs", "bmzs", "smzs", "xmzs", "ds1", "wi2",  "rhos", "comp"};
+static std::string PNAME[NPHY] = {
+    "sign", "anv",  "ene",  "spe",  "len",  "xmx", "amzu", "bmzu", "smzu",
+    "xmzu", "amzs", "bmzs", "smzs", "xmzs", "ds1", "wi2",  "rhos", "comp"};
 
 }  // namespace Specific
 

@@ -2,8 +2,8 @@
 #define STDMA_H
 
 //#include<systemparameter.h>
-#include <string>
 #include <sstream>  // std::ostringstream
+#include <string>
 
 double factorial(int num);
 void count_time(long tms, double x);
@@ -30,107 +30,90 @@ void newcalls(T*& Array, int max_val) {
 template <class T>
 void newcalls(T**& Array, int max_val1, int max_val2) {
   Array = new T*[max_val1];
-  for (int x = 0; x < max_val1; x++)
-    Array[x] = new T[max_val2];
+  for (int x = 0; x < max_val1; x++) Array[x] = new T[max_val2];
 }
 
 template <class T>
 void newcall_zero(T*& Array, int max_val) {
   Array = new T[max_val];
 
-  for (int x = 0; x < max_val; x++)
-    Array[x] = 0;
+  for (int x = 0; x < max_val; x++) Array[x] = 0;
 }
 
 template <class T>
 void newcall_zero(T**& Array, int max_val1, int max_val2) {
   Array = new T*[max_val1];
-  for (int x = 0; x < max_val1; x++)
-    Array[x] = new T[max_val2];
+  for (int x = 0; x < max_val1; x++) Array[x] = new T[max_val2];
 
   for (int x = 0; x < max_val1; x++)
-    for (int y = 0; y < max_val2; y++)
-      Array[x][y] = 0;
+    for (int y = 0; y < max_val2; y++) Array[x][y] = 0;
 }
 
 template <class T>
 void newcall_zero(T***& Array, int max_val1, int max_val2, int max_val3) {
   Array = new T**[max_val1];
+  for (int x = 0; x < max_val1; x++) Array[x] = new T*[max_val2];
   for (int x = 0; x < max_val1; x++)
-    Array[x] = new T*[max_val2];
-  for (int x = 0; x < max_val1; x++)
-    for (int y = 0; y < max_val2; y++)
-      Array[x][y] = new T[max_val3];
+    for (int y = 0; y < max_val2; y++) Array[x][y] = new T[max_val3];
 
   for (int x = 0; x < max_val1; x++)
     for (int y = 0; y < max_val2; y++)
-      for (int z = 0; z < max_val3; z++)
-        Array[x][y][z] = 0;
+      for (int z = 0; z < max_val3; z++) Array[x][y][z] = 0;
 }
 
 template <class T>
-void newcall_zero(T****& Array, int max_val1, int max_val2, int max_val3, int max_val4) {
+void newcall_zero(T****& Array, int max_val1, int max_val2, int max_val3,
+                  int max_val4) {
   Array = new T***[max_val1];
+  for (int x = 0; x < max_val1; x++) Array[x] = new T**[max_val2];
   for (int x = 0; x < max_val1; x++)
-    Array[x] = new T**[max_val2];
-  for (int x = 0; x < max_val1; x++)
-    for (int y = 0; y < max_val2; y++)
-      Array[x][y] = new T*[max_val3];
+    for (int y = 0; y < max_val2; y++) Array[x][y] = new T*[max_val3];
   for (int x = 0; x < max_val1; x++)
     for (int y = 0; y < max_val2; y++)
-      for (int z = 0; z < max_val3; z++)
-        Array[x][y][z] = new T[max_val4];
+      for (int z = 0; z < max_val3; z++) Array[x][y][z] = new T[max_val4];
 
   for (int x = 0; x < max_val1; x++)
     for (int y = 0; y < max_val2; y++)
       for (int z = 0; z < max_val3; z++)
-        for (int a = 0; a < max_val4; a++)
-          Array[x][y][z][a] = 0;
+        for (int a = 0; a < max_val4; a++) Array[x][y][z][a] = 0;
 }
 
 template <class T>
-void newcall_zero(T*****& Array, int max_val1, int max_val2, int max_val3, int max_val4, int max_val5) {
+void newcall_zero(T*****& Array, int max_val1, int max_val2, int max_val3,
+                  int max_val4, int max_val5) {
   Array = new T****[max_val1];
+  for (int x = 0; x < max_val1; x++) Array[x] = new T***[max_val2];
   for (int x = 0; x < max_val1; x++)
-    Array[x] = new T***[max_val2];
-  for (int x = 0; x < max_val1; x++)
-    for (int y = 0; y < max_val2; y++)
-      Array[x][y] = new T**[max_val3];
+    for (int y = 0; y < max_val2; y++) Array[x][y] = new T**[max_val3];
   for (int x = 0; x < max_val1; x++)
     for (int y = 0; y < max_val2; y++)
-      for (int z = 0; z < max_val3; z++)
-        Array[x][y][z] = new T*[max_val4];
+      for (int z = 0; z < max_val3; z++) Array[x][y][z] = new T*[max_val4];
   for (int x = 0; x < max_val1; x++)
     for (int y = 0; y < max_val2; y++)
       for (int z = 0; z < max_val3; z++)
-        for (int a = 0; a < max_val4; a++)
-          Array[x][y][z][a] = new T[max_val5];
+        for (int a = 0; a < max_val4; a++) Array[x][y][z][a] = new T[max_val5];
 
   for (int x = 0; x < max_val1; x++)
     for (int y = 0; y < max_val2; y++)
       for (int z = 0; z < max_val3; z++)
         for (int a = 0; a < max_val4; a++)
-          for (int b = 0; b < max_val5; b++)
-            Array[x][y][z][a][b] = 0;
+          for (int b = 0; b < max_val5; b++) Array[x][y][z][a][b] = 0;
 }
 
 template <class T>
-void newcall_zero(T******& Array, int max_val1, int max_val2, int max_val3, int max_val4, int max_val5, int max_val6) {
+void newcall_zero(T******& Array, int max_val1, int max_val2, int max_val3,
+                  int max_val4, int max_val5, int max_val6) {
   Array = new T*****[max_val1];
+  for (int x = 0; x < max_val1; x++) Array[x] = new T****[max_val2];
   for (int x = 0; x < max_val1; x++)
-    Array[x] = new T****[max_val2];
-  for (int x = 0; x < max_val1; x++)
-    for (int y = 0; y < max_val2; y++)
-      Array[x][y] = new T***[max_val3];
+    for (int y = 0; y < max_val2; y++) Array[x][y] = new T***[max_val3];
   for (int x = 0; x < max_val1; x++)
     for (int y = 0; y < max_val2; y++)
-      for (int z = 0; z < max_val3; z++)
-        Array[x][y][z] = new T**[max_val4];
+      for (int z = 0; z < max_val3; z++) Array[x][y][z] = new T**[max_val4];
   for (int x = 0; x < max_val1; x++)
     for (int y = 0; y < max_val2; y++)
       for (int z = 0; z < max_val3; z++)
-        for (int a = 0; a < max_val4; a++)
-          Array[x][y][z][a] = new T*[max_val5];
+        for (int a = 0; a < max_val4; a++) Array[x][y][z][a] = new T*[max_val5];
   for (int x = 0; x < max_val1; x++)
     for (int y = 0; y < max_val2; y++)
       for (int z = 0; z < max_val3; z++)
@@ -143,8 +126,7 @@ void newcall_zero(T******& Array, int max_val1, int max_val2, int max_val3, int 
       for (int z = 0; z < max_val3; z++)
         for (int a = 0; a < max_val4; a++)
           for (int b = 0; b < max_val5; b++)
-            for (int c = 0; c < max_val6; c++)
-              Array[x][y][z][a][b][c] = 0;
+            for (int c = 0; c < max_val6; c++) Array[x][y][z][a][b][c] = 0;
 }
 
 template <class T>
@@ -154,18 +136,15 @@ void delcall(T*& Array) {
 
 template <class T>
 void delcall(T**& Array, int max_val1) {
-  for (int x = 0; x < max_val1; x++)
-    delete[] Array[x];
+  for (int x = 0; x < max_val1; x++) delete[] Array[x];
   delete[] Array;
 }
 
 template <class T>
 void delcall(T***& Array, int max_val1, int max_val2) {
   for (int x = 0; x < max_val1; x++)
-    for (int y = 0; y < max_val2; y++)
-      delete[] Array[x][y];
-  for (int x = 0; x < max_val1; x++)
-    delete[] Array[x];
+    for (int y = 0; y < max_val2; y++) delete[] Array[x][y];
+  for (int x = 0; x < max_val1; x++) delete[] Array[x];
   delete[] Array;
 }
 
@@ -173,57 +152,47 @@ template <class T>
 void delcall(T****& Array, int max_val1, int max_val2, int max_val3) {
   for (int x = 0; x < max_val1; x++)
     for (int y = 0; y < max_val2; y++)
-      for (int z = 0; z < max_val3; z++)
-        delete[] Array[x][y][z];
+      for (int z = 0; z < max_val3; z++) delete[] Array[x][y][z];
   for (int x = 0; x < max_val1; x++)
-    for (int y = 0; y < max_val2; y++)
-      delete[] Array[x][y];
-  for (int x = 0; x < max_val1; x++)
-    delete[] Array[x];
+    for (int y = 0; y < max_val2; y++) delete[] Array[x][y];
+  for (int x = 0; x < max_val1; x++) delete[] Array[x];
   delete[] Array;
 }
 
 template <class T>
-void delcall(T*****& Array, int max_val1, int max_val2, int max_val3, int max_val4) {
+void delcall(T*****& Array, int max_val1, int max_val2, int max_val3,
+             int max_val4) {
   for (int x = 0; x < max_val1; x++)
     for (int y = 0; y < max_val2; y++)
       for (int z = 0; z < max_val3; z++)
-        for (int a = 0; a < max_val4; a++)
-          delete[] Array[x][y][z][a];
+        for (int a = 0; a < max_val4; a++) delete[] Array[x][y][z][a];
   for (int x = 0; x < max_val1; x++)
     for (int y = 0; y < max_val2; y++)
-      for (int z = 0; z < max_val3; z++)
-        delete[] Array[x][y][z];
+      for (int z = 0; z < max_val3; z++) delete[] Array[x][y][z];
   for (int x = 0; x < max_val1; x++)
-    for (int y = 0; y < max_val2; y++)
-      delete[] Array[x][y];
-  for (int x = 0; x < max_val1; x++)
-    delete[] Array[x];
+    for (int y = 0; y < max_val2; y++) delete[] Array[x][y];
+  for (int x = 0; x < max_val1; x++) delete[] Array[x];
   delete[] Array;
 }
 
 template <class T>
-void delcall(T*****& Array, int max_val1, int max_val2, int max_val3, int max_val4, int max_val5) {
+void delcall(T*****& Array, int max_val1, int max_val2, int max_val3,
+             int max_val4, int max_val5) {
   for (int x = 0; x < max_val1; x++)
     for (int y = 0; y < max_val2; y++)
       for (int z = 0; z < max_val3; z++)
         for (int a = 0; a < max_val4; a++)
-          for (int b = 0; b < max_val5; b++)
-            delete[] Array[x][y][z][a][b];
+          for (int b = 0; b < max_val5; b++) delete[] Array[x][y][z][a][b];
   for (int x = 0; x < max_val1; x++)
     for (int y = 0; y < max_val2; y++)
       for (int z = 0; z < max_val3; z++)
-        for (int a = 0; a < max_val4; a++)
-          delete[] Array[x][y][z][a];
+        for (int a = 0; a < max_val4; a++) delete[] Array[x][y][z][a];
   for (int x = 0; x < max_val1; x++)
     for (int y = 0; y < max_val2; y++)
-      for (int z = 0; z < max_val3; z++)
-        delete[] Array[x][y][z];
+      for (int z = 0; z < max_val3; z++) delete[] Array[x][y][z];
   for (int x = 0; x < max_val1; x++)
-    for (int y = 0; y < max_val2; y++)
-      delete[] Array[x][y];
-  for (int x = 0; x < max_val1; x++)
-    delete[] Array[x];
+    for (int y = 0; y < max_val2; y++) delete[] Array[x][y];
+  for (int x = 0; x < max_val1; x++) delete[] Array[x];
   delete[] Array;
 }
 

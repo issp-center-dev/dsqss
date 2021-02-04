@@ -36,12 +36,13 @@ enum {
 
   NACC,  // number of quantities measured at each MC step
 };
-static std::string ANAME[NACC] = {"sgn", "nv1",   "eb1",   "eb2",   "le1",   "mzua1", "mzua2",
-                                  "mzub1", "mzub2", "mzsa1", "mzsa2", "mzsb1", "mzsb2"};
+static std::string ANAME[NACC] = {"sgn",   "nv1",   "eb1",   "eb2",   "le1",
+                                  "mzua1", "mzua2", "mzub1", "mzub2", "mzsa1",
+                                  "mzsa2", "mzsb1", "mzsb2"};
 
 // observable specifier
 enum {
-  SIGN, // Sign of weight
+  SIGN,  // Sign of weight
 
   ANV,  // (site) Average of the Number of Vertices
   ENE,  // ENErgy per site
@@ -66,8 +67,10 @@ enum {
 
   NPHY,  // number of quantities computed at each set
 };
-static std::string PNAME[NPHY] = {"sign", "anv",  "ene",  "spe",  "len",  "xmx",  "amzu", "bmzu",
-                                  "smzu", "xmzu", "amzs", "bmzs", "smzs", "xmzs", };
+static std::string PNAME[NPHY] = {
+    "sign", "anv",  "ene",  "spe",  "len",  "xmx",  "amzu",
+    "bmzu", "smzu", "xmzu", "amzs", "bmzs", "smzs", "xmzs",
+};
 
 }  // namespace Specific
 

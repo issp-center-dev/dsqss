@@ -1,23 +1,23 @@
-#include <cstring>
 #include <cstdio>
+#include <cstring>
 #include <iostream>
 #include <string>
 using namespace std;
-#include "matrix.h"
 #include "boson_B.h"
 #include "canonical.h"
+#include "matrix.h"
 
 //----------------------------------------------------------------------
 
 // Bose-Hubbard Model
-//H= - J\sum_{<i,j>} b_i b_j + V\sum_{<i,j>} n_i n_j
+// H= - J\sum_{<i,j>} b_i b_j + V\sum_{<i,j>} n_i n_j
 //    + u/2z \sum_{<i,j>}( n_i (n_i + 1) + n_j (n_j + 1) )
 //     - mu/z \sum_{<i,j>}( n_i + n_j ).
-//F=mu/z,
-//U=u/z
+// F=mu/z,
+// U=u/z
 
 class BoseHubbardModel {
-public:
+ public:
   int M;  // Number of bosons ( [M]-representaion )
   int NSITE;
   double J;  // the bilinear coupling for XY
@@ -34,13 +34,13 @@ public:
 
   BoseHubbardModel(int M0, int NSITE0, double J0, double V0, double U0,
                    double F0) {
-    M     = M0;
+    M = M0;
     NSITE = NSITE0;
-    J     = J0;
-    V     = V0;
-    U     = U0;
-    F     = F0;
-    //double Vh=V*0.5;
+    J = J0;
+    V = V0;
+    U = U0;
+    F = F0;
+    // double Vh=V*0.5;
 
     BosonOperatorSet S(M, NSITE);
 
@@ -51,7 +51,7 @@ public:
     for (int k = 0; k < NSITE; k++) {
       int l = (k + 1) % NSITE;
       printf("    k= %d\n", k);
-      //h += (-J) * ( S.X[k] * S.X[l] + S.Y[k] * S.Y[l] );
+      // h += (-J) * ( S.X[k] * S.X[l] + S.Y[k] * S.Y[l] );
       h += (-J) * (S.UP[k] * S.DN[l]);
       h += (+V) * (S.Z[k] * S.Z[l]);
     }
@@ -81,12 +81,12 @@ public:
     }
     printf("  ... done.\n");
 
-    H   = h.re;
+    H = h.re;
     MXU = mxu.re;
     MZU = mzu.re;
     MXS = mxs.re;
     MZS = mzs.re;
-    I   = S.I.re;
+    I = S.I.re;
   };
 };
 
@@ -94,7 +94,7 @@ public:
 
 void Average(int DIM, dgematrix& R, dgematrix& Q, double& Ave, double& Var) {
   dgematrix W(DIM, DIM);
-  W   = Q * Q;
+  W = Q * Q;
   Ave = CanonicalAverage(R, Q);
   Var = CanonicalAverage(R, W);
   Var = Var - Ave * Ave;
@@ -102,10 +102,10 @@ void Average(int DIM, dgematrix& R, dgematrix& Q, double& Ave, double& Var) {
 
 //============================================================================
 
-void WriteXML(int M, dgematrix& Q, dgematrix& H, std::string const & filename) {
+void WriteXML(int M, dgematrix& Q, dgematrix& H, std::string const& filename) {
   FILE* FOUT = fopen(filename.c_str(), "w");
-  int D      = M + 1;
-  int DD     = D * D;
+  int D = M + 1;
+  int DD = D * D;
   fprintf(FOUT, "<Hamiltonian>\n");
   fprintf(FOUT, "  <General>\n");
   fprintf(FOUT,
@@ -143,8 +143,8 @@ void WriteXML(int M, dgematrix& Q, dgematrix& H, std::string const & filename) {
     int i0 = i % D;
     int i1 = i / D;
     for (int j = 0; j < DD; j++) {
-      int j0   = j % D;
-      int j1   = j / D;
+      int j0 = j % D;
+      int j1 = j / D;
       double x = -H(i, j);
       if (abs(x) > 1.0e-8) {
         // if (i != j) x = abs(x);
@@ -157,13 +157,15 @@ void WriteXML(int M, dgematrix& Q, dgematrix& H, std::string const & filename) {
   fprintf(FOUT, "</Hamiltonian>\n");
 }
 
-void ShowUsage(std::string const& exename){
+void ShowUsage(std::string const& exename) {
   printf("usage:\n");
   printf("    %s [-o filename] M J V U F\n", exename.c_str());
   printf("arguments:\n");
   printf("    M ... the maxmum number of bosons on each site \n");
   printf("    J ... the hopping constant (positive)\n");
-  printf("    V ... the nearest neighbor interaction (positive for " "replusive)\n");
+  printf(
+      "    V ... the nearest neighbor interaction (positive for "
+      "replusive)\n");
   printf("    U ... the on-site interaction (positive for replusive)\n");
   printf("          ( = u/z if the field u is the field per site.)\n");
   printf("    F ... the chemical potential in the pair Hamiltonian\n");
@@ -181,11 +183,11 @@ void ShowUsage(std::string const& exename){
 int main(int argc, char** argv) {
   string exename = argv[0];
   string filename("hamiltonian.xml");
-  if(argc < 3){
+  if (argc < 3) {
     ShowUsage(exename);
     exit(0);
   }
-  if(std::strcmp(argv[1], "-o")==0){
+  if (std::strcmp(argv[1], "-o") == 0) {
     filename = argv[2];
     argc -= 2;
     argv += 2;
@@ -196,7 +198,7 @@ int main(int argc, char** argv) {
     ShowUsage(exename);
     exit(0);
   }
-  int M    = atoi(argv[1]);
+  int M = atoi(argv[1]);
   double J = (double)atof(argv[2]);
   double V = (double)atof(argv[3]);
   double U = (double)atof(argv[4]);

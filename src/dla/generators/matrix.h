@@ -4,6 +4,7 @@
 //============================================================================
 
 #include <stdint.h>
+
 #include <algorithm>
 #include <cfloat>
 #include <cmath>
@@ -47,10 +48,10 @@ void dgemm_(const char* transa, const char* transb, const DSQSS_INT* M,
 
 //============================================================================
 class dgematrix {
-private:
+ private:
   vector<double> index;
 
-public:
+ public:
   int n, m;
 
   ////////////////
@@ -234,10 +235,10 @@ dgematrix operator*(const dgematrix& dA, const dgematrix& dB) {
 
 //
 class dsymatrix {
-private:
+ private:
   double* index;
 
-public:
+ public:
   int n;
 
   inline double& operator()(const int& i, const int& j) {
@@ -250,7 +251,7 @@ public:
   DSQSS_INT dsyev(vector<double>&);
 
   dsymatrix(int N) {
-    n     = N;
+    n = N;
     index = new double[N * N];
   };
 
@@ -262,11 +263,11 @@ public:
 DSQSS_INT dsymatrix::dsyev(vector<double>& E) {
   ////////////////////
   DSQSS_INT info;
-  char jobz        = 'V';
-  char uplo        = 'I';
+  char jobz = 'V';
+  char uplo = 'I';
   DSQSS_INT w_size = -1;
-  DSQSS_INT size   = n;
-  DSQSS_INT size2  = size * size;
+  DSQSS_INT size = n;
+  DSQSS_INT size2 = size * size;
   double* work;
   work = new double[size * 20];
   double* vr;
@@ -276,15 +277,12 @@ DSQSS_INT dsymatrix::dsyev(vector<double>& E) {
   //  wr //eigen value
   //  vr //eigen vector
 
-  for (int i = 0; i < (int)size2; i++)
-    vr[i] = index[i];
+  for (int i = 0; i < (int)size2; i++) vr[i] = index[i];
 
   dsyev_(&jobz, &uplo, &size, vr, &size, wr, work, &w_size, &info);
 
-  for (int i = 0; i < (int)size; i++)
-    E[i] = wr[i];
-  for (int i = 0; i < (int)size2; i++)
-    index[i] = vr[i];
+  for (int i = 0; i < (int)size; i++) E[i] = wr[i];
+  for (int i = 0; i < (int)size2; i++) index[i] = vr[i];
   ///////////////
 
   delete[] work;
@@ -406,7 +404,7 @@ dgematrix operator^(const dgematrix& A, const dgematrix& B) {
 
       for (int j0 = 0; j0 < A.n; j0++) {
         for (int j1 = 0; j1 < B.n; j1++) {
-          int j   = j0 + A.n * j1;
+          int j = j0 + A.n * j1;
           C(i, j) = A(i0, j0) * B(i1, j1);
         }
       }
@@ -420,7 +418,7 @@ dgematrix operator^(const dgematrix& A, const dgematrix& B) {
 //============================================================================
 
 class cmatrix {
-public:
+ public:
   long m;
   long n;
 
@@ -470,8 +468,8 @@ public:
   };
 
   cmatrix& operator=(const cmatrix& A) {
-    m  = A.m;
-    n  = A.n;
+    m = A.m;
+    n = A.n;
     re = A.re;
     im = A.im;
     return *this;

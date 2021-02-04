@@ -4,20 +4,19 @@
 
 //######################################################################
 
+#include <boost/lexical_cast.hpp>
 #include <cstdio>
 #include <cstdlib>
-#include <string>
 #include <cstring>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
+#include <string>
 
-#include <boost/lexical_cast.hpp>
-
-#include "util.hpp"
-#include "array.h"
 #include "../common/tostring.h"
+#include "array.h"
+#include "util.hpp"
 
 #define BLEN 256
 
@@ -28,7 +27,7 @@ std::string EOL = "_E_O_L_";
 //======================================================================
 
 inline void reform_end_of_line(std::string& line) {
-  int n         = line.size();
+  int n = line.size();
   const char* a = line.c_str();
   if (a[n - 1] == 13) {  // 13 stands for ^M
     line.replace(n - 1, 1, 1, '\n');
@@ -82,20 +81,19 @@ inline void get_nbl(FILE* F, char* line) {  // get the next non-blank line
 
 inline int break_into_words(char* line, char* delim, char** word) {
   char* last = line + strlen(line) - 1;
-  //printf( "line = '%s'\n", line);
-  //printf( "delimiter = '%s'\n", delim);
+  // printf( "line = '%s'\n", line);
+  // printf( "delimiter = '%s'\n", delim);
   char* w = line;
-  int n   = 0;
+  int n = 0;
   while (w != last) {
-    while (w == strpbrk(w, delim))
-      w++;
+    while (w == strpbrk(w, delim)) w++;
     char* p = strpbrk(w, delim);
     if (p == 0) p = last;
-    //printf("\nw= %s", w);
-    //printf("p= %d, (*p) = '%c' (%d)\n", p, *p, *p);
+    // printf("\nw= %s", w);
+    // printf("p= %d, (*p) = '%c' (%d)\n", p, *p, *p);
     strncpy(word[n], w, p - w);
     strcat(word[n], "\0");
-    //printf("word[%d] = '%s'\n", n, word[n]);
+    // printf("word[%d] = '%s'\n", n, word[n]);
     n++;
     w = p;
   }
@@ -105,7 +103,7 @@ inline int break_into_words(char* line, char* delim, char** word) {
 //######################################################################
 
 class FileReader {
-private:
+ private:
   char NAME[BLEN];
   char LINE[BLEN];
   int IL;
@@ -115,7 +113,7 @@ private:
   std::streampos top;
   std::streampos mark;
 
-public:
+ public:
   void open(const char* name) {
     strcpy(NAME, name);
     INS.open(NAME);
@@ -146,7 +144,9 @@ public:
 
   bool read() {
     bool b = static_cast<bool>(INS.getline(LINE, BLEN));
-    if (b) { IL++; }
+    if (b) {
+      IL++;
+    }
     return b;
   };
 
@@ -194,9 +194,8 @@ inline void FileReader::getWordList(int& NW, std::string*& W) {
   NW = 0;
   rewind();
 
-  while (read())
-    NW += split();
-  W      = new std::string[NW + 1];
+  while (read()) NW += split();
+  W = new std::string[NW + 1];
   int iw = 0;
   rewind();
   while (read()) {
@@ -264,7 +263,7 @@ inline int FileReader::makeIndex(const char* scope, const char* field,
   set_mark();
   bool active = false;
   while (read()) {
-    //show();
+    // show();
     int nw = split();
     if (nw == 0) continue;
     std::string k = word(0);
@@ -272,7 +271,7 @@ inline int FileReader::makeIndex(const char* scope, const char* field,
     if (k == inactivate) active = false;
     if (active) {
       if (k == key) {
-        //printf(" %s:%s:%s> %s\n", scope, field, k0, LINE);
+        // printf(" %s:%s:%s> %s\n", scope, field, k0, LINE);
         n++;
       }
     }

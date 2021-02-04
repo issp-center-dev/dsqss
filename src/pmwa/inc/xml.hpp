@@ -1,17 +1,18 @@
 #ifndef XML_H
 #define XML_H
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include <iostream>
-#include <fstream>
-#include <sstream>
+
 #include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 #include <string>
 
-//io.h (here)##################
+// io.h (here)##################
 #define BLEN 256
 
 inline int line_split(char *line, std::string *w) {
@@ -25,7 +26,7 @@ inline int line_split(char *line, std::string *w) {
 }
 
 class FileReader {
-private:
+ private:
   std::string EOL;
   char NAME[BLEN];
   char LINE[BLEN];
@@ -35,7 +36,7 @@ private:
   std::ifstream INS;
   std::streampos top;
 
-public:
+ public:
   void open(const char *name) {
     strcpy(NAME, name);
     INS.open(NAME);
@@ -61,7 +62,9 @@ public:
 
   bool read() {
     bool b = (bool)INS.getline(LINE, BLEN);
-    if (b) { IL++; }
+    if (b) {
+      IL++;
+    }
     return b;
   };
 
@@ -76,18 +79,18 @@ public:
   void getWordList(int &NW, std::string *&W);
 };
 
-//io.h (end)################
-//array.h (here)##################
+// io.h (end)################
+// array.h (here)##################
 //---------------------------------
 class IndexSystem {
-private:
+ private:
   bool INI;
   std::string LBL;  // label
   int D;
   int *L;
   int N;
 
-public:
+ public:
   void init(const int d, const int *l, const std::string &LBL0 = "");
 
   IndexSystem() { INI = false; };
@@ -102,7 +105,7 @@ public:
 //------------------------------
 template <class C>
 class Array {
-private:
+ private:
   std::string LBL;  // label
   int D;
   C *val;
@@ -110,7 +113,7 @@ private:
 
   void init(va_list &ap);
 
-public:
+ public:
   Array() {
     LBL = "";
     val = 0;
@@ -132,14 +135,14 @@ C &Array<C>::operator[](const int i) {
 
 //======================================================================
 
-//array.h (end)##################
+// array.h (end)##################
 
 namespace XML {
 
 class Block;
 
 class Block {
-private:
+ private:
   std::string EOL;
   std::string Name;   // the name of the element
   std::string *Word;  // the whole list of words to be processed
@@ -150,14 +153,14 @@ private:
   int NV;  // the number of values
   Array<std::string> Value;
 
-public:
+ public:
   void initialize(std::string *word, const std::string &name = "");
 
   void initialize(const std::string &FNAME, const std::string &name = "");
 
   Block() {
-    NB  = 0;
-    NV  = 0;
+    NB = 0;
+    NV = 0;
     EOL = "_E_O_L_";
   };
 

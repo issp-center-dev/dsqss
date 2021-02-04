@@ -32,17 +32,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "dla.hpp"
 
 #include <cmath>
 #include <string>
 
 #include "../common/version.h"
-#include "util.hpp"
-
-#include "dla.hpp"
-#include "debug.hpp"
-
 #include "chainjob.hpp"
+#include "debug.hpp"
+#include "util.hpp"
 
 //######################################################################
 
@@ -54,8 +52,9 @@ int main(int argc, char* argv[]) {
   MPI_Comm_size(MPI_COMM_WORLD, &N_PROC);
   MPI_Comm_rank(MPI_COMM_WORLD, &I_PROC);
 
-  if(I_PROC==0){
-    printf(">>> The program is being run with MPI mode.( N_PROC = %d ) \n\n", N_PROC);
+  if (I_PROC == 0) {
+    printf(">>> The program is being run with MPI mode.( N_PROC = %d ) \n\n",
+           N_PROC);
   }
 #else
   N_PROC = 1;
@@ -104,7 +103,7 @@ Simulation::Simulation(Parameter& P0)
     isChainjob = false;
   }
   if (!isChainjob) {
-    if(I_PROC==0){
+    if (I_PROC == 0) {
       std::cout << "Determining hyperparameter NCYC : ";
       set_NCYC();
     }
@@ -113,26 +112,28 @@ Simulation::Simulation(Parameter& P0)
     MPI_Bcast(&ncyc, 1, MPI_INT, 0, MPI_COMM_WORLD);
     P.NCYC = ncyc;
 #endif
-    if(I_PROC==0){
+    if (I_PROC == 0) {
       std::cout << P.NCYC << std::endl;
     }
   } else {
-    std::cout << "Reading checkpoint file takes " << cjob_timer.elapsed() << " sec." << std::endl;
+    std::cout << "Reading checkpoint file takes " << cjob_timer.elapsed()
+              << " sec." << std::endl;
   }
   isEnd = false;
 
-  if(I_PROC==0){
+  if (I_PROC == 0) {
     std::cout << "Start main calculation." << std::endl;
   }
 
   Timer timer;
 
   for (ISET = ISETstart; ISET < P.NSET; ISET++) {
-    Set((ISET==0 ? P.NTHERM : P.NDECOR), P.NMCS);
+    Set((ISET == 0 ? P.NTHERM : P.NDECOR), P.NMCS);
     double elapsed = timer.elapsed();
-    double ETR = elapsed*(P.NSET-ISET-1)/(ISET-ISETstart+1);
-    if(I_PROC==0){
-      std::cout << ISET+1 << " / " << P.NSET << " done. [Elapsed: " << elapsed << " sec. ETR: " << ETR << " sec.]" << std::endl;
+    double ETR = elapsed * (P.NSET - ISET - 1) / (ISET - ISETstart + 1);
+    if (I_PROC == 0) {
+      std::cout << ISET + 1 << " / " << P.NSET << " done. [Elapsed: " << elapsed
+                << " sec. ETR: " << ETR << " sec.]" << std::endl;
     }
   }
   ISETstart = 0;
@@ -150,7 +151,7 @@ Simulation::Simulation(Parameter& P0)
   cf.summary();
   ck.summary();
 
-  if(I_PROC == 0){
+  if (I_PROC == 0) {
     P.openfile();
     fprintf(P.FOUT, "C This is DSQSS ver.%s\n\n", DSQSS_VERSION);
     fprintf(P.FOUT, "I N_PROC = %d\n", N_PROC);
@@ -159,12 +160,15 @@ Simulation::Simulation(Parameter& P0)
     MSR.show(P.FOUT);
     calctimer.show(P.FOUT);
 
-    int ns_used   = TheSegmentPool.number_of_used_elements();
-    int nv_used   = TheVertexPool.number_of_used_elements();
+    int ns_used = TheSegmentPool.number_of_used_elements();
+    int nv_used = TheVertexPool.number_of_used_elements();
     int nrvi_used = TheRVIPool.number_of_used_elements();
-    fprintf(P.FOUT, "I [the maximum number of segments]          = %d\n", ns_used);
-    fprintf(P.FOUT, "I [the maximum number of vertices]          = %d\n", nv_used);
-    fprintf(P.FOUT, "I [the maximum number of reg. vertex info.] = %d\n", nrvi_used);
+    fprintf(P.FOUT, "I [the maximum number of segments]          = %d\n",
+            ns_used);
+    fprintf(P.FOUT, "I [the maximum number of vertices]          = %d\n",
+            nv_used);
+    fprintf(P.FOUT, "I [the maximum number of reg. vertex info.] = %d\n",
+            nrvi_used);
 
     if (P.FOUT4CF) {
       cf.summary();
@@ -195,21 +199,21 @@ Simulation::Simulation(Parameter& P0)
 
   if (P.SIMTIME > 0.0) {
     isEnd = true;
-    cjobout.open(CJOBFILE.c_str(), std::ios::out | std::ios::binary);  //reset
+    cjobout.open(CJOBFILE.c_str(), std::ios::out | std::ios::binary);  // reset
     end_cjob();
   }
 }
 
 void Simulation::reset_counters() {
-  ISET  = -1;
+  ISET = -1;
   IMCSE = -1;
   IMCSD = -1;
-  IMCS  = -1;
-  ICYC  = -1;
+  IMCS = -1;
+  ICYC = -1;
 
-  ISETstart  = 0;
+  ISETstart = 0;
   IMCSDstart = 0;
-  IMCSstart  = 0;
+  IMCSstart = 0;
 }
 
 void Simulation::set_NCYC() {
@@ -217,7 +221,7 @@ void Simulation::set_NCYC() {
   double vol = P.BETA * LAT.NSITE;
 
   double path;
-  int ncyc  = 1;
+  int ncyc = 1;
   int NSAMP = P.NPRE / 10;
   std::vector<int> ncycSAMP(NSAMP);
 
@@ -328,7 +332,7 @@ bool Simulation::PlaceWorm() {
   W.setCurrentVertex(Vorg);
 
   // timespace where worm will be inserted
-  int s    = RND.Int(LAT.NSITE);
+  int s = RND.Int(LAT.NSITE);
   Site& ST = LAT.S(s);
   double t = ST.getBeta() * RND.Uniform();
 
@@ -350,11 +354,13 @@ bool Simulation::PlaceWorm() {
     if (r < IC.CH[c].PROB) break;
   }
   ScatteringChannel& CH = IC.CH[c];
-  int out  = CH.OUT;
+  int out = CH.OUT;
   int xout = CH.XOUT;
 
   // fail to insert
-  if (out == DIR::UNDEF) { return false; }
+  if (out == DIR::UNDEF) {
+    return false;
+  }
 
   Segment& S1 = S0.cut(Vorg, 0);
 
@@ -366,7 +372,7 @@ bool Simulation::PlaceWorm() {
 
   W.setXBEHIND(xout);
 
-  tail_tau  = t;
+  tail_tau = t;
   tail_site = s;
 
   return true;
@@ -374,10 +380,10 @@ bool Simulation::PlaceWorm() {
 
 double Simulation::MoveHead(bool thermalized) {
   AutoDebugDump("Simulation::MoveHead");
-  double len  = 0.0;
+  double len = 0.0;
   double len0 = 0.0;
   double len1 = 0.0;
-  EndOfCycle  = false;
+  EndOfCycle = false;
 
   while (true) {
     if (W.getUORD()) {
@@ -415,7 +421,7 @@ double Simulation::UP_ONESTEP(bool thermalized) {
   Site& c_Site = (*c_S.getONSITE());
 
   Interaction** CI = c_Site.getCI();
-  const int NCI    = c_Site.getNCI();  // the number of Interaction:
+  const int NCI = c_Site.getNCI();  // the number of Interaction:
 
   Vertex& c_V = W.getCurrentVertex();
   Vertex& n_V = W.getNextVertex();
@@ -427,25 +433,26 @@ double Simulation::UP_ONESTEP(bool thermalized) {
   UniformInterval* UI = new UniformInterval[NCI];
 
   Ring<RegVInfo> RingRVI;
-  RingRVI.ROOT.V_x     = &V4REF;
+  RingRVI.ROOT.V_x = &V4REF;
 
   const double n_Vtime = n_V.isTerminal() ? LAT.BETA : n_V.time();
-  const double c_time  = c_V.isTerminal() ? 0.0 : c_V.time();
-  const double n_time  = n_Vtime - c_time;
+  const double c_time = c_V.isTerminal() ? 0.0 : c_V.time();
+  const double n_time = n_Vtime - c_time;
   if (c_V.isTerminal()) {
     for (int iCI = 0; iCI < NCI; iCI++) {
       UniformInterval& ui = UI[iCI];
       ui.init(CI[iCI], xinc);
       for (int i_body = 0; i_body < ui.nbody; i_body++) {
         if (&(CI[iCI]->site(i_body)) == &c_Site) {
-          ui.inc         = 2 * i_body;
+          ui.inc = 2 * i_body;
           ui.n_S[i_body] = &c_S;
         } else {
           ui.n_S[i_body] = &(CI[iCI]->site(i_body).head());
 
-          Vertex& near_V      = ui.n_S[i_body]->top();
+          Vertex& near_V = ui.n_S[i_body]->top();
           const double V_time = near_V.time();
-          if ((!near_V.isTerminal()) && (V_time < n_time) && (&near_V != &n_V)) {
+          if ((!near_V.isTerminal()) && (V_time < n_time) &&
+              (&near_V != &n_V)) {
             RegVInfo& RVI = TheRVIPool.pop();
             RVI.setRVI(&near_V, iCI, i_body, V_time);
             RingRVI.add_tail(RVI);
@@ -455,7 +462,9 @@ double Simulation::UP_ONESTEP(bool thermalized) {
       ui.setx();
       ui.setVIC();
 
-      if (ui.DefinedVIC) { RHO += ui.VIC->dRHO; }
+      if (ui.DefinedVIC) {
+        RHO += ui.VIC->dRHO;
+      }
     }
   } else {
     for (int iCI = 0; iCI < NCI; iCI++) {
@@ -463,7 +472,7 @@ double Simulation::UP_ONESTEP(bool thermalized) {
       ui.init(CI[iCI], xinc);
       for (int i_body = 0; i_body < ui.nbody; i_body++) {
         if (&(CI[iCI]->site(i_body)) == &c_Site) {
-          ui.inc         = 2 * i_body;
+          ui.inc = 2 * i_body;
           ui.n_S[i_body] = &c_S;
         } else {
           if (CI[iCI] == c_V.getONINTERACTION()) {
@@ -471,9 +480,10 @@ double Simulation::UP_ONESTEP(bool thermalized) {
           } else {
             ui.n_S[i_body] = &(CI[iCI]->site(i_body).findS(c_time));
           }
-          Vertex& near_V      = ui.n_S[i_body]->top();
+          Vertex& near_V = ui.n_S[i_body]->top();
           const double V_time = near_V.time() - c_time;
-          if ((!near_V.isTerminal()) && (V_time < n_time) && (&near_V != &n_V)) {
+          if ((!near_V.isTerminal()) && (V_time < n_time) &&
+              (&near_V != &n_V)) {
             RegVInfo& RVI = TheRVIPool.pop();
             RVI.setRVI(&near_V, iCI, i_body, V_time);
             RingRVI.add_tail(RVI);
@@ -483,11 +493,13 @@ double Simulation::UP_ONESTEP(bool thermalized) {
       ui.setx();
       ui.setVIC();
 
-      if (ui.DefinedVIC) { RHO += ui.VIC->dRHO; }
+      if (ui.DefinedVIC) {
+        RHO += ui.VIC->dRHO;
+      }
     }
   }
   double near_tau = 0.0;
-  double try_tau  = 0.0;
+  double try_tau = 0.0;
   int out, xout;
 
   while (true) {
@@ -501,8 +513,8 @@ double Simulation::UP_ONESTEP(bool thermalized) {
         len += try_tau;
         double RHORND = RHO * RND.Uniform();
 
-        int i_UI    = 0;
-        int s_UI    = 0;
+        int i_UI = 0;
+        int s_UI = 0;
         double iRHO = 0.0;
         double sRHO = 0.0;
         do {
@@ -520,7 +532,7 @@ double Simulation::UP_ONESTEP(bool thermalized) {
         ScatteringChannel& CH = (*ui.VIC).getScatteringChannel(RHORND);
 
         const double setVtime = c_time + len;
-        Vertex& setV          = TheVertexPool.pop();
+        Vertex& setV = TheVertexPool.pop();
         setV.BareVertex::init(ui.I_n, setVtime, (*ui.VP));
         for (int ibody = 0; ibody < ui.nbody; ++ibody) {
           ui.n_S[ibody]->cut(setV, ibody);
@@ -528,7 +540,9 @@ double Simulation::UP_ONESTEP(bool thermalized) {
         ui.I_n->add_tail(setV);
 
         setV.S(ui.inc).setX(xinc);
-        if (!(c_V.isTerminal() || c_V.isKink())) { c_V.erase(); }
+        if (!(c_V.isTerminal() || c_V.isKink())) {
+          c_V.erase();
+        }
         W.setCurrentVertex(setV);
         W.setCurrentSegment(setV.S(CH.OUT));
         W.setXBEHIND(CH.XOUT);
@@ -540,17 +554,19 @@ double Simulation::UP_ONESTEP(bool thermalized) {
       W.setCurrentVertex(n_V);
       const int inc = n_V.which(c_S);
       if (n_V.isTerminal()) {
-        out  = 1 - inc;
+        out = 1 - inc;
         xout = xinc;
       } else {
         VertexInitialConfiguration& IC = n_V.getInitialConfiguration(inc, xinc);
-        ScatteringChannel& CH          = IC.getScatteringChannel();
-        out                            = CH.OUT;
-        xout                           = CH.XOUT;
+        ScatteringChannel& CH = IC.getScatteringChannel();
+        out = CH.OUT;
+        xout = CH.XOUT;
       }
 
       c_S.setX(xinc);
-      if (!(c_V.isTerminal() || c_V.isKink())) { c_V.erase(); }
+      if (!(c_V.isTerminal() || c_V.isKink())) {
+        c_V.erase();
+      }
       if (out == DIR::UNDEF) {
         EndOfCycle = true;
       } else {
@@ -561,20 +577,24 @@ double Simulation::UP_ONESTEP(bool thermalized) {
       break;
     }
 
-    //UPDATE RegVI and UI
+    // UPDATE RegVI and UI
     Vertex* changeV = it->V_x;
     do {
-      RegVInfo& RVImin    = *it;
+      RegVInfo& RVImin = *it;
       UniformInterval& ui = UI[RVImin.i_UI];
 
-      if (ui.DefinedVIC) { RHO -= ui.VIC->dRHO; }
+      if (ui.DefinedVIC) {
+        RHO -= ui.VIC->dRHO;
+      }
       ui.n_S[RVImin.i_body] = &(ui.n_S[RVImin.i_body]->next());
       ui.setx(RVImin.i_body);
       ui.setVIC();
-      if (ui.DefinedVIC) { RHO += ui.VIC->dRHO; }
+      if (ui.DefinedVIC) {
+        RHO += ui.VIC->dRHO;
+      }
 
-      //add RegVI
-      Vertex& near_V      = (*ui.n_S[RVImin.i_body]).top();
+      // add RegVI
+      Vertex& near_V = (*ui.n_S[RVImin.i_body]).top();
       const double V_time = near_V.time() - c_time;
       if ((!near_V.isTerminal()) && (V_time < n_time) && (&near_V != &n_V)) {
         RegVInfo& RVI = TheRVIPool.pop();
@@ -598,7 +618,8 @@ double Simulation::UP_ONESTEP(bool thermalized) {
   if (thermalized) {
     const int head_site = c_Site.id() - 1;
     cf.count(c_time + len, c_time, head_site, tail_site, tail_tau);
-    ck.count((head_site - tail_site + LAT.NSITE) % LAT.NSITE, c_time + len, c_time, tail_tau);
+    ck.count((head_site - tail_site + LAT.NSITE) % LAT.NSITE, c_time + len,
+             c_time, tail_tau);
   }
 
   delete[] UI;
@@ -614,8 +635,9 @@ double Simulation::DOWN_ONESTEP(bool thermalized) {
   Segment& c_S = W.getCurrentSegment();
   Site& c_Site = (*c_S.getONSITE());
 
-  Interaction** CI = c_Site.getCI();   //  Interaction* CI [n_int]; which belong to curSite
-  const int NCI    = c_Site.getNCI();  // the number of Interaction:
+  Interaction** CI =
+      c_Site.getCI();  //  Interaction* CI [n_int]; which belong to curSite
+  const int NCI = c_Site.getNCI();  // the number of Interaction:
 
   Vertex& c_V = W.getCurrentVertex();
   Vertex& n_V = W.getNextVertex();
@@ -627,10 +649,10 @@ double Simulation::DOWN_ONESTEP(bool thermalized) {
   UniformInterval* UI = new UniformInterval[NCI];
 
   Ring<RegVInfo> RingRVI;
-  RingRVI.ROOT.V_x     = &V4REF;
+  RingRVI.ROOT.V_x = &V4REF;
   const double n_Vtime = (n_V.isTerminal()) ? 0.0 : n_V.time();
-  const double c_time  = c_V.isTerminal() ? LAT.BETA : c_V.time();
-  const double n_time  = c_time - n_Vtime;
+  const double c_time = c_V.isTerminal() ? LAT.BETA : c_V.time();
+  const double n_time = c_time - n_Vtime;
 
   if (c_V.isTerminal()) {
     for (int iCI = 0; iCI < NCI; iCI++) {
@@ -639,13 +661,14 @@ double Simulation::DOWN_ONESTEP(bool thermalized) {
       ui.init(CI[iCI], xinc);
       for (int i_body = 0; i_body < ui.nbody; i_body++) {
         if (&(CI[iCI]->site(i_body)) == &c_Site) {
-          ui.inc         = 2 * i_body + 1;
+          ui.inc = 2 * i_body + 1;
           ui.n_S[i_body] = &c_S;
         } else {
-          ui.n_S[i_body]      = &(CI[iCI]->site(i_body).tail());
-          Vertex& near_V      = ui.n_S[i_body]->bottom();
+          ui.n_S[i_body] = &(CI[iCI]->site(i_body).tail());
+          Vertex& near_V = ui.n_S[i_body]->bottom();
           const double V_time = c_time - near_V.time();
-          if ((!near_V.isTerminal()) && (V_time < n_time) && (&near_V != &n_V)) {
+          if ((!near_V.isTerminal()) && (V_time < n_time) &&
+              (&near_V != &n_V)) {
             RegVInfo& RVI = TheRVIPool.pop();
             RVI.setRVI(&near_V, iCI, i_body, V_time);
             RingRVI.add_tail(RVI);
@@ -654,7 +677,9 @@ double Simulation::DOWN_ONESTEP(bool thermalized) {
       }
       ui.setx();
       ui.setVIC();
-      if (ui.DefinedVIC) { RHO += (*(ui.VIC)).dRHO; }
+      if (ui.DefinedVIC) {
+        RHO += (*(ui.VIC)).dRHO;
+      }
     }
 
   } else {
@@ -664,7 +689,7 @@ double Simulation::DOWN_ONESTEP(bool thermalized) {
       ui.init(CI[iCI], xinc);
       for (int i_body = 0; i_body < ui.nbody; i_body++) {
         if (&(CI[iCI]->site(i_body)) == &c_Site) {
-          ui.inc         = 2 * i_body + 1;
+          ui.inc = 2 * i_body + 1;
           ui.n_S[i_body] = &c_S;
         } else {
           if (CI[iCI] == c_V.getONINTERACTION()) {
@@ -672,9 +697,10 @@ double Simulation::DOWN_ONESTEP(bool thermalized) {
           } else {
             ui.n_S[i_body] = &(CI[iCI]->site(i_body).findS(c_time));
           }
-          Vertex& near_V      = ui.n_S[i_body]->bottom();
+          Vertex& near_V = ui.n_S[i_body]->bottom();
           const double V_time = c_time - near_V.time();
-          if ((!near_V.isTerminal()) && (V_time < n_time) && (&near_V != &n_V)) {
+          if ((!near_V.isTerminal()) && (V_time < n_time) &&
+              (&near_V != &n_V)) {
             RegVInfo& RVI = TheRVIPool.pop();
             RVI.setRVI(&near_V, iCI, i_body, V_time);
             RingRVI.add_tail(RVI);
@@ -683,11 +709,13 @@ double Simulation::DOWN_ONESTEP(bool thermalized) {
       }
       ui.setx();
       ui.setVIC();
-      if (ui.DefinedVIC) { RHO += ui.VIC->dRHO; }
+      if (ui.DefinedVIC) {
+        RHO += ui.VIC->dRHO;
+      }
     }
   }
   double near_tau = 0.0;
-  double try_tau  = 0.0;
+  double try_tau = 0.0;
   int out, xout;
 
   while (true) {
@@ -700,10 +728,10 @@ double Simulation::DOWN_ONESTEP(bool thermalized) {
       if (try_tau < near_tau) {
         len += try_tau;
         double RHORND = RHO * RND.Uniform();
-        int i_UI      = 0;
-        int s_UI      = 0;
-        double iRHO   = 0.0;
-        double sRHO   = 0.0;
+        int i_UI = 0;
+        int s_UI = 0;
+        double iRHO = 0.0;
+        double sRHO = 0.0;
         do {
           sRHO = iRHO;
           if (UI[i_UI].DefinedVIC) {
@@ -714,11 +742,11 @@ double Simulation::DOWN_ONESTEP(bool thermalized) {
         } while (RHORND >= iRHO);
         RHORND -= sRHO;
 
-        UniformInterval& ui   = UI[s_UI];
+        UniformInterval& ui = UI[s_UI];
         ScatteringChannel& CH = ui.VIC->getScatteringChannel(RHORND);
 
         double setVtime = c_time - len;
-        Vertex& setV    = TheVertexPool.pop();
+        Vertex& setV = TheVertexPool.pop();
         setV.BareVertex::init(ui.I_n, setVtime, *ui.VP);
         for (int ibody = 0; ibody < ui.nbody; ++ibody) {
           ui.n_S[ibody]->cut(setV, ibody);
@@ -726,7 +754,9 @@ double Simulation::DOWN_ONESTEP(bool thermalized) {
         ui.I_n->add_tail(setV);
 
         setV.S(ui.inc).setX(xinc);
-        if (!(c_V.isTerminal() || c_V.isKink())) { c_V.erase(); }
+        if (!(c_V.isTerminal() || c_V.isKink())) {
+          c_V.erase();
+        }
         W.setCurrentVertex(setV);
         W.setCurrentSegment(setV.S(CH.OUT));
         W.setXBEHIND(CH.XOUT);
@@ -738,17 +768,19 @@ double Simulation::DOWN_ONESTEP(bool thermalized) {
       W.setCurrentVertex(n_V);
       const int inc = n_V.which(c_S);
       if (n_V.isTerminal()) {
-        out  = 1 - inc;
+        out = 1 - inc;
         xout = xinc;
       } else {
         VertexInitialConfiguration& IC = n_V.getInitialConfiguration(inc, xinc);
-        ScatteringChannel& CH          = IC.getScatteringChannel();
-        out                            = CH.OUT;
-        xout                           = CH.XOUT;
+        ScatteringChannel& CH = IC.getScatteringChannel();
+        out = CH.OUT;
+        xout = CH.XOUT;
       }
 
       c_S.setX(xinc);
-      if (!(c_V.isTerminal() || c_V.isKink())) { c_V.erase(); }
+      if (!(c_V.isTerminal() || c_V.isKink())) {
+        c_V.erase();
+      }
       if (out == DIR::UNDEF) {
         EndOfCycle = true;
       } else {
@@ -759,20 +791,24 @@ double Simulation::DOWN_ONESTEP(bool thermalized) {
       break;
     }
 
-    //UPDATE RegVI and UI
+    // UPDATE RegVI and UI
     Vertex* changeV = it->V_x;
     do {
-      RegVInfo& RVImin    = *it;
+      RegVInfo& RVImin = *it;
       UniformInterval& ui = UI[RVImin.i_UI];
 
-      if (ui.DefinedVIC) { RHO -= ui.VIC->dRHO; }
+      if (ui.DefinedVIC) {
+        RHO -= ui.VIC->dRHO;
+      }
       ui.n_S[it->i_body] = &(ui.n_S[(*it).i_body]->prev());  //
       ui.setx(it->i_body);
       ui.setVIC();
-      if (ui.DefinedVIC) { RHO += ui.VIC->dRHO; }
+      if (ui.DefinedVIC) {
+        RHO += ui.VIC->dRHO;
+      }
 
-      //add RegVI
-      Vertex& near_V      = ui.n_S[(*it).i_body]->bottom();
+      // add RegVI
+      Vertex& near_V = ui.n_S[(*it).i_body]->bottom();
       const double V_time = c_time - near_V.time();
       if ((!near_V.isTerminal()) && (V_time < n_time) && (&near_V != &n_V)) {
         RegVInfo& RVI = TheRVIPool.pop();
@@ -796,37 +832,38 @@ double Simulation::DOWN_ONESTEP(bool thermalized) {
   if (thermalized) {
     const int head_site = c_Site.id() - 1;
     cf.count(c_time, c_time - len, head_site, tail_site, tail_tau);
-    ck.count((head_site - tail_site + LAT.NSITE) % LAT.NSITE, c_time, c_time - len, tail_tau);
+    ck.count((head_site - tail_site + LAT.NSITE) % LAT.NSITE, c_time,
+             c_time - len, tail_tau);
   }
 
   delete[] UI;
   return len;
 }
 
-double Simulation::calculate_sign(){
+double Simulation::calculate_sign() {
   double sgn = 1.0;
   for (int b = 0; b < LAT.NINT; ++b) {
-    Interaction& I          = LAT.I(b);
+    Interaction& I = LAT.I(b);
     InteractionProperty& IP = I.property();
-    int NLEG         = 2*IP.NBODY;
+    int NLEG = 2 * IP.NBODY;
     std::vector<int> x(NLEG);
 
     Interaction::iterator itv(I.root());
     ++itv;
-    for(;!itv.atOrigin(); ++itv){
+    for (; !itv.atOrigin(); ++itv) {
       Vertex& v = *itv;
-      for(int l=0; l<NLEG; ++l){
+      for (int l = 0; l < NLEG; ++l) {
         x[l] = v.X(l);
       }
       sgn *= IP.sign(x);
     }
-
   }
   return sgn;
 }
 
 inline void Simulation::dump(const char* s = "") {
-  printf("\n>>> %s (iset=%d imcse=%d imcsd=%d imcs=%d icyc= %d)", s, ISET, IMCSE, IMCSD, IMCS, ICYC);
+  printf("\n>>> %s (iset=%d imcse=%d imcsd=%d imcs=%d icyc= %d)", s, ISET,
+         IMCSE, IMCSD, IMCS, ICYC);
   LAT.dump();
   W.dump();
 }

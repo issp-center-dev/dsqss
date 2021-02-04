@@ -5,81 +5,74 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <fstream>
-#include <iostream>
-#include <string>
-
 #include <stdma.h>
 #include <systemparameter.h>
 
+#include <fstream>
+#include <iostream>
+#include <string>
 #include <xml.hpp>
 //######################################################################
 
 class Lattice {
+ private:
+  //  Site* site; // the list of the poiters to sites
+  //  Interaction* interaction; // the list of the pointers to interactions
+  XML::Block X;
+  //  Algorithm& ALG;
 
-private:
+ public:
+  int D;  // dimension
+  int L[4];
+  double BETA;     // inverse temperature
+  double oldBETA;  // for annealing
+  int NCELL;       // total number of cells
+  int NSITE;       // total number of sites
+  int NINT;        // total number of interactions
+  int NSTYPE;      // number of site types
+  int NITYPE;      // number of interaction types
+  int NLdiv;
+  int NBdiv;
+  int NFIELD;
+  Size *N;
 
-    //  Site* site; // the list of the poiters to sites
-    //  Interaction* interaction; // the list of the pointers to interactions
-    XML::Block X;
-    //  Algorithm& ALG;
+  ////domain///
+  Parallel *PR;
+  int V, Nx, Ny, Nz;
+  double B;
+  /////////////
 
-public:
+  int **bd, bnum, lc, TB, *lx;
+  double **bond_vec;
 
-    int D; // dimension
-    int L[4];
-    double BETA; // inverse temperature
-    double oldBETA; //for annealing
-    int NCELL; // total number of cells
-    int NSITE; // total number of sites
-    int NINT; // total number of interactions
-    int NSTYPE; // number of site types
-    int NITYPE; // number of interaction types
-    int NLdiv;
-    int NBdiv;
-    int NFIELD;
-    Size *N;
+  bool **frame;
+  int Pd;
+  int *Fx;
+  int **frame_lsite;
+  int **frame_lnum;
+  int **frame_rsite;
+  int **frame_rnum;
 
-    ////domain///
-    Parallel *PR;
-    int V, Nx, Ny, Nz;
-    double B;
-    /////////////
+  int rmax;
 
-    int **bd, bnum, lc, TB, *lx;
-    double **bond_vec;
+  Lattice(const char *FNAME);
+  Lattice(std::string const &FNAME);
 
-    bool **frame;
-    int Pd;
-    int *Fx;
-    int **frame_lsite;
-    int **frame_lnum;
-    int **frame_rsite;
-    int **frame_rnum;
+  ~Lattice();
 
-    int rmax;
+  void dump();
 
-    Lattice(const char *FNAME);
-    Lattice(std::string const& FNAME);
+  void show_param(std::ofstream &F);
 
-    ~Lattice();
+  int countVertices();
 
-    void dump();
+  void make_Size(Size *N);
+  void make_Parallel(Parallel *PR);
+  void set_beta(double beta);
+  void set_oldbeta(double oldbeta);
 
-    void show_param(std::ofstream &F);
-
-    int countVertices();
-
-    void make_Size(Size *N);
-    void make_Parallel(Parallel *PR);
-    void set_beta(double beta);
-    void set_oldbeta(double oldbeta);
-
-private:
-
-    void read();
-
+ private:
+  void read();
 };
-
 
 #endif

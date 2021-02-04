@@ -1,8 +1,8 @@
 #include "dla_alg.h"
 
-bool isdiagonal(int *x, int NBODY){
-  for(int i=0; i<NBODY; ++i){
-    if (x[2*i] != x[2*i+1]){
+bool isdiagonal(int* x, int NBODY) {
+  for (int i = 0; i < NBODY; ++i) {
+    if (x[2 * i] != x[2 * i + 1]) {
       return false;
     }
   }
@@ -12,24 +12,28 @@ bool isdiagonal(int *x, int NBODY){
 int main(int argc, char** argv) {
   HFILE = "hamiltonian.xml";
   AFILE = "algorithm.xml";
-  if (argc > 1) { HFILE = argv[1]; }
-  if (argc > 2) { AFILE = argv[2]; }
+  if (argc > 1) {
+    HFILE = argv[1];
+  }
+  if (argc > 2) {
+    AFILE = argv[2];
+  }
   printf("HFILE= %s\n", HFILE);
   printf("AFILE= %s\n", AFILE);
 
   XML::Block X(HFILE, "Hamiltonian");
   FALG = fopen(AFILE, "w");
-  //FALG = stdout;
+  // FALG = stdout;
 
   XML::Block& XGEN = X["General"];
   GENERAL G(XGEN);
-  Site        = new SITE[NSTYPE];
-  Source      = new SOURCE[NSTYPE];
+  Site = new SITE[NSTYPE];
+  Source = new SOURCE[NSTYPE];
   Interaction = new INTERACTION[NITYPE];
-  Vertex      = new VERTEX[NVTYPE];
+  Vertex = new VERTEX[NVTYPE];
 
   for (int i = 0; i < X.NumberOfBlocks(); i++) {
-    XML::Block& B      = X[i];
+    XML::Block& B = X[i];
     const std::string& name = B.getName();
     if (name == "Site") {
       int id = B["STYPE"].getInteger();
@@ -64,18 +68,17 @@ int main(int argc, char** argv) {
 
   for (int i = 0; i < NSTYPE; i++) {
     VERTEX& V = Site[i].V();
-    V.EBASE   = 2.0 * G.WeightDiagonal;
+    V.EBASE = 2.0 * G.WeightDiagonal;
   }
 
   // Interaction vertex has the own EBASE
 
   for (int i = 0; i < NITYPE; i++) {
     VERTEX& V = Interaction[i].V();
-    V.EBASE   = V.ComputeEBASE();
+    V.EBASE = V.ComputeEBASE();
   }
 
-  for (int i = 0; i < NVTYPE; i++)
-    Vertex[i].ComputeScatteringProbability();
+  for (int i = 0; i < NVTYPE; i++) Vertex[i].ComputeScatteringProbability();
 
   for (int i = 0; i < NSTYPE; i++) {
     Site[i].SetInitialHeadTypeProbability();
@@ -85,15 +88,11 @@ int main(int argc, char** argv) {
     Interaction[i].SetVertexDensity();
   }
 
-
   fprintf(FALG, "<Algorithm>\n");
   G.write();
-  for (int i = 0; i < NSTYPE; i++)
-    Site[i].write();
-  for (int i = 0; i < NITYPE; i++)
-    Interaction[i].write();
-  for (int i = 0; i < NVTYPE; i++)
-    Vertex[i].write();
+  for (int i = 0; i < NSTYPE; i++) Site[i].write();
+  for (int i = 0; i < NITYPE; i++) Interaction[i].write();
+  for (int i = 0; i < NVTYPE; i++) Vertex[i].write();
   fprintf(FALG, "\n</Algorithm>\n");
 
   delete[] Site;
@@ -106,13 +105,13 @@ int main(int argc, char** argv) {
 
 GENERAL::GENERAL(XML::Block& X) {
   NHTYPE = 0;
-  NXMAX  = 0;
+  NXMAX = 0;
 
   comment = X["Comment"].getJoinedString();
-  NSTYPE  = X["NSTYPE"].getInteger();
-  NITYPE  = X["NITYPE"].getInteger();
-  NXMAX   = X["NXMAX"].getInteger();
-  NVTYPE  = NSTYPE + NITYPE;
+  NSTYPE = X["NSTYPE"].getInteger();
+  NITYPE = X["NITYPE"].getInteger();
+  NXMAX = X["NXMAX"].getInteger();
+  NVTYPE = NSTYPE + NITYPE;
 }
 
 //======================================================================
@@ -135,10 +134,10 @@ void GENERAL::write() {
 //######################################################################
 
 void SITE::load(XML::Block& X) {
-  ID    = X["STYPE"].getInteger();
+  ID = X["STYPE"].getInteger();
   TTYPE = X["TTYPE"].getInteger();
-  NX    = X["NX"].getInteger();
-  _T    = &Source[TTYPE];
+  NX = X["NX"].getInteger();
+  _T = &Source[TTYPE];
 }
 
 //======================================================================
@@ -155,21 +154,21 @@ void SITE::SetInitialHeadTypeProbability() {
   WormCreationProbability.init(2, NXMAX, 2 * NXMAX);
   WormCreationProbability.set_all(0.0);
   NumberOfChannels = new int[NX];
-  VERTEX& V        = Vertex[VTYPE];
+  VERTEX& V = Vertex[VTYPE];
   for (int i = 0; i < V.NICG; i++) {
     InitialConfigurationGroup& icg = V.ICG(i);
     for (int j = 0; j < icg.NIC; j++) {
       InitialConfiguration& ic = icg.IC[j];
       if (ic.INC == DIR::UNDEF) {
-        int x0               = ic.State[0];
-        int NCH              = ic.NCH;
+        int x0 = ic.State[0];
+        int NCH = ic.NCH;
         NumberOfChannels[x0] = NCH;
         for (int c = 0; c < NCH; c++) {
-          int st                         = ic.FinalState[c];
-          int out                        = ic.FinalDirection[c];
-          double p                       = ic.ScatteringProbability[c];
-          WormCreationNewState(x0, c)    = st;
-          WormCreationDirection(x0, c)   = out;
+          int st = ic.FinalState[c];
+          int out = ic.FinalDirection[c];
+          double p = ic.ScatteringProbability[c];
+          WormCreationNewState(x0, c) = st;
+          WormCreationDirection(x0, c) = out;
           WormCreationProbability(x0, c) = p;
         }
       }
@@ -185,8 +184,8 @@ void SITE::write() {
   fprintf(FALG, "    <STYPE> %d </STYPE>\n", ID);
   fprintf(FALG, "    <NumberOfStates> %d </NumberOfStates>\n", NX);
   fprintf(FALG, "    <VertexTypeOfSource> %d </VertexTypeOfSource>\n", VTYPE);
-  //printf("    <EBASE> %24.16f </EBASE>\n", V().EBASE );
-  //fprintf(FALG,"    <EBASE> %24.16f </EBASE>\n", V().EBASE );
+  // printf("    <EBASE> %24.16f </EBASE>\n", V().EBASE );
+  // fprintf(FALG,"    <EBASE> %24.16f </EBASE>\n", V().EBASE );
   for (int x0 = 0; x0 < NX; x0++) {
     fprintf(FALG, "    <InitialConfiguration>\n");
     fprintf(FALG, "      <State> %d </State>\n", x0);
@@ -228,12 +227,12 @@ void SITE::dump() {
 //######################################################################
 
 void SOURCE::load(XML::Block& X) {
-  ID         = X["TTYPE"].getInteger();
-  VTYPE      = ID;
-  VERTEX& V  = Vertex[VTYPE];
-  _V         = &V;
-  V.ID       = VTYPE;
-  V.NBODY    = 1;
+  ID = X["TTYPE"].getInteger();
+  VTYPE = ID;
+  VERTEX& V = Vertex[VTYPE];
+  _V = &V;
+  V.ID = VTYPE;
+  V.NBODY = 1;
   V.CATEGORY = VCAT::WORM;
   V.load(X);
 }
@@ -245,33 +244,32 @@ void SOURCE::dump() { printf("SOURCE[%d]> vt=%2d\n", ID, VTYPE); }
 //######################################################################
 
 void INTERACTION::load(XML::Block& X) {
-  ID           = X["ITYPE"].getInteger();
-  VTYPE        = ID + NSTYPE;
-  _V           = &(Vertex[VTYPE]);
-  NBODY        = X["NBODY"].getInteger();
+  ID = X["ITYPE"].getInteger();
+  VTYPE = ID + NSTYPE;
+  _V = &(Vertex[VTYPE]);
+  NBODY = X["NBODY"].getInteger();
 
-  int NLEG = 2*NBODY;
+  int NLEG = 2 * NBODY;
 
   Sign.init("Weight", NLEG, NXMAX, ARRAY::EOL);
   Sign.set_all(0.0);
-  
+
   int* x = new int[NLEG];
   for (int i = 0; i < X.NumberOfBlocks(); i++) {
-    XML::Block& B      = X[i];
+    XML::Block& B = X[i];
     const std::string& name = B.getName();
     if (name == "Weight") {
-      for (int i = 0; i < NLEG; i++)
-        x[i] = B.getInteger(i);
+      for (int i = 0; i < NLEG; i++) x[i] = B.getInteger(i);
       double w = B.getDouble(NLEG);
-      if (w < 0.0 && !isdiagonal(x,NBODY)){
+      if (w < 0.0 && !isdiagonal(x, NBODY)) {
         Sign(x) = -1.0;
       }
     }
   }
   delete[] x;
 
-  V().ID       = VTYPE;
-  V().NBODY    = NBODY;
+  V().ID = VTYPE;
+  V().NBODY = NBODY;
   V().CATEGORY = VCAT::INT;
   V().load(X);
 }
@@ -279,23 +277,22 @@ void INTERACTION::load(XML::Block& X) {
 //======================================================================
 
 void INTERACTION::SetVertexDensity() {
-  VERTEX& V      = Vertex[VTYPE];
+  VERTEX& V = Vertex[VTYPE];
   IndexSystem& I = V.Weight.index_system();
-  int* x         = new int[I.dimension()];
+  int* x = new int[I.dimension()];
   VertexDensity.init(NBODY, NXMAX, ARRAY::EOL);
   IndexSystem& J = VertexDensity.index_system();
-  int* y = new int[J.dimension()];  //edit sakakura
+  int* y = new int[J.dimension()];  // edit sakakura
   VertexDensity.set_all(0.0);
   for (int g = 0; g < V.NICG; g++) {
     InitialConfigurationGroup& G = V.ICG(g);
     for (int c = 0; c < G.NIC; c++) {
       InitialConfiguration& C = G.IC[c];
       if (!C.isKink()) {
-        int sti  = C.STI;
+        int sti = C.STI;
         double w = C.vertex_weight();
         I.coord(sti, x);
-        for (int i = 0; i < NBODY; i++)
-          y[i] = x[2 * i];
+        for (int i = 0; i < NBODY; i++) y[i] = x[2 * i];
         VertexDensity(y) = w;
       }
     }
@@ -321,8 +318,7 @@ void INTERACTION::write() {
       if (d > 0.0) {
         I.coord(i, x);
         fprintf(FALG, "    <VertexDensity> ");
-        for (int j = 0; j < NBODY; j++)
-          fprintf(FALG, " %2d", x[j]);
+        for (int j = 0; j < NBODY; j++) fprintf(FALG, " %2d", x[j]);
         fprintf(FALG, " %24.16lf </VertexDensity>\n", d);
       }
     }
@@ -331,17 +327,17 @@ void INTERACTION::write() {
     //  fprintf(FALG,"  VertexDensity is not defined.\n");
   }
 
-  int NLEG = 2*NBODY;
-  Array<double> & Weight = V().Weight;
+  int NLEG = 2 * NBODY;
+  Array<double>& Weight = V().Weight;
   IndexSystem& I = Weight.index_system();
-  int* x = new int[2*NBODY];
-  for (int i=0; i<I.size(); ++i){
-    if(Weight[i] != 0.0){
-      I.coord(i,x);
-      if(!isdiagonal(x,NBODY)){
+  int* x = new int[2 * NBODY];
+  for (int i = 0; i < I.size(); ++i) {
+    if (Weight[i] != 0.0) {
+      I.coord(i, x);
+      if (!isdiagonal(x, NBODY)) {
         double sgn = Weight[i] > 0.0 ? 1.0 : -1.0;
         fprintf(FALG, "    <Sign> ");
-        for (int j = 0; j<2*NBODY; ++j){
+        for (int j = 0; j < 2 * NBODY; ++j) {
           fprintf(FALG, " %2d", x[j]);
         }
         fprintf(FALG, " %24.16lf </Sign>\n", sgn);
@@ -367,8 +363,7 @@ void INTERACTION::dump() {
       if (VertexDensity[i] > 0.0) {
         I.coord(i, x);
         printf(" x= (");
-        for (int j = 0; j < I.dimension(); j++)
-          printf(" %1d", x[j]);
+        for (int j = 0; j < I.dimension(); j++) printf(" %1d", x[j]);
         printf(")");
         printf(" density= %8.3f\n", VertexDensity[i]);
         printf("\n");
@@ -392,19 +387,18 @@ void VERTEX::load(XML::Block& X) {
   SiteTypeOfLeg.init("STYPE", 1, NLEG);
   SiteTypeOfLeg.set_all(STYPE::UNDEF);
   for (int i = 0; i < NBODY; i++) {
-    int st                   = X["STYPE"].getInteger(i);
-    SiteTypeOfLeg[2 * i]     = st;
+    int st = X["STYPE"].getInteger(i);
+    SiteTypeOfLeg[2 * i] = st;
     SiteTypeOfLeg[2 * i + 1] = st;
   }
   int* x = new int[NLEG];
   for (int i = 0; i < X.NumberOfBlocks(); i++) {
-    XML::Block& B      = X[i];
+    XML::Block& B = X[i];
     const std::string& name = B.getName();
     if (name == "Weight") {
-      for (int i = 0; i < NLEG; i++)
-        x[i] = B.getInteger(i);
+      for (int i = 0; i < NLEG; i++) x[i] = B.getInteger(i);
       double w = B.getDouble(NLEG);
-      if (w < 0.0 && !isdiagonal(x,NBODY)){
+      if (w < 0.0 && !isdiagonal(x, NBODY)) {
         w *= -1.0;
       }
       Weight(x) = w;
@@ -428,9 +422,9 @@ int VERTEX::NumberOfValidInitialConfigurations() {
 //======================================================================
 
 void VERTEX::Grouping() {
-  //printf("VERTEX::Grouping> Start ID=%d\n", ID);
-  //printf("VERTEX::Grouping> Start.\n");
-  //printf("VERTEX::Grouping> Pass 1\n");
+  // printf("VERTEX::Grouping> Start ID=%d\n", ID);
+  // printf("VERTEX::Grouping> Start.\n");
+  // printf("VERTEX::Grouping> Pass 1\n");
 
   int NICmax = 2 * NBODY * NXMAX + 1;
   checked.init(3, NST, NLEG, NXMAX);
@@ -442,12 +436,13 @@ void VERTEX::Grouping() {
     for (int sti = 0; sti < NST; sti++) {
       if (testForbidden(sti)) continue;
       if (testKink(sti)) continue;
-      int inc                        = DIR::UNDEF;
-      int xinc                       = STATE::UNDEF;
+      int inc = DIR::UNDEF;
+      int xinc = STATE::UNDEF;
       InitialConfigurationGroup& icg = *(new InitialConfigurationGroup);
       icg.init(*this, NBODY, sti, inc, xinc);
       add_ICG(icg);
-      //printf("VERTEX::Grouping> New initial configuration group. ID= %d\n", NICG);
+      // printf("VERTEX::Grouping> New initial configuration group. ID= %d\n",
+      // NICG);
       NICG++;
     }
   } else {
@@ -456,15 +451,16 @@ void VERTEX::Grouping() {
       if (testForbidden(sti)) continue;
       for (int inc = 0; inc < NLEG; inc++) {
         int xinc_old = x[inc];
-        int st       = SiteTypeOfLeg[inc];
-        SOURCE& W    = Source[Site[st].TTYPE];
+        int st = SiteTypeOfLeg[inc];
+        SOURCE& W = Source[Site[st].TTYPE];
         for (int xinc = 0; xinc < NXMAX; xinc++) {
-          //W.V().Weight.index_system().dump();
+          // W.V().Weight.index_system().dump();
           double ww = W.Weight(xinc_old, xinc);
           if (ww == 0.0) continue;
           if (checked(sti, inc, xinc) == 1) continue;
 
-          //printf("VERTEX::Grouping> New initial configuration group. ID= %d\n", NICG);
+          // printf("VERTEX::Grouping> New initial configuration group. ID=
+          // %d\n", NICG);
           InitialConfigurationGroup& icg = *(new InitialConfigurationGroup);
           icg.init(*this, NBODY, sti, inc, xinc);
           add_ICG(icg);
@@ -472,7 +468,7 @@ void VERTEX::Grouping() {
         }
       }
     }
-    //printf(" NICG= %d, icg.size()= %d\n", NICG, icg.size());
+    // printf(" NICG= %d, icg.size()= %d\n", NICG, icg.size());
   }
   delete[] x;
 }
@@ -493,8 +489,7 @@ double VERTEX::ComputeEBASE() {
   //   as long as no offdiagonal bounce occurs.
   //
 
-  for (int icg = 0; icg < NICG; icg++)
-    ICG(icg).ResetWeight();
+  for (int icg = 0; icg < NICG; icg++) ICG(icg).ResetWeight();
 
   double eb;
   if (CATEGORY == VCAT::TERM) {
@@ -521,14 +516,14 @@ double VERTEX::ComputeEBASE() {
 //======================================================================
 
 void VERTEX::ComputeScatteringProbability() {
-  //printf("\nVERTEX::ComputeScatteringProbability> Start.\n");
+  // printf("\nVERTEX::ComputeScatteringProbability> Start.\n");
   NICV = 0;
   for (int icg = 0; icg < NICG; icg++) {
     ICG(icg).ResetWeight();
     ICG(icg).numbering(NICV);
     ICG(icg).ScatteringProbability();
   }
-  //printf("\nVERTEX::ComputeScatteringProbability> End.\n");
+  // printf("\nVERTEX::ComputeScatteringProbability> End.\n");
 }
 
 //======================================================================
@@ -540,10 +535,9 @@ void VERTEX::dump() {
   printf(" ncig= %d", NICG);
   printf(" eb= %8.3f", EBASE);
   printf(" st= (");
-  for (int i = 0; i < NLEG; i++)
-    printf(" %1d", SiteTypeOfLeg(i));
+  for (int i = 0; i < NLEG; i++) printf(" %1d", SiteTypeOfLeg(i));
   printf(")\n");
-  int* x = new int[NLEG];  //edit sakakura
+  int* x = new int[NLEG];  // edit sakakura
                            //  int x[NLEG];
   for (int i = 0; i < NST; i++) {
     if ((!testKink(i)) || Weight[i] != 0.0) {
@@ -559,8 +553,7 @@ void VERTEX::dump() {
       }
       INDX().coord(i, x);
       printf(" (");
-      for (int j = 0; j < NLEG; j++)
-        printf(" %1d", x[j]);
+      for (int j = 0; j < NLEG; j++) printf(" %1d", x[j]);
       printf(") --> w= %8.3f\n", Weight[i]);
     }
   }
@@ -584,15 +577,14 @@ void VERTEX::write() {
           "    <NumberOfInitialConfigurations> %d "
           "</NumberOfInitialConfigurations>\n",
           NICW);
-  for (int i = 0; i < NICG; i++)
-    ICG(i).write();
+  for (int i = 0; i < NICG; i++) ICG(i).write();
   fprintf(FALG, "\n  </Vertex>\n");
 }
 
 //======================================================================
 
 bool VERTEX::testKink(int ist) {
-  //printf("VERTEX::testKink> D = %d\n", D);
+  // printf("VERTEX::testKink> D = %d\n", D);
   int* x = new int[NLEG];
   INDX().coord(ist, x);
   bool ans = false;
@@ -618,21 +610,21 @@ void InitialConfigurationGroup::init(VERTEX& v, int nbody, int sti, int inc,
   // handling a group of initial configurations
   // that scatters into each other
 
-  //printf("InitialConfigurationGroup::init> Start. icg=%d\n", ID);
+  // printf("InitialConfigurationGroup::init> Start. icg=%d\n", ID);
 
   /*
 printf("nbody= %d, nicmax= %d, sti= %d, inc= %d, xinc= %d\n",
 nbody, NICmax, sti, inc, xinc);
   */
 
-  _V    = &v;
+  _V = &v;
   NBODY = nbody;
-  NLEG  = 2 * nbody;
+  NLEG = 2 * nbody;
 
-  //int x[NLEG];
-  //int y[NLEG];
-  int* x            = new int[NLEG];  //edit sakakura
-  int* y            = new int[NLEG];
+  // int x[NLEG];
+  // int y[NLEG];
+  int* x = new int[NLEG];  // edit sakakura
+  int* y = new int[NLEG];
   IndexSystem& INDX = V().INDX();
   INDX.coord(sti, x);
   if (inc != DIR::UNDEF) x[inc] = xinc;
@@ -651,17 +643,15 @@ printf("), hti= %d, inc= %d\n", hti, inc);
   */
 
   int sitei = inc / 2;
-  int diri  = inc % 2;
-
+  int diri = inc % 2;
 
   NIC = 0;
   if (inc == DIR::UNDEF) NIC = 1;  // generate worm
   for (int out = 0; out < NLEG; out++) {
     for (int xout = 0; xout < NXMAX; xout++) {
       // xout is the new local state on the outgoing leg
-      for (int d = 0; d < NLEG; d++)
-        y[d] = x[d];
-      y[out]  = xout;
+      for (int d = 0; d < NLEG; d++) y[d] = x[d];
+      y[out] = xout;
       int stf = INDX(y);
       if (stf == STATE::UNDEF) continue;
       if (V().testForbidden(stf)) continue;
@@ -685,8 +675,7 @@ printf("), hti= %d, inc= %d\n", hti, inc);
   for (int out = 0; out < NLEG; out++) {
     for (int xout = 0; xout < NXMAX; xout++) {
       // xout is the new local state on the outgoing leg
-      for (int d = 0; d < NLEG; d++)
-        y[d] = x[d];
+      for (int d = 0; d < NLEG; d++) y[d] = x[d];
       y[out] = xout;
       /*
 printf(" (");
@@ -703,7 +692,7 @@ printf(")\n");
   }
   delete[] x;
   delete[] y;
-  //if (MON) printf("InitialConfigurationGroup::init> End.\n");
+  // if (MON) printf("InitialConfigurationGroup::init> End.\n");
 }
 
 //======================================================================
@@ -786,8 +775,7 @@ double InitialConfigurationGroup::maximum_offdiagonal_weight() {
 
 double InitialConfigurationGroup::sum_of_all_weights() {
   double sum = 0.0;
-  for (int i = 0; i < NIC; i++)
-    sum += U[i];
+  for (int i = 0; i < NIC; i++) sum += U[i];
   return sum;
 }
 
@@ -803,7 +791,7 @@ double max(double& d0, double& d1, double& d2) {
 //======================================================================
 
 double InitialConfigurationGroup::ebase() {
-  //if ( MON ) printf("InitialConfigurationGroup::ebase> Start.\n");
+  // if ( MON ) printf("InitialConfigurationGroup::ebase> Start.\n");
 
   double eb, eb0, eb1, eb2;
 
@@ -815,10 +803,11 @@ double InitialConfigurationGroup::ebase() {
     double dmax = maximum_diagonal_weight();
     double dmin = minimum_diagonal_weight();
     double omax = maximum_offdiagonal_weight();
-    double sum  = sum_of_all_weights();
+    double sum = sum_of_all_weights();
     // eb0 ... minimum EBASE to avoid negative diagonal elements
     // eb1 ... minimum EBASE to avoid offdiagonal bounce
-    // eb2 ... minimum EBASE to avoid direct transition between offdiagonal states
+    // eb2 ... minimum EBASE to avoid direct transition between offdiagonal
+    // states
     eb0 = -dmin;
     eb1 = (2.0 * omax - sum) / (double)nd;
     //  eb2 = -INF;
@@ -829,7 +818,8 @@ double InitialConfigurationGroup::ebase() {
       eb = eb1;
     }
 
-    // Above we calculate EBASE from Hamilonian weights producted by worm weights
+    // Above we calculate EBASE from Hamilonian weights producted by worm
+    // weights
     double ww = 0.0;
     for (int i = 0; i < NIC; i++) {
       if (!IC[i].isKink()) {
@@ -846,7 +836,7 @@ double InitialConfigurationGroup::ebase() {
     eb /= ww;
   }
 
-  //if ( MON ) printf("InitialConfigurationGroup::ebase> End.\n");
+  // if ( MON ) printf("InitialConfigurationGroup::ebase> End.\n");
 
   return eb;
 }
@@ -875,8 +865,8 @@ void InitialConfigurationGroup::numbering(int& ic) {
 //======================================================================
 
 void InitialConfigurationGroup::ScatteringProbability() {
-  //printf("\nInitialConfigurationGroup::ScatteringProbability> Start. ICG= %d\n", ID);
-  //if (MON) dump();
+  // printf("\nInitialConfigurationGroup::ScatteringProbability> Start. ICG=
+  // %d\n", ID); if (MON) dump();
 
   // NIC : # of initial state
   // U   : weights of initial states
@@ -901,8 +891,8 @@ void InitialConfigurationGroup::ScatteringProbability() {
   SolveWeightEquation(NIC, UP, WP);
 
   /*
-  for (int i=0; i<NIC; i++) { 
-    for (int j=0; j<NIC; j++) W(PERM[i],PERM[j]) = WP(i,j); 
+  for (int i=0; i<NIC; i++) {
+    for (int j=0; j<NIC; j++) W(PERM[i],PERM[j]) = WP(i,j);
   }
 */
 
@@ -918,12 +908,14 @@ void InitialConfigurationGroup::ScatteringProbability() {
       P(I, J) = W(I, J) / U[I];
       if (P(I, J) > EPS) {
         double p = P(I, J);
-        int stf  = IC[J].STI;
-        int out  = IC[J].INC;
+        int stf = IC[J].STI;
+        int out = IC[J].INC;
         int xout = STATE::UNDEF;
-        if (out != DIR::UNDEF) { xout = INDX.coord(stf, out); }
-        IC[I].FinalDirection[nc]        = out;
-        IC[I].FinalState[nc]            = xout;
+        if (out != DIR::UNDEF) {
+          xout = INDX.coord(stf, out);
+        }
+        IC[I].FinalDirection[nc] = out;
+        IC[I].FinalState[nc] = xout;
         IC[I].ScatteringProbability[nc] = p;
         nc++;
       }
@@ -931,7 +923,7 @@ void InitialConfigurationGroup::ScatteringProbability() {
     IC[I].NCH = nc;
   }
 
-  //if (MON) printf("  ==>\n");
+  // if (MON) printf("  ==>\n");
 }
 
 //======================================================================
@@ -976,15 +968,15 @@ void InitialConfiguration::init(VERTEX& v, int sti, int inc, int xinc,
   // the new state on the leg after the passage of the worm head is "xinc"
 
   setV(v);
-  STI                   = sti;
-  INC                   = inc;
-  XINC                  = xinc;
-  NLEG                  = V().NLEG;
-  NBODY                 = 2 * NLEG;
-  State                 = new int[NLEG];
+  STI = sti;
+  INC = inc;
+  XINC = xinc;
+  NLEG = V().NLEG;
+  NBODY = 2 * NLEG;
+  State = new int[NLEG];
   ScatteringProbability = new double[NICmax];
-  FinalState            = new int[NICmax];
-  FinalDirection        = new int[NICmax];
+  FinalState = new int[NICmax];
+  FinalDirection = new int[NICmax];
   V().INDX().coord(STI, State);
   NCH = 0;
 }
@@ -1026,7 +1018,7 @@ double InitialConfiguration::worm_weight() {
     int stype = V().SiteTypeOfLeg[INC];
     int ttype = Site[stype].TTYPE;
     SOURCE& T = Source[ttype];
-    ww        = T.Weight(XINC, State[INC]);
+    ww = T.Weight(XINC, State[INC]);
   }
   return ww;
 }
@@ -1063,17 +1055,17 @@ void InitialConfiguration::write() {
   fprintf(FALG, "\n");
   fprintf(FALG, "    <InitialConfiguration>\n");
   fprintf(FALG, "      <State> ");
-  for (int i = 0; i < NLEG; i++)
-    fprintf(FALG, " %d", State[i]);
+  for (int i = 0; i < NLEG; i++) fprintf(FALG, " %d", State[i]);
   fprintf(FALG, " </State>\n");
   fprintf(FALG, "      <IncomingDirection> %d </IncomingDirection>\n", INC);
   fprintf(FALG, "      <NewState> %d </NewState>\n", XINC);
   fprintf(FALG, "      <NumberOfChannels> %d </NumberOfChannels>\n", NCH);
   for (int ch = 0; ch < NCH; ch++) {
-    int out  = FinalDirection[ch];
+    int out = FinalDirection[ch];
     int xout = FinalState[ch];
     double p = ScatteringProbability[ch];
-    fprintf(FALG, "      <Channel> %4d %4d %24.16lf </Channel>\n", out, xout, p);
+    fprintf(FALG, "      <Channel> %4d %4d %24.16lf </Channel>\n", out, xout,
+            p);
   }
   fprintf(FALG, "    </InitialConfiguration>\n");
 }
@@ -1081,7 +1073,7 @@ void InitialConfiguration::write() {
 //######################################################################
 
 void QUANTITY::load(XML::Block& X) {
-  ID   = X["QTYPE"].getInteger();
+  ID = X["QTYPE"].getInteger();
   NAME = X["Name"].getString();
   Value.init(2, NSTYPE, NXMAX);
   Value.set_all(0.0);
@@ -1090,11 +1082,11 @@ void QUANTITY::load(XML::Block& X) {
   for (int i = 0; i < X.NumberOfBlocks(); i++) {
     XML::Block& B = X[i];
     if (B.getName() == "Value") {
-      int st           = B.getInteger(0);
-      int x            = B.getInteger(1);
-      double v         = B.getDouble(2);
+      int st = B.getInteger(0);
+      int x = B.getInteger(1);
+      double v = B.getDouble(2);
       isDefined(st, x) = true;
-      Value(st, x)     = v;
+      Value(st, x) = v;
     }
   }
 }
@@ -1147,7 +1139,7 @@ void SolveWeightEquation(int N, Array<double>& V, Array<double>& W) {
     N_first = p;
     if (p == N) {
       V_second = 0.0;
-      V_third  = 0.0;
+      V_third = 0.0;
       N_second = 0;
     } else {
       V_second = V[p];
@@ -1172,15 +1164,15 @@ void SolveWeightEquation(int N, Array<double>& V, Array<double>& W) {
       double x = V_first - V_second;
       double y = (double)(N_second - 1) * (V_second - V_third);
       if (x < y) {
-        dw1          = (V_first - V_second) / (1.0 - 1.0 / (double)(N_second));
-        dw2          = dw1 / (double)N_second;
+        dw1 = (V_first - V_second) / (1.0 - 1.0 / (double)(N_second));
+        dw2 = dw1 / (double)N_second;
         V_second_new = V_second - dw2;
-        V_first_new  = V_second_new;
+        V_first_new = V_second_new;
       } else {
-        dw2          = V_second - V_third;
-        dw1          = dw2 * (double)N_second;
+        dw2 = V_second - V_third;
+        dw1 = dw2 * (double)N_second;
         V_second_new = V_third;
-        V_first_new  = V_first - dw1;
+        V_first_new = V_first - dw1;
       }
       V[0] = V_first_new;
       for (int i = 1; i < 1 + N_second; i++) {
@@ -1211,14 +1203,13 @@ void SolveWeightEquation(int N, Array<double>& V, Array<double>& W) {
 //======================================================================
 
 void bubble_sort(int N, Array<double>& V, Array<int>& I) {
-  for (int i = 0; i < N; i++)
-    I[i] = i;
+  for (int i = 0; i < N; i++) I[i] = i;
   for (int i = 0; i < N - 1; i++) {
     for (int j = i + 1; j < N; j++) {
       if (V[I[i]] < V[I[j]]) {
         int ii = I[i];
-        I[i]   = I[j];
-        I[j]   = ii;
+        I[i] = I[j];
+        I[j] = ii;
       }
     }
   }

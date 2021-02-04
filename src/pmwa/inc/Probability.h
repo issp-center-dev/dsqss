@@ -2,14 +2,14 @@
 #define PROB_H
 
 #include <simtype.h>
-#include <systemparameter.h>
 #include <stdma.h>
+#include <systemparameter.h>
 
 class Probability {
   int nmax, XMAX;
   double Ubb, V1, z;
 
-public:
+ public:
   double tb, local_Et, rtmax, dim, *rumax, *local_Eu;
   double rh_odd, rh_even;
 
@@ -30,14 +30,14 @@ public:
   //###################################################
 
   class Omega {
-  public:
+   public:
     double val;
     int num;
     bool off;
     int i;
   };
 
-private:
+ private:
   Parallel *PR;
   int Nx;
 

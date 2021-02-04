@@ -5,23 +5,24 @@
 //#define XSTEPALL
 //#include <cmath>
 
-Quantities::Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT, Parallel *m_PR, std::string const & sfinfile) {
+Quantities::Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT,
+                       Parallel *m_PR, std::string const &sfinfile) {
 #ifdef REWEIGHT
   cout << "REWEIGHTING ON" << endl;
 #else
   cout << "REWEIGHTING OFF" << endl;
 #endif
 
-  Npara   = m_PR->Npara;
+  Npara = m_PR->Npara;
   my_rank = m_PR->my_rank;
 
   MC = m_MC;
-  N  = m_N;
+  N = m_N;
   LT = m_LT;
   PR = m_PR;
 
   sp = m_sp;
-  V  = PR->V;
+  V = PR->V;
   Nx = PR->x;
 
   NL[0] = N->x;
@@ -48,17 +49,17 @@ Quantities::Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT, Paral
 #endif
 
   Nkxmax = N->x / Nkstep;
-  Nxmax  = N->x / Nxstep;
-  Nkmax  = Nkxmax * 2;  //i.e. kx=ky=kz, kx!=ky=kz=0
+  Nxmax = N->x / Nxstep;
+  Nkmax = Nkxmax * 2;  // i.e. kx=ky=kz, kx!=ky=kz=0
   Nkkmax = Nkxmax;
 
-  Nend = Nq - 3;  //Mx's number
+  Nend = Nq - 3;  // Mx's number
 
   newcall_zero(Lmax, Nc);
   newcall_zero(Lsum, Nc);
 
   Lsum[mz] = Lmax[mz] = V;
-  Lmax[cr2]           = Nxmax;
+  Lmax[cr2] = Nxmax;
   //  Lmax[sk]=Nkmax*2;//i.e. real and imaginary part
   Lmax[ck2] = Nkmax * 2;
   //#ifdef GF22Gk2
@@ -68,16 +69,14 @@ Quantities::Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT, Paral
   //#endif
   Lmax[ck4] = Nkxmax * Nkkmax * 2;
   Lmax[dkk] = Nkxmax * Nkkmax;
-  Lmax[nw]  = V;
+  Lmax[nw] = V;
   Lmax[nw2] = V;
-  Lmax[lw]  = V;
+  Lmax[lw] = V;
 
-  Lsize = 0;  //sin,cos,Nk,Sk
+  Lsize = 0;  // sin,cos,Nk,Sk
 
-  for (int i = 1; i < Nc; i++)
-    Lsum[i] = Lsum[i - 1] + Lmax[i];
-  for (int i = 0; i < Nc; i++)
-    Lsize += Lmax[i];
+  for (int i = 1; i < Nc; i++) Lsum[i] = Lsum[i - 1] + Lmax[i];
+  for (int i = 0; i < Nc; i++) Lsize += Lmax[i];
 
   newcall_zero(file, Nc + Nq, 128);
   newcall_zero(Qname, Nc + Nq, 128);
@@ -85,48 +84,48 @@ Quantities::Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT, Paral
   //  int NVMAX, NWMAX;
 
   //  sprintf(parainfo,"B%.1lf_Nx%d_Ny%d_Vbb%.1lf",N->B,N->x,N->y,sp->Vb1);
-  sprintf(Qname[wndx], "wndx");  //Winding Number for x-axis
-  sprintf(Qname[wndy], "wndy");  //Winding Number for y-axis
-  sprintf(Qname[wndz], "wndz");  //Winding Number for z-axis
-  sprintf(Qname[wnd2], "wnd2");  //square of Winding Number
-  sprintf(Qname[amzu], "amzu");  //Density or z-Magnetization
-  sprintf(Qname[bmzu], "bmzu");  //Density or z-Magnetization
-  sprintf(Qname[ang], "ang ");   //Phase
-  sprintf(Qname[ene], "ene ");   //Energy
-  sprintf(Qname[nver], "nver");  //Number of vertices
-  sprintf(Qname[spe], "spe ");   //Specific heat
-  sprintf(Qname[nwor], "nwor");  //Number of worms
-  sprintf(Qname[xmx], "xmx ");   //Susceptibility
-  sprintf(Qname[nkin], "nkin");  //Number of kinks
-  sprintf(Qname[comp], "comp");  //Compressibility
-  sprintf(Qname[lxmx], "lxmx");  //Compressibility
-  sprintf(Qname[magx], "bmxu");  //BEC order parameter or xmag
-  sprintf(Qname[magp], "bmpu");  //BEC order parameter or +mag
-  sprintf(Qname[magm], "bmmu");  //BEC order parameter or -mag
-  sprintf(Qname[smzu], "smzu");  //structure factor (uniform)
-  sprintf(Qname[smzs], "smzs");  //structure factor (staggerd)
-  sprintf(Qname[xmzu], "xmzu");  //structure factor (uniform)
-  sprintf(Qname[xmzs], "xmzs");  //structure factor (staggerd)
+  sprintf(Qname[wndx], "wndx");  // Winding Number for x-axis
+  sprintf(Qname[wndy], "wndy");  // Winding Number for y-axis
+  sprintf(Qname[wndz], "wndz");  // Winding Number for z-axis
+  sprintf(Qname[wnd2], "wnd2");  // square of Winding Number
+  sprintf(Qname[amzu], "amzu");  // Density or z-Magnetization
+  sprintf(Qname[bmzu], "bmzu");  // Density or z-Magnetization
+  sprintf(Qname[ang], "ang ");   // Phase
+  sprintf(Qname[ene], "ene ");   // Energy
+  sprintf(Qname[nver], "nver");  // Number of vertices
+  sprintf(Qname[spe], "spe ");   // Specific heat
+  sprintf(Qname[nwor], "nwor");  // Number of worms
+  sprintf(Qname[xmx], "xmx ");   // Susceptibility
+  sprintf(Qname[nkin], "nkin");  // Number of kinks
+  sprintf(Qname[comp], "comp");  // Compressibility
+  sprintf(Qname[lxmx], "lxmx");  // Compressibility
+  sprintf(Qname[magx], "bmxu");  // BEC order parameter or xmag
+  sprintf(Qname[magp], "bmpu");  // BEC order parameter or +mag
+  sprintf(Qname[magm], "bmmu");  // BEC order parameter or -mag
+  sprintf(Qname[smzu], "smzu");  // structure factor (uniform)
+  sprintf(Qname[smzs], "smzs");  // structure factor (staggerd)
+  sprintf(Qname[xmzu], "xmzu");  // structure factor (uniform)
+  sprintf(Qname[xmzs], "xmzs");  // structure factor (staggerd)
   // sprintf(Qname[d00] ,"d00");  //noise correlation at k=0
-  sprintf(Qname[len], "len");  //noise correlation at k=0
+  sprintf(Qname[len], "len");  // noise correlation at k=0
 
-  sprintf(Qname[Nq + mz], "mz");    //Local density or local mz
-  sprintf(Qname[Nq + cr2], "cr2");  //2-points correlation (mx-mx)
+  sprintf(Qname[Nq + mz], "mz");    // Local density or local mz
+  sprintf(Qname[Nq + cr2], "cr2");  // 2-points correlation (mx-mx)
   //  sprintf(Qname[Nq+sk] ,"sk");  //structure factor
-  sprintf(Qname[Nq + ck2], "ck2");  //k-space of cr2
+  sprintf(Qname[Nq + ck2], "ck2");  // k-space of cr2
   // sprintf(Qname[Nq+cr4],"cr4"); //4-points correlation
-  sprintf(Qname[Nq + ck4], "ck4");  //k-space of cr4
-  sprintf(Qname[Nq + dkk], "dkk");  //Noise correlation
-  sprintf(Qname[Nq + nw], "nw");    //local number of worms
-  sprintf(Qname[Nq + nw2], "nw2");  //square of nw
-  sprintf(Qname[Nq + lw], "lw");    //square of nw
+  sprintf(Qname[Nq + ck4], "ck4");  // k-space of cr4
+  sprintf(Qname[Nq + dkk], "dkk");  // Noise correlation
+  sprintf(Qname[Nq + nw], "nw");    // local number of worms
+  sprintf(Qname[Nq + nw2], "nw2");  // square of nw
+  sprintf(Qname[Nq + lw], "lw");    // square of nw
 
   //  int S=Nc+Nq;
 
   newcall_zero(values_S, Nq);
   newcall_zero(MCmean_S, Nq * 2);
   newcall_zero(BINmean_S, Nq * 2 * MC->Nbin);
-  //newcall_zero(RNDmean_S,Nq*2*PR->Npara);
+  // newcall_zero(RNDmean_S,Nq*2*PR->Npara);
 
   newcall_zero(values_L, Lsize);
   newcall_zero(MCmean_L, Lsize * 2);
@@ -137,7 +136,7 @@ Quantities::Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT, Paral
 
   newcall_zero(EXPrk, 4 * Nkmax * V);
 
-  Cknum  = 16;
+  Cknum = 16;
   Nk_set = 5 + 2 * Nkmax * Cknum;
   Sk_set = 2;
 
@@ -150,14 +149,15 @@ Quantities::Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT, Paral
     int y = (int)(i / Nx) % PR->y + PR->ny * PR->y;
     int z = (int)(i / (Nx * PR->y)) + PR->nz * PR->z;
 
-    for (int k = -Nkmax + 1; k < Nkmax; k++) {  //max(kx+kk)=Nkkmax-1 + Nkxmax-1
+    for (int k = -Nkmax + 1; k < Nkmax; k++) {  // max(kx+kk)=Nkkmax-1 +
+                                                // Nkxmax-1
 
-      double phase = 2.0 * PI * x * k / (double)Nkxmax;  //kx!=0,ky=kz=0
+      double phase = 2.0 * PI * x * k / (double)Nkxmax;  // kx!=0,ky=kz=0
       complex<double> phase_c(0.0, phase);
       EXPrk[theta(i, k, 0)] = exp(phase_c);
 
-      phase                 = 2.0 * PI * (x + y + z) * k / (double)Nkxmax;  //kx=ky
-      phase_c               = complex<double>(0.0, phase);
+      phase = 2.0 * PI * (x + y + z) * k / (double)Nkxmax;  // kx=ky
+      phase_c = complex<double>(0.0, phase);
       EXPrk[theta(i, k, 1)] = exp(phase_c);
     }
   }
@@ -190,7 +190,7 @@ Quantities::~Quantities() {
   delcall(values_L);
   delcall(MCmean_L);
   delcall(BINmean_L);
-  //delcall(RNDmean_L);
+  // delcall(RNDmean_L);
 
   delcall(m_val);
 
@@ -219,18 +219,13 @@ Quantities::~Quantities() {
 }
 
 void Quantities::Init() {
-  for (int i = 0; i < Nq1; i++)
-    values_S[i] = 0;
-  for (int i = 0; i < Lsize; i++)
-    values_L[i] = 0;
-  for (int i = 0; i < Nq * 2; i++)
-    MCmean_S[i] = 0;
-  for (int i = 0; i < Lsize * 2; i++)
-    MCmean_L[i] = 0;
+  for (int i = 0; i < Nq1; i++) values_S[i] = 0;
+  for (int i = 0; i < Lsize; i++) values_L[i] = 0;
+  for (int i = 0; i < Nq * 2; i++) MCmean_S[i] = 0;
+  for (int i = 0; i < Lsize * 2; i++) MCmean_L[i] = 0;
 #ifdef SF
   for (int isf = 0; isf < NSF; isf++)
-    for (int it = 0; it < Ntau; it++)
-      MCmean_SF[isf][it] = 0;
+    for (int it = 0; it < Ntau; it++) MCmean_SF[isf][it] = 0;
       //  for( int i=0; i<Nq*2*PR->Npara; i++ ) RNDmean_S[i]=0;
       //  for( int i=0; i<Lsize*PR->Npara; i++ ) RNDmean_L[i]=0;
 #endif
@@ -242,11 +237,11 @@ void Quantities::read_sf() {
 
   int Nline = X["NumberOfElements"].getInteger();
 
-  dtau = PR->B / (double)Ntau1;  //in preparation for temporal pararellization
+  dtau = PR->B / (double)Ntau1;  // in preparation for temporal pararellization
 
-  Ntau  = X["CutoffOfNtau"].getInteger();
+  Ntau = X["CutoffOfNtau"].getInteger();
   NKMAX = X["NumberOfInverseLattice"].getInteger();
-  NSF   = NKMAX * 2;
+  NSF = NKMAX * 2;
 
   newcall_zero(MCmean_SF, NSF, Ntau);
   newcall_zero(BINmean_SF, NSF, Ntau);
@@ -263,10 +258,10 @@ void Quantities::read_sf() {
   for (int i = 0; i < X.NumberOfBlocks(); i++) {
     XML::Block &BLCK = X[i];
     if (BLCK.getName() == "SF") {
-      double COSrk_       = BLCK.getDouble(0);
-      double SINrk_       = BLCK.getDouble(1);
-      int isite           = BLCK.getInteger(2);
-      int ksite           = BLCK.getInteger(3);
+      double COSrk_ = BLCK.getDouble(0);
+      double SINrk_ = BLCK.getDouble(1);
+      int isite = BLCK.getInteger(2);
+      int ksite = BLCK.getInteger(3);
       COSrk[isite][ksite] = COSrk_;
       SINrk[isite][ksite] = SINrk_;
       count++;
@@ -274,30 +269,33 @@ void Quantities::read_sf() {
   }
 
   if (count != Nline) {
-    cout << "ERROR Nline( " << Nline << " ) != count( " << count << " )" << endl;
+    cout << "ERROR Nline( " << Nline << " ) != count( " << count << " )"
+         << endl;
     exit(0);
   }
 };
 #endif
 
-void Quantities::Measure(int Nv, int Nk, vector<GraphSpace::Vertex> &ev, vector<GraphSpace::Vertex *> WORM,
-                         GraphSpace::Vertex *world, GraphSpace::Vertex *worldB, double length, int m_Wnum, int mcs) {
+void Quantities::Measure(int Nv, int Nk, vector<GraphSpace::Vertex> &ev,
+                         vector<GraphSpace::Vertex *> WORM,
+                         GraphSpace::Vertex *world, GraphSpace::Vertex *worldB,
+                         double length, int m_Wnum, int mcs) {
   NVMAX = max(NVMAX, m_Wnum + Nv);
   NWMAX = max(NWMAX, m_Wnum);
 
 #ifdef CFOUT
-  WindingNumber(ev, mcs);  //no MPI
+  WindingNumber(ev, mcs);  // no MPI
 #endif
-  NumberOfVertices(m_Wnum + Nv, mcs);  //no MPI
-  NumberOfWorms(ev, m_Wnum);           //noMPI
-  NumberOfKinks(Nk, mcs);              //no MPI
-  CondensateFraction(mcs, world);      //MPI in correlation function1,2
-  Density(world, worldB);              //no MPI
+  NumberOfVertices(m_Wnum + Nv, mcs);  // no MPI
+  NumberOfWorms(ev, m_Wnum);           // noMPI
+  NumberOfKinks(Nk, mcs);              // no MPI
+  CondensateFraction(mcs, world);      // MPI in correlation function1,2
+  Density(world, worldB);              // no MPI
   CorrelationLength(length);
 
   SUM_OVER_T();   // for local nw and mz
   SUM_OVER_S();   // for amzu
-  SUM_OVER_ST();  //for values_S
+  SUM_OVER_ST();  // for values_S
   // cout<<"Sk"<<endl;
 
   ////////////////////////
@@ -312,7 +310,6 @@ void Quantities::Measure(int Nv, int Nk, vector<GraphSpace::Vertex> &ev, vector<
 }
 
 void Quantities::Measure() {
-
   Average();
 
   if (PR->nst == 0) {
@@ -338,7 +335,8 @@ void Quantities::BINsum(int bin) {
     for (int i = 0; i < NKMAX; i++)
       for (int it = 0; it < Ntau; it++) {
         BINmean_SF[2 * i][it] += MCmean_SF[2 * i][it];
-        BINmean_SF[2 * i + 1][it] += MCmean_SF[2 * i][it] * MCmean_SF[2 * i][it];
+        BINmean_SF[2 * i + 1][it] +=
+            MCmean_SF[2 * i][it] * MCmean_SF[2 * i][it];
       }
 #endif
   }
@@ -353,10 +351,10 @@ void Quantities::BINaverage() {
 #ifdef SF
     for (int i = 0; i < NKMAX; i++)
       for (int it = 0; it < Ntau; it++) {
-        double mean               = BINmean_SF[2 * i][it] / (double)MC->Nbin;
-        double smean              = BINmean_SF[2 * i + 1][it] / (double)MC->Nbin;
-        double num                = (MC->Nbin == 1) ? 1.0 : MC->Nbin - 1.0;
-        BINmean_SF[2 * i][it]     = mean;
+        double mean = BINmean_SF[2 * i][it] / (double)MC->Nbin;
+        double smean = BINmean_SF[2 * i + 1][it] / (double)MC->Nbin;
+        double num = (MC->Nbin == 1) ? 1.0 : MC->Nbin - 1.0;
+        BINmean_SF[2 * i][it] = mean;
         BINmean_SF[2 * i + 1][it] = sqrt((smean - mean * mean) / num);
       }
 #endif
@@ -364,11 +362,11 @@ void Quantities::BINaverage() {
 }
 
 void Quantities::BINsum(double *MCmean, double *BINmean, int Lmax, int bin) {
-  for (int i = 0; i < Lmax; i++)
-    BINmean[i + bin * Lmax] = MCmean[i];
+  for (int i = 0; i < Lmax; i++) BINmean[i + bin * Lmax] = MCmean[i];
 }
 
-void Quantities::Average(double *g, int Nval, int S, double *MCmean, int kstep) {
+void Quantities::Average(double *g, int Nval, int S, double *MCmean,
+                         int kstep) {
   double num = (Nval == 1) ? 1.0 : Nval - 1.0;
 
   for (int k = 0; k < S; k += 2) {
@@ -382,7 +380,7 @@ void Quantities::Average(double *g, int Nval, int S, double *MCmean, int kstep) 
     mean /= (double)Nval;
     error /= (double)Nval;
 
-    MCmean[k]     = mean;
+    MCmean[k] = mean;
     MCmean[k + 1] = (Nval == 1) ? 0 : sqrt((error - mean * mean) / num);
   }
 }
@@ -392,7 +390,8 @@ void Quantities::show_S(ofstream &F) {  //ÄÌ¾ï
   int S = Nq * 2;
 
   for (int k = 0; k < S; k += 2)
-    F << "R " << Qname[k / 2] << " = " << MCmean_S[k] << " " << MCmean_S[k + 1] << endl;
+    F << "R " << Qname[k / 2] << " = " << MCmean_S[k] << " " << MCmean_S[k + 1]
+      << endl;
 }
 
 #ifdef SF
@@ -407,7 +406,8 @@ void Quantities::dump(FILE *F) {
 inline void Quantities::show4SF(FILE *F) {
   for (int i = 0; i < NKMAX; i++) {
     for (int it = 0; it < Ntau; it++) {
-      fprintf(F, "R C%dt%d = %16.10e %16.10e\n", i, it, MCmean_SF[2 * i][it], MCmean_SF[2 * i + 1][it]);
+      fprintf(F, "R C%dt%d = %16.10e %16.10e\n", i, it, MCmean_SF[2 * i][it],
+              MCmean_SF[2 * i + 1][it]);
     }
     fprintf(F, "\n");
   }
@@ -415,123 +415,130 @@ inline void Quantities::show4SF(FILE *F) {
 #endif
 
 void Quantities::show_L() {
-
   int k;
   long R, R_, Ry;
   string ll, Cname;
 
   std::ofstream F;
 
-  //Local density
+  // Local density
   F.open(file[Nq + mz], std::ios::app);
   F << "# Local density." << endl;
   F << "# R x-SITE  <VAL>  <ERROR>" << endl;
   F << setprecision(16);
   for (int l = 0; l < Nx; l++) {
-    R     = l;
-    k     = f_ld(l) * 2;
+    R = l;
+    k = f_ld(l) * 2;
     Cname = "real_" + tostr(R);
-    F << "R " << Cname << " = " << MCmean_L[k] << " " << MCmean_L[k + 1] << endl;
+    F << "R " << Cname << " = " << MCmean_L[k] << " " << MCmean_L[k + 1]
+      << endl;
   }
   F.close();
 
-  //Local worm density
+  // Local worm density
   F.open(file[Nq + nw], std::ios::app);
   F << "# Local worm density." << endl;
   F << "# R x-SITE  <VAL>  <ERROR>" << endl;
   F << setprecision(16);
   for (int l = 0; l < Nx; l++) {
-    R     = l;
-    k     = f_nw(l) * 2;
+    R = l;
+    k = f_nw(l) * 2;
     Cname = "real_" + tostr(R);
-    F << "R " << Cname << " = " << MCmean_L[k] << " " << MCmean_L[k + 1] << endl;
+    F << "R " << Cname << " = " << MCmean_L[k] << " " << MCmean_L[k + 1]
+      << endl;
   }
   F.close();
 
-  //worm length
+  // worm length
   F.open(file[Nq + lw], std::ios::app);
   F << "# worm length." << endl;
   F << "# R x-SITE  <VAL>  <ERROR>" << endl;
   F << setprecision(16);
   for (int l = 0; l < V; l++) {
-    R     = l;
-    k     = f_lw(l) * 2;
+    R = l;
+    k = f_lw(l) * 2;
     Cname = "real_" + tostr(R);
-    F << "R " << Cname << " = " << MCmean_L[k] << " " << MCmean_L[k + 1] << endl;
+    F << "R " << Cname << " = " << MCmean_L[k] << " " << MCmean_L[k + 1]
+      << endl;
   }
   F.close();
 
-  //Local susceptibility
+  // Local susceptibility
   F.open(file[Nq + nw2], std::ios::app);
   F << "# Local susceptibility." << endl;
   F << "# R x-SITE  <VAL>  <ERROR>" << endl;
   F << setprecision(16);
   for (int l = 0; l < Nx; l++) {
-    R     = l;
-    k     = f_nw2(l) * 2;
+    R = l;
+    k = f_nw2(l) * 2;
     Cname = "real_" + tostr(R);
-    F << "R " << Cname << " = " << MCmean_L[k] << " " << MCmean_L[k + 1] << endl;
+    F << "R " << Cname << " = " << MCmean_L[k] << " " << MCmean_L[k + 1]
+      << endl;
   }
   F.close();
 
-  //GF
+  // GF
   F.open(file[Nq + cr2], std::ios::app);
   F << "#2-point Correlation with sites." << endl;
   F << "# R x-distance  <VAL>  <ERROR>" << endl;
   F << setprecision(16);
   for (int l = 0; l < Lmax[cr2]; l++) {
-    R     = l * Nxstep;
-    k     = f_gf(l) * 2;
+    R = l * Nxstep;
+    k = f_gf(l) * 2;
     Cname = "real_" + tostr(R);
-    F << "R " << Cname << " = " << MCmean_L[k] << " " << MCmean_L[k + 1] << endl;
+    F << "R " << Cname << " = " << MCmean_L[k] << " " << MCmean_L[k + 1]
+      << endl;
   }
   F.close();
 
-  //nk
+  // nk
   F.open(file[Nq + ck2], std::ios::app);
   F << "# 2-point Correlation with wave numbers." << endl;
   F << "# real/imag  kx  ky  <VAL>  <ERROR>" << endl;
   F << setprecision(16);
   for (int l = 0; l < Lmax[ck2]; l++) {
-    R     = l % Nkxmax;
-    Ry    = ((int)(l / Nkxmax) % 2) * R;
-    ll    = ((bool)(l / Nkmax)) ? "imag" : "real";
-    k     = f_nk(l) * 2;
+    R = l % Nkxmax;
+    Ry = ((int)(l / Nkxmax) % 2) * R;
+    ll = ((bool)(l / Nkmax)) ? "imag" : "real";
+    k = f_nk(l) * 2;
     Cname = ll + "_" + tostr(R * Nkstep) + "_" + tostr(Ry * Nkstep);
-    F << "R " << Cname << " = " << MCmean_L[k] << " " << MCmean_L[k + 1] << endl;
+    F << "R " << Cname << " = " << MCmean_L[k] << " " << MCmean_L[k + 1]
+      << endl;
   }
   F.close();
 
-  //4-point correlation
+  // 4-point correlation
   F.open(file[Nq + ck4], std::ios::app);
   F << "# 4-point Correlation with wave numbers." << endl;
   F << "# kx  kx'  <VAL>  <ERROR>" << endl;
   F << setprecision(16);
   for (int l = 0; l < Lmax[ck4]; l++) {
-    k       = f_gk2(l) * 2;
-    R       = l % Nkxmax;
-    R_      = (int)(l / Nkxmax) % Nkkmax;
+    k = f_gk2(l) * 2;
+    R = l % Nkxmax;
+    R_ = (int)(l / Nkxmax) % Nkkmax;
     bool kl = l / (Nkkmax * Nkxmax);
-    ll      = (kl) ? "imag" : "real";  // real or imag
-    Cname   = ll + "_" + tostr(R * Nkstep) + "_" + tostr(R_ * Nkstep);
-    F << "R " << Cname << " = " << MCmean_L[k] << " " << MCmean_L[k + 1] << endl;
+    ll = (kl) ? "imag" : "real";  // real or imag
+    Cname = ll + "_" + tostr(R * Nkstep) + "_" + tostr(R_ * Nkstep);
+    F << "R " << Cname << " = " << MCmean_L[k] << " " << MCmean_L[k + 1]
+      << endl;
 
     if (R == Nkxmax - 1) F << endl;
   }
   F.close();
 
-  //noise correlation
+  // noise correlation
   F.open(file[Nq + dkk], std::ios::app);
   F << "# Noise Correlation with wave numbers." << endl;
   F << "# kx  kx'  <VAL>  <ERROR>" << endl;
   F << setprecision(16);
   for (int l = 0; l < Lmax[dkk]; l++) {
-    k     = f_noise(l) * 2;
-    R     = l % Nkxmax;
-    R_    = (int)(l / Nkxmax);
-    ll    = "real";
+    k = f_noise(l) * 2;
+    R = l % Nkxmax;
+    R_ = (int)(l / Nkxmax);
+    ll = "real";
     Cname = ll + "_" + tostr(R * Nkstep) + "_" + tostr(R_ * Nkstep);
-    F << "R " << Cname << " = " << MCmean_L[k] << " " << MCmean_L[k + 1] << endl;
+    F << "R " << Cname << " = " << MCmean_L[k] << " " << MCmean_L[k + 1]
+      << endl;
 
     if (R == Nkxmax - 1) F << endl;
   }
@@ -555,9 +562,10 @@ void Quantities::show(ofstream &F, FILE *SFF) {
 }
 
 //////
-void Quantities::Output(std::string const & fname, double g) {
+void Quantities::Output(std::string const &fname, double g) {
   std::ofstream file(fname.c_str(), std::ios::app);
-  file << sp->Htr << " " << sp->mu << " " << sp->Vb1 << " " << sp->tb << " " << N->B << " " << g << endl;
+  file << sp->Htr << " " << sp->mu << " " << sp->Vb1 << " " << sp->tb << " "
+       << N->B << " " << g << endl;
 }
 
 //##########################################################################################
@@ -571,7 +579,10 @@ void Quantities::WindingNumber(vector<GraphSpace::Vertex> &ev, int mcs) {
   while (it != ev.end()) {
     int l = it->i / V;
 
-    if ((it->type == 2 && /*LT->bd[it->i%V][l*2] == it->nleg->i%V &&*/ it->i % V < it->nleg->i % V) || it->type == -1) {
+    if ((it->type == 2 &&
+         /*LT->bd[it->i%V][l*2] == it->nleg->i%V &&*/ it->i % V <
+             it->nleg->i % V) ||
+        it->type == -1) {
       int crr = (it->p < it->next[0]->p) ? 1 : -1;
       for (int d = 0; d < N->d; d++)
         if (LT->bond_vec[l][d] != 0.0) Wi[d] += crr;
@@ -583,7 +594,6 @@ void Quantities::WindingNumber(vector<GraphSpace::Vertex> &ev, int mcs) {
   for (int d = 0; d < N->d; d++) {
     values_S[wndx + d] = (double)Wi[d];
   }  //(double)NL[d]; }
-
 }
 
 void Quantities::WindingNumber2() {
@@ -593,11 +603,12 @@ void Quantities::WindingNumber2() {
     ww += MCmean_S[(wndx + d) * 2 + 1];
   }
 
-  MCmean_S[wnd2 * 2]     = ww;
+  MCmean_S[wnd2 * 2] = ww;
   MCmean_S[wnd2 * 2 + 1] = ww * ww;
 }
 
-void Quantities::Density(GraphSpace::Vertex *world, GraphSpace::Vertex *worldB) {
+void Quantities::Density(GraphSpace::Vertex *world,
+                         GraphSpace::Vertex *worldB) {
   double ph[2] = {1.0, -1.0};
   double atot = 0.0, btot = 0.0, stot = 0.0, xtot = 0.0;
 #ifdef SF
@@ -605,14 +616,15 @@ void Quantities::Density(GraphSpace::Vertex *world, GraphSpace::Vertex *worldB) 
 #endif
 
   for (int i = 0; i < V; i++) {
-    int it     = 0;
+    int it = 0;
     double tau = 0.0;
-    double n0  = 0.0;
+    double n0 = 0.0;
 
-    for (GraphSpace::Vertex *wl = &(world[i]); wl != &(worldB[i]); wl = wl->next[1]) {
+    for (GraphSpace::Vertex *wl = &(world[i]); wl != &(worldB[i]);
+         wl = wl->next[1]) {
       double tTri = wl->next[1]->t;
       double bTri = wl->t;
-      double mz   = wl->p - 0.5;
+      double mz = wl->p - 0.5;
 
       n0 += (tTri - bTri) * mz;
 
@@ -651,8 +663,8 @@ void Quantities::Density(GraphSpace::Vertex *world, GraphSpace::Vertex *worldB) 
     for (int it = 0; it < Ntau; it++) {
       double SZKT = 0.0;
       for (int tt = 0; tt < Ntau1; tt++) {
-        SZKT += counter4SFC[k][tt] * counter4SFC[k][(tt + it) % Ntau1]
-                + counter4SFS[k][tt] * counter4SFS[k][(tt + it) % Ntau1];
+        SZKT += counter4SFC[k][tt] * counter4SFC[k][(tt + it) % Ntau1] +
+                counter4SFS[k][tt] * counter4SFS[k][(tt + it) % Ntau1];
       }
       sfsamp[k][it] = SZKT / (double)Ntau1;
     }
@@ -663,12 +675,16 @@ void Quantities::Density(GraphSpace::Vertex *world, GraphSpace::Vertex *worldB) 
 
 void Quantities::Compressibility() {
   MCmean_S[comp * 2] =
-      N->B * N->V * (MCmean_S[smzu * 2] / (MCmean_S[amzu * 2] * MCmean_S[amzu * 2] * (double)N->V) - 1.0);
+      N->B * N->V *
+      (MCmean_S[smzu * 2] /
+           (MCmean_S[amzu * 2] * MCmean_S[amzu * 2] * (double)N->V) -
+       1.0);
   MCmean_S[comp * 2 + 1] = MCmean_S[comp * 2] * MCmean_S[comp * 2];
 }
 
 void Quantities::Energy() {
-  MCmean_S[ene * 2]     = (sp->Eu + sp->Et - MCmean_S[nver * 2] / N->B) / (double)N->V;
+  MCmean_S[ene * 2] =
+      (sp->Eu + sp->Et - MCmean_S[nver * 2] / N->B) / (double)N->V;
   MCmean_S[ene * 2 + 1] = MCmean_S[ene * 2] * MCmean_S[ene * 2];
 }
 
@@ -678,14 +694,15 @@ void Quantities::NumberOfVertices(int countv, int mcs) {
 
 void Quantities::SpecificHeat() {
   MCmean_S[spe * 2] =
-      (MCmean_S[nver * 2 + 1] - MCmean_S[nver * 2] * MCmean_S[nver * 2] - MCmean_S[nver * 2]) / (double)N->V;
+      (MCmean_S[nver * 2 + 1] - MCmean_S[nver * 2] * MCmean_S[nver * 2] -
+       MCmean_S[nver * 2]) /
+      (double)N->V;
   MCmean_S[spe * 2 + 1] = MCmean_S[spe * 2] * MCmean_S[spe * 2];
 }
 
 void Quantities::NumberOfWorms(vector<GraphSpace::Vertex> &ev, int m_Nw) {
 #ifdef CFOUT
-  for (int i = 0; i < V; i++)
-    values_L[f_nw(i)] = 0;
+  for (int i = 0; i < V; i++) values_L[f_nw(i)] = 0;
   int Nw = 0;
 
   vector<GraphSpace::Vertex>::iterator it = ev.begin();
@@ -704,7 +721,7 @@ void Quantities::NumberOfWorms(vector<GraphSpace::Vertex> &ev, int m_Nw) {
 }
 void Quantities::NumberOfKinks(int Nk, int mcs) {
   values_S[nkin] = Nk;
-  values_S[ang]  = 2 * (Nk % 2) - 1;
+  values_S[ang] = 2 * (Nk % 2) - 1;
 }
 
 void Quantities::Susceptibility() {
@@ -713,16 +730,18 @@ void Quantities::Susceptibility() {
 
   for (int i = 0; i < V; i++) {
     MCmean_L[f_nw2(i)] =
-        (MCmean_L[f_nw2(i)] - MCmean_L[f_nw(i)] * MCmean_L[f_nw(i)]) / (4.0 * N->B * sp->Htr * sp->Htr);
+        (MCmean_L[f_nw2(i)] - MCmean_L[f_nw(i)] * MCmean_L[f_nw(i)]) /
+        (4.0 * N->B * sp->Htr * sp->Htr);
     lx += MCmean_L[f_nw2(i)];
   }
 
-  MCmean_S[lxmx * 2]     = lx / (double)V;
+  MCmean_S[lxmx * 2] = lx / (double)V;
   MCmean_S[lxmx * 2 + 1] = MCmean_S[lxmx * 2] * MCmean_S[lxmx * 2];
 #endif
 
   MCmean_S[xmx * 2] =
-      (MCmean_S[nwor * 2 + 1] - MCmean_S[nwor * 2] * MCmean_S[nwor * 2]) / (4.0 * N->V * N->B * sp->Htr * sp->Htr);
+      (MCmean_S[nwor * 2 + 1] - MCmean_S[nwor * 2] * MCmean_S[nwor * 2]) /
+      (4.0 * N->V * N->B * sp->Htr * sp->Htr);
 
   MCmean_S[xmx * 2 + 1] = MCmean_S[xmx * 2] * MCmean_S[xmx * 2];
 }
@@ -743,7 +762,7 @@ void Quantities::CondensateFraction(int mcs, GraphSpace::Vertex *world) {
   values_S[magm] = ctot / PR->Ntdiv;
 #ifdef CFOUT
   CorrelationFunction1();
-  //CorrelationFunction2(world);
+  // CorrelationFunction2(world);
 #endif
 }
 
@@ -752,40 +771,36 @@ void Quantities::CorrelationLength(double length) { values_S[len] = length; }
 ////////////////////////////////////
 //***MC average
 
-void Quantities::Average(){
-
-
+void Quantities::Average() {
 #ifdef REWEIGHT
-  double ZW=MCmean_S[2*ang];
+  double ZW = MCmean_S[2 * ang];
 #else
-  double ZW=MC->Nsample;
+  double ZW = MC->Nsample;
 #endif
 
-  for(int i=0; i<Nq; i++){
+  for (int i = 0; i < Nq; i++) {
 #ifdef REWEIGHT
-    if(i!=ang){
+    if (i != ang) {
 #endif
-      MCmean_S[2*i] /= ZW;
-      MCmean_S[2*i+1] /= ZW;
+      MCmean_S[2 * i] /= ZW;
+      MCmean_S[2 * i + 1] /= ZW;
     }
 #ifdef REWEIGHT
   }
-  
-  MCmean_S[ang*2] /= (double)MC->Nsample;
-  MCmean_S[ang*2+1] /= (double)MC->Nsample;
-#endif
-  
-#ifdef CFOUT
-  for(int i=0; i<Lsize*2; i++){
-    MCmean_L[i] /= ZW;
-  }
-#endif  
-#ifdef SF
-  for (int isf=0; isf<NKMAX; isf++) 
-    for(int it=0;it<Ntau;it++)
-      MCmean_SF[2*isf][it] /= ZW;
+
+  MCmean_S[ang * 2] /= (double)MC->Nsample;
+  MCmean_S[ang * 2 + 1] /= (double)MC->Nsample;
 #endif
 
+#ifdef CFOUT
+  for (int i = 0; i < Lsize * 2; i++) {
+    MCmean_L[i] /= ZW;
+  }
+#endif
+#ifdef SF
+  for (int isf = 0; isf < NKMAX; isf++)
+    for (int it = 0; it < Ntau; it++) MCmean_SF[2 * isf][it] /= ZW;
+#endif
 }
 
 //****MC sum
@@ -846,12 +861,12 @@ void Quantities::MCsum_L() {
 
 ////////////////////////////////////
 void Quantities::SUM_OVER_T() {
-  if (PR->nt == 0) {  //Sum over t
+  if (PR->nt == 0) {  // Sum over t
 
     for (int tag = 1; tag < PR->Ntdiv; tag++) {
-      MPI_Recv(m_val, V * 2, MPI_DOUBLE, tag + PR->nt0, 0, MPI_COMM_WORLD, &status);
-      for (int i = 0; i < V * 2; i++)
-        values_L[f_ld(i)] += m_val[i];
+      MPI_Recv(m_val, V * 2, MPI_DOUBLE, tag + PR->nt0, 0, MPI_COMM_WORLD,
+               &status);
+      for (int i = 0; i < V * 2; i++) values_L[f_ld(i)] += m_val[i];
     }
 #ifdef CFOUT
     for (int i = 0; i < V; i++) {
@@ -860,17 +875,19 @@ void Quantities::SUM_OVER_T() {
 #endif
 
   } else {
-    MPI_Send(&(values_L[f_ld(0)]), V * 2, MPI_DOUBLE, PR->nt0, 0, MPI_COMM_WORLD);
+    MPI_Send(&(values_L[f_ld(0)]), V * 2, MPI_DOUBLE, PR->nt0, 0,
+             MPI_COMM_WORLD);
   }
 }
 
 void Quantities::SUM_OVER_S() {
-  if (PR->ns == 0) {  //Sum over s at same tau
+  if (PR->ns == 0) {  // Sum over s at same tau
 
     double Norm = PR->Ntdiv;
 
     for (int tag = 1; tag < PR->Nsdiv; tag++) {
-      MPI_Recv(m_val, 2, MPI_DOUBLE, tag * PR->Ntdiv + PR->ns0, 0, MPI_COMM_WORLD, &status);
+      MPI_Recv(m_val, 2, MPI_DOUBLE, tag * PR->Ntdiv + PR->ns0, 0,
+               MPI_COMM_WORLD, &status);
 
       values_S[amzu] += m_val[0];
       values_S[smzs] += m_val[1];
@@ -890,10 +907,11 @@ void Quantities::SUM_OVER_S() {
 }
 
 void Quantities::SUM_OVER_ST() {
-  if (PR->nst == 0) {  //Sum over t and s
+  if (PR->nst == 0) {  // Sum over t and s
 
     for (int tag = 1; tag < PR->NtNs; tag++) {
-      MPI_Recv(m_val, Nq1, MPI_DOUBLE, tag + PR->nst0, 0, MPI_COMM_WORLD, &status);
+      MPI_Recv(m_val, Nq1, MPI_DOUBLE, tag + PR->nst0, 0, MPI_COMM_WORLD,
+               &status);
       for (int i = 0; i < Nq1; i++) {
         values_S[i] += m_val[i];
       }
@@ -911,30 +929,29 @@ void Quantities::SUM_OVER_ST() {
   values_S[bmzu] /= (double)N->V;
 }
 
-void Quantities::CorrelationFunction1() {  //real space
+void Quantities::CorrelationFunction1() {  // real space
 
   //***MPI sum for G
   double ntot = 0.0;
-  int Lcr2    = Lmax[cr2];
-  int ixmax   = Lcr2 / PR->Nxdiv;
+  int Lcr2 = Lmax[cr2];
+  int ixmax = Lcr2 / PR->Nxdiv;
   double Norm;
 
-  for (int i = 0; i < Lcr2; i++)
-    values_L[f_gf(i)] = 0.0;
+  for (int i = 0; i < Lcr2; i++) values_L[f_gf(i)] = 0.0;
 
-  if (PR->nx == 0) {  //Sum over x at same tau
+  if (PR->nx == 0) {  // Sum over x at same tau
 
     for (int i = 0; i < ixmax; i++) {
-      int ixx               = i * Nxstep;
-      this->Q[i]            = an[ixx];
-      this->Q[i + Lcr2]     = cr[ixx];
+      int ixx = i * Nxstep;
+      this->Q[i] = an[ixx];
+      this->Q[i + Lcr2] = cr[ixx];
       this->Q[i + 2 * Lcr2] = ca[ixx];
     }
 
     for (int tag = 1; tag < PR->Nxdiv; tag++) {
-      MPI_Recv(m_val, ixmax * 3, MPI_DOUBLE, tag * PR->Ntdiv + PR->nx0, 0, MPI_COMM_WORLD, &status);
-      for (int i = 0; i < ixmax; i++)
-        this->Q[i + tag * ixmax] = m_val[i];
+      MPI_Recv(m_val, ixmax * 3, MPI_DOUBLE, tag * PR->Ntdiv + PR->nx0, 0,
+               MPI_COMM_WORLD, &status);
+      for (int i = 0; i < ixmax; i++) this->Q[i + tag * ixmax] = m_val[i];
       for (int i = 0; i < ixmax; i++)
         this->Q[i + tag * ixmax + Lcr2] = m_val[i + ixmax];
       for (int i = 0; i < ixmax; i++)
@@ -947,63 +964,66 @@ void Quantities::CorrelationFunction1() {  //real space
         if (ix == ixx)
           values_L[f_gf(0)] += this->Q[ix + 2 * Lcr2] * 2.0;
         else
-          values_L[f_gf(rx)] += this->Q[ix] * this->Q[ixx + Lcr2] + this->Q[ix + Lcr2] * this->Q[ixx];
+          values_L[f_gf(rx)] += this->Q[ix] * this->Q[ixx + Lcr2] +
+                                this->Q[ix + Lcr2] * this->Q[ixx];
       }
 
     Norm = 2.0 * Lcr2 * PR->Ntdiv * PR->Nydiv * PR->Nzdiv;
-    for (int i = 0; i < Lcr2; i++)
-      values_L[f_gf(i)] /= Norm;
+    for (int i = 0; i < Lcr2; i++) values_L[f_gf(i)] /= Norm;
 
   } else {
     for (int i = 0; i < ixmax; i++) {
-      int ixx                = i * Nxstep;
-      this->Q[i]             = an[ixx];
-      this->Q[i + ixmax]     = cr[ixx];
+      int ixx = i * Nxstep;
+      this->Q[i] = an[ixx];
+      this->Q[i + ixmax] = cr[ixx];
       this->Q[i + 2 * ixmax] = cr[ixx];
     }
     MPI_Send(this->Q, ixmax * 3, MPI_DOUBLE, PR->nx0, 0, MPI_COMM_WORLD);
   }
 
-  if (PR->nst == 0) {  //Sum over t at x=0
+  if (PR->nst == 0) {  // Sum over t at x=0
 
     for (int tag = 1; tag < PR->NtNs; tag++) {
       if ((tag / PR->Ntdiv) % PR->Nxdiv != 0) continue;
 
-      MPI_Recv(m_val, Lcr2, MPI_DOUBLE, tag + PR->nst0, 0, MPI_COMM_WORLD, &status);
-      for (int i = 0; i < Lcr2; i++)
-        values_L[f_gf(i)] += m_val[i];
+      MPI_Recv(m_val, Lcr2, MPI_DOUBLE, tag + PR->nst0, 0, MPI_COMM_WORLD,
+               &status);
+      for (int i = 0; i < Lcr2; i++) values_L[f_gf(i)] += m_val[i];
     }
 
   } else if (PR->nx == 0) {
-    MPI_Send(&(values_L[f_gf(0)]), Lcr2, MPI_DOUBLE, PR->nst0, 0, MPI_COMM_WORLD);
+    MPI_Send(&(values_L[f_gf(0)]), Lcr2, MPI_DOUBLE, PR->nst0, 0,
+             MPI_COMM_WORLD);
   }
 }
 
-void Quantities::CorrelationFunction2(GraphSpace::Vertex *world) {  //momentum space
+void Quantities::CorrelationFunction2(
+    GraphSpace::Vertex *world) {  // momentum space
 
   MPI_Status status;
   complex<double> Nk2;
   ////G2///
 
-  for (int i = 0; i < Nk_set; i++)
-    Ck[i] = complex<double>(0.0, 0.0);
+  for (int i = 0; i < Nk_set; i++) Ck[i] = complex<double>(0.0, 0.0);
 
-  double rootV  = sqrt((double)N->V);
+  double rootV = sqrt((double)N->V);
   double rootV2 = N->V;
   double rootV3 = rootV2 * rootV;
   double rootV4 = rootV2 * rootV2;
 
   for (int r = 0; r < V; r++) {
     double ancr = an[r] * cr[r];
-    double n    = world[r].p;
-    double ck0  = ancr - n;
-    double nn   = 1.0 - n;
+    double n = world[r].p;
+    double ck0 = ancr - n;
+    double nn = 1.0 - n;
 
     Ck[0] += ck0 / rootV2;
     Ck[1] += ancr / rootV2;
     Ck[2] += (ancr * ancr - n) / rootV4;
     Ck[3] += n / rootV2;
-    Ck[4] += (5.0 * ancr * ancr - 6.0 * n * ancr - 2.0 * nn * ancr + 2.0 * ancr + n * n + n * nn) / rootV4;
+    Ck[4] += (5.0 * ancr * ancr - 6.0 * n * ancr - 2.0 * nn * ancr +
+              2.0 * ancr + n * n + n * nn) /
+             rootV4;
 
     for (int a = 0; a < 2; a++) {
       for (int k = 0; k < Nkmax; k++) {
@@ -1020,83 +1040,102 @@ void Quantities::CorrelationFunction2(GraphSpace::Vertex *world) {  //momentum s
         Ck[f_ck(k, 10, a)] += ck0 * an[r] * EXPrk[theta(r, -k, a)] / rootV3;
         Ck[f_ck(k, 11, a)] += ck0 * cr[r] * EXPrk[theta(r, k, a)] / rootV3;
 
-        Ck[f_ck(k, 12, a)] += (ancr - nn) * an[r] * EXPrk[theta(r, -k, a)] / rootV3;
-        Ck[f_ck(k, 13, a)] += (ancr - nn) * cr[r] * EXPrk[theta(r, k, a)] / rootV3;
+        Ck[f_ck(k, 12, a)] +=
+            (ancr - nn) * an[r] * EXPrk[theta(r, -k, a)] / rootV3;
+        Ck[f_ck(k, 13, a)] +=
+            (ancr - nn) * cr[r] * EXPrk[theta(r, k, a)] / rootV3;
 
         Ck[f_ck(k, 14, a)] += ancr * an[r] * EXPrk[theta(r, -k, a)] / rootV3;
         Ck[f_ck(k, 15, a)] += ancr * cr[r] * EXPrk[theta(r, k, a)] / rootV3;
       }
       for (int k = 1; k < Nkmax; k++) {
-        Ck[f_ck(-k, 5, a)] += ancr * EXPrk[theta(r, -k, a)] / rootV2;  //ck(4)<=ck(-k)<=ck(5)
+        Ck[f_ck(-k, 5, a)] +=
+            ancr * EXPrk[theta(r, -k, a)] / rootV2;  // ck(4)<=ck(-k)<=ck(5)
         Ck[f_ck(-k, 7, a)] += n * EXPrk[theta(r, -k, a)] / rootV2;
         Ck[f_ck(-k, 9, a)] += nn * EXPrk[theta(r, -k, a)] / rootV2;
       }
     }
   }
 
-  if (PR->ns == 0) {  //Sum over site at same tau
+  if (PR->ns == 0) {  // Sum over site at same tau
 
     for (int tag = 1; tag < PR->Nsdiv; tag++) {
-      MPI_Recv(Ck_m, Nk_set + Sk_set, MPI_DOUBLE_COMPLEX, tag * PR->Ntdiv + PR->ns0, 0, MPI_COMM_WORLD, &status);
-      for (int i = 0; i < Nk_set + Sk_set; i++)
-        Ck[i] += Ck_m[i];
+      MPI_Recv(Ck_m, Nk_set + Sk_set, MPI_DOUBLE_COMPLEX,
+               tag * PR->Ntdiv + PR->ns0, 0, MPI_COMM_WORLD, &status);
+      for (int i = 0; i < Nk_set + Sk_set; i++) Ck[i] += Ck_m[i];
     }
 
     ///////////////// Gk //////////////////////
     for (int a = 0; a < 2; a++) {
       for (int k = 0; k < Nkxmax; k++) {
-        Nk2                             = (Ck[f_ck(k, 0, a)] * Ck[f_ck(k, 1, a)] - Ck[0]) / (double)N->V;
+        Nk2 = (Ck[f_ck(k, 0, a)] * Ck[f_ck(k, 1, a)] - Ck[0]) / (double)N->V;
         values_L[f_nkr(k + a * Nkxmax)] = real(Nk2);
         values_L[f_nki(k + a * Nkxmax)] = imag(Nk2);
       }
     }
     //////////////////////////////////////////
     ///////////////// Sk //////////////////////
-    //for(int k=0;k<Sk_set;k++){
+    // for(int k=0;k<Sk_set;k++){
     //  double Sk=real(Ck[Nk_set+k]);
     //  values_S[sku+k] = Sk*Sk/(double)PR->Ntdiv; //Structure factor
     //}
     //////////////////////////////////////////
   } else {
-    MPI_Send(Ck, Nk_set + Sk_set, MPI_DOUBLE_COMPLEX, PR->ns0, 0, MPI_COMM_WORLD);
+    MPI_Send(Ck, Nk_set + Sk_set, MPI_DOUBLE_COMPLEX, PR->ns0, 0,
+             MPI_COMM_WORLD);
   }
 
   //
   complex<double> Gk2, Dkkk;
   if (PR->ns == 0) {
-    for (int kx = 0; kx < Nkxmax; kx++) {  //(kx,ky,kz)=(0~Nkmax,0,0); (0~Nkmax,kx,kx)
+    for (int kx = 0; kx < Nkxmax;
+         kx++) {  //(kx,ky,kz)=(0~Nkmax,0,0); (0~Nkmax,kx,kx)
 
-      for (int kk = 0; kk < Nkkmax; kk++) {  //(k'x,k'y,k'z)=(0,0,0);...(depends on CKK)...; (kx,ky,kz)
+      for (int kk = 0; kk < Nkkmax;
+           kk++) {  //(k'x,k'y,k'z)=(0,0,0);...(depends on CKK)...; (kx,ky,kz)
 
-        Gk2 = Ck[f_ck(kx, 0)] * Ck[f_ck(kx, 1)] * Ck[f_ck(kk, 0)] * Ck[f_ck(kk, 1)]
+        Gk2 =
+            Ck[f_ck(kx, 0)] * Ck[f_ck(kx, 1)] * Ck[f_ck(kk, 0)] *
+                Ck[f_ck(kk, 1)]
 
-              - (Ck[0] * (Ck[f_ck(kk, 1)] * Ck[f_ck(kk, 0)] - Ck[1]) - Ck[f_ck(kk, 11)] * Ck[f_ck(kk, 0)]
-                 - Ck[f_ck(kk, 10)] * Ck[f_ck(kk, 1)])  //i=j
-              - (Ck[f_ck(kk + kx, 3)] * (Ck[f_ck(kx, 0)] * Ck[f_ck(kk, 0)] - Ck[f_ck(kk + kx, 2)])
-                 - Ck[f_ck(kk, 15)] * Ck[f_ck(kk, 0)] - Ck[f_ck(kx, 15)] * Ck[f_ck(kx, 0)])  //i=l
-              - ((Ck[f_ck(kx - kk, 5)] - Ck[f_ck(kx - kk, 7)])
-                     * (Ck[f_ck(kx, 0)] * Ck[f_ck(kk, 1)] - Ck[f_ck(kk - kx, 5)])
-                 - Ck[f_ck(kk, 10)] * Ck[f_ck(kk, 1)] - Ck[f_ck(kx, 11)] * Ck[f_ck(kx, 0)])  //i=m
-              - (Ck[f_ck(kx + kk, 2)] * (Ck[f_ck(kx, 1)] * Ck[f_ck(kk, 1)] - Ck[f_ck(kk + kx, 3)])
-                 - Ck[f_ck(kx, 14)] * Ck[f_ck(kx, 1)] - Ck[f_ck(kk, 14)] * Ck[f_ck(kk, 1)])  //j=m
-              - ((Ck[f_ck(kk - kx, 5)] - Ck[f_ck(kk - kx, 9)])
-                     * (Ck[f_ck(kx, 1)] * Ck[f_ck(kk, 0)] - Ck[f_ck(kx - kk, 5)])
-                 - Ck[f_ck(kx, 12)] * Ck[f_ck(kx, 1)] - Ck[f_ck(kk, 13)] * Ck[f_ck(kk, 0)])  //j=l
-              - (Ck[0] * (Ck[f_ck(kx, 1)] * Ck[f_ck(kx, 0)] - Ck[1]) - Ck[f_ck(kx, 11)] * Ck[f_ck(kx, 0)]
-                 - Ck[f_ck(kx, 10)] * Ck[f_ck(kx, 1)])  //l=m
+            - (Ck[0] * (Ck[f_ck(kk, 1)] * Ck[f_ck(kk, 0)] - Ck[1]) -
+               Ck[f_ck(kk, 11)] * Ck[f_ck(kk, 0)] -
+               Ck[f_ck(kk, 10)] * Ck[f_ck(kk, 1)])  // i=j
+            - (Ck[f_ck(kk + kx, 3)] *
+                   (Ck[f_ck(kx, 0)] * Ck[f_ck(kk, 0)] - Ck[f_ck(kk + kx, 2)]) -
+               Ck[f_ck(kk, 15)] * Ck[f_ck(kk, 0)] -
+               Ck[f_ck(kx, 15)] * Ck[f_ck(kx, 0)])  // i=l
+            - ((Ck[f_ck(kx - kk, 5)] - Ck[f_ck(kx - kk, 7)]) *
+                   (Ck[f_ck(kx, 0)] * Ck[f_ck(kk, 1)] - Ck[f_ck(kk - kx, 5)]) -
+               Ck[f_ck(kk, 10)] * Ck[f_ck(kk, 1)] -
+               Ck[f_ck(kx, 11)] * Ck[f_ck(kx, 0)])  // i=m
+            - (Ck[f_ck(kx + kk, 2)] *
+                   (Ck[f_ck(kx, 1)] * Ck[f_ck(kk, 1)] - Ck[f_ck(kk + kx, 3)]) -
+               Ck[f_ck(kx, 14)] * Ck[f_ck(kx, 1)] -
+               Ck[f_ck(kk, 14)] * Ck[f_ck(kk, 1)])  // j=m
+            - ((Ck[f_ck(kk - kx, 5)] - Ck[f_ck(kk - kx, 9)]) *
+                   (Ck[f_ck(kx, 1)] * Ck[f_ck(kk, 0)] - Ck[f_ck(kx - kk, 5)]) -
+               Ck[f_ck(kx, 12)] * Ck[f_ck(kx, 1)] -
+               Ck[f_ck(kk, 13)] * Ck[f_ck(kk, 0)])  // j=l
+            - (Ck[0] * (Ck[f_ck(kx, 1)] * Ck[f_ck(kx, 0)] - Ck[1]) -
+               Ck[f_ck(kx, 11)] * Ck[f_ck(kx, 0)] -
+               Ck[f_ck(kx, 10)] * Ck[f_ck(kx, 1)])  // l=m
 
-              - (Ck[f_ck(kk, 15)] - Ck[f_ck(kk, 1)] / rootV2) * Ck[f_ck(kk, 0)]  //i=j=l
-              - Ck[f_ck(kk, 14)] * Ck[f_ck(kk, 1)]                               //i=j=m
-              - Ck[f_ck(kx, 15)] * Ck[f_ck(kx, 0)]                               //i=m=l
-              - (Ck[f_ck(kx, 14)] - Ck[f_ck(kx, 0)] / rootV2) * Ck[f_ck(kx, 1)]  //j=l=m
+            - (Ck[f_ck(kk, 15)] - Ck[f_ck(kk, 1)] / rootV2) *
+                  Ck[f_ck(kk, 0)]                 // i=j=l
+            - Ck[f_ck(kk, 14)] * Ck[f_ck(kk, 1)]  // i=j=m
+            - Ck[f_ck(kx, 15)] * Ck[f_ck(kx, 0)]  // i=m=l
+            - (Ck[f_ck(kx, 14)] - Ck[f_ck(kx, 0)] / rootV2) *
+                  Ck[f_ck(kx, 1)]  // j=l=m
 
-              - (Ck[1] * Ck[1] - Ck[3] * Ck[3])                                                              //i=j,l=m
-              - (Ck[f_ck(kx - kk, 5)] * Ck[f_ck(kk - kx, 5)] - Ck[f_ck(kx - kk, 7)] * Ck[f_ck(kk - kx, 9)])  //i=m,j=l
-              - Ck[f_ck(kk + kx, 3)] * Ck[f_ck(kk + kx, 2)]                                                  //i=l,j=m
-              - Ck[2]                                                                                        //i=j=l=m
-              - Ck[4];
+            - (Ck[1] * Ck[1] - Ck[3] * Ck[3])  // i=j,l=m
+            - (Ck[f_ck(kx - kk, 5)] * Ck[f_ck(kk - kx, 5)] -
+               Ck[f_ck(kx - kk, 7)] * Ck[f_ck(kk - kx, 9)])  // i=m,j=l
+            - Ck[f_ck(kk + kx, 3)] * Ck[f_ck(kk + kx, 2)]    // i=l,j=m
+            - Ck[2]                                          // i=j=l=m
+            - Ck[4];
 
-        Dkkk = Gk2;  //vol2;
+        Dkkk = Gk2;  // vol2;
 
         //	  for(int kky=0; kky<1; kky++){ //ky=kky= 0 or kx(kkx)
         values_L[f_gk2r(kx, kk)] = real(Dkkk);
@@ -1107,20 +1146,19 @@ void Quantities::CorrelationFunction2(GraphSpace::Vertex *world) {  //momentum s
   }
 
   //*******
-  int L3 = Lmax[ck2] + Lmax[ck4];  //for nk, gk2
+  int L3 = Lmax[ck2] + Lmax[ck4];  // for nk, gk2
 
-  if (PR->nst == 0) {  //Sum over t=0
+  if (PR->nst == 0) {  // Sum over t=0
 
     for (int tag = 1; tag < PR->Ntdiv; tag++) {
-      MPI_Recv(m_val, L3, MPI_DOUBLE, tag + PR->nst0, 0, MPI_COMM_WORLD, &status);
-      for (int i = 0; i < L3; i++)
-        values_L[f_nk(i)] += m_val[i];
+      MPI_Recv(m_val, L3, MPI_DOUBLE, tag + PR->nst0, 0, MPI_COMM_WORLD,
+               &status);
+      for (int i = 0; i < L3; i++) values_L[f_nk(i)] += m_val[i];
     }
 
-    for (int i = 0; i < L3; i++)
-      values_L[f_nk(i)] /= (double)PR->Ntdiv;
+    for (int i = 0; i < L3; i++) values_L[f_nk(i)] /= (double)PR->Ntdiv;
 
-  } else if (PR->ns == 0) {  //Ntdiv prosessors for nk, gf2, gk2
+  } else if (PR->ns == 0) {  // Ntdiv prosessors for nk, gf2, gk2
     MPI_Send(&(values_L[f_nk(0)]), L3, MPI_DOUBLE, PR->nst0, 0, MPI_COMM_WORLD);
   }
 }
