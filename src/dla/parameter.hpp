@@ -1,30 +1,28 @@
 #ifndef PARAMETER_H
 #define PARAMETER_H
 
-#include <cmath>
-#include <string>
-#include <cstring>
 #include <algorithm>
-#include <fstream>
-#include <iostream>
-#include <cctype>
-#include <cstdio>
-#include <map>
-#include <exception>
-
 #include <boost/lexical_cast.hpp>
 #include <boost/math/special_functions/fpclassify.hpp>
+#include <cctype>
+#include <cmath>
+#include <cstdio>
+#include <cstring>
+#include <exception>
+#include <fstream>
+#include <iostream>
+#include <map>
+#include <string>
 
+#include "../common/read_keyvalues.h"
 #include "debug.hpp"
 #include "util.hpp"
-#include "../common/read_keyvalues.h"
 
 #define PNUM 22
 
 class Parameter {
-private:
-
-public:
+ private:
+ public:
   Parameter(int, char**);
   void dump(FILE*);
   void dump();
@@ -63,22 +61,30 @@ public:
     }
   }
   void closefile() {
-    if (FOUT) { fclose(FOUT); }
-    if (FOUT4CF) { fclose(FOUT4CF); }
-    if (FOUT4SF) { fclose(FOUT4SF); }
-    if (FOUT4CK) { fclose(FOUT4CK); }
+    if (FOUT) {
+      fclose(FOUT);
+    }
+    if (FOUT4CF) {
+      fclose(FOUT4CF);
+    }
+    if (FOUT4SF) {
+      fclose(FOUT4SF);
+    }
+    if (FOUT4CK) {
+      fclose(FOUT4CK);
+    }
   }
 
-  void readfile(std::string const &filename);
+  void readfile(std::string const& filename);
 
-  void init(std::map<std::string, std::string> &dict);
+  void init(std::map<std::string, std::string>& dict);
 
   double BETA;  // inversed temperature
 
   int RUNTYPE;  // runtype  number
   int NSET;     // number of sets
-  int NPRE;    // number of sweeps for determining NCYC
-  int NTHERM;    // number of sweeps for initial thermalization
+  int NPRE;     // number of sweeps for determining NCYC
+  int NTHERM;   // number of sweeps for initial thermalization
   int NDECOR;   // number of sweeps for decorrelating two subsequent sets
   int NMCS;     // number of sweeps for measurement in a set
   int SEED;     // seed for the random number generator
@@ -90,27 +96,27 @@ public:
   double SIMTIME;  // time [sec] to save a snapshot and stop simulation
   // if <= 0, never stop until finish
 
-  std::string ALGFILE;  // algorithm file name
-  std::string LATFILE;  // lattice file name
-  std::string OUTFILE;  // output file name
-  std::string WVFILE; // wavevector file name
-  std::string DISPFILE; // displacement file name
-  int NCYC;            // number of cycles in a sweep (not provided from the file)
+  std::string ALGFILE;   // algorithm file name
+  std::string LATFILE;   // lattice file name
+  std::string OUTFILE;   // output file name
+  std::string WVFILE;    // wavevector file name
+  std::string DISPFILE;  // displacement file name
+  int NCYC;    // number of cycles in a sweep (not provided from the file)
   FILE* FOUT;  // file handler for the output file
 
   std::string CFOUTFILE;  // output file name
-  FILE* FOUT4CF;         // file handler for the output file
+  FILE* FOUT4CF;          // file handler for the output file
 
   std::string SFOUTFILE;  // output file name
-  FILE* FOUT4SF;         // file handler for the output file
+  FILE* FOUT4SF;          // file handler for the output file
 
   std::string CKOUTFILE;  // output file name
-  FILE* FOUT4CK;         // file handler for the output file
+  FILE* FOUT4CK;          // file handler for the output file
 };
 
 void Parameter::readfile(std::string const& filename) {
-  using std::string;
   using boost::lexical_cast;
+  using std::string;
   double val;
   std::map<string, string> dict;
   init(dict);
@@ -121,16 +127,16 @@ void Parameter::readfile(std::string const& filename) {
   deprecated_parameter(dict, "ntherm", "nmcsd");
 
   BETA = lexical_cast<double>(dict["beta"]);
-  if(boost::math::isinf(BETA) || BETA <= 0.0){
+  if (boost::math::isinf(BETA) || BETA <= 0.0) {
     util::ERROR("\"beta\" is not specified or invalid.");
   }
 
   NMCS = lexical_cast<int>(dict["nmcs"]);
   NTHERM = lexical_cast<int>(dict["ntherm"]);
   NPRE = lexical_cast<int>(dict["npre"]);
-  if(dict.find("ndecor") != dict.end()){
+  if (dict.find("ndecor") != dict.end()) {
     NDECOR = lexical_cast<int>(dict["ndecor"]);
-  }else{
+  } else {
     NDECOR = NTHERM;
   }
   NSET = lexical_cast<int>(dict["nset"]);
@@ -169,7 +175,8 @@ inline Parameter::Parameter(int NP, char** PLIST) {
   }
 
 #ifdef MULTI
-  if (RUNTYPE >= 3) {  // runtype == 3 --> each processor must read its own parameter file
+  if (RUNTYPE >=
+      3) {  // runtype == 3 --> each processor must read its own parameter file
     char FILENAME[128];
     sprintf(FILENAME, "%s.%03d", PLIST[1], I_PROC);
     printf("[%2d] input file name = %s\n", I_PROC, FILENAME);
@@ -182,7 +189,7 @@ inline Parameter::Parameter(int NP, char** PLIST) {
   }
 #endif
 
-  if(I_PROC==0){
+  if (I_PROC == 0) {
     dump();
   }
 
@@ -192,25 +199,25 @@ inline Parameter::Parameter(int NP, char** PLIST) {
 
 void Parameter::init(std::map<std::string, std::string>& dict) {
   dict.clear();
-  dict["beta"]           = "inf";
-  dict["nmcs"]           = "1000";
-  dict["nset"]           = "10";
-  dict["npre"]           = "1000";
-  dict["ntherm"]         = "1000";
+  dict["beta"] = "inf";
+  dict["nmcs"] = "1000";
+  dict["nset"] = "10";
+  dict["npre"] = "1000";
+  dict["ntherm"] = "1000";
   dict["simulationtime"] = "0.0";
-  dict["seed"]           = "198212240";
-  dict["nvermax"]        = "10000";
-  dict["nsegmax"]        = "10000";
-  dict["ntau"]           = 10;
-  dict["algfile"]        = "algorithm.xml";
-  dict["latfile"]        = "lattice.xml";
-  dict["wvfile"]         = "wavevector.xml";
-  dict["dispfile"]       = "displacement.xml";
-  dict["outfile"]        = "sample.log";
-  dict["sfoutfile"]      = "sf.dat";
-  dict["cfoutfile"]      = "cf.dat";
-  dict["ckoutfile"]      = "ck.dat";
-  dict["runtype"]        = "0";
+  dict["seed"] = "198212240";
+  dict["nvermax"] = "10000";
+  dict["nsegmax"] = "10000";
+  dict["ntau"] = 10;
+  dict["algfile"] = "algorithm.xml";
+  dict["latfile"] = "lattice.xml";
+  dict["wvfile"] = "wavevector.xml";
+  dict["dispfile"] = "displacement.xml";
+  dict["outfile"] = "sample.log";
+  dict["sfoutfile"] = "sf.dat";
+  dict["cfoutfile"] = "cf.dat";
+  dict["ckoutfile"] = "ck.dat";
+  dict["runtype"] = "0";
 }
 
 inline void Parameter::dump() {

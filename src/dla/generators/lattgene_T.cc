@@ -4,8 +4,8 @@
 
 ----------------------------------------------*/
 
-#include <cstdlib>
 #include <cmath>
+#include <cstdlib>
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -28,15 +28,15 @@ void WriteXML(std::vector<int> const& L, std::string const& filename) {
   const int D = L.size();
   ofstream fout(filename.c_str());
   fout.precision(15);
-  int N = 1;  //number of sites.
+  int N = 1;  // number of sites.
   for (int i = 0; i < D; i++) {
     N *= L[i];
   }
 
-  int BD = 3;  //Triangular
+  int BD = 3;  // Triangular
 
-  int NumberOfInteractions     = N * BD;
-  int NumberOfSiteTypes        = 1;
+  int NumberOfInteractions = N * BD;
+  int NumberOfSiteTypes = 1;
   int NumberOfInteractionTypes = 1;
   int NumberOfEdgeInteractions = 0;
 
@@ -53,7 +53,7 @@ void WriteXML(std::vector<int> const& L, std::string const& filename) {
     NumberOfEdgeInteractions += Lext[di];
   }
 
-  NumberOfEdgeInteractions--;  //double count of the corner site.
+  NumberOfEdgeInteractions--;  // double count of the corner site.
 
   fout << "<LATTICE>" << endl << endl;
   fout << "<Comment>" << endl;
@@ -68,10 +68,14 @@ void WriteXML(std::vector<int> const& L, std::string const& filename) {
   }
   fout << "</LinearSize>" << endl;
   fout << "<NumberOfSites> " << N << " </NumberOfSites>" << endl;
-  fout << "<NumberOfInteractions> " << NumberOfInteractions << " </NumberOfInteractions>" << endl;
-  fout << "<NumberOfSiteTypes> " << NumberOfSiteTypes << " </NumberOfSiteTypes>" << endl;
-  fout << "<NumberOfInteractionTypes> " << NumberOfInteractionTypes << " </NumberOfInteractionTypes>" << endl;
-  fout << "<NumberOfEdgeInteractions> " << NumberOfEdgeInteractions << " </NumberOfEdgeInteractions>" << endl;
+  fout << "<NumberOfInteractions> " << NumberOfInteractions
+       << " </NumberOfInteractions>" << endl;
+  fout << "<NumberOfSiteTypes> " << NumberOfSiteTypes << " </NumberOfSiteTypes>"
+       << endl;
+  fout << "<NumberOfInteractionTypes> " << NumberOfInteractionTypes
+       << " </NumberOfInteractionTypes>" << endl;
+  fout << "<NumberOfEdgeInteractions> " << NumberOfEdgeInteractions
+       << " </NumberOfEdgeInteractions>" << endl;
 
   fout << endl;
 
@@ -79,8 +83,8 @@ void WriteXML(std::vector<int> const& L, std::string const& filename) {
 
   std::vector<int> x(D);
   for (int id = 0; id < N; id++) {
-    x[0]  = id % L[0];
-    x[1]  = id / L[0];
+    x[0] = id % L[0];
+    x[1] = id / L[0];
     int stype = 0;
     int mtype = (x[0] + x[1]) % 3;
 
@@ -88,7 +92,9 @@ void WriteXML(std::vector<int> const& L, std::string const& filename) {
   }
 
   fout << endl;
-  fout << "<!-- <I> [id] [itype] [nbody] [s0] [s1] ... [eid] [edim] </I> -->" << endl << endl;
+  fout << "<!-- <I> [id] [itype] [nbody] [s0] [s1] ... [eid] [edim] </I> -->"
+       << endl
+       << endl;
 
   int NB = 0;  // number of bonds
   int itype = 0;
@@ -100,36 +106,36 @@ void WriteXML(std::vector<int> const& L, std::string const& filename) {
 
   for (int i = 0; i < N; i++) {
     int k = i;
-    x[0]  = k % L[0];
-    x[1]  = k / L[0];
+    x[0] = k % L[0];
+    x[1] = k / L[0];
 
     etype = -1;
-    p     = -1;
-    j     = (x[0] + 1) % L[0] + x[1] * L[0];
+    p = -1;
+    j = (x[0] + 1) % L[0] + x[1] * L[0];
     if (x[0] == L[0] - 1) {
       etype = eid;
       eid++;
       p = 0;
     }
-    fout << "<I> " << NB << " " << itype << " " << nbody << " " << i << " " << j << " " << etype << " " << p << " </I>"
-         << endl;
+    fout << "<I> " << NB << " " << itype << " " << nbody << " " << i << " " << j
+         << " " << etype << " " << p << " </I>" << endl;
     NB++;
 
     etype = -1;
-    p     = -1;
-    j     = x[0] + ((x[1] + 1) % L[1]) * L[0];
+    p = -1;
+    j = x[0] + ((x[1] + 1) % L[1]) * L[0];
     if (x[1] == L[1] - 1) {
       etype = eid;
       eid++;
       p = 1;
     }
-    fout << "<I> " << NB << " " << itype << " " << nbody << " " << i << " " << j << " " << etype << " " << p << " </I>"
-         << endl;
+    fout << "<I> " << NB << " " << itype << " " << nbody << " " << i << " " << j
+         << " " << etype << " " << p << " </I>" << endl;
     NB++;
 
     etype = -1;
-    p     = -1;
-    j     = (x[0] + 1) % L[0] + ((x[1] + 1) % L[1]) * L[0];
+    p = -1;
+    j = (x[0] + 1) % L[0] + ((x[1] + 1) % L[1]) * L[0];
     if (x[0] == L[0] - 1 && x[1] == L[1] - 1) {
       etype = eid;
       eid++;
@@ -144,8 +150,8 @@ void WriteXML(std::vector<int> const& L, std::string const& filename) {
       p = 1;
     }
 
-    fout << "<I> " << NB << " " << itype << " " << nbody << " " << i << " " << j << " " << etype << " " << p << " </I>"
-         << endl;
+    fout << "<I> " << NB << " " << itype << " " << nbody << " " << i << " " << j
+         << " " << etype << " " << p << " </I>" << endl;
     NB++;
   }
 
@@ -186,7 +192,7 @@ int main(int argc, char** argv) {
     for (int i = 0; i < D; i++) {
       L[i] = lx;
     }
-  } else if (argc == D + NARG-1) {
+  } else if (argc == D + NARG - 1) {
     for (int i = 0; i < D; i++) {
       L[i] = atoi(argv[1 + i]);
     }

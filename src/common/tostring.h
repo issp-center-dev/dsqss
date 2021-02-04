@@ -17,11 +17,11 @@
 #ifndef DSQSS_TOSTRING_H
 #define DSQSS_TOSTRING_H
 
-#include <string>
 #include <sstream>
+#include <string>
 
 template <class T>
-std::string tostring(T const& x){
+std::string tostring(T const& x) {
   std::stringstream ss;
   ss << x;
   return ss.str();

@@ -1,21 +1,23 @@
 #ifndef PMWA_DEBUG_H
 #define PMWA_DEBUG_H
 
-#include <string>
-
 #include <plog/Log.h>
 
-class AutoPlog_impl{
-    std::string message;
-    std::string funcname;
-    int line;
-public:
-    AutoPlog_impl(std::string const &msg, std::string const &f, int l):message(msg), funcname(f), line(l){
-        LOGD << message << "> Start. (" << funcname << "@" << line << ")";
-    }
-    ~AutoPlog_impl(){
-        LOGD << message << "> End. (" << funcname << "@" << line << ")";
-    }
+#include <string>
+
+class AutoPlog_impl {
+  std::string message;
+  std::string funcname;
+  int line;
+
+ public:
+  AutoPlog_impl(std::string const &msg, std::string const &f, int l)
+      : message(msg), funcname(f), line(l) {
+    LOGD << message << "> Start. (" << funcname << "@" << line << ")";
+  }
+  ~AutoPlog_impl() {
+    LOGD << message << "> End. (" << funcname << "@" << line << ")";
+  }
 };
 
 // we should expand macro twice to expand __LINE__ properly.
@@ -26,4 +28,4 @@ public:
 
 #define NameValue(name) #name << " = " << (name)
 
-#endif // PMWA_DEBUG_H
+#endif  // PMWA_DEBUG_H

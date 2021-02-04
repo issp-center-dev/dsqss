@@ -4,7 +4,7 @@
 //============================================================================
 
 class BosonOperator {
-public:
+ public:
   int K;
   int D;
   cmatrix I;
@@ -35,13 +35,13 @@ BosonOperator::BosonOperator(int K0) {
   Y.zero();
   Z.zero();
   for (int i = 0; i < D - 1; i++) {
-    UP.re(i + 1, i) = sqrt((double)(i + 1));  //sqrt((double)((i+1)*(K-i)));
+    UP.re(i + 1, i) = sqrt((double)(i + 1));  // sqrt((double)((i+1)*(K-i)));
   }
   DN = t(UP);
   //  X = 0.5 * (UP + DN);
   cmatrix temp = UP + DN;
-  X            = 0.5 * temp;
-  Y            = ((-0.5) * IUNIT) * (UP - DN);
+  X = 0.5 * temp;
+  Y = ((-0.5) * IUNIT) * (UP - DN);
   for (int i = 0; i < D; i++) {
     I.re(i, i) = 1.0;
     Z.re(i, i) = (double)i;
@@ -51,7 +51,7 @@ BosonOperator::BosonOperator(int K0) {
 //----------------------------------------------------------------------------
 
 class BosonOperatorSet {
-public:
+ public:
   int DS;     // the dimension of the 1-spin Hilbert space
   int N;      // "N" in SU(N)
   int K;      // the number of bosons on each site
@@ -68,7 +68,7 @@ public:
   BosonOperatorSet(int K0, int NSITE0) {
     printf("BosonSet> start.\n");
 
-    K     = K0;
+    K = K0;
     NSITE = NSITE0;
 
     BosonOperator S(K);
@@ -76,9 +76,9 @@ public:
     DS = S.D;
     UP = new cmatrix[NSITE];
     DN = new cmatrix[NSITE];
-    X  = new cmatrix[NSITE];
-    Y  = new cmatrix[NSITE];
-    Z  = new cmatrix[NSITE];
+    X = new cmatrix[NSITE];
+    Y = new cmatrix[NSITE];
+    Z = new cmatrix[NSITE];
 
     printf("  definig spins ...\n");
     DIM = 1;
@@ -99,22 +99,22 @@ public:
         if (i == j) {
           up = (S.UP) ^ up;
           dn = (S.DN) ^ dn;
-          x  = (S.X) ^ x;
-          y  = (S.Y) ^ y;
-          z  = (S.Z) ^ z;
+          x = (S.X) ^ x;
+          y = (S.Y) ^ y;
+          z = (S.Z) ^ z;
         } else {
           up = (S.I) ^ up;
           dn = (S.I) ^ dn;
-          x  = (S.I) ^ x;
-          y  = (S.I) ^ y;
-          z  = (S.I) ^ z;
+          x = (S.I) ^ x;
+          y = (S.I) ^ y;
+          z = (S.I) ^ z;
         }
 
         UP[i] = up;
         DN[i] = dn;
-        X[i]  = x;
-        Y[i]  = y;
-        Z[i]  = z;
+        X[i] = x;
+        Y[i] = y;
+        Z[i] = z;
       }
       printf("  ... done.\n");
 

@@ -6,7 +6,7 @@ namespace STYPE {
 int UNDEF = -1;
 }
 namespace HTYPE {
-int UNDEF  = -1;
+int UNDEF = -1;
 int ABSENT = -2;
 }  // namespace HTYPE
 namespace TTYPE {
@@ -32,15 +32,15 @@ int UNDEF = -1;
 }
 namespace UORD {
 int UNDEF = -1;
-int UP    = 0;
-int DOWN  = 1;
+int UP = 0;
+int DOWN = 1;
 }  // namespace UORD
 
 namespace VCAT {
 int UNDEF = -1;
-int TERM  = 0;
-int WORM  = 1;
-int INT   = 2;
+int TERM = 0;
+int WORM = 1;
+int INT = 2;
 }  // namespace VCAT
 
 const double INF = 1.0e+14;

@@ -19,6 +19,7 @@
  */
 
 #include "random.h"
+
 #include <cstdlib>
 #include <ctime>
 double Random::Dicex(void) { return (double)rand() / RAND_MAX; }
@@ -28,10 +29,8 @@ void Random::InitRand() { srand((unsigned)time(NULL)); }
 double Random::Uniform(void) {
   if (navr == 0) {
     Rint i;
-    for (i = 0; i < IQQ; i++)
-      iri[i] ^= iri[i + IPQ];
-    for (i = IQQ; i < IPP; i++)
-      iri[i] ^= iri[i - IQQ];
+    for (i = 0; i < IQQ; i++) iri[i] ^= iri[i + IPQ];
+    for (i = IQQ; i < IPP; i++) iri[i] ^= iri[i - IQQ];
     iptr = 0;
     navr = IPP;
   }
@@ -42,10 +41,8 @@ double Random::Uniform(void) {
 Rint Random::Int(Rint ilimit) {
   if (navr == 0) {
     Rint i;
-    for (i = 0; i < IQQ; i++)
-      iri[i] ^= iri[i + IPQ];
-    for (i = IQQ; i < IPP; i++)
-      iri[i] ^= iri[i - IQQ];
+    for (i = 0; i < IQQ; i++) iri[i] ^= iri[i + IPQ];
+    for (i = IQQ; i < IPP; i++) iri[i] ^= iri[i - IQQ];
     iptr = 0;
     navr = IPP;
   }
@@ -57,10 +54,8 @@ Rint Random::Int(Rint ilimit) {
 Rint Random::Int(void) {
   if (navr == 0) {
     Rint i;
-    for (i = 0; i < IQQ; i++)
-      iri[i] ^= iri[i + IPQ];
-    for (i = IQQ; i < IPP; i++)
-      iri[i] ^= iri[i - IQQ];
+    for (i = 0; i < IQQ; i++) iri[i] ^= iri[i + IPQ];
+    for (i = IQQ; i < IPP; i++) iri[i] ^= iri[i - IQQ];
     iptr = 0;
     navr = IPP;
   }
@@ -70,12 +65,11 @@ Rint Random::Int(void) {
 
 // Random Permutation
 void Random::Perm(Rint N, int *Index) {
-  for (Rint i = 0; i < N; i++)
-    Index[i] = i;
+  for (Rint i = 0; i < N; i++) Index[i] = i;
   for (Rint i = 0; i < N - 1; i++) {
-    Rint x    = Index[i];
-    Rint ix   = i + Int(N - i);
-    Index[i]  = Index[ix];
+    Rint x = Index[i];
+    Rint ix = i + Int(N - i);
+    Index[i] = Index[ix];
     Index[ix] = x;
   }
   /*
@@ -86,8 +80,8 @@ void Random::Perm(Rint N, int *Index) {
     while(ind < N) {
       n = (Rint) (Int()*rx);
       if (Index[n] == -1) {
-	Index[n] = ind;
-	ind++;
+        Index[n] = ind;
+        ind++;
       }
     }
     */
@@ -95,9 +89,9 @@ void Random::Perm(Rint N, int *Index) {
 
 void Random::Scramble(Rint N, int *Index) {
   for (Rint i = 0; (i + 1) < N; i++) {
-    Rint x    = Index[i];
-    Rint ix   = i + Int(N - i);
-    Index[i]  = Index[ix];
+    Rint x = Index[i];
+    Rint ix = i + Int(N - i);
+    Index[i] = Index[ix];
     Index[ix] = x;
   }
 }
@@ -120,10 +114,9 @@ void Random::initialize(Rint irand0, Rint nrbit0) {
 
   nrbit = nrbit0;
   imask = 1;
-  for (i = 0; i < nrbit - 1; i++)
-    imask = (imask << 1) + 1;
+  for (i = 0; i < nrbit - 1; i++) imask = (imask << 1) + 1;
   runit = 1e0 / (imask + 1e0);
-  ix    = irand0;
+  ix = irand0;
   for (i = 0; i < IPP; i++) {
     ix = (ix * 1812433253 + 1) & 0xffffffff;
     if (ix & 0x80000000)
@@ -143,7 +136,7 @@ void Random::initialize(Rint irand0, Rint nrbit0) {
     ib[j] = mj;
   }
   for (j = 0; j < IPP; j++) {
-    ih     = ((j * 16) % IPP);
+    ih = ((j * 16) % IPP);
     iri[j] = imask & ib[ih];
     for (i = 0; i < 16; i++) {
       ii = (ih + i) % IPP;
@@ -165,11 +158,9 @@ void Random::setSeed(Rint *seed, Rint nrbit0) {
   Rint i;
   nrbit = nrbit0;
   imask = 1;
-  for (i = 0; i < nrbit - 1; i++)
-    imask = (imask << 1) + 1;
+  for (i = 0; i < nrbit - 1; i++) imask = (imask << 1) + 1;
   runit = 1e0 / (imask + 1e0);
-  for (i = 0; i < IPP; i++)
-    iri[i] = imask & seed[i];
+  for (i = 0; i < IPP; i++) iri[i] = imask & seed[i];
   navr = IPP;
   iptr = 0;
   return;
@@ -195,21 +186,17 @@ void Random::Uniform(Rint nr, Rint *ir) {
   Rint i, nrec, n1, iptd;
 
   nrec = nr;
-  n1   = (navr > nrec ? nrec : navr);
-  for (i = 0; i < n1; i++)
-    ir[i] = iri[iptr + i];
+  n1 = (navr > nrec ? nrec : navr);
+  for (i = 0; i < n1; i++) ir[i] = iri[iptr + i];
   iptd = n1;
   iptr += n1;
   navr -= n1;
   nrec -= n1;
   while (nrec > 0) {
-    for (i = 0; i < IQQ; i++)
-      iri[i] ^= iri[i + IPQ];
-    for (i = IQQ; i < IPP; i++)
-      iri[i] ^= iri[i - IQQ];
+    for (i = 0; i < IQQ; i++) iri[i] ^= iri[i + IPQ];
+    for (i = IQQ; i < IPP; i++) iri[i] ^= iri[i - IQQ];
     n1 = (IPP > nrec ? nrec : IPP);
-    for (i = 0; i < n1; i++)
-      ir[iptd + i] = iri[i];
+    for (i = 0; i < n1; i++) ir[iptd + i] = iri[i];
     iptd += n1;
     iptr = n1;
     navr = IPP - n1;
@@ -233,21 +220,17 @@ void Random::Uniform(Rint nr, double *rx) {
   Rint i, nrec, n1, iptd;
 
   nrec = nr;
-  n1   = (navr > nrec ? nrec : navr);
-  for (i = 0; i < n1; i++)
-    rx[i] = runit * iri[iptr + i];
+  n1 = (navr > nrec ? nrec : navr);
+  for (i = 0; i < n1; i++) rx[i] = runit * iri[iptr + i];
   iptd = n1;
   iptr += n1;
   navr -= n1;
   nrec -= n1;
   while (nrec > 0) {
-    for (i = 0; i < IQQ; i++)
-      iri[i] ^= iri[i + IPQ];
-    for (i = IQQ; i < IPP; i++)
-      iri[i] ^= iri[i - IQQ];
+    for (i = 0; i < IQQ; i++) iri[i] ^= iri[i + IPQ];
+    for (i = IQQ; i < IPP; i++) iri[i] ^= iri[i - IQQ];
     n1 = (IPP > nrec ? nrec : IPP);
-    for (i = 0; i < n1; i++)
-      rx[iptd + i] = runit * iri[i];
+    for (i = 0; i < n1; i++) rx[iptd + i] = runit * iri[i];
     iptd += n1;
     iptr = n1;
     navr = IPP - n1;
@@ -273,22 +256,18 @@ void Random::Int(Rint nr, Rint *ir, Rint ilimit) {
   double runitx;
 
   runitx = runit * ilimit;
-  nrec   = nr;
-  n1     = (navr > nrec ? nrec : navr);
-  for (i = 0; i < n1; i++)
-    ir[i] = (Rint)(runitx * iri[iptr + i]);
+  nrec = nr;
+  n1 = (navr > nrec ? nrec : navr);
+  for (i = 0; i < n1; i++) ir[i] = (Rint)(runitx * iri[iptr + i]);
   iptd = n1;
   iptr += n1;
   navr -= n1;
   nrec -= n1;
   while (nrec > 0) {
-    for (i = 0; i < IQQ; i++)
-      iri[i] ^= iri[i + IPQ];
-    for (i = IQQ; i < IPP; i++)
-      iri[i] ^= iri[i - IQQ];
+    for (i = 0; i < IQQ; i++) iri[i] ^= iri[i + IPQ];
+    for (i = IQQ; i < IPP; i++) iri[i] ^= iri[i - IQQ];
     n1 = (IPP > nrec ? nrec : IPP);
-    for (i = 0; i < n1; i++)
-      ir[iptd + i] = (Rint)(runitx * iri[i]);
+    for (i = 0; i < n1; i++) ir[iptd + i] = (Rint)(runitx * iri[i]);
     iptd += n1;
     iptr = n1;
     navr = IPP - n1;

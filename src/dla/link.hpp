@@ -26,11 +26,11 @@ inline void abort() {
 
 template <class C>
 class Linked : public C {
-private:
+ private:
   Linked<C>* p;
   Linked<C>* n;
 
-public:
+ public:
   void init() {
     C::init();
     p = this;
@@ -68,8 +68,8 @@ public:
 
 template <class C>
 class RingIterator {
-private:
-public:
+ private:
+ public:
   C* org;
   C* cur;
 
@@ -146,9 +146,9 @@ template <class C>
 class Ring {
   friend class RingIterator<C>;
 
-private:
+ private:
   //  C ROOT;
-public:
+ public:
   C ROOT;
   C& head() { return ROOT.next(); };
   C& tail() { return ROOT.prev(); };
@@ -195,8 +195,7 @@ public:
     RingIterator<C> p(*this);
     printf("Root: ");
     printf(" %p -> %p -> %p\n", &(p->prev()), &(*p), &(p->next()));
-    while (!(++p).atOrigin())
-      p->dump();
+    while (!(++p).atOrigin()) p->dump();
   }
 };
 
@@ -204,12 +203,12 @@ public:
 
 template <class C>
 class Pool : public Ring<C> {
-private:
+ private:
   int size_max;
   int size_min;
   int size;
 
-public:
+ public:
   Pool() : Ring<C>() { size = 0; };
 
   ~Pool();
@@ -262,7 +261,7 @@ inline void Linked<C>::insert_before(Linked<C>& x) {
 
 template <class C>
 inline void Linked<C>::remove() {
-  //if (ALERT) {
+  // if (ALERT) {
   //  printf("\nLinked::remove> BEFORE\n");
   //  printf("Linked::remove> *this:\n");
   //  this->dump();
@@ -273,7 +272,7 @@ inline void Linked<C>::remove() {
   //}
   prev().set_next(next());
   next().set_prev(prev());
-  //if (ALERT) {
+  // if (ALERT) {
   //  printf("\nLinked::remove> AFTER\n");
   //  printf("Linked::remove> *this:\n");
   //  this->dump();
@@ -296,8 +295,7 @@ template <class C>
 inline int Ring<C>::count() {
   int c = 0;
   RingIterator<C> p(*this);
-  while (!(++p).atOrigin())
-    c++;
+  while (!(++p).atOrigin()) c++;
   return c;
 }
 
@@ -335,7 +333,7 @@ void Ring<C>::move_to_head(RingIterator<C> it) {
 template <class C>
 inline void Pool<C>::init(int N) {
   // +++ edit sakakura +++
-  //if ( ! Ring<C>::empty() ) {
+  // if ( ! Ring<C>::empty() ) {
   //  printf("Pool: ERROR. Attempt to initialize the pool twice.\n");
   //  exit(0);
   //}
@@ -345,7 +343,7 @@ inline void Pool<C>::init(int N) {
     C& x = *(new C);
     this->add_tail(x);
   }
-  size     = N;
+  size = N;
   size_max = N;
   size_min = N;
 }

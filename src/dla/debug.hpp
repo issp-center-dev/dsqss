@@ -18,14 +18,14 @@
 #define DEBUG_H
 
 #ifdef DEB
-#include <string>
 #include <iostream>
+#include <string>
 
 class AutoDebugDump_impl {
-private:
+ private:
   std::string message;
 
-public:
+ public:
   explicit AutoDebugDump_impl(std::string const& msg) : message(msg) {
     std::cout << message << "> Start.\n" << std::flush;
   }

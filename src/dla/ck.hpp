@@ -20,15 +20,16 @@
 #include <cstring>
 #include <fstream>
 #include <sstream>
-#include "debug.hpp"
+
 #include "accumulator.hpp"
-#include "parameter.hpp"
-#include "lattice.hpp"
 #include "algorithm.hpp"
+#include "debug.hpp"
+#include "lattice.hpp"
+#include "parameter.hpp"
 #include "wavevector.hpp"
 
 class CK {
-private:
+ private:
   bool to_be_calc;
   Lattice& LAT;
   Algorithm& ALG;
@@ -41,9 +42,9 @@ private:
   std::vector<std::vector<Accumulator> > ACC;
   std::vector<std::vector<Accumulator> > PHY;
 
-  std::vector<std::vector<double> >  counterC;
+  std::vector<std::vector<double> > counterC;
 
-public:
+ public:
   CK(Parameter const& param, Lattice& lat, Algorithm& alg, WaveVector& wv);
   void read(const char* filename, int NSITE, double BETA);
   void setinit();
@@ -54,12 +55,11 @@ public:
   void summary();
 #ifdef MULTI
   void allreduce(MPI_Comm comm);
-#endif 
+#endif
   void show(FILE*);
 
   void save(std::ofstream& F) const;
   void load(std::ifstream& F);
-
 };
 
 CK::CK(Parameter const& param, Lattice& lat, Algorithm& alg, WaveVector& wv)
@@ -69,10 +69,9 @@ CK::CK(Parameter const& param, Lattice& lat, Algorithm& alg, WaveVector& wv)
       wv(wv),
       NK(wv.NK),
       Ntau(param.NTAU),
-      dtau(param.BETA/Ntau)
-{
+      dtau(param.BETA / Ntau) {
   AutoDebugDump("CK::CK");
-  if(wv.defined){
+  if (wv.defined) {
     to_be_calc = true;
     SIGN.reset();
     for (int i = 0; i < NK; i++) {
@@ -93,27 +92,32 @@ CK::CK(Parameter const& param, Lattice& lat, Algorithm& alg, WaveVector& wv)
 };
 
 inline void CK::setinit() {
-  if (!to_be_calc) { return; }
+  if (!to_be_calc) {
+    return;
+  }
   AutoDebugDump("CK::setinit");
   SIGN.reset();
   for (int i = 0; i < NK; i++)
-    for (int itau = 0; itau < Ntau; itau++)
-      ACC[i][itau].reset();
+    for (int itau = 0; itau < Ntau; itau++) ACC[i][itau].reset();
 }
 
 inline void CK::show(FILE* F) {
-  if (!to_be_calc) { return; }
+  if (!to_be_calc) {
+    return;
+  }
   AutoDebugDump("CK::show");
   for (int i = 0; i < NK; i++) {
     for (int it = 0; it < Ntau; it++) {
-      PHY[i][it].show(F,"R");
+      PHY[i][it].show(F, "R");
     }
     fprintf(F, "\n");
   }
 };
 
 inline void CK::accumulate(int NCYC, double sgn) {
-  if (!to_be_calc) { return; }
+  if (!to_be_calc) {
+    return;
+  }
   AutoDebugDump("CK::accumulate");
   const double invNCYC = 1.0 / NCYC;
 
@@ -124,15 +128,18 @@ inline void CK::accumulate(int NCYC, double sgn) {
 };
 
 inline void CK::summary() {
-  if (!to_be_calc) { return; }
+  if (!to_be_calc) {
+    return;
+  }
   AutoDebugDump("CK::summary");
   for (int i = 0; i < NK; i++)
-    for (int itau = 0; itau < Ntau; itau++)
-      PHY[i][itau].average();
+    for (int itau = 0; itau < Ntau; itau++) PHY[i][itau].average();
 }
 
 void CK::count(int s, double tT, double bT, double tail_tau) {
-  if (!to_be_calc) { return; }
+  if (!to_be_calc) {
+    return;
+  }
   AutoDebugDump("CK::count");
 
   double bTr;
@@ -140,15 +147,15 @@ void CK::count(int s, double tT, double bT, double tail_tau) {
 
   bTr = tail_tau - tT;
   tTr = tail_tau - bT;
-  bTr += bTr < 0.0 ? LAT.BETA : 0.0;  // [0,BETA)
+  bTr += bTr < 0.0 ? LAT.BETA : 0.0;   // [0,BETA)
   tTr += tTr <= 0.0 ? LAT.BETA : 0.0;  // (0,BETA]
   int bTri = bTr / dtau + 1;
-  int tTri = tTr / dtau;  //Relative bottom (top) time integer
+  int tTri = tTr / dtau;  // Relative bottom (top) time integer
 
   if (bTr <= tTr) {
     for (int ik = 0; ik < NK; ik++) {
       for (int ktau = bTri; ktau <= tTri; ktau++) {
-        counterC[ik][ktau%Ntau] += wv.COSrk[s][ik];
+        counterC[ik][ktau % Ntau] += wv.COSrk[s][ik];
       }
     }
   } else {
@@ -164,7 +171,9 @@ void CK::count(int s, double tT, double bT, double tail_tau) {
 };
 
 void CK::reset() {
-  if (!to_be_calc) { return; }
+  if (!to_be_calc) {
+    return;
+  }
   AutoDebugDump("CK::reset");
   for (int ik = 0; ik < NK; ik++) {
     for (int it = 0; it < Ntau; it++) {
@@ -174,13 +183,18 @@ void CK::reset() {
   }
 };
 void CK::setsummary() {
-  if (!to_be_calc) { return; }
+  if (!to_be_calc) {
+    return;
+  }
   AutoDebugDump("CK::setsummary");
-  const double factor = 2 * ALG.getBlock("WDIAG", (double)1.0);  //ALG.X["General"]["WDIAG" ].getDouble(); // 0.25
+  const double factor =
+      2 * ALG.getBlock(
+              "WDIAG",
+              (double)1.0);  // ALG.X["General"]["WDIAG" ].getDouble(); // 0.25
   SIGN.average();
   const double sgn = SIGN.mean();
-  if(sgn != 0.0){
-    const double invsign = 1.0/sgn;
+  if (sgn != 0.0) {
+    const double invsign = 1.0 / sgn;
     for (int ik = 0; ik < NK; ik++) {
       for (int it = 0; it < Ntau; it++) {
         ACC[ik][it].average();
@@ -210,14 +224,14 @@ void CK::load(std::ifstream& F) {
   Serialize::load(F, SIGN);
   Serialize::load(F, ACC);
   const int nk = ACC.size();
-  if(nk != NK){
+  if (nk != NK) {
     std::cerr << "ERROR: NK is mismatched" << std::endl;
     std::cerr << "       ckinpfile maybe changed." << std::endl;
     exit(1);
   }
-  if(nk > 0){
+  if (nk > 0) {
     const int ntau = ACC[0].size();
-    if(ntau != Ntau){
+    if (ntau != Ntau) {
       std::cerr << "ERROR: Ntau is mismatched" << std::endl;
       std::cerr << "       ckinpfile maybe changed." << std::endl;
       exit(1);

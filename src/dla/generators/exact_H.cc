@@ -1,10 +1,10 @@
-#include <cstring>
 #include <cstdio>
+#include <cstring>
 #include <iostream>
 #include <string>
 using namespace std;
-#include "matrix.h"
 #include "canonical.h"
+#include "matrix.h"
 #include "spin_H.h"
 
 //----------------------------------------------------------------------
@@ -12,7 +12,7 @@ using namespace std;
 // Heisenberg Model
 
 class HeisenbergModel {
-public:
+ public:
   int M;  // Number of bosons ( [M]-representaion )
   int NSITE;
   double J;  // the bilinear coupling
@@ -26,10 +26,10 @@ public:
   dgematrix I;
 
   HeisenbergModel(int M0, int NSITE0, double J0, double F0) {
-    M     = M0;
+    M = M0;
     NSITE = NSITE0;
-    J     = J0;
-    F     = F0;
+    J = J0;
+    F = F0;
 
     HeisenbergSpinSet S(M, NSITE);
 
@@ -67,12 +67,12 @@ public:
     }
     printf("  ... done.\n");
 
-    H   = h.re;
+    H = h.re;
     MXU = mxu.re;
     MZU = mzu.re;
     MXS = mxs.re;
     MZS = mzs.re;
-    I   = S.I.re;
+    I = S.I.re;
   };
 };
 
@@ -80,7 +80,7 @@ public:
 
 void Average(int DIM, dgematrix& R, dgematrix& Q, double& Ave, double& Var) {
   dgematrix W(DIM, DIM);
-  W   = Q * Q;
+  W = Q * Q;
   Ave = CanonicalAverage(R, Q);
   Var = CanonicalAverage(R, W);
   Var = Var - Ave * Ave;
@@ -90,8 +90,8 @@ void Average(int DIM, dgematrix& R, dgematrix& Q, double& Ave, double& Var) {
 
 void WriteXML(int M, dgematrix& Q, dgematrix& H, std::string const& filename) {
   FILE* FOUT = fopen(filename.c_str(), "w");
-  int D      = M + 1;
-  int DD     = D * D;
+  int D = M + 1;
+  int DD = D * D;
   fprintf(FOUT, "<Hamiltonian>\n");
   fprintf(FOUT, "  <General>\n");
   fprintf(FOUT, "    <Comment> SU(2) Heisenberg model with S=%d/2 </Comment>\n",
@@ -128,8 +128,8 @@ void WriteXML(int M, dgematrix& Q, dgematrix& H, std::string const& filename) {
     int i0 = i % D;
     int i1 = i / D;
     for (int j = 0; j < DD; j++) {
-      int j0   = j % D;
-      int j1   = j / D;
+      int j0 = j % D;
+      int j1 = j / D;
       double x = -H(i, j);
       if (abs(x) > 1.0e-8) {
         // if (i != j) x = abs(x);
@@ -142,7 +142,7 @@ void WriteXML(int M, dgematrix& Q, dgematrix& H, std::string const& filename) {
   fprintf(FOUT, "</Hamiltonian>\n");
 }
 
-void ShowUsage(std::string const& exename){
+void ShowUsage(std::string const& exename) {
   printf("usage:\n");
   printf("    %s [-o filename] M J F\n", exename.c_str());
   printf("arguments:\n");
@@ -162,15 +162,14 @@ void ShowUsage(std::string const& exename){
 //============================================================================
 
 int main(int argc, char** argv) {
-
   string exename = argv[0];
   string filename("hamiltonian.xml");
 
-  if(argc < 3){
+  if (argc < 3) {
     ShowUsage(exename);
     exit(0);
   }
-  if(std::strcmp(argv[1], "-o")==0){
+  if (std::strcmp(argv[1], "-o") == 0) {
     filename = argv[2];
     argc -= 2;
     argv += 2;
@@ -181,7 +180,7 @@ int main(int argc, char** argv) {
     ShowUsage(exename);
     exit(0);
   }
-  int M    = atoi(argv[1]);
+  int M = atoi(argv[1]);
   double J = (double)atof(argv[2]);
   double F = (double)atof(argv[3]);
   printf(" M     = %4d\n", M);

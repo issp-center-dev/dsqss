@@ -35,11 +35,12 @@
 #ifndef DLA_HPP
 #define DLA_HPP
 
+#include <sys/time.h>
+
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
-#include <sys/time.h>
 
 #ifdef MULTI
 #include "mpi.h"
@@ -69,21 +70,21 @@ bool ALERT = false;
 
 #include "algorithm.hpp"
 #include "array.h"
+#include "cf.hpp"
+#include "ck.hpp"
+#include "displacement.hpp"
 #include "io.h"
 #include "lattice.hpp"
 #include "link.hpp"
-#include "wavevector.hpp"
-#include "displacement.hpp"
 #include "measure.hpp"
-#include "sf.hpp"
-#include "cf.hpp"
-#include "ck.hpp"
 #include "name.h"
 #include "objects.hpp"
 #include "parameter.hpp"
+#include "sf.hpp"
+#include "wavevector.hpp"
 
 class Simulation {
-private:
+ private:
   int ISET;
   int IMCSE;
   int IMCSD;
@@ -97,7 +98,7 @@ private:
   double AMP;       // the average mean path of the worm per cycle
   bool EndOfCycle;  // set to be true when the cycle ends
 
-public:
+ public:
   int np;
   Simulation(Parameter& P0);
 
@@ -137,9 +138,9 @@ public:
   void Check();
   void dump(const char*);
 
-private:
+ private:
   bool isChainjob;
-  bool isEnd;  //true->exit(0); false-> read cjob.bin
+  bool isEnd;  // true->exit(0); false-> read cjob.bin
   std::string CJOBFILE;
   Timer cjob_timer;
   std::ofstream cjobout;
@@ -151,4 +152,4 @@ private:
   void end_job();
 };
 
-#endif // DLA_HPP
+#endif  // DLA_HPP

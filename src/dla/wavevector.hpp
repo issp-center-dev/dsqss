@@ -17,12 +17,13 @@
 #ifndef WAVEVECTOR_HPP
 #define WAVEVECTOR_HPP
 
-#include <vector>
 #include <cstring>
 #include <fstream>
 #include <sstream>
-#include "debug.hpp"
+#include <vector>
+
 #include "accumulator.hpp"
+#include "debug.hpp"
 #include "parameter.hpp"
 #include "xml.h"
 
@@ -37,8 +38,8 @@ struct WaveVector {
   WaveVector(Parameter const& param);
 };
 
-WaveVector::WaveVector(Parameter const& param) : defined(false), NSITES(0), NK(0)
-{
+WaveVector::WaveVector(Parameter const& param)
+    : defined(false), NSITES(0), NK(0) {
   AutoDebugDump("WaveVector::WaveVector");
   if (param.WVFILE.length() > 0) {
     defined = true;
@@ -58,14 +59,13 @@ WaveVector::WaveVector(Parameter const& param) : defined(false), NSITES(0), NK(0
       if (B.getName() == "RK") {
         double COSrk_ = B.getDouble(0);
         double SINrk_ = B.getDouble(1);
-        int site     = B.getInteger(2);
-        int wave     = B.getInteger(3);
+        int site = B.getInteger(2);
+        int wave = B.getInteger(3);
         COSrk[site][wave] = COSrk_;
         SINrk[site][wave] = SINrk_;
       }
     }
   }
 };
-
 
 #endif  // WaveVector_H

@@ -7,7 +7,9 @@ void GraphSpace::Worm_Update(My_rdm *MR) {
     while (it != WORM.end()) {
       worm = *it;
 
-      if (Next_event(MR)) { transition(MR); }
+      if (Next_event(MR)) {
+        transition(MR);
+      }
 
       ++it;
     }
@@ -20,7 +22,7 @@ bool GraphSpace::Next_event(My_rdm *MR) {
   bool dir;
   short type;
 
-  dir  = worm->dir;
+  dir = worm->dir;
   type = worm->next[dir]->type;
 
   if (type == 0)
@@ -39,7 +41,7 @@ bool GraphSpace::Next_event(My_rdm *MR) {
 
     if (For_Nworm) Wlen += Ib + la;
 
-    worm->t   = (dir) ? worm->next[1]->t - la : worm->next[0]->t + la;
+    worm->t = (dir) ? worm->next[1]->t - la : worm->next[0]->t + la;
     worm->dir = !dir;
 
     return false;
@@ -47,71 +49,71 @@ bool GraphSpace::Next_event(My_rdm *MR) {
 }
 
 void GraphSpace::transition(My_rdm *MR) {
-  int a; // after
-  int b; // before
+  int a;       // after
+  int b;       // before
   int ni, nj;  //,xl;
   double R, Pt;
   double dla;
 
   // dir == false : downward
   // dir == true : upward
-  bool dir        = worm->dir;
+  bool dir = worm->dir;
 
   // oh == false : annihilation
   // oh == true : creation
-  bool oh         = worm->type - 4;
+  bool oh = worm->type - 4;
 
   short next_type = vertex[0]->type;
 
-  //a,b : worm position
-  //0: below the next vertex
-  //1: above the next vertex
-  //2: above the next kink
-  //3: below the next kink
+  // a,b : worm position
+  // 0: below the next vertex
+  // 1: above the next vertex
+  // 2: above the next kink
+  // 3: below the next kink
 
   switch (next_type) {
-  case 0:  //Onsite
+    case 0:  // Onsite
 
-    b = (oh == dir) ? 0 : 1;
+      b = (oh == dir) ? 0 : 1;
 
-    if (MR->rdm() < P->u[b][vertex[0]->p][vertex[0]->i]) {  //pass
-      (oh == dir) ? vertex[0]->p++ : vertex[0]->p--;
-      relink(dir, dir, 0);
-    } else
-      worm->dir = !dir;  //bounce
+      if (MR->rdm() < P->u[b][vertex[0]->p][vertex[0]->i]) {  // pass
+        (oh == dir) ? vertex[0]->p++ : vertex[0]->p--;
+        relink(dir, dir, 0);
+      } else
+        worm->dir = !dir;  // bounce
 
-    dir = worm->dir;  //new direction
+      dir = worm->dir;  // new direction
 
-    dla     = I[dir] * MR->rdm();
-    worm->t = tA + sgn[dir] * dla;
+      dla = I[dir] * MR->rdm();
+      worm->t = tA + sgn[dir] * dla;
 
-    if (For_Nworm) Wlen += dla;
+      if (For_Nworm) Wlen += dla;
 
-    return;
+      return;
 
-  case 1:  //nearest-Vertex
+    case 1:  // nearest-Vertex
 
-    b = !dir;
+      b = !dir;
 
-    ni = worm->p;
-    nj = vertex[1]->p;
-    //    xl = LT->lx[worm->i%V];
-    break;
-  case 2:  //Kink
+      ni = worm->p;
+      nj = vertex[1]->p;
+      //    xl = LT->lx[worm->i%V];
+      break;
+    case 2:  // Kink
 
-    ni = vertex[1]->p;
-    //    xl = LT->lx[vertex[1]->i%V];
-    b = 2 + dir;
+      ni = vertex[1]->p;
+      //    xl = LT->lx[vertex[1]->i%V];
+      b = 2 + dir;
 
-    if (!dir)
-      nj = worm->p;  //b=2;
-    else
-      nj = vertex[0]->p;  //b=3;
+      if (!dir)
+        nj = worm->p;  // b=2;
+      else
+        nj = vertex[0]->p;  // b=3;
 
-    break;
+      break;
   }
 
-  R  = MR->rdm();
+  R = MR->rdm();
   Pt = 0.0;
 
   for (a = 0; a < 4; a++) {
@@ -180,7 +182,7 @@ void GraphSpace::turn(bool oh, bool dir, int b, int a, double dla) {
 
 void GraphSpace::k_neibor() {
   vertex[0]->type = vertex[1]->type = 1;
-  worm->i                           = vertex[1]->i % V;
+  worm->i = vertex[1]->i % V;
 }
 
 void GraphSpace::k_neibor_dir() {  // w/ changing direction
@@ -191,7 +193,7 @@ void GraphSpace::k_neibor_dir() {  // w/ changing direction
 
 void GraphSpace::v_neibor() {
   vertex[0]->type = vertex[1]->type = 2;
-  worm->i                           = vertex[1]->i % V;
+  worm->i = vertex[1]->i % V;
 }
 
 void GraphSpace::v_neibor_dir() {
@@ -202,7 +204,7 @@ void GraphSpace::v_neibor_dir() {
 void GraphSpace::Newtime(int a, double dla) {
   double ta, tb;
 
-  bool dir = worm->dir;  //new direction
+  bool dir = worm->dir;  // new direction
 
   tb = tA;
   ta = dla + dir * tA + (!dir) * t[a];
@@ -217,14 +219,14 @@ inline double GraphSpace::LengthofWalk(double next_t, double curr_t, bool dir) {
 }
 
 void GraphSpace::relink(bool b_dir, bool a_dir, bool aside) {
-  vertex[aside]->next[a_dir]->next[!a_dir] = worm;       //1
-  worm->next[!b_dir]->next[b_dir]          = vertex[0];  //2
+  vertex[aside]->next[a_dir]->next[!a_dir] = worm;  // 1
+  worm->next[!b_dir]->next[b_dir] = vertex[0];      // 2
 
-  vertex[0]->next[!b_dir] = worm->next[!b_dir];          //3
-  worm->next[a_dir]       = vertex[aside]->next[a_dir];  //4
+  vertex[0]->next[!b_dir] = worm->next[!b_dir];    // 3
+  worm->next[a_dir] = vertex[aside]->next[a_dir];  // 4
 
-  vertex[aside]->next[a_dir] = worm;           //5
-  worm->next[!a_dir]         = vertex[aside];  //6
+  vertex[aside]->next[a_dir] = worm;   // 5
+  worm->next[!a_dir] = vertex[aside];  // 6
 }
 
 bool GraphSpace::update_selection(My_rdm *MR, bool dir, short type) {
@@ -233,12 +235,12 @@ bool GraphSpace::update_selection(My_rdm *MR, bool dir, short type) {
   vertex[0] = worm->next[dir];
   vertex[1] = worm->next[dir]->nleg;
 
-  tA = vertex[0]->t;  // time of the next vertex
+  tA = vertex[0]->t;                // time of the next vertex
   double tc = worm->next[!dir]->t;  // time of the previous vertex
   double Ic = (1.0 - 2.0 * dir) * (tc - tA);
 
-  // ratate vertex 
-  
+  // ratate vertex
+
   // cnum(type,dir):
   // cnum(1,0) = 1
   // cnum(1,1) = 0

@@ -2,6 +2,7 @@
 #define ARRAY_H
 
 #include <stdarg.h>
+
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
@@ -12,14 +13,14 @@ int EOL = -1;
 }
 
 class IndexSystem {
-private:
+ private:
   bool INI;
   std::string LBL;  // label
   int D;
   int* L;
   int N;
 
-public:
+ public:
   void init(const int d, const int* l, const std::string& LBL0 = "");
 
   IndexSystem() { INI = false; };
@@ -69,10 +70,10 @@ public:
     }
     return L[i];
   };
-  int operator()(const int* x) const ;
-  int operator()(std::vector<int> const& x) const ;
-  int operator()(const int M, va_list& ap) const ;
-  int operator()(const int M, ...) const ;
+  int operator()(const int* x) const;
+  int operator()(std::vector<int> const& x) const;
+  int operator()(const int M, va_list& ap) const;
+  int operator()(const int M, ...) const;
 
   void dump() const {
     if (!initialized()) {
@@ -97,17 +98,16 @@ void IndexSystem::init(const int d, const int* l, const std::string& LBL0) {
   }
   INI = true;
   LBL = LBL0;
-  D   = d;
-  L   = new int[d];
-  N   = 1;
+  D = d;
+  L = new int[d];
+  N = 1;
   for (int i = 0; i < d; i++) {
     N *= l[i];
     L[i] = l[i];
   }
   if (N == 0) {
     printf("IndexSystem::init> Error. N = 0.\n");
-    for (int i = 0; i < d; i++)
-      printf("  L[%d] = %d\n", i, L[i]);
+    for (int i = 0; i < d; i++) printf("  L[%d] = %d\n", i, L[i]);
     exit(0);
   };
 }
@@ -209,10 +209,9 @@ int IndexSystem::operator()(const int M, va_list& ap) const {
     exit(0);
   }
   int x[D];
-  //int* x = new int[D]; //edit sakakura
+  // int* x = new int[D]; //edit sakakura
   x[0] = M;
-  for (int i = 1; i < D; i++)
-    x[i] = va_arg(ap, int);
+  for (int i = 1; i < D; i++) x[i] = va_arg(ap, int);
   return (*this)(x);
 }
 
@@ -228,17 +227,16 @@ int IndexSystem::operator()(const int M, ...) const {
   return i;
 }
 
-
 template <class C>
 class Array {
-private:
+ private:
   std::string LBL;  // label
   int D;
   C* val;
   IndexSystem ID;
   void init(va_list& ap);
 
-public:
+ public:
   bool isDefined();
   void reset();
   void init() { reset(); };
@@ -252,7 +250,7 @@ public:
     LBL = LBL0;
     val = 0;
   };
-  //Array(int d, ...);
+  // Array(int d, ...);
   ~Array();
   void set_all(C v);
   void set_value(double* v);
@@ -263,8 +261,8 @@ public:
   C& operator()(std::vector<int> const& x);
   C& operator[](const int i);
   const C& operator()(const int M, ...) const;
-  const C& operator()(int* x) const ;
-  const C& operator()(std::vector<int> const& x) const ;
+  const C& operator()(int* x) const;
+  const C& operator()(std::vector<int> const& x) const;
   const C& operator[](const int i) const;
   int size();
   int dimension();
@@ -287,7 +285,7 @@ template <class C>
 void Array<C>::init(va_list& ap) {
   reset();
   int* L = new int[D];
-  int N  = 1;
+  int N = 1;
   int l;
   int i = 0;
   for (i = 0; i < D; i++) {
@@ -326,7 +324,7 @@ void Array<C>::init(int d, ...) {
 template <class C>
 void Array<C>::init(const std::string& s, int d, ...) {
   LBL = s;
-  D   = d;
+  D = d;
   va_list ap;
   va_start(ap, d);
   init(ap);
