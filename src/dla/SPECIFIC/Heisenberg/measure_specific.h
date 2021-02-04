@@ -1,5 +1,5 @@
-#ifndef MEASURE_SPECIFIC_IMPL_H
-#define MEASURE_SPECIFIC_IMPL_H
+#ifndef SRC_DLA_SPECIFIC_HEISENBERG_MEASURE_SPECIFIC_H_
+#define SRC_DLA_SPECIFIC_HEISENBERG_MEASURE_SPECIFIC_H_
 
 #include <vector>
 
@@ -36,9 +36,9 @@ enum {
 
   NACC,  // number of quantities measured at each MC step
 };
-static std::string ANAME[NACC] = {"sgn",   "nv1",   "eb1",   "eb2",   "le1",
-                                  "mzua1", "mzua2", "mzub1", "mzub2", "mzsa1",
-                                  "mzsa2", "mzsb1", "mzsb2"};
+static const char ANAME[][NACC] = {"sgn",   "nv1",   "eb1",   "eb2",   "le1",
+                                   "mzua1", "mzua2", "mzub1", "mzub2", "mzsa1",
+                                   "mzsa2", "mzsb1", "mzsb2"};
 
 // observable specifier
 enum {
@@ -67,11 +67,11 @@ enum {
 
   NPHY,  // number of quantities computed at each set
 };
-static std::string PNAME[NPHY] = {
+static const char PNAME[][NPHY] = {
     "sign", "anv",  "ene",  "spe",  "len",  "xmx",  "amzu",
     "bmzu", "smzu", "xmzu", "amzs", "bmzs", "smzs", "xmzs",
 };
 
 }  // namespace Specific
 
-#endif  // MEASURE_SPECIFIC_IMPL_H
+#endif  // SRC_DLA_SPECIFIC_HEISENBERG_MEASURE_SPECIFIC_H_

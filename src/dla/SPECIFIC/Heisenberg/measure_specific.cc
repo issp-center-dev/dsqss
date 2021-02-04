@@ -44,7 +44,7 @@ void Measurement::measure(double sgn) {
   MZUB *= T;
   MZSB *= T;
 
-  double EBSAMP = -(double)NV;
+  double EBSAMP = -1.0*NV;
 
   for (int b = 0; b < LAT.NINT; b++) {
     Interaction& I = LAT.I(b);

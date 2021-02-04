@@ -14,18 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef TIMER_HPP
-#define TIMER_HPP
+#ifndef SRC_COMMON_TIMER_HPP_
+#define SRC_COMMON_TIMER_HPP_
 
 #include <boost/config.hpp>
 
 #ifdef BOOST_NO_CXX11_HDR_CHRONO
+
 #define BOOST_CHRONO_HEADER_ONLY
 #include <boost/chrono.hpp>
 namespace CHRONO = boost::chrono;
+
 #else
+
 #include <chrono>
 namespace CHRONO = std::chrono;
+
 #endif
 
 class Timer {
@@ -41,4 +45,4 @@ class Timer {
            1.0e-6;
   }
 };
-#endif  // TIMER_HPP
+#endif  // SRC_COMMON_TIMER_HPP_

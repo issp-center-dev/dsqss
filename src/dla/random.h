@@ -99,7 +99,7 @@ class Random {
 
   double Exp() { return -log(1e0 - Uniform()); }
 
-  int Binary(double P) { return ((int)(Uniform() / P)); }
+  int Binary(double P) { return (static_cast<int>(Uniform() / P)); }
 
   void Perm(Rint, int *);
 

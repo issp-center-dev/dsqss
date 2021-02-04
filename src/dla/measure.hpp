@@ -14,11 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef MEASURE_H
-#define MEASURE_H
+#ifndef SRC_DLA_MEASURE_HPP_
+#define SRC_DLA_MEASURE_HPP_
 
 #include <cstdio>
 #include <vector>
+#include <string>
 
 #include "accumulator.hpp"
 #include "algorithm.hpp"
@@ -338,7 +339,7 @@ void Measurement::measure(double sgn) {
     MZSB[k] *= T;
   }
 
-  double EBSAMP = -(double)NV;
+  double EBSAMP = -NV;
 
   for (int b = 0; b < LAT.NINT; b++) {
     Interaction& I = LAT.I(b);
@@ -412,9 +413,11 @@ void Measurement::measure(double sgn) {
         Segment& S = *p;
         if (xlast != S.X()) {
           if ((*S.bottom().S(0).getONSITE()).id() - 1 == Bsite) {
-            wind[dim] += (double)(S.bottom().S(1).X() - S.bottom().S(0).X());
+            wind[dim] +=
+                static_cast<double>(S.bottom().S(1).X() - S.bottom().S(0).X());
           } else if ((*S.bottom().S(2).getONSITE()).id() - 1 == Bsite) {
-            wind[dim] += (double)(S.bottom().S(3).X() - S.bottom().S(2).X());
+            wind[dim] +=
+                static_cast<double>(S.bottom().S(3).X() - S.bottom().S(2).X());
           }
           xlast = S.X();
         }
@@ -436,7 +439,7 @@ void Measurement::measure(double sgn) {
 void Measurement::setsummary() {
   using namespace Specific;
   double WDIAG = ALG.getBlock(
-      "WDIAG", (double)1.0);  // ALG.X["General"]["WDIAG" ].getDouble(); // 0.25
+      "WDIAG", 1.0);  // ALG.X["General"]["WDIAG" ].getDouble(); // 0.25
 
   std::vector<double> X(NACC);
 
@@ -507,4 +510,4 @@ void Measurement::setsummary() {
   }
 }
 
-#endif
+#endif  // SRC_DLA_MEASURE_HPP_

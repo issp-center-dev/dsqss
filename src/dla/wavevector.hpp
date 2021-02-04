@@ -14,10 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef WAVEVECTOR_HPP
-#define WAVEVECTOR_HPP
+#ifndef SRC_DLA_WAVEVECTOR_HPP_
+#define SRC_DLA_WAVEVECTOR_HPP_
 
 #include <cstring>
+
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -35,7 +36,7 @@ struct WaveVector {
   std::vector<std::vector<double> > COSrk;
   std::vector<std::vector<double> > SINrk;
 
-  WaveVector(Parameter const& param);
+  explicit WaveVector(Parameter const& param);
 };
 
 WaveVector::WaveVector(Parameter const& param)
@@ -68,4 +69,4 @@ WaveVector::WaveVector(Parameter const& param)
   }
 };
 
-#endif  // WaveVector_H
+#endif  // SRC_DLA_WAVEVECTOR_HPP_

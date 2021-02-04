@@ -14,23 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LATTICE_H
-#define LATTICE_H
+#ifndef SRC_DLA_LATTICE_HPP_
+#define SRC_DLA_LATTICE_HPP_
 
-//######################################################################
-
-#include <boost/math/special_functions/fpclassify.hpp>
 #include <cmath>
 #include <cstdio>
 #include <exception>
 #include <string>
+#include <set>
+
+#include <boost/math/special_functions/fpclassify.hpp>
 
 #include "debug.hpp"
 #include "io.h"
 #include "objects.hpp"
 #include "parameter.hpp"
-
-//######################################################################
 
 class Lattice {
  public:
@@ -40,7 +38,7 @@ class Lattice {
       bd = _d;
       A = _a;
       B = _b;
-    };
+    }
 
     int A;
     int B;
@@ -95,7 +93,7 @@ class Lattice {
     }
     fprintf(F, "\n");
     fprintf(F, "P BETA    = %24.16f\n", BETA);
-  };
+  }
 
   void dump();
 };
@@ -166,8 +164,8 @@ void Lattice::read() {
         int sid = B.getInteger(3 + ii);
         I(id).setSite(ii, S(sid));
       }
-      //#ifdef WINDING
 
+// #ifdef WINDING
       if (B.NumberOfValues() > 3 + nb) {
         if (INIT_I) {
           NEDGE = X["NumberOfEdgeInteractions"].getInteger();
@@ -181,7 +179,7 @@ void Lattice::read() {
           EDGE(eid).init(edim, I(id).site(0).id() - 1, I(id).site(1).id() - 1);
         }
       }
-      //#endif
+// #endif
     }
     if (B.getName() == "Direction") {
       if (INIT_V) {
@@ -205,8 +203,6 @@ void Lattice::read() {
   if (DEBUG) dump();
 }
 
-//======================================================================
-#include <set>
 void Lattice::initialize() {
   AutoDebugDump("Lattice::initialize");
 
@@ -311,4 +307,4 @@ void Lattice::setBeta(double beta) {
   }
 }
 
-#endif
+#endif  // SRC_DLA_LATTICE_HPP_

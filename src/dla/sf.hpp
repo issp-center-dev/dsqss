@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SF_H
-#define SF_H
+#ifndef SRC_DLA_SF_HPP_
+#define SRC_DLA_SF_HPP_
 
 #include <cstring>
 #include <fstream>
@@ -65,7 +65,7 @@ class SF {
         counterS[ik][it] = 0.0;
       }
     }
-  };
+  }
 
   void save(std::ofstream& F) const;
   void load(std::ifstream& F);
@@ -100,7 +100,7 @@ SF::SF(Parameter const& param, Lattice& lat, Algorithm& alg, WaveVector& wv)
       counterS.push_back(std::vector<double>(Ntau));
     }
   }
-};
+}
 
 inline void SF::setinit() {
   if (!to_be_calc) {
@@ -174,7 +174,7 @@ inline void SF::show(FILE* F) {
     }
     fprintf(F, "\n");
   }
-};
+}
 
 inline void SF::summary() {
   if (!to_be_calc) {
@@ -241,4 +241,4 @@ void SF::load(std::ifstream& F) {
   Serialize::load(F, PHY);
 }
 
-#endif  // SF_H
+#endif  // SRC_DLA_SF_HPP_

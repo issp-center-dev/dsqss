@@ -1,13 +1,14 @@
+#include <iostream>
+
 #include <Configuration.h>
 #include <Probability.h>
 
 #include <debug.hpp>
-#include <iostream>
 
 #include "../common/timer.hpp"
 
-//#define Bcheck
-//#include "graphspace.cpp"
+// #define Bcheck
+// #include "graphspace.cpp"
 
 Configuration::Configuration(MC_p *m_MC, Size *m_N, int m_nmax, Lattice *m_LT,
                              Probability *m_P, Parallel *PR, long long m_IMAX,
@@ -69,11 +70,12 @@ void Configuration::updateAnner(int MCS, My_rdm *MR, Quantities *QNT) {
     //    cout << i <<"-th step:: Ncyc="<<Ncyc<<endl;
 
     if (Wlen != 0.0) {
-      ave_Wlen = Wlen / (double)(Ncyc * MCS);
-      Ncyc = (long)(BV / ave_Wlen);
+      ave_Wlen = Wlen / (Ncyc * MCS);
+      Ncyc = BV / ave_Wlen;
       if (Ncyc == 0) Ncyc = 1;
-    } else
+    } else {
       Ncyc = 0;
+    }
 
     MPI_Allgather(&Ncyc, 1, MPI_LONG, pcyc, 1, MPI_LONG, comm_nst0);
     //    cout<<"rank"<<PR->my_rank<<"::Wnum="<<W[0]<<endl;
@@ -82,15 +84,16 @@ void Configuration::updateAnner(int MCS, My_rdm *MR, Quantities *QNT) {
     for (int tag = 0; tag < PR->NtNs; tag++) {
       if (pcyc[tag] > 0) {
         count++;
-        //	cout<<"rank"<<tag<<":: Ncyc="<<pcyc[tag]<<endl;
+        // cout<<"rank"<<tag<<":: Ncyc="<<pcyc[tag]<<endl;
         Ncyc += pcyc[tag];
-      } else
+      } else {
         cout << "rank::" << tag << " !!!!!No worm!!!!!" << endl;
+      }
     }
 
-    if (count > PR->NtNs / 2)
+    if (count > PR->NtNs / 2) {
       Ncyc /= count;
-    else {
+    } else {
       cout << "Larger eta is recommended." << endl;
       Ncyc = 100000;
     }
@@ -112,16 +115,19 @@ void Configuration::updateAnner(int MCS, My_rdm *MR, Quantities *QNT) {
     //    cout << i+step1 <<"-th step:: Ncyc="<<Ncyc<<endl;
 
     if (Wlen != 0.0) {
-      ave_Wlen = Wlen / (double)(Ncyc * MCS);
-      Ncyc = (long)(BV / ave_Wlen);
-      if (Ncyc == 0) Ncyc = 1;
-    } else
+      ave_Wlen = Wlen / (Ncyc * MCS);
+      Ncyc = BV / ave_Wlen;
+      if (Ncyc == 0) {
+        Ncyc = 1;
+      }
+    } else {
       Ncyc = 0;
+    }
     ave += Ncyc;
   }
 
-  ave /= (double)step1;
-  Ncyc = (long)ave;
+  ave /= step1;
+  Ncyc = ave;
 
   MPI_Allgather(&Ncyc, 1, MPI_LONG, pcyc, 1, MPI_LONG, comm_nst0);
   count = (Ncyc) ? 1 : 0;
@@ -131,18 +137,21 @@ void Configuration::updateAnner(int MCS, My_rdm *MR, Quantities *QNT) {
       count++;
       //      cout<<"rank"<<tag<<":: Ncyc="<<pcyc[tag]<<endl;
       Ncyc += pcyc[tag];
-    } else
+    } else {
       cout << "rank::" << tag << " !!!!!No worm!!!!!" << endl;
+    }
   }
 
-  if (count > PR->NtNs / 2)
+  if (count > PR->NtNs / 2) {
     Ncyc /= count;
-  else {
+  } else {
     cout << "Larger eta is recommended." << endl;
     Ncyc = 100000;
   }
 
-  if (Ncyc > 100000) Ncyc = 100000;
+  if (Ncyc > 100000) {
+    Ncyc = 100000;
+  }
 
   //  cout<<"final ::rank"<<PR->my_rank<<":: Wlen="<<Wlen/(double)MCS<<",
   //  Ncyc="<<Ncyc<< ",  Wnum=" << W[0] << ",  EV=" << EVmax << ", pr.nst0="<<

@@ -43,7 +43,7 @@ void IndexSystem::init(const int d, const int *l, const std::string &LBL0) {
     printf("IndexSystem::init> Error. N = 0.\n");
     for (int i = 0; i < d; i++) printf("  L[%d] = %d\n", i, L[i]);
     exit(0);
-  };
+  }
 }
 
 template <class C>
@@ -115,7 +115,7 @@ inline Block &Block::getElement(const std::string &name) {
   }
 }
 
-Block &Block::operator[](const int &i) { return SubBlock[i]; };
+Block &Block::operator[](const int &i) { return SubBlock[i]; }
 
 Block &Block::operator[](const std::string &name) {
   Block &B = getElement(name);
@@ -275,9 +275,9 @@ void Block::read() {
   int i = 0;
   while (true) {
     std::string &w = Word[i++];
-    //  cout << "### " << w << endl;//koko
+    // cout << "### " << w << endl;  // koko
     if (w == Open) {
-      //	printf("Opened. %s\n", w.c_str());//koko
+      // printf("Opened. %s\n", w.c_str());  // koko
       open = true;
       continue;
     }
@@ -435,7 +435,7 @@ void Lattice::make_Parallel(Parallel *_PR) {
   PR->Rpara = NFIELD;
 
   PR->B = BETA / NBdiv;                // beta for a domain.
-  PR->oldB = oldBETA / (double)NBdiv;  // for annealing.
+  PR->oldB = oldBETA / NBdiv;  // for annealing.
 
   PR->Nsdiv = PR->Nxdiv * PR->Nydiv *
               PR->Nzdiv;  // the number of spatial decompositions.
@@ -453,7 +453,7 @@ void Lattice::make_Parallel(Parallel *_PR) {
 
   PR->nt =
       PR->my_rank % PR->Ntdiv;  // the temporal domain number for the processor.
-  PR->ns = (int)(PR->my_rank / PR->Ntdiv) %
+  PR->ns = static_cast<int>(PR->my_rank / PR->Ntdiv) %
            PR->Nsdiv;  // the spatial domain number for the processor.
 
   PR->nx =
@@ -591,7 +591,7 @@ inline void Lattice::dump() {
 }
 
 void Lattice::show_param(std::ofstream &F) {
-  using namespace std;
+  using std::endl;
   F << "P D       = " << N->d << endl;
   F << "P L       = " << N->x << " " << N->y << " " << N->z << endl;
   F << "P BETA    = " << BETA << endl;

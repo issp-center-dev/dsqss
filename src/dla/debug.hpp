@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef DEBUG_H
-#define DEBUG_H
+#ifndef SRC_DLA_DEBUG_HPP_
+#define SRC_DLA_DEBUG_HPP_
 
 #ifdef DEB
 #include <iostream>
@@ -52,4 +52,4 @@ class AutoDebugDump_impl {
 
 #endif  // DEB
 
-#endif  // DEBUG_H
+#endif  // SRC_DLA_DEBUG_HPP_

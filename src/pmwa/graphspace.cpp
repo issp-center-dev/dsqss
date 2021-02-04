@@ -1,4 +1,3 @@
-
 #include "Graph_functions.h"
 
 bool ascending(const GraphSpace::Vertex &_p1, const GraphSpace::Vertex &_p2) {
@@ -52,7 +51,7 @@ GraphSpace::GraphSpace(Size *N, int m_nmax, Lattice *m_LT, Probability *m_P,
   newcall_zero(NewVertex_th0, LT->Pd);
   newcall_zero(NewVertex_th1, LT->Pd);
 
-  int alpha = (int)(sqrt(B));
+  int alpha = sqrt(B);
   if (alpha == 0) alpha = 1;
 
   newcall_zero(BoxSpace_t_th0, LT->Pd, alpha * ES * boxsize);
@@ -232,15 +231,20 @@ void GraphSpace::initialev(std::string const &Eventfile_old, My_rdm *MR, int cb,
     }
   } else {
     Ncyc = 30;
-    if (cb == 1)
-      for (int i = 0; i < V; i++)
+    if (cb == 1) {
+      for (int i = 0; i < V; i++) {
         world[i].p = worldB[i].p =
-            ((i % PR->x + (int)(i / PR->x)) % 2 == 0) ? 1 : 0;
-    else if (cb == 2)
-      for (int i = 0; i < V; i++)
+            ((i % PR->x + static_cast<int>(i / PR->x)) % 2 == 0) ? 1 : 0;
+      }
+    } else if (cb == 2) {
+      for (int i = 0; i < V; i++) {
         world[i].p = worldB[i].p = (nmax + 1) * MR->rdm();
-    else
-      for (int i = 0; i < V; i++) world[i].p = worldB[i].p = 0;
+      }
+    } else {
+      for (int i = 0; i < V; i++) {
+        world[i].p = worldB[i].p = 0;
+      }
+    }
   }
 
   fin.close();
@@ -257,7 +261,7 @@ void GraphSpace::initialev(std::string const &Eventfile_old, My_rdm *MR, int cb,
 
   Pv1 = rt_tot / rtot;
 
-  //境界
+  // Boundary
   PBv1 = rt_tot / rtot;
 
   //###################################
@@ -268,19 +272,16 @@ void GraphSpace::initialev(std::string const &Eventfile_old, My_rdm *MR, int cb,
         Switch[a][b] = 0;       // bounce
         After[0][a] = b;        // bounce
       } else if (a + b == 3) {  // hop and turn
-
         Switch[a][b] = 3;
         Switch[b][a] = 3;
         After[3][b] = a;
         After[3][a] = b;
       } else if (a - b == 2) {  // hop
-
         Switch[a][b] = 2;
         Switch[b][a] = 2;
         After[2][b] = a;
         After[2][a] = b;
       } else {  // pass
-
         Switch[a][b] = 1;
         Switch[b][a] = 1;
         After[1][b] = a;
@@ -427,9 +428,10 @@ void GraphSpace::Remove_Vertex() {
   Nu = 0;
   for (int i = 0; i < V; i++) {
     for (Vertex *wx = &(world[i]); wx != &(worldB[i]); wx = wx->next[1]) {
-      if (wx->type != 2 && wx->type != 4 && wx->type != 5 && wx->type % 2 != -1)
+      if (wx->type != 2 && wx->type != 4 && wx->type != 5 &&
+          wx->type % 2 != -1) {
         release(wx);
-      else if (wx->type == 2 || wx->type == -1 || wx->type == -3) {
+      } else if (wx->type == 2 || wx->type == -1 || wx->type == -3) {
         INmax[i]++;
         if (wx->type == 2) {
           Nv++;
@@ -528,8 +530,8 @@ void GraphSpace::Assign_TwoSiteVertex(My_rdm *MR) {
 
     R = MR->rdm();
     if (Pv1 > R) {
-      site = (int)(V * MR->rdm());
-      d = (int)(LT->Pd * MR->rdm());  //(LT->bnum*MR->rdm());
+      site = V * MR->rdm();
+      d = LT->Pd * MR->rdm();  // (LT->bnum*MR->rdm());
       xl = site;
       xr = LT->bd[site][d];
     } else {
@@ -549,8 +551,8 @@ void GraphSpace::Assign_TwoSiteVertex(My_rdm *MR) {
 
     ////////////////////////////////////////////////////////////////////////
 
-    if (LT->frame[d][xl]) {  // interbond
-
+    if (LT->frame[d][xl]) {
+      // interbond
       xnum = LT->frame_rnum[d][xr];
       while (BoxSpace_t_th1[d][f(d, xnum, wf[d][xnum] + 1)] < targ_time) {
         wf[d][xnum]++;
@@ -567,8 +569,8 @@ void GraphSpace::Assign_TwoSiteVertex(My_rdm *MR) {
         Nv++;
       }
 
-    } else {  // innerbond
-
+    } else {
+      // innerbond
       while (w[xr]->next[1] != &(worldB[xr])) {
         if (targ_time < w[xr]->next[1]->t) break;
         w[xr] = w[xr]->next[1];
@@ -623,8 +625,9 @@ void GraphSpace::Assign_TwoSiteVertex(My_rdm *MR) {
           INmax[xr]++;
           w[xr] = w[xr]->next[1];
           k++;
-        } else
+        } else {
           w[xr] = w[xr]->next[1];
+        }
       }
     }
   }
@@ -770,7 +773,6 @@ void GraphSpace::Assign_Worm(My_rdm *MR) {
   for (int site = 0; site < V; site++) {
     for (Vertex *wl = world[site].next[1]; wl != &(world[site]);
          wl = wl->next[1]) {  // until worldB
-
       j = 0;
       dw = wl->next[0];
       dtn[0] = dw->t;
@@ -779,10 +781,9 @@ void GraphSpace::Assign_Worm(My_rdm *MR) {
       parity_check(MR, (wl->dir) % 2, dtn, j, wl->t, dw->t);
 
       for (int l = 0; l < j; l++) {  // insert j worms
-
         insert(dw, 4 + n0, dtn[l], site, !n0, 0);
         WORM.push_back(wl->next[0]);
-        wl->next[0]->dir = (int)(2 * MR->rdm());
+        wl->next[0]->dir = static_cast<int>(2 * MR->rdm());
         dw = wl->next[0];
         n0 = !n0;
       }
@@ -809,12 +810,12 @@ void GraphSpace::parity_check(My_rdm *MR, int py, double *x, int &j,
   j = (Ia == 0.0) ? 0 : NumberOfVertex(MR, Ia, py);
 
   if (j != 0) {
-    if (Il <= (double)(j + 1) * NMIN) {
+    if (Il <= (j + 1) * NMIN) {
       if (PR->my_rank == 0)
         cout << "Il is too small: Il=" << Il << ", topt=" << topt
              << ", bottomt=" << bottomt << endl;
       j = py % 2;
-      if (Il <= (double)(j + 1) * NMIN) {
+      if (Il <= (j + 1) * NMIN) {
         if (PR->my_rank == 0) cout << "///Il has error" << endl;
       }
     }
@@ -845,7 +846,7 @@ int GraphSpace::NumberOfVertex(My_rdm *MR, double m, int py) {
 
   while (1) {
     FAC *= fn;  // factorial( n );
-    pos = POW / (double)FAC;
+    pos = POW / FAC;
 
     Pn += pos;
 
@@ -878,10 +879,9 @@ void GraphSpace::SpatialDomainBoundary(My_rdm *MR) {
       k = 0;
       for (Vertex *wl = world[right].next[1]; wl != &(world[right]);
            wl = wl->next[1]) {  // until worldB
-
         if (((wl->i) / V == d && wl->type <= -3 && wl->type >= -4) || next) {
           BoxSpace_t_th0[d][f(d, i, k)] = wl->t - wl->next[0]->t;
-          BoxSpace_py_th0[f(d, i, k)] = (short)wl->dir;
+          BoxSpace_py_th0[f(d, i, k)] = wl->dir;
           if ((wl->i) / V != d || wl->type > -3 || wl->type < -4) {
             BoxSpace_type_th0[f(d, i, k)] = 7;
             next = false;
@@ -923,7 +923,6 @@ void GraphSpace::SpatialDomainBoundary(My_rdm *MR) {
            wl = wl->next[1]) {
         if ((wl->i) / V == d &&
             (wl->type == -1 || wl->type == -2)) {  // judge by the left
-
           while (BoxSpace_type_th1[f(d, i, rnum)] == 7) {
             rnum++;
           }
@@ -942,10 +941,10 @@ void GraphSpace::SpatialDomainBoundary(My_rdm *MR) {
 
           py1 = wl->dir;
           py2 = wl->next[1]->dir;
-          py3 = (bool)BoxSpace_py_th1[f(d, i, rnum + 1)];
-          py4 = (bool)BoxSpace_py_th1[f(d, i, rnum)];
+          py3 = BoxSpace_py_th1[f(d, i, rnum + 1)];
+          py4 = BoxSpace_py_th1[f(d, i, rnum)];
 
-          //	 int xl=LT->lx[left];
+          // int xl=LT->lx[left];
 
           PP[0] = (this->*Form[b][0])(I1, I2, I3, I4, py1, py2, py3, py4) *
                   P->FracW[b][0][0];
@@ -987,15 +986,15 @@ void GraphSpace::SpatialDomainBoundary(My_rdm *MR) {
       k = 0;
       for (Vertex *wl = world[right].next[1]; wl != &(world[right]);
            wl = wl->next[1]) {  // until worldB
-
         if (((wl->i) / V == d && wl->type <= -3 && wl->type >= -4) || next) {
           wl->dir = BoxSpace_py_th0[f(d, i, k)];
           if (BoxSpace_type_th0[f(d, i, k)] != 7) {
             wl->type = BoxSpace_type_th0[f(d, i, k)];
             wl->p = BoxSpace_p_th0[d][f(d, i, k)];
             next = true;
-          } else
+          } else {
             next = false;
+          }
           k++;
         }
       }
@@ -1043,7 +1042,6 @@ void GraphSpace::TemporalDomainBoundary(My_rdm *MR, Quantities *QNT) {
     P_i = Om0 * Om1;
 
     if (P_i > R) {  // update the temporal domain boundary.
-
       world[site].next[1]->dir = !(py0);
       p0_box[site] = !(py1);
       py0 = world[site].p;

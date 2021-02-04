@@ -18,12 +18,13 @@
  *=================================================================
  */
 
-#include "random.h"
-
 #include <cstdlib>
 #include <ctime>
-double Random::Dicex(void) { return (double)rand() / RAND_MAX; }
-void Random::InitRand() { srand((unsigned)time(NULL)); }
+
+#include "random.h"
+
+double Random::Dicex(void) { return static_cast<double>(rand()) / RAND_MAX; }
+void Random::InitRand() { srand(static_cast<unsigned int>(time(NULL))); }
 
 // Uniform [0,1)
 double Random::Uniform(void) {

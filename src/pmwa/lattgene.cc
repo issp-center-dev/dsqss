@@ -45,7 +45,7 @@ void WriteXML(int D, int orgL[], double orgB, double orgOB, int NLD, int NBD,
   for (int i = 0; i < D; i++) {
     L[i] = orgL[i] / NLD;
   }
-  double B = orgB / (double)NBD;
+  double B = orgB / NBD;
 
   int N = 1;  // number of sites per domain.
   for (int i = 0; i < D; i++) {
@@ -141,8 +141,9 @@ void WriteXML(int D, int orgL[], double orgB, double orgOB, int NLD, int NBD,
       if (x[p] == L[p] - 1) {
         etype = eid;
         eid++;
-      } else
+      } else{
         etype = -1;
+      }
 
       x[p] = (x[p] + 1) % L[p];
       int j = 0;
@@ -194,7 +195,7 @@ int main(int argc, char **argv) {
     for (int i = 0; i < D; i++) {
       L[i] = lx;
     }
-    B = (double)atof(argv[3]);
+    B = atof(argv[3]);
     NLD = atoi(argv[4]);
     NBD = atoi(argv[5]);
     NF = atoi(argv[6]);
@@ -202,7 +203,7 @@ int main(int argc, char **argv) {
     for (int i = 0; i < D; i++) {
       L[i] = atoi(argv[2 + i]);
     }
-    B = (double)atof(argv[D + NARG - 4]);
+    B = atof(argv[D + NARG - 4]);
     NLD = atoi(argv[D + NARG - 3]);
     NBD = atoi(argv[D + NARG - 2]);
     NF = atoi(argv[D + NARG - 1]);

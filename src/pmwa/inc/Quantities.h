@@ -1,5 +1,5 @@
-#ifndef QUANTITIES_H
-#define QUANTITIES_H
+#ifndef SRC_PMWA_INC_QUANTITIES_H_
+#define SRC_PMWA_INC_QUANTITIES_H_
 
 #include <complex>
 #include <xml.hpp>
@@ -278,4 +278,4 @@ class Quantities {
   void show(ofstream &F, FILE *SFF);
 };
 
-#endif
+#endif // SRC_PMWA_INC_QUANTITIES_H_

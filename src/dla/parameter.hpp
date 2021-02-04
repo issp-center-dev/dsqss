@@ -1,18 +1,20 @@
-#ifndef PARAMETER_H
-#define PARAMETER_H
+#ifndef SRC_DLA_PARAMETER_HPP_
+#define SRC_DLA_PARAMETER_HPP_
 
-#include <algorithm>
-#include <boost/lexical_cast.hpp>
-#include <boost/math/special_functions/fpclassify.hpp>
 #include <cctype>
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+
+#include <algorithm>
 #include <exception>
 #include <fstream>
 #include <iostream>
 #include <map>
 #include <string>
+
+#include <boost/lexical_cast.hpp>
+#include <boost/math/special_functions/fpclassify.hpp>
 
 #include "../common/read_keyvalues.h"
 #include "debug.hpp"
@@ -157,7 +159,7 @@ void Parameter::readfile(std::string const& filename) {
   CKOUTFILE = dict["ckoutfile"];
 
   RUNTYPE = lexical_cast<int>(dict["runtype"]);
-};
+}
 
 inline Parameter::Parameter(int NP, char** PLIST) {
   AutoDebugDump("Parameter::Parameter");
@@ -269,4 +271,4 @@ inline void Parameter::dump(FILE* F) {
   fprintf(F, "P CKOUTFILE  = %s\n", CKOUTFILE.c_str());
   fprintf(F, "P SIMULATIONTIME   = %12lf\n", SIMTIME);
 }
-#endif
+#endif  // SRC_DLA_PARAMETER_HPP_

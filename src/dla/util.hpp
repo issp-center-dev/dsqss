@@ -14,10 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef UTIL_HPP
-#define UTIL_HPP
+#ifndef SRC_DLA_UTIL_HPP_
+#define SRC_DLA_UTIL_HPP_
 
 #include <cstdlib>
+
 #include <iostream>
 #include <vector>
 
@@ -56,4 +57,4 @@ void ERROR(const char* msg) {
 
 }  // namespace util
 
-#endif  // UTIL_HPP
+#endif  // SRC_DLA_UTIL_HPP_

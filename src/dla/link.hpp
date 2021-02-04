@@ -1,6 +1,5 @@
-
-#ifndef LINK_H
-#define LINK_H
+#ifndef SRC_DLA_LINK_HPP_
+#define SRC_DLA_LINK_HPP_
 
 #include <cstdio>
 
@@ -35,19 +34,19 @@ class Linked : public C {
     C::init();
     p = this;
     n = this;
-  };
+  }
 
-  Linked() { init(); };
+  Linked() { init(); }
 
-  ~Linked(){};
+  ~Linked() {}
 
-  Linked<C>& prev() { return *p; };
+  Linked<C>& prev() { return *p; }
 
-  Linked<C>& next() { return *n; };
+  Linked<C>& next() { return *n; }
 
-  void set_prev(Linked<C>& x) { p = &x; };
+  void set_prev(Linked<C>& x) { p = &x; }
 
-  void set_next(Linked<C>& x) { n = &x; };
+  void set_next(Linked<C>& x) { n = &x; }
 
   void insert_after(Linked<C>& x);
 
@@ -76,60 +75,60 @@ class RingIterator {
   void init(C& x) {
     org = &x;
     cur = org;
-  };
+  }
 
   void init(Ring<C>& r) {
     org = &r.root();
     cur = org;
-  };
+  }
 
-  RingIterator(){};
+  RingIterator() {}
 
   RingIterator(const RingIterator& p) {
     org = p.org;
     cur = p.cur;
-  };
+  }
 
-  RingIterator(C& x) { init(x); };
+  RingIterator(C& x) { init(x); }
 
-  RingIterator(Ring<C>& r) { init(r); };
+  RingIterator(Ring<C>& r) { init(r); }
 
-  bool atOrigin() { return cur == org; };
+  bool atOrigin() { return cur == org; }
 
   RingIterator<C> operator+(int i) {
     RingIterator<C> p;
     p.org = org;
     p.cur = &(cur->next());
     return p;
-  };
+  }
 
   RingIterator<C>& operator++() {
     cur = &(cur->next());
     return *this;
-  };
+  }
 
   RingIterator<C> operator++(int) {
     RingIterator<C> ret(*this);
     operator++();
     return ret;
-  };
+  }
 
   RingIterator<C>& operator--() {
     cur = &(cur->prev());
     return *this;
-  };
+  }
 
   RingIterator<C> operator--(int) {
     RingIterator<C> ret(*this);
     operator--();
     return ret;
-  };
+  }
 
-  C* operator->() { return cur; };
-  C& operator*() { return *cur; };
-  void operator=(const C* p) { cur = p; };
-  bool operator==(const C* p) { return cur == p; };
-  bool operator!=(const C* p) { return cur != p; };
+  C* operator->() { return cur; }
+  C& operator*() { return *cur; }
+  void operator=(const C* p) { cur = p; }
+  bool operator==(const C* p) { return cur == p; }
+  bool operator!=(const C* p) { return cur != p; }
 };
 
 //######################################################################
@@ -150,40 +149,40 @@ class Ring {
   //  C ROOT;
  public:
   C ROOT;
-  C& head() { return ROOT.next(); };
-  C& tail() { return ROOT.prev(); };
+  C& head() { return ROOT.next(); }
+  C& tail() { return ROOT.prev(); }
 
   typedef RingIterator<C> iterator;
 
-  Ring(){};
+  Ring() {}
 
-  ~Ring(){};
+  ~Ring() {}
 
-  bool empty() { return (&(ROOT.next()) == &ROOT); };
+  bool empty() { return (&(ROOT.next()) == &ROOT); }
 
-  C& root() { return ROOT; };
+  C& root() { return ROOT; }
 
-  C& first() { return ROOT.next(); };
+  C& first() { return ROOT.next(); }
 
-  void add_head(C& x) { ROOT.insert_after(x); };
+  void add_head(C& x) { ROOT.insert_after(x); }
 
-  void add_tail(C& x) { ROOT.insert_before(x); };
+  void add_tail(C& x) { ROOT.insert_before(x); }
 
   C& remove_head() {
     C& x = head();
     x.remove();
     return x;
-  };
+  }
 
   C& remove_tail() {
     C& x = tail();
     x.remove();
     return x;
-  };
+  }
 
-  void push(C& x) { add_head(x); };
+  void push(C& x) { add_head(x); }
 
-  C& pop() { return remove_head(); };
+  C& pop() { return remove_head(); }
 
   int count();
 
@@ -209,7 +208,7 @@ class Pool : public Ring<C> {
   int size;
 
  public:
-  Pool() : Ring<C>() { size = 0; };
+  Pool() : Ring<C>() { size = 0; }
 
   ~Pool();
 
@@ -219,7 +218,7 @@ class Pool : public Ring<C> {
     size++;
     x.init();
     Ring<C>::push(x);
-  };
+  }
 
   C& pop() {
     if (size == 0) {
@@ -232,10 +231,10 @@ class Pool : public Ring<C> {
     C& x = Ring<C>::pop();
     //  x.init();
     return x;
-  };
+  }
 
-  int number_of_used_elements() { return size_max - size_min; };
-  void set_n_of_used_elements(int s_used) { size_min = size_max - s_used; };
+  int number_of_used_elements() { return size_max - size_min; }
+  void set_n_of_used_elements(int s_used) { size_min = size_max - s_used; }
 };
 
 //######################################################################
@@ -359,4 +358,4 @@ inline Pool<C>::~Pool() {
   }
 }
 
-#endif
+#endif  // SRC_DLA_LINK_HPP_

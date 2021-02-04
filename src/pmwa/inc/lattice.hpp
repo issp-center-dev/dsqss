@@ -1,5 +1,5 @@
-#ifndef LATTICE_HPP
-#define LATTICE_HPP
+#ifndef SRC_PMWA_INC_LATTICE_HPP_
+#define SRC_PMWA_INC_LATTICE_HPP_
 
 //######################################################################
 
@@ -12,7 +12,6 @@
 #include <iostream>
 #include <string>
 #include <xml.hpp>
-//######################################################################
 
 class Lattice {
  private:
@@ -36,7 +35,7 @@ class Lattice {
   int NFIELD;
   Size *N;
 
-  ////domain///
+  //// domain
   Parallel *PR;
   int V, Nx, Ny, Nz;
   double B;
@@ -55,8 +54,8 @@ class Lattice {
 
   int rmax;
 
-  Lattice(const char *FNAME);
-  Lattice(std::string const &FNAME);
+  explicit Lattice(const char *FNAME);
+  explicit Lattice(std::string const &FNAME);
 
   ~Lattice();
 
@@ -75,4 +74,4 @@ class Lattice {
   void read();
 };
 
-#endif
+#endif  // SRC_PMWA_INC_LATTICE_HPP_
