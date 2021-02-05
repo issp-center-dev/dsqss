@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>4.5. Directed loop algorithm solver dla &#8212; DSQSS 2.0.3 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4.6. Output of DSQSS/DLA" href="output.html" />
+    <link rel="prev" title="4.4. Input file generators for DSQSS/DLA" href="generator.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="directed-loop-algorithm-solver-dla">
+<h1><span class="section-number">4.5. </span>Directed loop algorithm solver <code class="docutils literal notranslate"><span class="pre">dla</span></code><a class="headerlink" href="#directed-loop-algorithm-solver-dla" title="Permalink to this headline">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">dla</span></code> is a quantum Monte Carlo solver with the directed loop algorithm.
+This takes an input file as the command line argument.:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dla param.in
+</pre></div>
+</div>
+<p>DSQSS/DLA implements random number parallelization by using MPI.
+Since each process performs <code class="docutils literal notranslate"><span class="pre">NSET</span></code> Monte Carlo calculation independently,
+the total number of MC sets increases <span class="math notranslate nohighlight">\(N_\text{process}\)</span>
+and thus it is expected that the statistical error also reduces to <span class="math notranslate nohighlight">\(1/\sqrt{N_\text{process}}\)</span> times.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ mpiexec -np 4 dla param.in
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. About DSQSS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">3. Tutorial of DSQSS/DLA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. User’s manual of DSQSS/DLA</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="input_simple.html">4.1. Simple mode of DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_standard.html">4.2. Standard input files for DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_expert.html">4.3. Input files for DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generator.html">4.4. Input file generators for DSQSS/DLA</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.5. Directed loop algorithm solver <code class="docutils literal notranslate"><span class="pre">dla</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="output.html">4.6. Output of DSQSS/DLA</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tutorial.html">5. Tutorial of DSQSS/PMWA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tu-index.html">6. User’s manual for DSQSS/PMWA</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="index.html"><span class="section-number">4. </span>User’s manual of DSQSS/DLA</a><ul>
+      <li>Previous: <a href="generator.html" title="previous chapter"><span class="section-number">4.4. </span>Input file generators for DSQSS/DLA</a></li>
+      <li>Next: <a href="output.html" title="next chapter"><span class="section-number">4.6. </span>Output of DSQSS/DLA</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/dla/users-manual/engine.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
