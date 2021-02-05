@@ -208,8 +208,8 @@ void Parameter::init(std::map<std::string, std::string>& dict) {
   dict["ntherm"] = "1000";
   dict["simulationtime"] = "0.0";
   dict["seed"] = "198212240";
-  dict["nvermax"] = "10000";
-  dict["nsegmax"] = "10000";
+  dict["nvermax"] = "100000";
+  dict["nsegmax"] = "100000";
   dict["ntau"] = 10;
   dict["algfile"] = "algorithm.xml";
   dict["latfile"] = "lattice.xml";
