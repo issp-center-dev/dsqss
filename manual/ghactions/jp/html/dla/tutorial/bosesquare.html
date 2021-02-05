@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3.4. DSQSS/DLA による正方格子上ハードコアボソン系の粒子数計算 &#8212; DSQSS 2.0.3 ドキュメント</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="検索" href="../../search.html" />
+    <link rel="next" title="4. DSQSS/DLAのユーザーマニュアル" href="../users-manual/index.html" />
+    <link rel="prev" title="3.3. DSQSS/DLA によるスピン鎖の帯磁率計算" href="spinchain.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="dsqss-dla">
+<h1><span class="section-number">3.4. </span>DSQSS/DLA による正方格子上ハードコアボソン系の粒子数計算<a class="headerlink" href="#dsqss-dla" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>このチュートリアルでは, 大きさ <span class="math notranslate nohighlight">\(8\times8\)</span> の正方格子上の,
+<span class="math notranslate nohighlight">\(V/t=3, \beta t = 10\)</span> というパラメータを持つハードコアボーズハバード模型について,
+化学ポテンシャル <span class="math notranslate nohighlight">\(\mu\)</span> を <span class="math notranslate nohighlight">\(-4.0\)</span> から <span class="math notranslate nohighlight">\(14.0\)</span> まで動かして計算を行い,
+粒子数密度の変化を計算します.</p>
+<p>次に示すのは, 入力ファイルの生成と本計算を自動で行い,
+粒子数密度の化学ポテンシャル依存性をファイルに書き出すスクリプトです(sample/dla/03_bosesquare/exec.py).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="kn">from</span> <span class="nn">dsqss.dla_pre</span> <span class="kn">import</span> <span class="n">dla_pre</span>
+<span class="kn">from</span> <span class="nn">dsqss.result</span> <span class="kn">import</span> <span class="n">Results</span>
+
+<span class="n">V</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">L</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="mf">10.0</span>
+
+<span class="n">lattice</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;lattice&quot;</span><span class="p">:</span> <span class="s2">&quot;hypercubic&quot;</span><span class="p">,</span> <span class="s2">&quot;dim&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">:</span> <span class="n">L</span><span class="p">}</span>
+<span class="n">hamiltonian</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;boson&quot;</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;V&quot;</span><span class="p">:</span> <span class="n">V</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">parameter</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;beta&quot;</span><span class="p">:</span> <span class="n">beta</span><span class="p">,</span> <span class="s2">&quot;nset&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;ntherm&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;ndecor&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+             <span class="s2">&quot;nmcs&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;wvfile&quot;</span><span class="p">:</span> <span class="s2">&quot;wv.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;dispfile&quot;</span><span class="p">:</span> <span class="s2">&quot;disp.xml&quot;</span><span class="p">}</span>
+
+<span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;amzu&quot;</span>
+<span class="n">mus</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">4.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mf">9.0</span><span class="p">,</span> <span class="mf">9.5</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">12.0</span><span class="p">,</span> <span class="mf">14.0</span><span class="p">]</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.dat&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">mu</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mus</span><span class="p">):</span>
+    <span class="n">ofile</span> <span class="o">=</span> <span class="s2">&quot;res_</span><span class="si">{}</span><span class="s2">.dat&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">pfile</span> <span class="o">=</span> <span class="s2">&quot;param_</span><span class="si">{}</span><span class="s2">.in&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">sfoutfile</span> <span class="o">=</span> <span class="s2">&quot;sf_</span><span class="si">{}</span><span class="s2">.dat&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">cfoutfile</span> <span class="o">=</span> <span class="s2">&quot;cf_</span><span class="si">{}</span><span class="s2">.dat&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">ckoutfile</span> <span class="o">=</span> <span class="s2">&quot;ck_</span><span class="si">{}</span><span class="s2">.dat&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+    <span class="n">hamiltonian</span><span class="p">[</span><span class="s2">&quot;mu&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu</span>
+    <span class="n">parameter</span><span class="p">[</span><span class="s2">&quot;outfile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ofile</span>
+    <span class="n">parameter</span><span class="p">[</span><span class="s2">&quot;sfoutfile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sfoutfile</span>
+    <span class="n">parameter</span><span class="p">[</span><span class="s2">&quot;cfoutfile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cfoutfile</span>
+    <span class="n">parameter</span><span class="p">[</span><span class="s2">&quot;ckoutfile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ckoutfile</span>
+    <span class="n">dla_pre</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;parameter&quot;</span><span class="p">:</span> <span class="n">parameter</span><span class="p">,</span> <span class="s2">&quot;hamiltonian&quot;</span><span class="p">:</span> <span class="n">hamiltonian</span><span class="p">,</span> <span class="s2">&quot;lattice&quot;</span><span class="p">:</span> <span class="n">lattice</span><span class="p">},</span> <span class="n">pfile</span>
+    <span class="p">)</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;dla&quot;</span><span class="p">,</span> <span class="n">pfile</span><span class="p">]</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">Results</span><span class="p">(</span><span class="n">ofile</span><span class="p">)</span>
+    <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">to_str</span><span class="p">(</span><span class="n">name</span><span class="p">)))</span>
+<span class="n">output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>このPython スクリプトを実行すると</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python exec.py
+</pre></div>
+</div>
+<p>化学ポテンシャルごとに密度の期待値と統計誤差が <code class="docutils literal notranslate"><span class="pre">amzu.dat</span></code> に行ごとにスペース区切りで書き出されます.
+このファイルをGnuplot などで図示すると(<a class="reference internal" href="#fig-bosesquare"><span class="std std-numref">図 3.2</span></a>).
+<span class="math notranslate nohighlight">\(\mu=6\)</span> 付近では密度プラトーが観測されます. ここでは近接サイト間の反発によりチェッカーボード固体相になっています.</p>
+<div class="figure align-default" id="fig-bosesquare">
+<img alt="2次元ボース系の密度プラトー" src="../../_images/bosesquare.png" />
+<p class="caption"><span class="caption-number">図 3.2 </span><span class="caption-text">正方格子上のボースハバード模型における密度の化学ポテンシャル依存性.</span><a class="headerlink" href="#fig-bosesquare" title="この画像へのパーマリンク">¶</a></p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>ナビゲーション</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. DSQSSとは？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. インストール</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. DLAのチュートリアル</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">3.1. DSQSS/DLA とは</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spindimer.html">3.2. DSQSS/DLA による反強磁性ハイゼンベルグダイマーのエネルギー計算</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spinchain.html">3.3. DSQSS/DLA によるスピン鎖の帯磁率計算</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.4. DSQSS/DLA による正方格子上ハードコアボソン系の粒子数計算</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../users-manual/index.html">4. DSQSS/DLAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tutorial.html">5. DSQSS/PMWAのチュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tu-index.html">6. DSQSS/PMWAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/algorithm.html">7. アルゴリズム</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="index.html"><span class="section-number">3. </span>DLAのチュートリアル</a><ul>
+      <li>Previous: <a href="spinchain.html" title="前の章へ"><span class="section-number">3.3. </span>DSQSS/DLA によるスピン鎖の帯磁率計算</a></li>
+      <li>Next: <a href="../users-manual/index.html" title="次の章へ"><span class="section-number">4. </span>DSQSS/DLAのユーザーマニュアル</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="検索" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/dla/tutorial/bosesquare.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
