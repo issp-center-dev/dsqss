@@ -22,6 +22,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <utility>
 
 #include "accumulator.hpp"
 #include "algorithm.hpp"
@@ -147,7 +148,12 @@ void CF::count(double tT, double bT, int head_site, int tail_site,
   }
   AutoDebugDump("CF::count");
 
-  int icf = DISP.IR[tail_site][head_site];
+  std::pair<int, int> key = std::make_pair(tail_site, head_site);
+  Displacement::IR_iterator iter = DISP.IR.find(key);
+  if (iter == DISP.IR.end()) {
+    return;
+  }
+  int icf = DISP.IR[key];
   double bTr = tail_tau - tT;
   double tTr = tail_tau - bT;
 
