@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 project(DSQSS NONE)
-set(DSQSS_VERSION 2.0.3)
+set(DSQSS_VERSION 2.0.4)
 
 message(STATUS "CMake version: " ${CMAKE_VERSION})
 
