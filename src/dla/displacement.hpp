@@ -22,6 +22,10 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <utility>
+
+#include <boost/unordered_map.hpp>
+#include <boost/functional/hash.hpp>
 
 #include "accumulator.hpp"
 #include "debug.hpp"
@@ -33,8 +37,15 @@ struct Displacement {
   int NSITES;
   int nkinds;
 
-  std::vector<int> NR;                // the number of pairs with the same dR
-  std::vector<std::vector<int> > IR;  // IR[isite][jsite] == disp_index
+  std::vector<int> NR;  // the number of pairs with the same dR
+  // std::vector<std::vector<int> > IR;  // IR[isite][jsite] == disp_index
+
+  // IR[std::make_pair(isite,jsite)] == disp_index
+  typedef boost::unordered_map<std::pair<int, int>, int,
+                               boost::hash<std::pair<int, int> > >
+      IR_type;
+  typedef IR_type::iterator IR_iterator;
+  IR_type IR;
 
   explicit Displacement(Parameter const& param);
   void read(XML::Block const& X);
@@ -52,17 +63,13 @@ Displacement::Displacement(Parameter const& param)
 
     NR.resize(nkinds, 0);
 
-    for (int i = 0; i < NSITES; i++) {
-      IR.push_back(std::vector<int>(NSITES, nkinds));
-    }
-
     for (int i = 0; i < X.NumberOfBlocks(); i++) {
       XML::Block& B = X[i];
       if (B.getName() == "R") {
         int kind = B.getInteger(0);
         int isite = B.getInteger(1);
         int jsite = B.getInteger(2);
-        IR[isite][jsite] = kind;
+        IR[std::make_pair(isite, jsite)] = kind;
         NR[kind]++;
       }
     }
