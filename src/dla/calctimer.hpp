@@ -21,16 +21,15 @@
 #include "accumulator.hpp"
 
 class CalcTimer {
-  int NMCS;
   Timer timer;
   Accumulator ACC;
   Accumulator PHY;
 
  public:
-  explicit CalcTimer(int nmcs) : NMCS(nmcs) { PHY.reset("time"); }
+  CalcTimer() { PHY.reset("time"); }
   void reset_timer() { timer.reset(); }
   void setinit() { ACC.reset("time"); }
-  void measure() { ACC.accumulate(timer.elapsed() / NMCS); }
+  void measure() { ACC.accumulate(timer.elapsed()); }
   void setsummary() {
     ACC.average();
     PHY.accumulate(ACC.mean());

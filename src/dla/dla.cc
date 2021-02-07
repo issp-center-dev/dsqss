@@ -88,7 +88,6 @@ Simulation::Simulation(Parameter& P0)
       WV(P),
       DISP(P),
       MSR(P, LAT, ALG, WV),
-      calctimer(P.NMCS),
       sf(P, LAT, ALG, WV),
       cf(P, LAT, ALG, DISP),
       ck(P, LAT, ALG, WV) {
