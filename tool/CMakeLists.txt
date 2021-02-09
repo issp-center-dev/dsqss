@@ -19,7 +19,6 @@ if(NOT PIPX_FOUND)
                           --prefix=${pythonpath_prefix} pipx)
 endif()
 
-file(COPY setup.py DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY dsqss DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 set(dla_scripts
