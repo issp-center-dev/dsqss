@@ -4,7 +4,7 @@
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version. 
+# (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,50 +14,80 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import codecs
+import typing
+from typing import (
+    Union,
+    Iterable,
+    List,
+    Tuple,
+    Optional,
+    Sequence,
+    MutableMapping,
+    Dict,
+    NamedTuple,
+)
+
 import itertools
 from copy import deepcopy
 
 import toml
 
-from .lattice import Lattice
-from .util import tagged
+import dsqss
+import dsqss.lattice
+import dsqss.util
 
 
-def keystate(istate, fstate):
-    if type(istate) is not tuple:
-        if type(istate) is not list:
-            istate = [istate]
-        ti = tuple(istate)
-    else:
-        ti = istate
+State = Union[int, Iterable[int]]
 
-    if type(fstate) is not tuple:
-        if type(fstate) is not list:
-            fstate = [fstate]
-        tf = tuple(fstate)
-    else:
-        tf = fstate
-    return (ti, tf)
+
+class States(NamedTuple):
+    initial: Tuple[int, ...]
+    final: Tuple[int, ...]
+
+
+MatElems = Dict[States, float]
+
+
+def keystate(istate: State, fstate: State) -> States:
+    ret: List[Tuple[int, ...]] = []
+    for st in (istate, fstate):
+        if isinstance(st, int):
+            ret.append((st,))
+        else:
+            ret.append(tuple(st))
+    return States(initial=ret[0], final=ret[1])
 
 
 def append_matelem(
-    matelems, state=None, istate=None, fstate=None, value=None, param=None
-):
+    matelems: MatElems,
+    state: Optional[State] = None,
+    istate: Optional[State] = None,
+    fstate: Optional[State] = None,
+    value: Optional[float] = None,
+    param: Optional[MutableMapping] = None,
+) -> MatElems:
     if param is None:
-        if istate is not None:
+        if value is None:
+            raise RuntimeError("value is required")
+        if istate is not None and fstate is not None:
             matelems[keystate(istate, fstate)] = value
-        else:
+        elif state is not None:
             matelems[keystate(state, state)] = value
-    else:
-        if "istate" in param:
-            matelems[keystate(param["istate"], param["fstate"])] = param["value"]
         else:
+            raise RuntimeError("(istate and fstate) or state is required")
+    else:
+        if "value" not in param:
+            raise RuntimeError("value is required")
+        if "istate" in param and "fstate" in param:
+            matelems[keystate(param["istate"], param["fstate"])] = param["value"]
+        elif "state" in param:
             matelems[keystate(param["state"], param["state"])] = param["value"]
+        else:
+            raise RuntimeError("(istate and fstate) or state is required")
     return matelems
 
 
-def matelems_todict(matelems, keepzero=False):
+def matelems_todict(matelems: MatElems, keepzero: bool = False) -> List[Dict]:
     return [
         {"istate": list(key[0]), "fstate": list(key[1]), "value": value}
         for key, value in matelems.items()
@@ -66,9 +96,21 @@ def matelems_todict(matelems, keepzero=False):
 
 
 class Site(object):
-    def __init__(self, param=None,
-                 id=None, N=None, values=None,
-                 elements=None, sources=None):
+    id: int
+    N: int
+    values: List
+    elements: MatElems
+    sources: MatElems
+
+    def __init__(
+        self,
+        param: Optional[MutableMapping] = None,
+        id=None,
+        N=None,
+        values=None,
+        elements=None,
+        sources=None,
+    ):
         if param is not None:
             self.id = param["type"]
             self.N = param["N"]
@@ -86,7 +128,7 @@ class Site(object):
             self.elements = elements
             self.sources = sources
 
-    def to_dict(self):
+    def to_dict(self) -> Dict:
         return {
             "type": self.id,
             "N": self.N,
@@ -97,7 +139,19 @@ class Site(object):
 
 
 class Interaction(object):
-    def __init__(self, param=None, id=None, nbody=None, Ns=None, elements=None):
+    id: int
+    nbody: int
+    Ns: List[int]
+    elements: MatElems
+
+    def __init__(
+        self,
+        param: Optional[MutableMapping] = None,
+        id=None,
+        nbody=None,
+        Ns=None,
+        elements=None,
+    ):
         if param is not None:
             self.id = param["type"]
             self.nbody = param["nbody"]
@@ -111,7 +165,7 @@ class Interaction(object):
             self.Ns = Ns
             self.elements = elements
 
-    def to_dict(self):
+    def to_dict(self) -> Dict:
         return {
             "type": self.id,
             "nbody": self.nbody,
@@ -121,7 +175,17 @@ class Interaction(object):
 
 
 class IndeedInteraction(object):
-    def __init__(self, sites, ints, v):
+    itype: int
+    stypes: List[int]
+    nbody: int
+    elements: MatElems
+
+    def __init__(
+        self,
+        sites: Sequence[Site],
+        ints: Sequence[Interaction],
+        v: dsqss.lattice.Vertex,
+    ):
         inter = ints[v.int_type]
         zs = v.zs
 
@@ -143,59 +207,76 @@ class IndeedInteraction(object):
                 self.elements[key] = val
 
 
-class Hamiltonian(object):
-    def __init__(self, ham_dict):
-        if type(ham_dict) == str:
+class Hamiltonian:
+    name: str
+    nstypes: int
+    sites: List[Site]
+    nitypes: int
+    interactions: List[Interaction]
+
+    def __init__(self, ham_dict: Union[str, MutableMapping]) -> None:
+        if isinstance(ham_dict, str):
             ham_dict = toml.load(ham_dict)
         self.name = ham_dict.get("name", "")
 
         self.nstypes = len(ham_dict["sites"])
-        self.sites = [None for i in range(self.nstypes)]
-        self.nitypes = len(ham_dict["interactions"])
-        self.interactions = [None for i in range(self.nitypes)]
-
+        sites: List[Optional[Site]] = [None for i in range(self.nstypes)]
         for site in ham_dict["sites"]:
             S = Site(site)
-            self.sites[S.id] = S
+            sites[S.id] = S
+        for site in sites:
+            if site is None:
+                raise RuntimeError("")
+        self.sites = typing.cast(List[Site], sites)
+
+        self.nitypes = len(ham_dict["interactions"])
+        interactions: List[Optional[Interaction]] = [None for i in range(self.nitypes)]
         for inter in ham_dict["interactions"]:
             Int = Interaction(inter)
-            self.interactions[Int.id] = Int
+            interactions[Int.id] = Int
+
+        for inter in interactions:
+            if inter is None:
+                raise RuntimeError("")
+        self.interactions = typing.cast(List[Interaction], interactions)
 
         self.nxmax = 0
         for site in self.sites:
             self.nxmax = max(site.N, self.nxmax)
 
-    def to_dict(self):
+    def to_dict(self) -> Dict:
         return {
             "name": self.name,
             "sites": list(map(lambda x: x.to_dict(), self.sites)),
             "interactions": list(map(lambda x: x.to_dict(), self.interactions)),
         }
 
-    def write_toml(self, filename):
-        with codecs.open(filename, "w", "utf_8") as f:
+    def write_toml(self, filename: dsqss.util.Filename) -> None:
+        with open(filename, "w", encoding="utf_8") as f:
             toml.dump(self.to_dict(), f)
 
 
 class GraphedHamiltonian(Hamiltonian):
-    def __init__(self, ham, lat):
-        if not isinstance(ham, Hamiltonian):
-            super(GraphedHamiltonian, self).__init__(ham)
+    indeed_interactions: List[IndeedInteraction]
+
+    def __init__(self, ham, lat) -> None:
+        if isinstance(ham, Hamiltonian):
+            super().__init__(ham.to_dict())
         else:
-            super(GraphedHamiltonian, self).__init__(ham.to_dict())
+            super().__init__(ham)
         self.load_lattice(lat)
 
-    def load_lattice(self, lat):
+    def load_lattice(self, lat) -> None:
         if type(lat) == str:
-            lat = Lattice(lat)
+            lat = dsqss.lattice.Lattice(lat)
         self.indeed_interactions = [
             IndeedInteraction(self.sites, self.interactions, v) for v in lat.vertices
         ]
         self.nitypes = len(self.indeed_interactions)
 
-    def write_xml(self, filename):
-        with codecs.open(filename, "w", "utf_8") as f:
-
+    def write_xml(self, filename: dsqss.util.Filename) -> None:
+        tagged = dsqss.util.tagged
+        with open(filename, "w", encoding="utf_8") as f:
             f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
             f.write("<Hamiltonian>\n")
             indent = "  "

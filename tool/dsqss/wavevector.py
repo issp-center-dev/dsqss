@@ -4,7 +4,7 @@
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version. 
+# (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,40 +14,41 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import codecs
-from itertools import product
+import itertools
 
 import numpy as np
 import scipy.special as spsp
 
-from .util import ERROR, get_as_list, tagged
+import dsqss
+import dsqss.util
+import dsqss.lattice
 
 
 class Wavevector:
+    dim: int
+    nk: int
+    ks: np.ndarray
+
     def __init__(self):
         pass
 
     def generate(self, param, size):
         self.dim = len(size)
-        steps = get_as_list(param, "ksteps", default=0, extendto=self.dim)
+        steps = dsqss.util.get_as_list(param, "ksteps", default=0, extendto=self.dim)
         for d in range(self.dim):
             if steps[d] == 0:
-                steps[d] = size[d]//2
+                steps[d] = size[d] // 2
         ks = []
         self.nk = 1
         for d in range(self.dim):
             ks.append(list(range(0, size[d] // 2 + 1, steps[d])))
             self.nk *= len(ks[-1])
-        self.ks = np.zeros([self.dim, self.nk], dtype=np.int)
-        for ik, k in enumerate(product(*ks)):
+        self.ks = np.zeros([self.dim, self.nk], dtype=np.int64)
+        for ik, k in enumerate(itertools.product(*ks)):
             self.ks[:, ik] = list(k)
 
-    def load(self, inp):
-        if type(inp) is str:
-            with open(inp) as f:
-                self.load(f)
-                return
-
+    def load(self, filename: dsqss.util.Filename) -> None:
+        inp = open(filename, encoding="utf-8")
         self.dim = 0
         state = "waiting"
         for line in inp:
@@ -63,7 +64,7 @@ class Wavevector:
                 self.dim = int(body)
                 break
         if not self.dim > 0:
-            ERROR("invalid dimension")
+            dsqss.util.ERROR("invalid dimension")
 
         state = "waiting"
         for line in inp:
@@ -77,18 +78,16 @@ class Wavevector:
                     state = "nk"
             elif state == "nk":
                 self.nk = int(body)
-                self.ks = np.zeros([self.dim, self.nk], dtype=np.int)
+                self.ks = np.zeros([self.dim, self.nk], dtype=np.int64)
                 state = "kpoints"
             elif state == "kpoints":
                 words = body.split()
                 kid = int(words[0])
                 self.ks[:, kid] = list(map(int, words[1:]))
+        inp.close()
 
-    def save(self, out):
-        if type(out) is str:
-            with codecs.open(out, "w", "utf-8") as f:
-                self.save(f)
-                return
+    def save(self, filename: dsqss.util.Filename) -> None:
+        out = open(filename, "w", encoding="utf-8")
 
         out.write("dim\n{0}\n".format(self.dim))
         out.write("\n")
@@ -100,11 +99,13 @@ class Wavevector:
             for k in self.ks[:, ik]:
                 out.write(" {0}".format(k))
             out.write("\n")
+        out.close()
 
-    def write_xml(self, filename, lat):
+    def write_xml(self, filename: dsqss.util.Filename, lat: dsqss.lattice.Lattice):
+        tagged = dsqss.util.tagged
         if self.dim != lat.dim:
-            ERROR("dimension mismatch between wavevector and lattice")
-        with codecs.open(filename, "w", "utf-8") as f:
+            dsqss.util.ERROR("dimension mismatch between wavevector and lattice")
+        with open(filename, "w", encoding="utf-8") as f:
             f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
             f.write("<WaveVector>\n")
             f.write(tagged("Comment", lat.name))
@@ -156,13 +157,13 @@ def main():
     inp = toml.load(args.input)
     if "lattice" in inp:
         dim = inp["lattice"]["dim"]
-        Ls = get_as_list(inp["lattice"], "L", extendto=dim)
+        Ls = dsqss.util.get_as_list(inp["lattice"], "L", extendto=dim)
     if "kpoints" in inp:
         inp = inp["kpoints"]
     if args.size is not None:
         Ls = list(map(int, args.size.split()))
     if Ls is None:
-        ERROR("system size is not specified")
+        dsqss.util.ERROR("system size is not specified")
     wv = Wavevector()
     wv.generate(inp, Ls)
     wv.save(args.out)

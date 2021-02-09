@@ -6,7 +6,7 @@
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version. 
+# (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,15 +16,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import print_function
+from typing import MutableMapping
 
-import codecs
 from copy import deepcopy
 
-from .util import ERROR, INFO
+import dsqss
+import dsqss.util
 
 
-def set_default_values(param):
+def set_default_values(param: MutableMapping):
     for name, val in (
         ("npre", 1000),
         ("ntherm", 1000),
@@ -52,12 +52,12 @@ def set_default_values(param):
 def check_mandatories(param):
     for name in ("beta",):
         if name not in param:
-            ERROR("parameter {0} is not specified.".format(name))
+            dsqss.util.ERROR(f"parameter {name} is not specified.")
 
 
 class Parameter(dict):
     def __init__(self, param):
-        super(Parameter, self).__init__()
+        super().__init__()
         if "parameter" in param:
             p = deepcopy(param["parameter"])
         else:
@@ -66,10 +66,11 @@ class Parameter(dict):
         check_mandatories(p)
         self.update(p)
 
-    def write_param(self, pfile):
-        with codecs.open(pfile, "w", "utf-8") as f:
-            for key in sorted(self.keys()):
-                f.write("{0} = {1}\n".format(key, self.get(key)))
+    def write_param(self, pfile: dsqss.util.Filename):
+        with open(pfile, "w", encoding="utf-8") as f:
+            for k in sorted(self.keys()):
+                v = self.get(k)
+                f.write(f"{k} = {v}\n")
 
 
 def main():
@@ -94,7 +95,7 @@ def main():
 
     args = parser.parse_args()
     if args.input is sys.stdin:
-        INFO("waiting for standard input...")
+        dsqss.util.INFO("waiting for standard input...")
 
     p = Parameter(toml.load(args.input))
     p.write_param(args.pfile)
