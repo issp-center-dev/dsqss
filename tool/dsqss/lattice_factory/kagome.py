@@ -29,7 +29,7 @@ def generate(param):
     sites = [
             {"siteid": 0, "type": 0, "coord": [0.0, 0.0]},
             {"siteid": 1, "type": 0, "coord": [0.5, 0.0]},
-            {"siteid": 1, "type": 0, "coord": [0.5, 0.5]},
+            {"siteid": 2, "type": 0, "coord": [0.5, 0.5]},
             ]
     bonds = [
         {

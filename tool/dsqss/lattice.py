@@ -159,6 +159,7 @@ class Lattice:
 
         self.sites = []
         self.ints = []
+        bid = 0
         for icell in range(ncells):
             cell_coord = np.array(index2coord(icell, self.size))
             for lid, site in enumerate(unitcell["sites"]):
@@ -167,13 +168,13 @@ class Lattice:
                 S = Site(sid, site["type"], coord)
                 self.sites.append(S)
             for ib, bond in enumerate(unitcell["bonds"]):
-                bid = bond["bondid"] + icell * nbonds_cell
                 nbody = 2
                 sites, edge = bondsites(cell_coord, bond)
                 if not sites:
                     continue
                 INT = Interaction(bid, bond["type"], nbody, sites, edge, directions[ib])
                 self.ints.append(INT)
+                bid += 1
         self.nsites = len(self.sites)
         self.nints = len(self.ints)
         self.update()
