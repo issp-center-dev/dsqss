@@ -4,6 +4,6 @@ export PIPX_BIN_DIR=@CMAKE_INSTALL_PREFIX@/bin
 
 cd @CMAKE_CURRENT_BINARY_DIR@
 
-@PYTHON_EXECUTABLE@ -m pipx install @CMAKE_CURRENT_SOURCE_DIR@
+@PYTHON_EXECUTABLE@ -m pipx install --force @CMAKE_CURRENT_SOURCE_DIR@
 mkdir -p @CMAKE_INSTALL_PREFIX@/lib
 ln -s $PIPX_HOME/venvs/dsqss/lib/python@python_version_mm@ @CMAKE_INSTALL_PREFIX@/lib/python@python_version_mm@
