@@ -35,7 +35,7 @@ foreach(script_name ${dla_scripts})
 endforeach(script_name ${dla_scripts})
 
 set(DSQSS_PYTHONPATH
-    "${CMAKE_INSTALL_PREFIX}/lib/python${python_version_mm}/site-packages")
+    "${CMAKE_INSTALL_PREFIX}/pipx/venvs/dsqss/lib/python${python_version_mm}/site-packages")
 configure_file(cmake/dsqssvars.sh.in
                ${CMAKE_CURRENT_BINARY_DIR}/dsqssvars-${DSQSS_VERSION}.sh @ONLY)
 configure_file(cmake/install.sh.in ${CMAKE_CURRENT_BINARY_DIR}/install.sh @ONLY)
