@@ -9,7 +9,7 @@
 DSQSSの使用には以下のプログラム・ライブラリが必要です. 
 
 - (Optional) MPI (PMWAを使用する場合には必須)
-- python 2.7 or 3.4+
+- python 3.6+
 
    - numpy
    - scipy

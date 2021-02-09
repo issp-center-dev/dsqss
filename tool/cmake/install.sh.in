@@ -1,23 +1,9 @@
-export PYTHONPATH=@DSQSS_PYTHONPATH@
+export PYTHONPATH=@pythonpath_build@
+export PIPX_HOME=@CMAKE_INSTALL_PREFIX@/pipx
+export PIPX_BIN_DIR=@CMAKE_INSTALL_PREFIX@/bin
 
 cd @CMAKE_CURRENT_BINARY_DIR@
 
-if ! @PYTHON_EXECUTABLE@ -m pip --version >/dev/null 2>/dev/null ;then
-  set -e
-  wget https://bootstrap.pypa.io/get-pip.py -O get-pip.py
-  PIP_USER=0 @PYTHON_EXECUTABLE@ get-pip.py --prefix=@CMAKE_INSTALL_PREFIX@
-fi
-
-set -e
-PIP_USER=0 @PYTHON_EXECUTABLE@ -m pip install -U pip --prefix=@CMAKE_INSTALL_PREFIX@ 
-PIP_USER=0 @PYTHON_EXECUTABLE@ -m pip install wheel --prefix=@CMAKE_INSTALL_PREFIX@ --no-warn-script-location
-DSQSS_VERSION=$(@PYTHON_EXECUTABLE@ setup.py --version)
-@PYTHON_EXECUTABLE@ setup.py bdist_wheel --universal
-mkdir -p temp
-cd temp
-
-# To reinstall dsqss forcely, remove old dsqss package
-# `pip uninstall dsqss` removes ALL libraries and binaries 
-rm -rf @DSQSS_PYTHONPATH@/dsqss*
-
-PIP_USER=0 @PYTHON_EXECUTABLE@ -m pip install ../dist/dsqss-${DSQSS_VERSION}-py2.py3-none-any.whl --prefix=@CMAKE_INSTALL_PREFIX@ --no-warn-script-location
+@PYTHON_EXECUTABLE@ -m pipx install @CMAKE_CURRENT_SOURCE_DIR@
+mkdir -p @CMAKE_INSTALL_PREFIX@/lib
+ln -s $PIPX_HOME/venvs/dsqss/lib/python@python_version_mm@ @CMAKE_INSTALL_PREFIX@/lib/python@python_version_mm@
