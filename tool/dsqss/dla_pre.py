@@ -6,7 +6,7 @@
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version. 
+# (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,61 +16,65 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import print_function
+import sys
 
-import codecs
-
-from .algorithm import Algorithm
-from .displacement import Displacement
-from .hamiltonian import GraphedHamiltonian
-from .lattice import Lattice
-from .parameter import Parameter
-from .prob_kernel import (heat_bath, metropolis, reversible_suwa_todo,
-                          suwa_todo)
-from .std_lattice import std_lattice
-from .std_model import std_model
-from .util import ERROR, INFO
-from .wavevector import Wavevector
+from dsqss import (
+    algorithm,
+    displacement,
+    hamiltonian,
+    parameter,
+    prob_kernel,
+    std_lattice,
+    std_model,
+    util,
+    wavevector,
+)
 
 
-def dla_pre(param, pfile):
+def dla_pre(param, pfile: str) -> None:
 
-    p = Parameter(param)
+    p = parameter.Parameter(param)
 
-    lat = std_lattice(param)
+    lat, _ = std_lattice.std_lattice(param)
     lat.write_xml(p["latfile"])
 
-    h = std_model(param["hamiltonian"])
-    ham = GraphedHamiltonian(h, lat)
+    h = std_model.std_model(param["hamiltonian"])
+    ham = hamiltonian.GraphedHamiltonian(h, lat)
 
     palg = param.get("algorithm", {})
     extra_shift = palg.get("extra_shift", 0.0)
     kernel = palg.get("kernel", "suwa todo")
 
     if kernel == "suwa todo":
-        kernel = suwa_todo
+        kernel = prob_kernel.suwa_todo
     elif kernel == "reversible suwa todo":
-        kernel = reversible_suwa_todo
+        kernel = prob_kernel.reversible_suwa_todo
     elif kernel == "heat bath":
-        kernel = heat_bath
+        kernel = prob_kernel.heat_bath
     elif kernel == "metropolis":
-        kernel = metropolis
-    elif args.kernel == "metropolice":
-        ERROR('kenel = "metropolice" is now an invalid option because this is a typographic error in old DSQSS. Use "metropolis".')
+        kernel = prob_kernel.metropolis
+    elif kernel == "metropolice":
+        util.ERROR(
+            'kernel = "metropolice" is now an invalid option'
+            " because this is a typographic error in old DSQSS."
+            ' Use "metropolis".'
+        )
+        sys.exit(1)
     else:
-        ERROR("unknown kernel: {0}".format(kernel))
+        util.ERROR("unknown kernel: {0}".format(kernel))
+        sys.exit(1)
 
-    alg = Algorithm(ham, prob_kernel=kernel, ebase_extra=extra_shift)
+    alg = algorithm.Algorithm(ham, prob_kernel=kernel, ebase_extra=extra_shift)
     alg.write_xml(p["algfile"])
 
     if p["wvfile"] != "":
-        wv = Wavevector()
+        wv = wavevector.Wavevector()
         wv.generate(param.get("kpoints", {}), size=lat.size)
         wv.write_xml(p["wvfile"], lat)
 
     if p["dispfile"] != "":
         pdisp = param.get("displacement", {})
-        disp = Displacement(lat, pdisp.get("distance_only", False))
+        disp = displacement.Displacement(lat, pdisp.get("distance_only", False))
         disp.write_xml(p["dispfile"])
 
     p.write_param(pfile)
@@ -98,7 +102,7 @@ def main():
 
     args = parser.parse_args()
     if args.input is sys.stdin:
-        INFO("waiting for standard input...")
+        util.INFO("waiting for standard input...")
 
     dla_pre(toml.load(args.input), args.pfile)
 

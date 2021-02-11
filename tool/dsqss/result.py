@@ -14,17 +14,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import dsqss
+import dsqss.util
+
 class Result:
     def __init__(self, mean, err):
         self.mean = mean
         self.err = err
 
     def to_str(self, delim="+/-"):
-        return "{}{}{}".format(self.mean, delim, self.err)
+        return f"{self.mean}{delim}{self.err}"
 
 
 class Results:
-    def __init__(self, resfile):
+    def __init__(self, resfile: dsqss.util.Filename):
         self.result = {}
         with open(resfile) as f:
             for line in f:

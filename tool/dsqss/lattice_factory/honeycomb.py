@@ -4,7 +4,7 @@
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version. 
+# (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,22 +14,24 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from typing import Dict, MutableMapping
+
 import numpy as np
 from scipy.special import cosdg, sindg
 
-from ..util import get_as_list
+import dsqss.util
 
 
-def generate(param):
+def generate(param: MutableMapping) -> Dict:
     dim = 2
-    L = get_as_list(param, "L", extendto=dim)
-    bc = get_as_list(param, "bc", default=True, extendto=dim)
+    L = dsqss.util.get_as_list(param, "L", extendto=dim)
+    bc = dsqss.util.get_as_list(param, "bc", default=True, extendto=dim)
     basis = np.array([[1.0, 0.0], [cosdg(120), sindg(120)]])
 
     sites = [
-            {"siteid": 0, "type": 0, "coord": [0.0] * dim},
-            {"siteid": 1, "type": 0, "coord": [1.0/3, 2.0/3]},
-            ]
+        {"siteid": 0, "type": 0, "coord": [0.0] * dim},
+        {"siteid": 1, "type": 0, "coord": [1.0 / 3, 2.0 / 3]},
+    ]
     bonds = [
         {
             "bondid": 0,
