@@ -1,0 +1,90 @@
+name = "SU(3) antiferromagnetic Heisenberg model"
+[[sites]]
+type = 0
+N = 3
+values = [
+   0.666666666666,
+  -0.333333333333,
+  -0.333333333333,
+]
+elements = []
+
+[[sites.sources]]
+istate = [ 0,]
+fstate = [ 1,]
+value = 0.5
+
+[[sites.sources]]
+istate = [ 1,]
+fstate = [ 0,]
+value = 0.5
+
+[[sites.sources]]
+istate = [ 1,]
+fstate = [ 2,]
+value = 0.5
+
+[[sites.sources]]
+istate = [ 2,]
+fstate = [ 1,]
+value = 0.5
+
+[[sites.sources]]
+istate = [ 0,]
+fstate = [ 2,]
+value = 0.5
+
+[[sites.sources]]
+istate = [ 2,]
+fstate = [ 0,]
+value = 0.5
+
+
+[[interactions]]
+type = 0
+nbody = 2
+N = [ 3, 3,]
+[[interactions.elements]]
+istate = [ 0, 0,]
+fstate = [ 0, 0,]
+value = -0.333333333333
+
+[[interactions.elements]]
+istate = [ 0, 0,]
+fstate = [ 1, 1,]
+value = -0.333333333333
+
+[[interactions.elements]]
+istate = [ 0, 0,]
+fstate = [ 2, 2,]
+value = -0.333333333333
+
+[[interactions.elements]]
+istate = [ 1, 1,]
+fstate = [ 0, 0,]
+value = -0.333333333333
+
+[[interactions.elements]]
+istate = [ 1, 1,]
+fstate = [ 1, 1,]
+value = -0.333333333333
+
+[[interactions.elements]]
+istate = [ 1, 1,]
+fstate = [ 2, 2,]
+value = -0.333333333333
+
+[[interactions.elements]]
+istate = [ 2, 2,]
+fstate = [ 0, 0,]
+value = -0.333333333333
+
+[[interactions.elements]]
+istate = [ 2, 2,]
+fstate = [ 1, 1,]
+value = -0.333333333333
+
+[[interactions.elements]]
+istate = [ 2, 2,]
+fstate = [ 2, 2,]
+value = -0.333333333333
