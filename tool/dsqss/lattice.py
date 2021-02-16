@@ -53,7 +53,7 @@ class Interaction:
         self.vtype = -1
 
     def __str__(self):
-        s = "{0} {1} {2}".format(self.id, self.itype, self.nbody)
+        s = "{0} {1} {2}".format(self.id, self.itype_org, self.nbody)
         edgeflag = 1 if self.edge >= 0 else 0
         for site in self.sites:
             s += " {0}".format(site)
