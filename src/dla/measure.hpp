@@ -14,38 +14,46 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef MEASURE_H
-#define MEASURE_H
+#ifndef SRC_DLA_MEASURE_HPP_
+#define SRC_DLA_MEASURE_HPP_
 
 #include <cstdio>
 #include <vector>
-#include "name.h"
+#include <string>
+
 #include "accumulator.hpp"
-#include "parameter.hpp"
-#include "measure_specific.h"
 #include "algorithm.hpp"
 #include "lattice.hpp"
-#include "wavevector.hpp"
+#include "measure_specific.h"
+#include "name.h"
+#include "parameter.hpp"
 #include "serialize.hpp"
+#include "wavevector.hpp"
 
-struct ACC_smag{
+struct ACC_smag {
   Accumulator A1;
   Accumulator A2;
   Accumulator B1;
   Accumulator B2;
 
-  void reset(){
-    A1.reset(); A2.reset(); B1.reset(); B2.reset();
+  void reset() {
+    A1.reset();
+    A2.reset();
+    B1.reset();
+    B2.reset();
   }
 
-  void average(){
-    A1.average(); A2.average(); B1.average(); B2.average();
+  void average() {
+    A1.average();
+    A2.average();
+    B1.average();
+    B2.average();
   }
 };
 
-namespace Serialize{
+namespace Serialize {
 template <>
-void save(std::ofstream & ofs, const ACC_smag& val){
+void save(std::ofstream& ofs, const ACC_smag& val) {
   save(ofs, val.A1);
   save(ofs, val.A2);
   save(ofs, val.B1);
@@ -53,48 +61,61 @@ void save(std::ofstream & ofs, const ACC_smag& val){
 }
 
 template <>
-void load(std::ifstream & ofs, ACC_smag& val){
+void load(std::ifstream& ofs, ACC_smag& val) {
   load(ofs, val.A1);
   load(ofs, val.A2);
   load(ofs, val.B1);
   load(ofs, val.B2);
 }
-}
+}  // namespace Serialize
 
-struct PHY_smag{
+struct PHY_smag {
   Accumulator A;
   Accumulator B;
   Accumulator S;
   Accumulator X;
-  void reset(int k)
-  {
-    std::string names[4] = {"amzs", "bmzs", "smzs", "xmzs",};
+  void reset(int k) {
+    std::string names[4] = {
+        "amzs",
+        "bmzs",
+        "smzs",
+        "xmzs",
+    };
     Accumulator* Q[4] = {&A, &B, &S, &X};
-    for(int i=0; i<4; ++i){
+    for (int i = 0; i < 4; ++i) {
       std::stringstream ss;
       ss << names[i];
       ss << k;
       Q[i]->reset(ss.str());
     }
   }
-  void average(){
-    A.average(); B.average(); S.average(); X.average();
+  void average() {
+    A.average();
+    B.average();
+    S.average();
+    X.average();
   }
 
-  void show(FILE* F, const char* prefix){
-    A.show(F,prefix); B.show(F,prefix); S.show(F,prefix); X.show(F,prefix);
+  void show(FILE* F, const char* prefix) {
+    A.show(F, prefix);
+    B.show(F, prefix);
+    S.show(F, prefix);
+    X.show(F, prefix);
   }
 
 #ifdef MULTI
-  void allreduce(MPI_Comm comm){
-    A.allreduce(comm); B.allreduce(comm); S.allreduce(comm); X.allreduce(comm);
+  void allreduce(MPI_Comm comm) {
+    A.allreduce(comm);
+    B.allreduce(comm);
+    S.allreduce(comm);
+    X.allreduce(comm);
   }
 #endif
 };
 
-namespace Serialize{
+namespace Serialize {
 template <>
-void save(std::ofstream & ofs, const PHY_smag& val){
+void save(std::ofstream& ofs, const PHY_smag& val) {
   save(ofs, val.A);
   save(ofs, val.B);
   save(ofs, val.S);
@@ -102,17 +123,16 @@ void save(std::ofstream & ofs, const PHY_smag& val){
 }
 
 template <>
-void load(std::ifstream & ofs, PHY_smag& val){
+void load(std::ifstream& ofs, PHY_smag& val) {
   load(ofs, val.A);
   load(ofs, val.B);
   load(ofs, val.S);
   load(ofs, val.X);
 }
-}
-
+}  // namespace Serialize
 
 class Measurement {
-private:
+ private:
   int NACC;
   int NPHY;
   Parameter& P;
@@ -121,12 +141,12 @@ private:
   WaveVector& WV;
   std::vector<double> Q;
 
-public:
-  std::vector<Accumulator> ACC;        // accumurator of snapshot values
-  std::vector<Accumulator> PHY;        // accumurator of set averages
+ public:
+  std::vector<Accumulator> ACC;  // accumurator of snapshot values
+  std::vector<Accumulator> PHY;  // accumurator of set averages
 
-  std::vector<ACC_smag> ACC_SMAG;   // accumurator of snapshot of stagmag
-  std::vector<PHY_smag> PHY_SMAG;   // accumurator of stagmag
+  std::vector<ACC_smag> ACC_SMAG;  // accumurator of snapshot of stagmag
+  std::vector<PHY_smag> PHY_SMAG;  // accumurator of stagmag
 
   double ediag;
   int nkink;
@@ -152,7 +172,8 @@ public:
   void load(std::ifstream& F);
 };
 
-inline Measurement::Measurement(Parameter& P0, Lattice& L, Algorithm& A, WaveVector& W)
+inline Measurement::Measurement(Parameter& P0, Lattice& L, Algorithm& A,
+                                WaveVector& W)
     : NACC(Specific::NACC),
       NPHY(Specific::NPHY),
       P(P0),
@@ -163,8 +184,7 @@ inline Measurement::Measurement(Parameter& P0, Lattice& L, Algorithm& A, WaveVec
       ACC(NACC),
       PHY(NPHY),
       ACC_SMAG(WV.NK),
-      PHY_SMAG(WV.NK)
-{
+      PHY_SMAG(WV.NK) {
   AutoDebugDump("Measurement::Measurement");
 
   for (int i = 0; i < NACC; i++) {
@@ -177,7 +197,7 @@ inline Measurement::Measurement(Parameter& P0, Lattice& L, Algorithm& A, WaveVec
     PHY[i].set_key(Specific::PNAME[i]);
   }
 
-  for (int k=0; k < WV.NK; ++k){
+  for (int k = 0; k < WV.NK; ++k) {
     ACC_SMAG[k].reset();
     PHY_SMAG[k].reset(k);
   }
@@ -187,16 +207,16 @@ inline Measurement::Measurement(Parameter& P0, Lattice& L, Algorithm& A, WaveVec
   EBASE = 0.0;
   for (int i = 0; i < LAT.NINT; i++) {
     InteractionProperty& IP = LAT.I(i).property();
-    double eb               = IP.EBASE;
+    double eb = IP.EBASE;
     EBASE += eb;
   }
 }
 
 inline void Measurement::setinit() {
-  for (int i = 0; i < NACC; i++){
+  for (int i = 0; i < NACC; i++) {
     ACC[i].reset();
   }
-  for (int k=0; k < WV.NK; ++k){
+  for (int k = 0; k < WV.NK; ++k) {
     ACC_SMAG[k].reset();
   }
 }
@@ -205,17 +225,17 @@ inline void Measurement::summary() {
   for (int i = 0; i < NPHY; i++) {
     PHY[i].average();
   }
-  for (int k=0; k < WV.NK; ++k){
+  for (int k = 0; k < WV.NK; ++k) {
     PHY_SMAG[k].average();
   }
 }
 
 #ifdef MULTI
-inline void Measurement::allreduce(MPI_Comm comm){
-  for (int i=0; i<NPHY; i++){
+inline void Measurement::allreduce(MPI_Comm comm) {
+  for (int i = 0; i < NPHY; i++) {
     PHY[i].allreduce(comm);
   }
-  for (int k=0; k < WV.NK; ++k){
+  for (int k = 0; k < WV.NK; ++k) {
     PHY_SMAG[k].allreduce(comm);
   }
 }
@@ -225,7 +245,7 @@ inline void Measurement::show(FILE* F) {
   for (int i = 0; i < NPHY; i++) {
     PHY[i].show(F, "R");
   }
-  for (int k=0; k < WV.NK; ++k){
+  for (int k = 0; k < WV.NK; ++k) {
     PHY_SMAG[k].show(F, "R");
   }
 }
@@ -244,7 +264,9 @@ inline void Measurement::dump() {
   }
 }
 
-inline void Measurement::accumulate_length(double len, double sgn) { ACC[Specific::LE1].accumulate(len * sgn); }
+inline void Measurement::accumulate_length(double len, double sgn) {
+  ACC[Specific::LE1].accumulate(len * sgn);
+}
 
 void Measurement::save(std::ofstream& F) const {
   Serialize::save(F, ACC);
@@ -277,33 +299,33 @@ void Measurement::measure(double sgn) {
   using namespace Specific;
   int NV = LAT.countVertices();
 
-  double MZUA = 0.0;  // uniform,   tau=0
-  double MZUB = 0.0;  // uniform,   integrated
+  double MZUA = 0.0;                // uniform,   tau=0
+  double MZUB = 0.0;                // uniform,   integrated
   std::vector<double> MZSA(WV.NK);  // staggered, tau=0
   std::vector<double> MZSB(WV.NK);  // staggered, integrated
 
-  const double T    = 1.0 / LAT.BETA;
+  const double T = 1.0 / LAT.BETA;
   const double invV = 1.0 / LAT.NSITE;
 
   for (int s = 0; s < LAT.NSITE; s++) {
-    Site& SITE  = LAT.S(s);
+    Site& SITE = LAT.S(s);
     SiteProperty& SP = SITE.Property();
     Segment& S0 = SITE.first();
-    double mz0  = SP.XVALS[S0.X()];
+    double mz0 = SP.XVALS[S0.X()];
     Site::iterator p(SITE);
     double mza0 = 0.0;
 
-    std::vector<double> const &ph = WV.COSrk[s];
+    std::vector<double> const& ph = WV.COSrk[s];
 
     while (!(++p).atOrigin()) {
       Segment& S = *p;
-      double mz  = SP.XVALS[S.X()];
+      double mz = SP.XVALS[S.X()];
       mza0 += mz * S.length();
     }
 
     MZUA += mz0;
     MZUB += mza0;
-    for(int k=0; k<WV.NK; ++k){
+    for (int k = 0; k < WV.NK; ++k) {
       MZSA[k] += ph[k] * mz0;
       MZSB[k] += ph[k] * mza0;
     }
@@ -311,18 +333,18 @@ void Measurement::measure(double sgn) {
   MZUA *= invV;
   MZUB *= invV;
   MZUB *= T;
-  for(int k=0; k<WV.NK; ++k){
+  for (int k = 0; k < WV.NK; ++k) {
     MZSA[k] *= invV;
     MZSB[k] *= invV;
     MZSB[k] *= T;
   }
 
-  double EBSAMP = -(double)NV;
+  double EBSAMP = -NV;
 
   for (int b = 0; b < LAT.NINT; b++) {
-    Interaction& I          = LAT.I(b);
+    Interaction& I = LAT.I(b);
     InteractionProperty& IP = I.property();
-    //VertexProperty& VP = IP.getVertexProperty();
+    // VertexProperty& VP = IP.getVertexProperty();
     int NBODY = IP.NBODY;
     std::vector<double> tau(NBODY);
     std::vector<int> x(NBODY);
@@ -333,7 +355,7 @@ void Measurement::measure(double sgn) {
       p[i].init(S);
       ++p[i];
       tau[i] = p[i]->topTime();
-      x[i]   = p[i]->X();
+      x[i] = p[i]->X();
     }
 
     double t = 0.0;
@@ -346,20 +368,20 @@ void Measurement::measure(double sgn) {
       t = tau[it];
       ++p[it];
       tau[it] = p[it]->topTime();
-      x[it]   = p[it]->X();
+      x[it] = p[it]->X();
     }
   }
 
   ACC[SGN].accumulate(sgn);
 
-  ACC[NV1].accumulate(sgn*NV);
+  ACC[NV1].accumulate(sgn * NV);
 
   ACC[MZUA1].accumulate(sgn * MZUA);
   ACC[MZUA2].accumulate(sgn * MZUA * MZUA);
   ACC[MZUB1].accumulate(sgn * MZUB);
   ACC[MZUB2].accumulate(sgn * MZUB * MZUB);
 
-  for(int k=0; k<WV.NK; ++k){
+  for (int k = 0; k < WV.NK; ++k) {
     ACC_SMAG[k].A1.accumulate(sgn * MZSA[k]);
     ACC_SMAG[k].A2.accumulate(sgn * MZSA[k] * MZSA[k]);
     ACC_SMAG[k].B1.accumulate(sgn * MZSB[k]);
@@ -378,22 +400,24 @@ void Measurement::measure(double sgn) {
     for (int xi = 0; xi < LAT.NEDGE; xi++) {
       int Asite = LAT.EDGE(xi).A;
       int Bsite = LAT.EDGE(xi).B;
-      int dim   = LAT.EDGE(xi).bd;
+      int dim = LAT.EDGE(xi).bd;
 
-      Site& SITE  = LAT.S(Asite);
+      Site& SITE = LAT.S(Asite);
       Segment& S0 = SITE.first();
       Site::iterator p(SITE);
       int xlast = S0.X();
 
-      //count winding
+      // count winding
 
       while (!(++p).atOrigin()) {
         Segment& S = *p;
         if (xlast != S.X()) {
           if ((*S.bottom().S(0).getONSITE()).id() - 1 == Bsite) {
-            wind[dim] += (double)(S.bottom().S(1).X() - S.bottom().S(0).X());
+            wind[dim] +=
+                static_cast<double>(S.bottom().S(1).X() - S.bottom().S(0).X());
           } else if ((*S.bottom().S(2).getONSITE()).id() - 1 == Bsite) {
-            wind[dim] += (double)(S.bottom().S(3).X() - S.bottom().S(2).X());
+            wind[dim] +=
+                static_cast<double>(S.bottom().S(3).X() - S.bottom().S(2).X());
           }
           xlast = S.X();
         }
@@ -414,7 +438,8 @@ void Measurement::measure(double sgn) {
 
 void Measurement::setsummary() {
   using namespace Specific;
-  double WDIAG = ALG.getBlock("WDIAG", (double)1.0);  //ALG.X["General"]["WDIAG" ].getDouble(); // 0.25
+  double WDIAG = ALG.getBlock(
+      "WDIAG", 1.0);  // ALG.X["General"]["WDIAG" ].getDouble(); // 0.25
 
   std::vector<double> X(NACC);
 
@@ -423,18 +448,18 @@ void Measurement::setsummary() {
     X[i] = ACC[i].mean();
   }
 
-  double B    = LAT.BETA;
-  double T    = 1.0 / B;
-  double V    = LAT.NSITE;
+  double B = LAT.BETA;
+  double T = 1.0 / B;
+  double V = LAT.NSITE;
   double invV = 1.0 / V;
-  double D    = LAT.D;
+  double D = LAT.D;
 
   const double sgn = X[SGN];
-  if (sgn != 0.0){
+  if (sgn != 0.0) {
     const double invsign = 1.0 / sgn;
 
-    for(int i=0; i<NACC; ++i){
-      if(i==SGN){
+    for (int i = 0; i < NACC; ++i) {
+      if (i == SGN) {
         continue;
       }
       X[i] *= invsign;
@@ -456,9 +481,9 @@ void Measurement::setsummary() {
     Q[SMZU] = (X[MZUA2] - X[MZUA1] * X[MZUA1]) * V;
     Q[XMZU] = (X[MZUB2] - X[MZUB1] * X[MZUB1]) * B * V;
 
-    Q[DS1]  = B * (X[NH1] - X[MZUA1] * X[EB1]) / V;
-    Q[W2]   = X[Wxy2];
-    Q[RHOS] = X[Wxy2] / (2*D * V * B);
+    Q[DS1] = B * (X[NH1] - X[MZUA1] * X[EB1]) / V;
+    Q[W2] = X[Wxy2];
+    Q[RHOS] = X[Wxy2] / (2 * D * V * B);
     Q[RHOF] = Q[RHOS] / Q[AMZU];
     Q[COMP] = Q[XMZU] / (X[MZUB1] * X[MZUB1]);
 
@@ -466,23 +491,23 @@ void Measurement::setsummary() {
       PHY[i].accumulate(Q[i]);
     }
 
-    for(int k=0; k<WV.NK; ++k){
+    for (int k = 0; k < WV.NK; ++k) {
       ACC_SMAG[k].average();
     }
 
-    for (int k=0; k<WV.NK; ++k){
+    for (int k = 0; k < WV.NK; ++k) {
       const double a1 = ACC_SMAG[k].A1.mean() * invsign;
       const double a2 = ACC_SMAG[k].A2.mean() * invsign;
       const double b1 = ACC_SMAG[k].B1.mean() * invsign;
       const double b2 = ACC_SMAG[k].B2.mean() * invsign;
       PHY_SMAG[k].A.accumulate(a1);
       PHY_SMAG[k].B.accumulate(a2);
-      PHY_SMAG[k].S.accumulate((a2 - a1*a1)*V);
-      PHY_SMAG[k].X.accumulate((b2 - b1*b1)*B*V);
+      PHY_SMAG[k].S.accumulate((a2 - a1 * a1) * V);
+      PHY_SMAG[k].X.accumulate((b2 - b1 * b1) * B * V);
     }
-  }else{ // sgn == 0.0
+  } else {  // sgn == 0.0
     PHY[SGN].accumulate(0.0);
   }
 }
 
-#endif
+#endif  // SRC_DLA_MEASURE_HPP_

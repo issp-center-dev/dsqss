@@ -1,5 +1,5 @@
-#ifndef QUANTITIES_H
-#define QUANTITIES_H
+#ifndef SRC_PMWA_INC_QUANTITIES_H_
+#define SRC_PMWA_INC_QUANTITIES_H_
 
 #include <complex>
 #include <xml.hpp>
@@ -8,7 +8,7 @@ using namespace XML;
 
 class Quantities {
   //  public:
-private:
+ private:
 #ifdef SF
   XML::Block X;
 #endif
@@ -57,7 +57,24 @@ private:
   int Cknum;
   int NVMAX, NWMAX;
 
-  enum { nver1, nwor1, nkin1, wndx1, wndy1, wndz1, amzu1, smzs1, smzu1, bmz1, xmzs1, magx1, magp1, magm1, ang1, Nq1 };
+  enum {
+    nver1,
+    nwor1,
+    nkin1,
+    wndx1,
+    wndy1,
+    wndz1,
+    amzu1,
+    smzs1,
+    smzu1,
+    bmz1,
+    xmzs1,
+    magx1,
+    magp1,
+    magm1,
+    ang1,
+    Nq1
+  };
   enum {
     nver,
     nwor,
@@ -118,16 +135,22 @@ private:
       }*/
   inline int f_gk2r(int k, int k_) { return k + k_ * Nkxmax + Lsum[ck4 - 1]; }
 
-  inline int f_gk2i(int k, int k_) { return k + k_ * Nkxmax + Lsum[ck4 - 1] + Nkkmax * Nkxmax; }
+  inline int f_gk2i(int k, int k_) {
+    return k + k_ * Nkxmax + Lsum[ck4 - 1] + Nkkmax * Nkxmax;
+  }
 
   inline int f_noise(int k, int k_) { return k + k_ * Nkxmax + Lsum[dkk - 1]; }
 
-  inline int f_ck(int k, int num, int a) { return 5 + k + num * Nkmax + a * Nkmax * Cknum; };
+  inline int f_ck(int k, int num, int a) {
+    return 5 + k + num * Nkmax + a * Nkmax * Cknum;
+  };
 
   inline int f_ck(int k, int num) { return 5 + k + num * Nkmax; };
 
   //  inline int theta(int i, int k){ return i+(k+Nkxmax)*V; };
-  inline int theta(int i, int k, int a) { return i + (k + (2 * a + 1) * Nkmax) * V; }
+  inline int theta(int i, int k, int a) {
+    return i + (k + (2 * a + 1) * Nkmax) * V;
+  }
 
   int *Lmax, *Lsum;
 
@@ -163,11 +186,14 @@ private:
 
   void show_L();
 
-  void RNDsum(double *local, double *global, int Ndiv, int my_rank, int rmax2, int Npara, int);
+  void RNDsum(double *local, double *global, int Ndiv, int my_rank, int rmax2,
+              int Npara, int);
 
-  void TreeSum(int num, double *child, double Normalization, int cnum, int mnum, int Nsum);
+  void TreeSum(int num, double *child, double Normalization, int cnum, int mnum,
+               int Nsum);
 
-  void TreeSum(int num, double *child, double *mother, double Normalization, int cnum, int mnum, int Nsum);
+  void TreeSum(int num, double *child, double *mother, double Normalization,
+               int cnum, int mnum, int Nsum);
 
   int V, Nx, NUM;
   System *sp;
@@ -193,7 +219,7 @@ private:
   double SFD_Norm;
   double cr0, an0;
 
-public:
+ public:
 #ifdef SF
   int Ntau;
   int Ntau1;
@@ -228,7 +254,8 @@ public:
 
   char parainfo[64];
 
-  Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT, Parallel *m_PR, std::string const &sfinfile);
+  Quantities(Size *m_N, MC_p *m_MC, System *m_sp, Lattice *m_LT, Parallel *m_PR,
+             std::string const &sfinfile);
 
   ~Quantities();
 
@@ -236,8 +263,9 @@ public:
 
   void Output(std::string const &fname, double g);
 
-  void Measure(int Nv, int Nk, vector<GraphSpace::Vertex> &ev, vector<GraphSpace::Vertex *> WORM,
-               GraphSpace::Vertex *world, GraphSpace::Vertex *worldB, double length, int m_Wnum, int mcs);
+  void Measure(int Nv, int Nk, vector<GraphSpace::Vertex> &ev,
+               vector<GraphSpace::Vertex *> WORM, GraphSpace::Vertex *world,
+               GraphSpace::Vertex *worldB, double length, int m_Wnum, int mcs);
 
   void Measure();
 
@@ -250,4 +278,4 @@ public:
   void show(ofstream &F, FILE *SFF);
 };
 
-#endif
+#endif // SRC_PMWA_INC_QUANTITIES_H_

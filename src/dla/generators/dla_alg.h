@@ -6,6 +6,7 @@
 
 #include <cmath>
 #include <vector>
+
 #include "array.h"
 #include "io.h"
 #include "name.h"
@@ -30,7 +31,7 @@ void bubble_sort(int N, Array<double>& V, Array<int>& I);
 //######################################################################
 
 class GENERAL {
-public:
+ public:
   std::string comment;
   // "WeightDiagonal"
   // the artificial weight attached to the diagonal state
@@ -44,7 +45,7 @@ public:
 //######################################################################
 
 class SITE {
-public:
+ public:
   int ID;
   int TTYPE;  // the SOURCE type of the worm tail
   int VTYPE;  // the VERTEX type of the worm tail
@@ -58,11 +59,11 @@ public:
   Array<double> WormCreationProbability;
 
   SITE() {
-    _T               = 0;
-    ID               = STYPE::UNDEF;
-    TTYPE            = TTYPE::UNDEF;
-    VTYPE            = VTYPE::UNDEF;
-    NX               = 0;
+    _T = 0;
+    ID = STYPE::UNDEF;
+    TTYPE = TTYPE::UNDEF;
+    VTYPE = VTYPE::UNDEF;
+    NX = 0;
     NumberOfChannels = 0;
   };
 
@@ -82,10 +83,10 @@ public:
 //######################################################################
 
 class VERTEX {
-private:
+ private:
   IndexSystem* _INDX;
 
-public:
+ public:
   int ID;
   std::vector<InitialConfigurationGroup*> icg;
   InitialConfigurationGroup& ICG(int i) { return *(icg[i]); };
@@ -93,9 +94,10 @@ public:
 
   int NBODY;  // the number of sites interacting
   int NLEG;
-  int NICG;  // number of initial configuration group
-  int NICV;  // total number of initial configurations
-  int NST;  // the number of initial states (not including worm type or direction)
+  int NICG;      // number of initial configuration group
+  int NICV;      // total number of initial configurations
+  int NST;       // the number of initial states (not including worm type or
+                 // direction)
   int CATEGORY;  // =0 (TERM), =1 (WORM), =2 (INTERACTION)
   double EBASE;
   Array<double> Weight;
@@ -106,14 +108,14 @@ public:
   IndexSystem& INDX() { return *_INDX; };
 
   VERTEX() {
-    ID       = VTYPE::UNDEF;
-    NBODY    = 0;
-    NLEG     = 0;
-    NICG     = 0;
-    NICV     = 0;
-    NST      = 0;
+    ID = VTYPE::UNDEF;
+    NBODY = 0;
+    NLEG = 0;
+    NICG = 0;
+    NICV = 0;
+    NST = 0;
     CATEGORY = VCAT::UNDEF;
-    EBASE    = 0.0;
+    EBASE = 0.0;
   };
 
   ~VERTEX(){};
@@ -135,16 +137,16 @@ public:
 //######################################################################
 
 class SOURCE {
-public:
+ public:
   int ID;
   int STYPE;
   int VTYPE;
   VERTEX* _V;
   SOURCE() {
-    ID    = TTYPE::UNDEF;
+    ID = TTYPE::UNDEF;
     STYPE = STYPE::UNDEF;
     VTYPE = VTYPE::UNDEF;
-    _V    = 0;
+    _V = 0;
   };
   VERTEX& V() {
     if (_V == 0) {
@@ -161,7 +163,7 @@ public:
 //######################################################################
 
 class INTERACTION {
-public:
+ public:
   int ID;
   int VTYPE;
   int NBODY;
@@ -171,7 +173,7 @@ public:
   Array<double> Sign;
 
   INTERACTION() {
-    ID    = ITYPE::UNDEF;
+    ID = ITYPE::UNDEF;
     VTYPE = VTYPE::UNDEF;
     NBODY = 0;
   };
@@ -186,11 +188,11 @@ public:
 //######################################################################
 
 class InitialConfiguration {
-private:
+ private:
   static int LastID;
   int ID;
 
-public:
+ public:
   friend class InitialConfigurationGroup;
 
   int NBODY;
@@ -209,9 +211,9 @@ public:
   InitialConfiguration() {
     ID = LastID;
     LastID++;
-    State                 = 0;
-    FinalState            = 0;
-    FinalDirection        = 0;
+    State = 0;
+    FinalState = 0;
+    FinalDirection = 0;
     ScatteringProbability = 0;
   };
 
@@ -240,11 +242,11 @@ int InitialConfiguration::LastID = 0;
 //######################################################################
 
 class InitialConfigurationGroup {
-private:
+ private:
   static int LastID;
   int ID;
 
-public:
+ public:
   int NIC;
   int NDIAG;
   Array<double> U;
@@ -299,11 +301,11 @@ int InitialConfigurationGroup::LastID = 0;
 //######################################################################
 
 class QUANTITY {
-private:
+ private:
   int ID;
   std::string NAME;
 
-public:
+ public:
   Array<double> Value;
   Array<bool> isDefined;
   int getID() { return ID; };

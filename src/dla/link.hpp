@@ -1,6 +1,5 @@
-
-#ifndef LINK_H
-#define LINK_H
+#ifndef SRC_DLA_LINK_HPP_
+#define SRC_DLA_LINK_HPP_
 
 #include <cstdio>
 
@@ -26,28 +25,28 @@ inline void abort() {
 
 template <class C>
 class Linked : public C {
-private:
+ private:
   Linked<C>* p;
   Linked<C>* n;
 
-public:
+ public:
   void init() {
     C::init();
     p = this;
     n = this;
-  };
+  }
 
-  Linked() { init(); };
+  Linked() { init(); }
 
-  ~Linked(){};
+  ~Linked() {}
 
-  Linked<C>& prev() { return *p; };
+  Linked<C>& prev() { return *p; }
 
-  Linked<C>& next() { return *n; };
+  Linked<C>& next() { return *n; }
 
-  void set_prev(Linked<C>& x) { p = &x; };
+  void set_prev(Linked<C>& x) { p = &x; }
 
-  void set_next(Linked<C>& x) { n = &x; };
+  void set_next(Linked<C>& x) { n = &x; }
 
   void insert_after(Linked<C>& x);
 
@@ -68,68 +67,68 @@ public:
 
 template <class C>
 class RingIterator {
-private:
-public:
+ private:
+ public:
   C* org;
   C* cur;
 
   void init(C& x) {
     org = &x;
     cur = org;
-  };
+  }
 
   void init(Ring<C>& r) {
     org = &r.root();
     cur = org;
-  };
+  }
 
-  RingIterator(){};
+  RingIterator() {}
 
   RingIterator(const RingIterator& p) {
     org = p.org;
     cur = p.cur;
-  };
+  }
 
-  RingIterator(C& x) { init(x); };
+  RingIterator(C& x) { init(x); }
 
-  RingIterator(Ring<C>& r) { init(r); };
+  RingIterator(Ring<C>& r) { init(r); }
 
-  bool atOrigin() { return cur == org; };
+  bool atOrigin() { return cur == org; }
 
   RingIterator<C> operator+(int i) {
     RingIterator<C> p;
     p.org = org;
     p.cur = &(cur->next());
     return p;
-  };
+  }
 
   RingIterator<C>& operator++() {
     cur = &(cur->next());
     return *this;
-  };
+  }
 
   RingIterator<C> operator++(int) {
     RingIterator<C> ret(*this);
     operator++();
     return ret;
-  };
+  }
 
   RingIterator<C>& operator--() {
     cur = &(cur->prev());
     return *this;
-  };
+  }
 
   RingIterator<C> operator--(int) {
     RingIterator<C> ret(*this);
     operator--();
     return ret;
-  };
+  }
 
-  C* operator->() { return cur; };
-  C& operator*() { return *cur; };
-  void operator=(const C* p) { cur = p; };
-  bool operator==(const C* p) { return cur == p; };
-  bool operator!=(const C* p) { return cur != p; };
+  C* operator->() { return cur; }
+  C& operator*() { return *cur; }
+  void operator=(const C* p) { cur = p; }
+  bool operator==(const C* p) { return cur == p; }
+  bool operator!=(const C* p) { return cur != p; }
 };
 
 //######################################################################
@@ -146,44 +145,44 @@ template <class C>
 class Ring {
   friend class RingIterator<C>;
 
-private:
+ private:
   //  C ROOT;
-public:
+ public:
   C ROOT;
-  C& head() { return ROOT.next(); };
-  C& tail() { return ROOT.prev(); };
+  C& head() { return ROOT.next(); }
+  C& tail() { return ROOT.prev(); }
 
   typedef RingIterator<C> iterator;
 
-  Ring(){};
+  Ring() {}
 
-  ~Ring(){};
+  ~Ring() {}
 
-  bool empty() { return (&(ROOT.next()) == &ROOT); };
+  bool empty() { return (&(ROOT.next()) == &ROOT); }
 
-  C& root() { return ROOT; };
+  C& root() { return ROOT; }
 
-  C& first() { return ROOT.next(); };
+  C& first() { return ROOT.next(); }
 
-  void add_head(C& x) { ROOT.insert_after(x); };
+  void add_head(C& x) { ROOT.insert_after(x); }
 
-  void add_tail(C& x) { ROOT.insert_before(x); };
+  void add_tail(C& x) { ROOT.insert_before(x); }
 
   C& remove_head() {
     C& x = head();
     x.remove();
     return x;
-  };
+  }
 
   C& remove_tail() {
     C& x = tail();
     x.remove();
     return x;
-  };
+  }
 
-  void push(C& x) { add_head(x); };
+  void push(C& x) { add_head(x); }
 
-  C& pop() { return remove_head(); };
+  C& pop() { return remove_head(); }
 
   int count();
 
@@ -195,8 +194,7 @@ public:
     RingIterator<C> p(*this);
     printf("Root: ");
     printf(" %p -> %p -> %p\n", &(p->prev()), &(*p), &(p->next()));
-    while (!(++p).atOrigin())
-      p->dump();
+    while (!(++p).atOrigin()) p->dump();
   }
 };
 
@@ -204,13 +202,13 @@ public:
 
 template <class C>
 class Pool : public Ring<C> {
-private:
+ private:
   int size_max;
   int size_min;
   int size;
 
-public:
-  Pool() : Ring<C>() { size = 0; };
+ public:
+  Pool() : Ring<C>() { size = 0; }
 
   ~Pool();
 
@@ -220,7 +218,7 @@ public:
     size++;
     x.init();
     Ring<C>::push(x);
-  };
+  }
 
   C& pop() {
     if (size == 0) {
@@ -233,10 +231,10 @@ public:
     C& x = Ring<C>::pop();
     //  x.init();
     return x;
-  };
+  }
 
-  int number_of_used_elements() { return size_max - size_min; };
-  void set_n_of_used_elements(int s_used) { size_min = size_max - s_used; };
+  int number_of_used_elements() { return size_max - size_min; }
+  void set_n_of_used_elements(int s_used) { size_min = size_max - s_used; }
 };
 
 //######################################################################
@@ -262,7 +260,7 @@ inline void Linked<C>::insert_before(Linked<C>& x) {
 
 template <class C>
 inline void Linked<C>::remove() {
-  //if (ALERT) {
+  // if (ALERT) {
   //  printf("\nLinked::remove> BEFORE\n");
   //  printf("Linked::remove> *this:\n");
   //  this->dump();
@@ -273,7 +271,7 @@ inline void Linked<C>::remove() {
   //}
   prev().set_next(next());
   next().set_prev(prev());
-  //if (ALERT) {
+  // if (ALERT) {
   //  printf("\nLinked::remove> AFTER\n");
   //  printf("Linked::remove> *this:\n");
   //  this->dump();
@@ -296,8 +294,7 @@ template <class C>
 inline int Ring<C>::count() {
   int c = 0;
   RingIterator<C> p(*this);
-  while (!(++p).atOrigin())
-    c++;
+  while (!(++p).atOrigin()) c++;
   return c;
 }
 
@@ -335,7 +332,7 @@ void Ring<C>::move_to_head(RingIterator<C> it) {
 template <class C>
 inline void Pool<C>::init(int N) {
   // +++ edit sakakura +++
-  //if ( ! Ring<C>::empty() ) {
+  // if ( ! Ring<C>::empty() ) {
   //  printf("Pool: ERROR. Attempt to initialize the pool twice.\n");
   //  exit(0);
   //}
@@ -345,7 +342,7 @@ inline void Pool<C>::init(int N) {
     C& x = *(new C);
     this->add_tail(x);
   }
-  size     = N;
+  size = N;
   size_max = N;
   size_min = N;
 }
@@ -361,4 +358,4 @@ inline Pool<C>::~Pool() {
   }
 }
 
-#endif
+#endif  // SRC_DLA_LINK_HPP_

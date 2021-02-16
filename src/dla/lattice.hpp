@@ -14,39 +14,38 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LATTICE_H
-#define LATTICE_H
-
-//######################################################################
+#ifndef SRC_DLA_LATTICE_HPP_
+#define SRC_DLA_LATTICE_HPP_
 
 #include <cmath>
 #include <cstdio>
 #include <exception>
 #include <string>
+#include <set>
+
 #include <boost/math/special_functions/fpclassify.hpp>
+
 #include "debug.hpp"
 #include "io.h"
 #include "objects.hpp"
 #include "parameter.hpp"
 
-//######################################################################
-
 class Lattice {
-public:
+ public:
   class Edge {
-  public:
+   public:
     void init(int _d, int _a, int _b) {
       bd = _d;
-      A  = _a;
-      B  = _b;
-    };
+      A = _a;
+      B = _b;
+    }
 
     int A;
     int B;
     int bd;
   };
 
-private:
+ private:
   Site* site;                // the list of the poiters to sites
   Interaction* interaction;  // the list of the pointers to interactions
   Edge* edge;                // the list of the poiters to sites
@@ -54,7 +53,7 @@ private:
   XML::Block X;
   Algorithm& ALG;
 
-public:
+ public:
   int D;        // dimension
   int BD;       // bond dimension
   int* L;       // linear size
@@ -94,7 +93,7 @@ public:
     }
     fprintf(F, "\n");
     fprintf(F, "P BETA    = %24.16f\n", BETA);
-  };
+  }
 
   void dump();
 };
@@ -113,7 +112,7 @@ inline Lattice::Lattice(Parameter const& P, Algorithm& A) : ALG(A) {
   X.initialize(P.LATFILE, "LATTICE");
   read();
 
-  if(boost::math::isfinite(P.BETA)){
+  if (boost::math::isfinite(P.BETA)) {
     setBeta(P.BETA);
   }
 
@@ -132,19 +131,19 @@ void Lattice::read() {
   }
   BETA = 1.0;
 
-  NSITE  = X["NumberOfSites"].getInteger();
-  NINT   = X["NumberOfInteractions"].getInteger();
+  NSITE = X["NumberOfSites"].getInteger();
+  NINT = X["NumberOfInteractions"].getInteger();
   NSTYPE = X["NumberOfSiteTypes"].getInteger();
   NITYPE = X["NumberOfInteractionTypes"].getInteger();
 
-  site        = new Site[NSITE];
+  site = new Site[NSITE];
   interaction = new Interaction[NINT];
 
   bool INIT_I = true;
   bool INIT_V = true;
-  BD          = -1;
-  edge        = NULL;
-  vec         = NULL;
+  BD = -1;
+  edge = NULL;
+  vec = NULL;
 
   for (int i = 0; i < X.NumberOfBlocks(); i++) {
     XML::Block& B = X[i];
@@ -165,26 +164,26 @@ void Lattice::read() {
         int sid = B.getInteger(3 + ii);
         I(id).setSite(ii, S(sid));
       }
-      //#ifdef WINDING
 
+// #ifdef WINDING
       if (B.NumberOfValues() > 3 + nb) {
         if (INIT_I) {
-          NEDGE  = X["NumberOfEdgeInteractions"].getInteger();
-          edge   = new Edge[NEDGE];
+          NEDGE = X["NumberOfEdgeInteractions"].getInteger();
+          edge = new Edge[NEDGE];
           INIT_I = false;
         }
 
-        int eid  = B.getInteger(3 + nb);
+        int eid = B.getInteger(3 + nb);
         int edim = B.getInteger(4 + nb);
         if (eid >= 0 && nb == 2) {
           EDGE(eid).init(edim, I(id).site(0).id() - 1, I(id).site(1).id() - 1);
         }
       }
-      //#endif
+// #endif
     }
     if (B.getName() == "Direction") {
       if (INIT_V) {
-        BD  = X["NumberOfBondDirections"].getInteger();
+        BD = X["NumberOfBondDirections"].getInteger();
         vec = new double*[D];
         for (int di = 0; di < D; di++) {
           vec[di] = new double[BD];
@@ -196,7 +195,7 @@ void Lattice::read() {
       int bd = B.getInteger(0);
       for (int di = 0; di < D; di++) {
         double length = B.getDouble(1 + di);
-        vec[di][bd]   = length;
+        vec[di][bd] = length;
       }
     }
   }
@@ -204,12 +203,10 @@ void Lattice::read() {
   if (DEBUG) dump();
 }
 
-//======================================================================
-#include <set>
 void Lattice::initialize() {
   AutoDebugDump("Lattice::initialize");
 
-  //set<Interaction*> InteractionOnEachSite[NSITE];
+  // set<Interaction*> InteractionOnEachSite[NSITE];
   std::set<Interaction*>* InteractionOnEachSite;
   InteractionOnEachSite = new std::set<Interaction*>[NSITE];
 
@@ -224,7 +221,7 @@ void Lattice::initialize() {
   for (int sid = 0; sid < NSITE; sid++) {
     S(sid).setNCI(InteractionOnEachSite[sid].size());
 
-    int counter                    = 0;
+    int counter = 0;
     std::set<Interaction*>::iterator it = InteractionOnEachSite[sid].begin();
 
     while (it != InteractionOnEachSite[sid].end()) {
@@ -243,11 +240,19 @@ void Lattice::initialize() {
 
 inline Lattice::~Lattice() {
   // printf("*** Destroying Lattice\n");
-  if (L != 0) { delete[] L; }
-  if (site != 0) { delete[] site; }
-  if (interaction != 0) { delete[] interaction; }
+  if (L != 0) {
+    delete[] L;
+  }
+  if (site != 0) {
+    delete[] site;
+  }
+  if (interaction != 0) {
+    delete[] interaction;
+  }
 
-  if (edge != NULL) { delete[] edge; }
+  if (edge != NULL) {
+    delete[] edge;
+  }
   if (vec != NULL) {
     for (int i = 0; i < D; i++) {
       delete[] vec[i];
@@ -291,15 +296,15 @@ inline void Lattice::dump() {
 }
 
 void Lattice::setBeta(double beta) {
-  if(beta < 0.0){
+  if (beta < 0.0) {
     std::string msg("ERROR: invalid BETA, ");
     msg += tostring(beta);
     util::ERROR(msg.c_str());
   }
   BETA = beta;
-  for(int i=0;i<NSITE; ++i){
-      S(i).setBeta(BETA);
+  for (int i = 0; i < NSITE; ++i) {
+    S(i).setBeta(BETA);
   }
 }
 
-#endif
+#endif  // SRC_DLA_LATTICE_HPP_

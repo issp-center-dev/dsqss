@@ -14,40 +14,39 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef CALCTIMER_HPP
-#define CALCTIMER_HPP
+#ifndef SRC_DLA_CALCTIMER_HPP_
+#define SRC_DLA_CALCTIMER_HPP_
 
 #include "../common/timer.hpp"
 #include "accumulator.hpp"
 
 class CalcTimer {
-  int NMCS;
   Timer timer;
   Accumulator ACC;
   Accumulator PHY;
 
-public:
-  CalcTimer(int nmcs) : NMCS(nmcs) {PHY.reset("time");}
+ public:
+  CalcTimer() { PHY.reset("time"); }
   void reset_timer() { timer.reset(); }
   void setinit() { ACC.reset("time"); }
-  void measure() { ACC.accumulate(timer.elapsed() / NMCS); }
+  void measure() { ACC.accumulate(timer.elapsed()); }
   void setsummary() {
     ACC.average();
     PHY.accumulate(ACC.mean());
   }
   void summary() { PHY.average(); }
 #ifdef MULTI
-  void allreduce(MPI_Comm comm){ PHY.allreduce(comm);}
+  void allreduce(MPI_Comm comm) { PHY.allreduce(comm); }
 #endif
-  void show(FILE* F) { PHY.show(F,"R"); }
-  void load(std::ifstream& ifs){
+  void show(FILE* F) { PHY.show(F, "R"); }
+  void load(std::ifstream& ifs) {
     ACC.load(ifs);
     PHY.load(ifs);
   }
-  void save(std::ofstream& ofs) const{
+  void save(std::ofstream& ofs) const {
     ACC.save(ofs);
     PHY.save(ofs);
   }
 };
 
-#endif  // TIMER_HPP
+#endif  // SRC_DLA_CALCTIMER_HPP_

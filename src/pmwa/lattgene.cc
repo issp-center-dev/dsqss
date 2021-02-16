@@ -4,20 +4,22 @@
 
 ----------------------------------------------*/
 
-#include <iostream>
-#include <fstream>
 #include <math.h>
-#include <cstdlib>
+
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
+#include <fstream>
+#include <iostream>
 
 using namespace std;
 
 //--------------------------------------------------------------
-void ShowUsage(std::string const& exename) {
+void ShowUsage(std::string const &exename) {
   cout << "usage:\n";
   cout << "    " << exename << " [-o filename] D L B NLdiv NBdiv NFILED\n";
-  cout << "    " << exename << " [-o filename] D L_1 ... L_D B NLdiv NBdiv NFILED\n";
+  cout << "    " << exename
+       << " [-o filename] D L_1 ... L_D B NLdiv NBdiv NFILED\n";
   cout << "arguments:\n";
   cout << "    D ... dimension.                     \n";
   cout << "    L ... the liner size of the lattice. \n";
@@ -33,7 +35,8 @@ void ShowUsage(std::string const& exename) {
 }
 
 //-------------------------------------------------------------
-void WriteXML(int D, int orgL[], double orgB, double orgOB, int NLD, int NBD, int NF, std::string const& filename) {
+void WriteXML(int D, int orgL[], double orgB, double orgOB, int NLD, int NBD,
+              int NF, std::string const &filename) {
   ofstream fout(filename.c_str());
   fout.precision(15);
 
@@ -42,20 +45,20 @@ void WriteXML(int D, int orgL[], double orgB, double orgOB, int NLD, int NBD, in
   for (int i = 0; i < D; i++) {
     L[i] = orgL[i] / NLD;
   }
-  double B = orgB / (double)NBD;
+  double B = orgB / NBD;
 
-  int N = 1;  //number of sites per domain.
+  int N = 1;  // number of sites per domain.
   for (int i = 0; i < D; i++) {
     N *= L[i];
   }
 
-  int NumberOfCells            = N;
-  int NumberOfInteractions     = N * D;  //z/2*N
-  int NumberOfLDecomposition   = NLD;
-  int NumberOfBDecomposition   = NBD;
-  int NumberOfSiteTypes        = 1;  //sub-lattice
+  int NumberOfCells = N;
+  int NumberOfInteractions = N * D;  // z/2*N
+  int NumberOfLDecomposition = NLD;
+  int NumberOfBDecomposition = NBD;
+  int NumberOfSiteTypes = 1;  // sub-lattice
   int NumberOfInteractionTypes = 1;
-  int NumberOfExternalField    = NF;
+  int NumberOfExternalField = NF;
 
   fout << "<LATTICE>" << endl << endl;
   fout << "<Comment>" << endl;
@@ -68,7 +71,8 @@ void WriteXML(int D, int orgL[], double orgB, double orgOB, int NLD, int NBD, in
     fout << orgL[i] << " ";
   }
   fout << "</LinearSize>" << endl;
-  fout << "<NumberOfLDecomposition> " << NLD << " </NumberOfLDecomposition>" << endl;
+  fout << "<NumberOfLDecomposition> " << NLD << " </NumberOfLDecomposition>"
+       << endl;
   fout << "<LinearDomainSize> ";
   for (int i = 0; i < D; i++) {
     fout << L[i] << " ";
@@ -77,15 +81,22 @@ void WriteXML(int D, int orgL[], double orgB, double orgOB, int NLD, int NBD, in
 
   fout << "<Beta> " << orgB << " </Beta>" << endl;
   fout << "<OldBeta> " << orgOB << " </OldBeta>" << endl;
-  fout << "<NumberOfBDecomposition> " << NBD << " </NumberOfBDecomposition>" << endl;
+  fout << "<NumberOfBDecomposition> " << NBD << " </NumberOfBDecomposition>"
+       << endl;
   fout << "<BetaOfDomain> " << B << " </BetaOfDomain>" << endl;
 
-  fout << "<NumberOfCells> " << NumberOfCells << " </NumberOfCells>" << endl;  //L^d units
-  fout << "<NumberOfSites> " << N << " </NumberOfSites>" << endl;              //NumberOfCells*NumberOfSiteTypes
-  fout << "<NumberOfInteractions> " << NumberOfInteractions << " </NumberOfInteractions>" << endl;
-  fout << "<NumberOfSiteTypes> " << NumberOfSiteTypes << " </NumberOfSiteTypes>" << endl;
-  fout << "<NumberOfInteractionTypes> " << NumberOfInteractionTypes << " </NumberOfInteractionTypes>" << endl;
-  fout << "<NumberOfExternalField> " << NumberOfExternalField << " </NumberOfExternalField>" << endl;
+  fout << "<NumberOfCells> " << NumberOfCells << " </NumberOfCells>"
+       << endl;  // L^d units
+  fout << "<NumberOfSites> " << N << " </NumberOfSites>"
+       << endl;  // NumberOfCells*NumberOfSiteTypes
+  fout << "<NumberOfInteractions> " << NumberOfInteractions
+       << " </NumberOfInteractions>" << endl;
+  fout << "<NumberOfSiteTypes> " << NumberOfSiteTypes << " </NumberOfSiteTypes>"
+       << endl;
+  fout << "<NumberOfInteractionTypes> " << NumberOfInteractionTypes
+       << " </NumberOfInteractionTypes>" << endl;
+  fout << "<NumberOfExternalField> " << NumberOfExternalField
+       << " </NumberOfExternalField>" << endl;
   fout << endl;
 
   fout << "<!-- <S> [id] [stype] [mtype] </S> -->" << endl << endl;
@@ -94,9 +105,9 @@ void WriteXML(int D, int orgL[], double orgB, double orgOB, int NLD, int NBD, in
   int mtype = 0;
 
   for (int id = 0; id < N; id++) {
-    int p  = id;
+    int p = id;
     int Nt = N;
-    mtype  = 0;
+    mtype = 0;
     for (int q = D - 1; q >= 0; q--) {
       Nt /= L[q];
       mtype += p / Nt;
@@ -108,14 +119,16 @@ void WriteXML(int D, int orgL[], double orgB, double orgOB, int NLD, int NBD, in
   }
 
   fout << endl;
-  fout << "<!-- <I> [id] [itype] [nbody] [edge id] [s0] [s1] ... </I> -->" << endl << endl;
+  fout << "<!-- <I> [id] [itype] [nbody] [edge id] [s0] [s1] ... </I> -->"
+       << endl
+       << endl;
 
-  int NB    = D * N;  // number of bonds
-  int *x    = new int[D];
+  int NB = D * N;  // number of bonds
+  int *x = new int[D];
   int itype = 0;
   int nbody = 2;
-  int eid   = 0, etype;
-  NB        = 0;
+  int eid = 0, etype;
+  NB = 0;
 
   for (int i = 0; i < N; i++) {
     for (int p = 0; p < D; p++) {
@@ -128,17 +141,19 @@ void WriteXML(int D, int orgL[], double orgB, double orgOB, int NLD, int NBD, in
       if (x[p] == L[p] - 1) {
         etype = eid;
         eid++;
-      } else
+      } else{
         etype = -1;
+      }
 
-      x[p]  = (x[p] + 1) % L[p];
+      x[p] = (x[p] + 1) % L[p];
       int j = 0;
       for (int q = D - 1; q >= 0; q--) {
         j *= L[q];
         j += x[q];
       }
 
-      fout << "<I> " << NB << " " << itype << " " << nbody << " " << etype << " " << i << " " << j << " </I>" << endl;
+      fout << "<I> " << NB << " " << itype << " " << nbody << " " << etype
+           << " " << i << " " << j << " </I>" << endl;
 
       NB++;
     }
@@ -153,11 +168,11 @@ void WriteXML(int D, int orgL[], double orgB, double orgOB, int NLD, int NBD, in
 int main(int argc, char **argv) {
   std::string exename(argv[0]);
   std::string filename("lattice.xml");
-  if(argc < 3){
+  if (argc < 3) {
     ShowUsage(exename);
     exit(0);
   }
-  if(std::strcmp(argv[1], "-o")==0){
+  if (std::strcmp(argv[1], "-o") == 0) {
     filename = argv[2];
     argc -= 2;
     argv += 2;
@@ -169,29 +184,29 @@ int main(int argc, char **argv) {
   }
   const int D = atoi(argv[1]);
   //  int        L[D] ;
-  int *L   = new int[D];
+  int *L = new int[D];
   double B = 0.0;
-  int NLD  = 1;
-  int NBD  = 1;
-  int NF   = 0;
+  int NLD = 1;
+  int NBD = 1;
+  int NF = 0;
 
   if (argc == NARG + 1) {
     int lx = atoi(argv[2]);
     for (int i = 0; i < D; i++) {
       L[i] = lx;
     }
-    B   = (double)atof(argv[3]);
+    B = atof(argv[3]);
     NLD = atoi(argv[4]);
     NBD = atoi(argv[5]);
-    NF  = atoi(argv[6]);
+    NF = atoi(argv[6]);
   } else if (argc == D + NARG) {
     for (int i = 0; i < D; i++) {
       L[i] = atoi(argv[2 + i]);
     }
-    B   = (double)atof(argv[D + NARG - 4]);
+    B = atof(argv[D + NARG - 4]);
     NLD = atoi(argv[D + NARG - 3]);
     NBD = atoi(argv[D + NARG - 2]);
-    NF  = atoi(argv[D + NARG - 1]);
+    NF = atoi(argv[D + NARG - 1]);
   } else {
     cout << "error: D != number of L[]." << endl;
     ShowUsage(exename);
@@ -217,7 +232,9 @@ int main(int argc, char **argv) {
   cout << "NBdiv = " << NBD << endl;
   cout << "NFIELD = " << NF << endl;
 
-  if (EvenOrOdd) { cout << "Warnig: L should be an even number." << endl; }
+  if (EvenOrOdd) {
+    cout << "Warnig: L should be an even number." << endl;
+  }
 
   WriteXML(D, L, B, B, NLD, NBD, NF, filename);
   cout << "... done." << endl;

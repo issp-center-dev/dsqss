@@ -1,31 +1,32 @@
-#ifndef XML_H
-#define XML_H
+#ifndef SRC_PMWA_INC_XML_HPP_
+#define SRC_PMWA_INC_XML_HPP_
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include <iostream>
-#include <fstream>
-#include <sstream>
+
 #include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 #include <string>
 
-//io.h (here)##################
+// io.h (here)##################
 #define BLEN 256
 
 inline int line_split(char *line, std::string *w) {
   std::string s(line);
   std::istringstream ist(s);
   int nw = 0;
-  while (ist >> w[nw++])
-    ;
+  while (ist >> w[nw++]) {
+  }
   nw--;
   return nw;
 }
 
 class FileReader {
-private:
+ private:
   std::string EOL;
   char NAME[BLEN];
   char LINE[BLEN];
@@ -35,7 +36,7 @@ private:
   std::ifstream INS;
   std::streampos top;
 
-public:
+ public:
   void open(const char *name) {
     strcpy(NAME, name);
     INS.open(NAME);
@@ -43,27 +44,29 @@ public:
     if (!INS) {
       printf("FILEIO::FILEIO> Error.\n");
       exit(0);
-    };
+    }
     IL = 0;
-  };
+  }
 
-  FileReader() { EOL = "_E_O_L_"; };
+  FileReader() { EOL = "_E_O_L_"; }
 
   void rewind() {
     INS.clear();
     INS.seekg(top);
-  };
+  }
 
   int split() {
     NW = line_split(LINE, WORD);
     return NW;
-  };
+  }
 
   bool read() {
-    bool b = (bool)INS.getline(LINE, BLEN);
-    if (b) { IL++; }
+    bool b = static_cast<bool>(INS.getline(LINE, BLEN));
+    if (b) {
+      IL++;
+    }
     return b;
-  };
+  }
 
   std::string &word(int i) {
     if (i < 0 && i >= NW) {
@@ -71,38 +74,38 @@ public:
       exit(0);
     }
     return WORD[i];
-  };
+  }
 
   void getWordList(int &NW, std::string *&W);
 };
 
-//io.h (end)################
-//array.h (here)##################
+// io.h (end)################
+// array.h (here)##################
 //---------------------------------
 class IndexSystem {
-private:
+ private:
   bool INI;
   std::string LBL;  // label
   int D;
   int *L;
   int N;
 
-public:
+ public:
   void init(const int d, const int *l, const std::string &LBL0 = "");
 
-  IndexSystem() { INI = false; };
+  IndexSystem() { INI = false; }
 
   ~IndexSystem() {
     if (initialized()) delete[] L;
-  };
+  }
 
-  bool initialized() const { return INI; };
+  bool initialized() const { return INI; }
 };
 
 //------------------------------
 template <class C>
 class Array {
-private:
+ private:
   std::string LBL;  // label
   int D;
   C *val;
@@ -110,11 +113,11 @@ private:
 
   void init(va_list &ap);
 
-public:
+ public:
   Array() {
     LBL = "";
     val = 0;
-  };
+  }
 
   ~Array();
 
@@ -132,14 +135,14 @@ C &Array<C>::operator[](const int i) {
 
 //======================================================================
 
-//array.h (end)##################
+// array.h (end)##################
 
 namespace XML {
 
 class Block;
 
 class Block {
-private:
+ private:
   std::string EOL;
   std::string Name;   // the name of the element
   std::string *Word;  // the whole list of words to be processed
@@ -150,26 +153,24 @@ private:
   int NV;  // the number of values
   Array<std::string> Value;
 
-public:
+ public:
   void initialize(std::string *word, const std::string &name = "");
 
   void initialize(const std::string &FNAME, const std::string &name = "");
 
   Block() {
-    NB  = 0;
-    NV  = 0;
+    NB = 0;
+    NV = 0;
     EOL = "_E_O_L_";
-  };
+  }
 
-  ~Block(){
-      //    printf("*** Destroying XML::Block (%s)\n", Name.c_str());
-  };
+  ~Block() {
+    //    printf("*** Destroying XML::Block (%s)\n", Name.c_str());
+  }
 
   void read();
 
-  ////
   bool syntax_error();
-  ///
 
   Block &operator[](const int &i);
 
@@ -185,9 +186,9 @@ public:
 
   Block &getElement(const std::string &name);
 
-  const int &NumberOfBlocks() const { return NB; };
+  const int &NumberOfBlocks() const { return NB; }
 
-  const int &NumberOfValues() const { return NV; };
+  const int &NumberOfValues() const { return NV; }
 };
 
 inline int Block::getInteger(const int i) {
@@ -212,7 +213,7 @@ inline double Block::getDouble(const int i) {
   }
 #endif
   std::string &s = getString(i);
-  return (double)atof(s.c_str());
+  return atof(s.c_str());
 }
 
 inline const std::string &Block::getName() const { return Name; }
@@ -237,4 +238,4 @@ inline std::string &Block::getString(const int i) {
 
 }  // namespace XML
 
-#endif
+#endif  // SRC_PMWA_INC_XML_HPP_

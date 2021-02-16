@@ -24,7 +24,8 @@ void My_rdm::ingen(char *fname) {
   fin.close();
 }
 
-My_rdmi::My_rdmi(long seed, long iMax) : gen_i(seed), dst_i(0, iMax - 1), rdm_i(gen_i, dst_i) {}
+My_rdmi::My_rdmi(long seed, long iMax)
+    : gen_i(seed), dst_i(0, iMax - 1), rdm_i(gen_i, dst_i) {}
 
 My_rdmi::~My_rdmi() {}
 
@@ -48,7 +49,8 @@ void My_rdmi::ingen(char *fname) {
   fin.close();
 }
 
-My_rdms::My_rdms(long seed, short iMax) : gen_s(seed), dst_s(0, iMax - 1), rdm_s(gen_s, dst_s) {}
+My_rdms::My_rdms(long seed, short iMax)
+    : gen_s(seed), dst_s(0, iMax - 1), rdm_s(gen_s, dst_s) {}
 
 My_rdms::~My_rdms() {}
 

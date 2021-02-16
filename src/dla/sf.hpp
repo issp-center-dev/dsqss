@@ -14,22 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SF_H
-#define SF_H
+#ifndef SRC_DLA_SF_HPP_
+#define SRC_DLA_SF_HPP_
 
-#include <vector>
 #include <cstring>
 #include <fstream>
 #include <sstream>
-#include "debug.hpp"
+#include <vector>
+
 #include "accumulator.hpp"
+#include "algorithm.hpp"
+#include "debug.hpp"
+#include "lattice.hpp"
 #include "parameter.hpp"
 #include "wavevector.hpp"
-#include "algorithm.hpp"
-#include "lattice.hpp"
 
 class SF {
-private:
+ private:
   bool to_be_calc;
   Lattice& LAT;
   Algorithm& ALG;
@@ -45,7 +46,7 @@ private:
   std::vector<std::vector<double> > counterC;
   std::vector<std::vector<double> > counterS;
 
-public:
+ public:
   SF(Parameter const& param, Lattice& lat, Algorithm& alg, WaveVector& wv);
   void setinit();
   void measure(double sgn);
@@ -64,7 +65,7 @@ public:
         counterS[ik][it] = 0.0;
       }
     }
-  };
+  }
 
   void save(std::ofstream& F) const;
   void load(std::ifstream& F);
@@ -79,10 +80,9 @@ SF::SF(Parameter const& param, Lattice& lat, Algorithm& alg, WaveVector& wv)
       wv(wv),
       NK(wv.NK),
       Ntau(param.NTAU),
-      dtau(param.BETA/param.NTAU)
-{
+      dtau(param.BETA / param.NTAU) {
   AutoDebugDump("SF::SF");
-  if (wv.defined){
+  if (wv.defined) {
     to_be_calc = true;
     SIGN.reset();
     for (int i = 0; i < NK; i++) {
@@ -100,19 +100,22 @@ SF::SF(Parameter const& param, Lattice& lat, Algorithm& alg, WaveVector& wv)
       counterS.push_back(std::vector<double>(Ntau));
     }
   }
-};
+}
 
 inline void SF::setinit() {
-  if (!to_be_calc) { return; }
+  if (!to_be_calc) {
+    return;
+  }
   AutoDebugDump("SF::setinit");
   SIGN.reset();
   for (int i = 0; i < NK; i++)
-    for (int itau = 0; itau < Ntau; itau++)
-      ACC[i][itau].reset();
+    for (int itau = 0; itau < Ntau; itau++) ACC[i][itau].reset();
 }
 
 void SF::measure(double sgn) {
-  if (!to_be_calc) { return; }
+  if (!to_be_calc) {
+    return;
+  }
   AutoDebugDump("SF::measure");
   reset();
 
@@ -122,12 +125,12 @@ void SF::measure(double sgn) {
     Site::iterator p(SITE);
 
     double bTri = 0.0;
-    double tau  = 0.0;
-    int it      = 0;
+    double tau = 0.0;
+    int it = 0;
 
     while (!(++p).atOrigin()) {
       Segment& S = *p;
-      double mz  = SP.XVALS[S.X()];
+      double mz = SP.XVALS[S.X()];
 
       double tTri = bTri + S.length();
 
@@ -152,8 +155,8 @@ void SF::measure(double sgn) {
     for (int it = 0; it < Ntau; it++) {
       double SZKT = 0.0;
       for (int tt = 0; tt < Ntau; tt++) {
-        SZKT += counterC[ik][tt] * counterC[ik][(tt + it) % Ntau]
-                + counterS[ik][tt] * counterS[ik][(tt + it) % Ntau];
+        SZKT += counterC[ik][tt] * counterC[ik][(tt + it) % Ntau] +
+                counterS[ik][tt] * counterS[ik][(tt + it) % Ntau];
       }
       ACC[ik][it].accumulate(sgn * SZKT * invNtau);
     }
@@ -161,32 +164,37 @@ void SF::measure(double sgn) {
 }
 
 inline void SF::show(FILE* F) {
-  if (!to_be_calc) { return; }
+  if (!to_be_calc) {
+    return;
+  }
   AutoDebugDump("SF::show");
   for (int i = 0; i < NK; i++) {
     for (int it = 0; it < Ntau; it++) {
-      PHY[i][it].show(F,"R");
+      PHY[i][it].show(F, "R");
     }
     fprintf(F, "\n");
   }
-};
+}
 
 inline void SF::summary() {
-  if (!to_be_calc) { return; }
+  if (!to_be_calc) {
+    return;
+  }
   AutoDebugDump("SF::summary");
   for (int i = 0; i < NK; i++)
-    for (int itau = 0; itau < Ntau; itau++)
-      PHY[i][itau].average();
+    for (int itau = 0; itau < Ntau; itau++) PHY[i][itau].average();
 }
 
 void SF::setsummary() {
-  if (!to_be_calc) { return; }
+  if (!to_be_calc) {
+    return;
+  }
   AutoDebugDump("SF::setsummary");
   const double invV = 1.0 / LAT.NSITE;
   SIGN.average();
   const double sgn = SIGN.mean();
-  if (sgn != 0.0){
-    const double invsign = 1.0/sgn;
+  if (sgn != 0.0) {
+    const double invsign = 1.0 / sgn;
     for (int ik = 0; ik < NK; ik++) {
       for (int it = 0; it < Ntau; it++) {
         ACC[ik][it].average();
@@ -198,7 +206,7 @@ void SF::setsummary() {
 }
 
 #ifdef MULTI
-void SF::allreduce(MPI_Comm comm){
+void SF::allreduce(MPI_Comm comm) {
   for (int ik = 0; ik < NK; ik++) {
     for (int it = 0; it < Ntau; it++) {
       PHY[ik][it].allreduce(comm);
@@ -217,14 +225,14 @@ void SF::load(std::ifstream& F) {
   Serialize::load(F, SIGN);
   Serialize::load(F, ACC);
   const int nk = ACC.size();
-  if(nk != NK){
+  if (nk != NK) {
     std::cerr << "ERROR: NK is mismatched" << std::endl;
     std::cerr << "       sfinpfile maybe changed." << std::endl;
     exit(1);
   }
-  if(NK > 0){
+  if (NK > 0) {
     const int ntau = ACC[0].size();
-    if(ntau != Ntau){
+    if (ntau != Ntau) {
       std::cerr << "ERROR: Ntau is mismatched" << std::endl;
       std::cerr << "       sfinpfile maybe changed." << std::endl;
       exit(1);
@@ -233,4 +241,4 @@ void SF::load(std::ifstream& F) {
   Serialize::load(F, PHY);
 }
 
-#endif  // SF_H
+#endif  // SRC_DLA_SF_HPP_

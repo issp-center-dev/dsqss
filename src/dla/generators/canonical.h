@@ -12,8 +12,7 @@ dgematrix DensityMatrix(double B, vector<double>& V, dgematrix& U) {
   double emin = V[0];
   for (int i = 0; i < DIM; i++)
     if (emin > V[i]) emin = V[i];
-  for (int i = 0; i < DIM; i++)
-    W(i, i) = exp(-B * (V[i] - emin));
+  for (int i = 0; i < DIM; i++) W(i, i) = exp(-B * (V[i] - emin));
   return U * W * UT;
 }
 
@@ -34,18 +33,17 @@ double chi(double B, double E1, double E0) {
 //     --> <Q^2>-<Q>^2 (in the classical or the high-T limit)
 //
 double Susceptibility(double B, vector<double>& V, dgematrix& U, dgematrix& Q) {
-  int DIM     = V.size();
-  double* E   = new double[DIM];
+  int DIM = V.size();
+  double* E = new double[DIM];
   double emin = V[0];
   for (int i = 0; i < DIM; i++)
     if (V[i] < emin) emin = V[i];
-  for (int i = 0; i < DIM; i++)
-    E[i] = V[i] - emin;
+  for (int i = 0; i < DIM; i++) E[i] = V[i] - emin;
 
   dgematrix UT(DIM, DIM);
   dgematrix W(DIM, DIM);
   UT = t(U);
-  W  = UT * Q * U;
+  W = UT * Q * U;
 
   double Z0 = 0.0;
   double Z1 = 0.0;
@@ -69,7 +67,7 @@ double Susceptibility(double B, vector<double>& V, dgematrix& U, dgematrix& Q) {
 double CanonicalAverage(dgematrix& R, dgematrix& Q) {
   double z0 = 0.0;
   double z1 = 0.0;
-  int n     = R.n;
+  int n = R.n;
   dgematrix W(n, n);
   W = R * Q;
   for (int i = 0; i < n; i++) {

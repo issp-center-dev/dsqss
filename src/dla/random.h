@@ -31,37 +31,37 @@ typedef unsigned int Rint;
 // using M series method
 // X(t) := X(t-32) xor X(t-521)
 class Random {
-private:
+ private:
   Rint nrbit, iptr, navr;
   Rint iri[IPP];
   double runit;
 
-private:
+ private:
   void initialize(Rint irand0, Rint nrbit0);
   //: Initialization
-  //!param: irand0 - seed for 521 initial random numbers
-  //!param: nrbit0 - precision (number of bit)
+  //! param: irand0 - seed for 521 initial random numbers
+  //! param: nrbit0 - precision (number of bit)
 
-public:
+ public:
   Random(Rint *seed, Rint nrbit0);
   //: Constructor
-  //!param: seed - 521 initial random numbers
-  //!param: nrbit0 - precision (number of bit)
+  //! param: seed - 521 initial random numbers
+  //! param: nrbit0 - precision (number of bit)
 
   Random(Rint irand0 = 20000101, Rint nrbit0 = 32);
   //: Constructor
-  //!param: irand0 - seed for 521 initial random numbers
-  //!param: nrbit0 - precision (number of bit)
+  //! param: irand0 - seed for 521 initial random numbers
+  //! param: nrbit0 - precision (number of bit)
 
   void setSeed(Rint irand0, Rint nrbit0 = 32);
   //: Reset
-  //!param: irand0 - seed for 521 initial random numbers
-  //!param: nrbit0 - precision (number of bit)
+  //! param: irand0 - seed for 521 initial random numbers
+  //! param: nrbit0 - precision (number of bit)
 
   void setSeed(Rint *seed, Rint nrbit0);
   //: Reset
-  //!param: seed - 521 initial random numbers
-  //!param: nrbit0 - precision (number of bit)
+  //! param: seed - 521 initial random numbers
+  //! param: nrbit0 - precision (number of bit)
 
   Rint getSeed(Rint *seed);
   //: Return seed and nrbit0
@@ -77,19 +77,19 @@ public:
 
   void Uniform(Rint nr, Rint *ir);
   //: Uniform integers
-  //!param: nr - the number of random numbers to be generated
-  //!param: ir - pointer to store outputs
+  //! param: nr - the number of random numbers to be generated
+  //! param: ir - pointer to store outputs
 
   void Uniform(Rint nr, double *rx);
   //: Uniform reals
-  //!param: nr - the number of random numbers to be generated
-  //!param: rx - pointer to store outputs
+  //! param: nr - the number of random numbers to be generated
+  //! param: rx - pointer to store outputs
 
   void Int(Rint nr, Rint *ir, Rint ilimit);
   //: Uniform integers
-  //!param: nr - the number of random numbers to be generated
-  //!param: ir - pointer to store outputs
-  //!param: ilimit - maximum
+  //! param: nr - the number of random numbers to be generated
+  //! param: ir - pointer to store outputs
+  //! param: ilimit - maximum
 
   double Gauss() {
     double theta;
@@ -99,7 +99,7 @@ public:
 
   double Exp() { return -log(1e0 - Uniform()); }
 
-  int Binary(double P) { return ((int)(Uniform() / P)); }
+  int Binary(double P) { return (static_cast<int>(Uniform() / P)); }
 
   void Perm(Rint, int *);
 

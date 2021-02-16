@@ -1,0 +1,43 @@
+name: Test
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: apt
+        run: |
+          sudo apt install \
+            gcc gfortran cmake wget liblapack-dev \
+            openmpi-bin libopenmpi-dev
+
+      - name: pip install
+        run: |
+          python -m pip install -U pip
+
+      - name: make workspace
+        run: cmake -E make_directory ${{runner.workspace}}/build
+
+      - name: cmake
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: cmake -DCMAKE_VERBOSE_MAKEFILE=1 $GITHUB_WORKSPACE
+
+      - name: build
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: cmake --build ./
+
+      - name: ctest
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: ctest -V

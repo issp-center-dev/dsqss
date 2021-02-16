@@ -1,3 +1,19 @@
+// DSQSS (Discrete Space Quantum Systems Solver)
+// Copyright (C) 2018- The University of Tokyo
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 //######################################################################
 //####
 //####  World-Line Monte Carlo simulation
@@ -16,34 +32,18 @@
 //####
 //######################################################################
 
-// DSQSS (Discrete Space Quantum Systems Solver)
-// Copyright (C) 2018- The University of Tokyo
-//
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-#ifndef ACCUMULATOR_H
-#define ACCUMULATOR_H
+#ifndef SRC_DLA_ACCUMULATOR_HPP_
+#define SRC_DLA_ACCUMULATOR_HPP_
 
 //######################################################################
 
 #include <cstdio>
-#include <iostream>
-#include <string>
 #include <cstring>
-#include <sstream>
 #include <fstream>
 #include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <string>
 
 #ifdef MULTI
 #include "mpi.h"
@@ -52,18 +52,17 @@
 #include "name.h"
 #include "serialize.hpp"
 
-class Accumulator{
-private:
+class Accumulator {
+ private:
   std::string k;
   double value;
   double error;
   double s1, s2;
   int n;
 
-
-public:
-  Accumulator() : k("Unset"){};
-  explicit Accumulator(std::string const& s) : k(s){};
+ public:
+  Accumulator() : k("Unset"){}
+  explicit Accumulator(std::string const& s) : k(s){}
 
   void reset() {
     k = "Unset";
@@ -71,19 +70,19 @@ public:
     error = 0.0;
     s1 = 0.0;
     s2 = 0.0;
-    n  = 0;
-  };
+    n = 0;
+  }
   void reset(std::string const& s) {
     reset();
     set_key(s);
-  };
-  void set_key(std::string const& s) { k = s; };
+  }
+  void set_key(std::string const& s) { k = s; }
 
   void accumulate(double x) {
     n++;
     s1 += x;
     s2 += (x * x);
-  };
+  }
 
   void average() {
     value = 0.0;
@@ -99,19 +98,20 @@ public:
         error = 0.0;
       }
     }
-  };
+  }
 
   const char* ckey() const { return k.c_str(); }
   std::string key() const { return k; }
   double mean() const { return value; }
-  double std_error() const { return error;}
+  double std_error() const { return error; }
 
   std::string dump() const {
     std::stringstream ss;
-    ss << k << " = " << std::setprecision(8) << std::scientific << value << " " << error;
+    ss << k << " = " << std::setprecision(8) << std::scientific << value << " "
+       << error;
     return ss.str();
   }
-  void show() const { std::cout << dump() << std::endl;}
+  void show() const { std::cout << dump() << std::endl; }
   void show(FILE* F) const {
     std::string s = dump();
     std::fprintf(F, "%s\n", s.c_str());
@@ -124,7 +124,7 @@ public:
     std::fprintf(F, "%s %s\n", prefix, s.c_str());
   }
 
-  std::ofstream& save(std::ofstream& F) const{
+  std::ofstream& save(std::ofstream& F) const {
     Serialize::save(F, k);
     Serialize::save(F, value);
     Serialize::save(F, error);
@@ -133,7 +133,7 @@ public:
     Serialize::save(F, n);
     return F;
   }
-  std::ifstream& load(std::ifstream& F){
+  std::ifstream& load(std::ifstream& F) {
     Serialize::load(F, k);
     Serialize::load(F, value);
     Serialize::load(F, error);
@@ -144,7 +144,7 @@ public:
   }
 
 #ifdef MULTI
-  void allreduce(MPI_Comm comm){
+  void allreduce(MPI_Comm comm) {
     double s1_tmp, s2_tmp;
     int n_tmp;
     MPI_Allreduce(&s1, &s1_tmp, 1, MPI_DOUBLE, MPI_SUM, comm);
@@ -157,15 +157,15 @@ public:
 #endif
 };
 
-namespace Serialize{
+namespace Serialize {
 template <>
-void save(std::ofstream& F, Accumulator const& acc){
+void save(std::ofstream& F, Accumulator const& acc) {
   acc.save(F);
 }
 template <>
-void load(std::ifstream& F, Accumulator & acc){
+void load(std::ifstream& F, Accumulator& acc) {
   acc.load(F);
 }
-}
+}  // namespace Serialize
 
-#endif // ACCUMULATOR_H
+#endif  // SRC_DLA_ACCUMULATOR_HPP_

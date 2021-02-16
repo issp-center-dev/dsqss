@@ -2,6 +2,7 @@
 #define MY_RDM_H
 
 #include <random.h>
+
 #include <fstream>
 #include <iostream>
 using namespace std;
@@ -9,7 +10,7 @@ using namespace std;
 class My_rdm {
   Random RND;
 
-public:
+ public:
   void outgen(std::string const& fname);
   void ingen(std::string const& fname);
 

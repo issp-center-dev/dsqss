@@ -4,24 +4,27 @@
 
 ----------------------------------------------*/
 
-#include <stdio.h>
-#include <iostream>
-#include <stdlib.h>
-#include <fstream>
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <fstream>
+#include <iostream>
 
 using namespace std;
 
 //--------------------------------------------------------------
 void ShowUsage(int argc, char **argv) {
-  cout << "usage: $ " << argv[0] << " [ D,  L0 , L1 , Ntau, Ntau_cutoff, KTYPE ]     \n";
+  cout << "usage: $ " << argv[0]
+       << " [ D,  L0 , L1 , Ntau, Ntau_cutoff, KTYPE ]     \n";
   cout << "    Hypercubic lattice L0 x L1 x L2...          \n";
   cout << "                                         \n";
   cout << "    L0, L1 ... the liner size of the lattice. \n";
   cout << "          ( L0, L1, ..., must be even number. )\n";
   cout << " available  KTYPE=0: kx=pi n/L, n=0,2, 4,,,, L" << endl;
   cout << " available  KTYPE=1: k=(pi,0),(pi,pi),(0,pi),(pi/2,pi/2)" << endl;
-  cout << " available  KTYPE=2: k=(pi 7/8,pi 1/8),(pi 3/4,pi/4),(pi 5/8,pi 3/8)" << endl;
+  cout << " available  KTYPE=2: k=(pi 7/8,pi 1/8),(pi 3/4,pi/4),(pi 5/8,pi 3/8)"
+       << endl;
   cout << " available  KTYPE=3: k=(pi 7/8,pi 7/8)" << endl;
 }
 
@@ -29,21 +32,21 @@ void ShowUsage(int argc, char **argv) {
 void WriteXML(int D, int L[], int Ntau, int CutoffOfNtau, int KTYPE) {
   ofstream fout("sf.xml");
   fout.precision(8);
-  int N = 1;  //number of sites.
+  int N = 1;  // number of sites.
   for (int i = 0; i < D; i++) {
     N *= L[i];
   }
   int KMAX;
 
-  if (KTYPE == 0)
+  if (KTYPE == 0) {
     KMAX = L[0] / 2 + 1;
-  else if (KTYPE == 1)
+  } else if (KTYPE == 1) {
     KMAX = 4;
-  else if (KTYPE == 2)
+  } else if (KTYPE == 2) {
     KMAX = 3;
-  else if (KTYPE == 3)
+  } else if (KTYPE == 3) {
     KMAX = 3;
-  else {
+  } else {
     cout << " available  KTYPE=0: kx/pi = n/L, n=0,2, 4,,,, L";
     cout << " available  KTYPE=1: k/pi = (1,0),(1,1),(0,1),(1/2,1/2)";
     cout << " available  KTYPE=2: AFMBZ";
@@ -67,9 +70,12 @@ void WriteXML(int D, int L[], int Ntau, int CutoffOfNtau, int KTYPE) {
   fout << "</Comment>" << endl << endl;
 
   fout << "<Ntau>                   " << Ntau << " </Ntau>" << endl;
-  fout << "<NumberOfElements>       " << NumberOfElements << " </NumberOfElements>" << endl;
-  fout << "<CutoffOfNtau>           " << CutoffOfNtau << " </CutoffOfNtau>" << endl;
-  fout << "<NumberOfInverseLattice> " << KMAX << " </NumberOfInverseLattice>" << endl;
+  fout << "<NumberOfElements>       " << NumberOfElements
+       << " </NumberOfElements>" << endl;
+  fout << "<CutoffOfNtau>           " << CutoffOfNtau << " </CutoffOfNtau>"
+       << endl;
+  fout << "<NumberOfInverseLattice> " << KMAX << " </NumberOfInverseLattice>"
+       << endl;
   fout << endl;
 
   fout << "<!-- <Kind> [k-index] [ksite] </Kind> -->" << endl << endl;
@@ -87,10 +93,12 @@ void WriteXML(int D, int L[], int Ntau, int CutoffOfNtau, int KTYPE) {
   }
 
   fout << endl;
-  fout << "<!-- <SF> [phase(cos)] [phase(sin)] [isite] [kindx] </SF> -->" << endl << endl;
+  fout << "<!-- <SF> [phase(cos)] [phase(sin)] [isite] [kindx] </SF> -->"
+       << endl
+       << endl;
 
-  int NB  = 0;  //3 * N ;   // number of bonds
-  int *x  = new int[D];
+  int NB = 0;  // 3 * N ;   // number of bonds
+  int *x = new int[D];
   int *dx = new int[D];
 
   double PI = M_PI;
@@ -99,8 +107,9 @@ void WriteXML(int D, int L[], int Ntau, int CutoffOfNtau, int KTYPE) {
     for (int q = 0; q < KMAX; q++) {
       int rx = i % L[0];
       double phase;
-      if (KTYPE == 0) phase = rx * ksite[q] * PI / (double)L[0];  // r_x * q_x
-      else if (KTYPE == 1) {
+      if (KTYPE == 0) {
+        phase = rx * ksite[q] * PI / L[0];  // r_x * q_x
+      } else if (KTYPE == 1) {
         int ry = (i / L[0]) % L[1];
         double qx;
         double qy;
@@ -119,8 +128,7 @@ void WriteXML(int D, int L[], int Ntau, int CutoffOfNtau, int KTYPE) {
         }
 
         phase = rx * qx * PI + ry * qy * PI;  // r_x * q_x
-      }
-      else if (KTYPE == 2) {
+      } else if (KTYPE == 2) {
         int ry = (i / L[0]) % L[1];
         double qx;
         double qy;
@@ -136,8 +144,7 @@ void WriteXML(int D, int L[], int Ntau, int CutoffOfNtau, int KTYPE) {
         }
 
         phase = rx * qx * PI + ry * qy * PI;  // r_x * q_x
-      }
-      else if (KTYPE == 3) {
+      } else if (KTYPE == 3) {
         int ry = (i / L[0]) % L[1];
         double qx;
         double qy;
@@ -160,7 +167,8 @@ void WriteXML(int D, int L[], int Ntau, int CutoffOfNtau, int KTYPE) {
       if (fabs(COSrk) < 1.0e-12) COSrk = 0.0;
       if (fabs(SINrk) < 1.0e-12) SINrk = 0.0;
 
-      fout << "<SF> " << COSrk << " " << SINrk << " " << i << " " << q << " </SF>" << endl;
+      fout << "<SF> " << COSrk << " " << SINrk << " " << i << " " << q
+           << " </SF>" << endl;
     }
   }
 
@@ -177,7 +185,7 @@ int main(int argc, char **argv) {
     ShowUsage(argc, argv);
     exit(0);
   }
-  int iarg    = 1;
+  int iarg = 1;
   const int D = atoi(argv[iarg]);
   iarg++;
   if (argc != D + 5) {
@@ -207,7 +215,9 @@ int main(int argc, char **argv) {
     EvenOrOdd += L[i] % 2;
   }
 
-  if (EvenOrOdd) { cout << "Warnig: L should be an even number." << endl; }
+  if (EvenOrOdd) {
+    cout << "Warnig: L should be an even number." << endl;
+  }
 
   WriteXML(D, L, Ntau, Ntcut, KTYPE);
   cout << "... done." << endl;

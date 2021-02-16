@@ -1,53 +1,43 @@
-
-#ifndef IO_H
-#define IO_H
+#ifndef SRC_DLA_IO_H_
+#define SRC_DLA_IO_H_
 
 //######################################################################
 
 #include <cstdio>
 #include <cstdlib>
-#include <string>
 #include <cstring>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
+#include <string>
 
 #include <boost/lexical_cast.hpp>
 
-#include "util.hpp"
-#include "array.h"
 #include "../common/tostring.h"
+#include "array.h"
+#include "util.hpp"
 
 #define BLEN 256
 
-//######################################################################
-
-std::string EOL = "_E_O_L_";
-
-//======================================================================
+static const char EOL[] = "_E_O_L_";
 
 inline void reform_end_of_line(std::string& line) {
-  int n         = line.size();
+  int n = line.size();
   const char* a = line.c_str();
   if (a[n - 1] == 13) {  // 13 stands for ^M
     line.replace(n - 1, 1, 1, '\n');
   }
 }
 
-//======================================================================
-
 inline int line_split(char* line, std::string* w) {
   std::string s(line);
   std::istringstream ist(s);
   int nw = 0;
-  while (ist >> w[nw++])
-    ;
+  while (ist >> w[nw++]){;}
   nw--;
   return nw;
 }
-
-//======================================================================
 
 inline void get_line(FILE* F, char* line) {
   char buff[256];
@@ -67,8 +57,6 @@ inline void get_line(FILE* F, char* line) {
   }
 }
 
-//======================================================================
-
 inline void get_nbl(FILE* F, char* line) {  // get the next non-blank line
   strcpy(line, "");
   while (!strcmp(line, "")) {
@@ -78,34 +66,29 @@ inline void get_nbl(FILE* F, char* line) {  // get the next non-blank line
   }
 }
 
-//======================================================================
-
 inline int break_into_words(char* line, char* delim, char** word) {
   char* last = line + strlen(line) - 1;
-  //printf( "line = '%s'\n", line);
-  //printf( "delimiter = '%s'\n", delim);
+  // printf( "line = '%s'\n", line);
+  // printf( "delimiter = '%s'\n", delim);
   char* w = line;
-  int n   = 0;
+  int n = 0;
   while (w != last) {
-    while (w == strpbrk(w, delim))
-      w++;
+    while (w == strpbrk(w, delim)) w++;
     char* p = strpbrk(w, delim);
     if (p == 0) p = last;
-    //printf("\nw= %s", w);
-    //printf("p= %d, (*p) = '%c' (%d)\n", p, *p, *p);
+    // printf("\nw= %s", w);
+    // printf("p= %d, (*p) = '%c' (%d)\n", p, *p, *p);
     strncpy(word[n], w, p - w);
     strcat(word[n], "\0");
-    //printf("word[%d] = '%s'\n", n, word[n]);
+    // printf("word[%d] = '%s'\n", n, word[n]);
     n++;
     w = p;
   }
   return n;
 }
 
-//######################################################################
-
 class FileReader {
-private:
+ private:
   char NAME[BLEN];
   char LINE[BLEN];
   int IL;
@@ -115,7 +98,7 @@ private:
   std::streampos top;
   std::streampos mark;
 
-public:
+ public:
   void open(const char* name) {
     strcpy(NAME, name);
     INS.open(NAME);
@@ -126,36 +109,38 @@ public:
     }
     top = INS.tellg();
     IL = 0;
-  };
+  }
 
-  FileReader(){};
+  FileReader(){}
 
-  FileReader(const char* name) { open(name); };
+  FileReader(const char* name) { open(name); }
 
   void rewind() {
     INS.clear();
     INS.seekg(top);
-  };
+  }
 
-  void set_mark() { mark = INS.tellg(); };
+  void set_mark() { mark = INS.tellg(); }
 
   void goto_mark() {
     INS.clear();
     INS.seekg(mark);
-  };
+  }
 
   bool read() {
     bool b = static_cast<bool>(INS.getline(LINE, BLEN));
-    if (b) { IL++; }
+    if (b) {
+      IL++;
+    }
     return b;
-  };
+  }
 
-  char* line() { return LINE; };
+  char* line() { return LINE; }
 
   int split() {
     NW = line_split(LINE, WORD);
     return NW;
-  };
+  }
 
   std::string& word(int i) {
     if (i < 0 && i >= NW) {
@@ -164,13 +149,13 @@ public:
       throw std::runtime_error(msg);
     }
     return WORD[i];
-  };
+  }
 
-  int as_int(int i) { return atoi(WORD[i].c_str()); };
+  int as_int(int i) { return atoi(WORD[i].c_str()); }
 
-  double as_double(int i) { return (double)atof(WORD[i].c_str()); };
+  double as_double(int i) { return (double)atof(WORD[i].c_str()); }
 
-  void show() { std::cout << LINE << std::endl; };
+  void show() { std::cout << LINE << std::endl; }
 
   void dump() {
     std::cout << NAME << "[" << IL << "]> ";
@@ -178,7 +163,7 @@ public:
       std::cout << " " << WORD[i];
     }
     std::cout << std::endl;
-  };
+  }
 
   std::string get(char* key);
 
@@ -194,9 +179,8 @@ inline void FileReader::getWordList(int& NW, std::string*& W) {
   NW = 0;
   rewind();
 
-  while (read())
-    NW += split();
-  W      = new std::string[NW + 1];
+  while (read()) NW += split();
+  W = new std::string[NW + 1];
   int iw = 0;
   rewind();
   while (read()) {
@@ -208,8 +192,6 @@ inline void FileReader::getWordList(int& NW, std::string*& W) {
   }
   W[NW] = EOL;
 }
-
-//======================================================================
 
 inline std::string FileReader::get(char* key) {
   std::string ans;
@@ -239,8 +221,6 @@ inline std::string FileReader::get(char* key) {
   return ans;
 }
 
-//======================================================================
-
 inline int FileReader::makeIndex(const char* scope, const char* field,
                                  const char* k0, Array<int>& index) {
   //  printf("FileReader::makeIndex> start.\n");
@@ -264,7 +244,7 @@ inline int FileReader::makeIndex(const char* scope, const char* field,
   set_mark();
   bool active = false;
   while (read()) {
-    //show();
+    // show();
     int nw = split();
     if (nw == 0) continue;
     std::string k = word(0);
@@ -272,7 +252,7 @@ inline int FileReader::makeIndex(const char* scope, const char* field,
     if (k == inactivate) active = false;
     if (active) {
       if (k == key) {
-        //printf(" %s:%s:%s> %s\n", scope, field, k0, LINE);
+        // printf(" %s:%s:%s> %s\n", scope, field, k0, LINE);
         n++;
       }
     }
@@ -306,4 +286,4 @@ inline int FileReader::makeIndex(const char* scope, const char* field,
   return n;
 }
 
-#endif
+#endif  // SRC_DLA_IO_H_

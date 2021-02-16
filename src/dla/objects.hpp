@@ -1,9 +1,10 @@
-#ifndef OBJECTS_H
-#define OBJECTS_H
+#ifndef SRC_DLA_OBJECTS_HPP_
+#define SRC_DLA_OBJECTS_HPP_
 
 //######################################################################
 
 #include <cstdio>
+
 #include "algorithm.hpp"
 #include "name.h"
 #include "xml.h"
@@ -23,56 +24,56 @@ class RegisteredVertexInfo;
 //######################################################################
 
 class BareSegment {
-private:
+ private:
   static int lastID;
   int IDX;
   Vertex* _v[2];
   int val;  // the local state (0, 1, 2, ... , NX-1)
   Site* ONSITE;
 
-public:
+ public:
   void init() {
-    val    = 0;
-    _v[0]  = 0;
-    _v[1]  = 0;
+    val = 0;
+    _v[0] = 0;
+    _v[1] = 0;
     ONSITE = 0;
-  };
+  }
 
   void set(int x, Vertex& v0, Vertex& v1) {
-    val   = x;
+    val = x;
     _v[0] = &v0;
     _v[1] = &v1;
-  };
+  }
 
   BareSegment() : ONSITE(0) {
     lastID++;
     IDX = lastID;
     init();
-  };
+  }
 
-  ~BareSegment(){
-      //    printf("*** Destroying BareSegment\n");
-  };
+  ~BareSegment() {
+    //    printf("*** Destroying BareSegment\n");
+  }
 
-  int id() const { return IDX; };
-  Vertex& V(int i) { return *_v[i]; };
-  Vertex& bottom() { return *_v[0]; };
-  Vertex& top() { return *_v[1]; };
-  void setV(int i, Vertex& v) { _v[i] = &v; };
-  void setBottom(Vertex& v) { _v[0] = &v; };
-  void setTop(Vertex& v) { _v[1] = &v; };
-  int X() { return val; };
-  void setX(int x) { val = x; };
+  int id() const { return IDX; }
+  Vertex& V(int i) { return *_v[i]; }
+  Vertex& bottom() { return *_v[0]; }
+  Vertex& top() { return *_v[1]; }
+  void setV(int i, Vertex& v) { _v[i] = &v; }
+  void setBottom(Vertex& v) { _v[0] = &v; }
+  void setTop(Vertex& v) { _v[1] = &v; }
+  int X() { return val; }
+  void setX(int x) { val = x; }
   double topTime();
   double bottomTime();
   double length();
   void dump();
   bool check();
 
-  void dump_id() { std::cout << IDX << std::endl; };
+  void dump_id() { std::cout << IDX << std::endl; }
 
-  Site* getONSITE() { return ONSITE; };
-  void setONSITE(Site* on_site) { ONSITE = on_site; };
+  Site* getONSITE() { return ONSITE; }
+  void setONSITE(Site* on_site) { ONSITE = on_site; }
 };
 
 int BareSegment::lastID = 0;
@@ -80,19 +81,19 @@ int BareSegment::lastID = 0;
 //######################################################################
 
 class Segment : public Linked<BareSegment> {
-public:
+ public:
   Segment& cut(Vertex& V, int side);
   void erase();
   void absorbNext();
-  Segment& prev() { return (Segment&)Linked<BareSegment>::prev(); };
-  Segment& next() { return (Segment&)Linked<BareSegment>::next(); };
-  bool operator==(Segment& s) { return this == &s; };
+  Segment& prev() { return (Segment&)Linked<BareSegment>::prev(); }
+  Segment& next() { return (Segment&)Linked<BareSegment>::next(); }
+  bool operator==(Segment& s) { return this == &s; }
 };
 
 //######################################################################
 
 class BareVertex {
-private:
+ private:
   static int lastID;
   int ID;
   VertexProperty* _VP;
@@ -100,57 +101,57 @@ private:
   Array<Segment*> _s;
   Interaction* ONINTERACTION;
 
-public:
+ public:
   void init() {
-    _VP  = 0;
+    _VP = 0;
     TIME = -1.0;
     _s.init();
-  };
+  }
 
   void init_WORM();
 
   void init_TERM(Segment& S);
 
-  //Used when PlaceWorm
+  // Used when PlaceWorm
   void init(double t, VertexProperty& VP) {
     TIME = t;
     _s.init(1, VP.NLEG);  // koko !!!
     _s.set_all(0);
     _VP = &VP;
-  };
+  }
 
   void init(Interaction* O_I, double t, VertexProperty& VP) {
     TIME = t;
     _s.init(1, VP.NLEG);  // koko !!!
     _s.set_all(0);
-    _VP           = &VP;
+    _VP = &VP;
     ONINTERACTION = O_I;
-  };
+  }
   BareVertex() {
     _s.setLabel("BareVertex::_s");
     lastID++;
-    ID            = lastID;
+    ID = lastID;
     ONINTERACTION = 0;
     init();
-  };
+  }
 
-  ~BareVertex(){
-      //    printf("*** Destroying BareVertex (%d)\n", this);
-  };
+  ~BareVertex() {
+    //    printf("*** Destroying BareVertex (%d)\n", this);
+  }
 
   int NBODY() const {
     if (isTerminal()) return 1;
     return (*_VP).NBODY;
-  };
+  }
 
-  int NLEG() const { return 2 * NBODY(); };
+  int NLEG() const { return 2 * NBODY(); }
 
   bool isTerminal() const;
   bool isTail() const;
 
-  int id() const { return ID; };
+  int id() const { return ID; }
 
-  int size() const { return 2 * NBODY(); };
+  int size() const { return 2 * NBODY(); }
 
   bool isKink();
 
@@ -162,15 +163,15 @@ public:
     }
 #endif
     return *_s[i];
-  };
+  }
 
-  void setS(int dir, Segment& s) { _s[dir] = &s; };
+  void setS(int dir, Segment& s) { _s[dir] = &s; }
 
   int X(int i);
 
-  double time() const { return TIME; };
+  double time() const { return TIME; }
 
-  void setTime(double t) { TIME = t; };
+  void setTime(double t) { TIME = t; }
 
   int which(Segment& s);
 
@@ -178,7 +179,7 @@ public:
 
   bool check();
 
-  void setProperty(VertexProperty& P) { _VP = &P; };
+  void setProperty(VertexProperty& P) { _VP = &P; }
 
   int type() {
     if (_VP == 0) {
@@ -205,15 +206,15 @@ public:
     }
 #endif
     return *_VP;
-  };
+  }
 
   VertexInitialConfiguration& getInitialConfiguration(int inc, int xinc);
 
   void dump();
-  Interaction* getONINTERACTION() { return ONINTERACTION; };
+  Interaction* getONINTERACTION() { return ONINTERACTION; }
   void setONINTERACTION(Interaction* on_interaction) {
     ONINTERACTION = on_interaction;
-  };
+  }
 };
 
 int BareVertex::lastID = 0;
@@ -221,24 +222,24 @@ int BareVertex::lastID = 0;
 //######################################################################
 
 class Vertex : public Linked<BareVertex> {
-public:
+ public:
   void reconnect();  // reconnect the segments attached to the vertex
   void erase();      // remove from the linked list and push back to the pool
-  Vertex& prev() { return (Vertex&)Linked<BareVertex>::prev(); };
-  Vertex& next() { return (Vertex&)Linked<BareVertex>::next(); };
-  bool operator==(Vertex& v) { return this == &v; };
+  Vertex& prev() { return (Vertex&)Linked<BareVertex>::prev(); }
+  Vertex& next() { return (Vertex&)Linked<BareVertex>::next(); }
+  bool operator==(Vertex& v) { return this == &v; }
 };
 
 //######################################################################
 
 class Worm {
-private:
+ private:
   int x_behind;    // the local state just after a passage of the worm head
   Vertex* _vorg;   // the vertex sitting at the creation point
   Vertex* _vcur;   // the current vertex
   Segment* _scur;  // the current segment
 
-public:
+ public:
   Worm();
 
   ~Worm();
@@ -247,21 +248,21 @@ public:
     Vertex* _v = &(_scur->bottom());
     if (_v == _vcur) _v = &(_scur->top());
     return *_v;
-  };
+  }
 
-  Vertex& origin() { return *_vorg; };
+  Vertex& origin() { return *_vorg; }
 
-  Vertex& getCurrentVertex() { return *_vcur; };
+  Vertex& getCurrentVertex() { return *_vcur; }
 
-  void setCurrentVertex(Vertex& v) { _vcur = &v; };
+  void setCurrentVertex(Vertex& v) { _vcur = &v; }
 
-  Segment& getCurrentSegment() { return *_scur; };
+  Segment& getCurrentSegment() { return *_scur; }
 
-  void setCurrentSegment(Segment& s) { _scur = &s; };
+  void setCurrentSegment(Segment& s) { _scur = &s; }
 
-  void setXBEHIND() { x_behind = STATE::UNDEF; };
+  void setXBEHIND() { x_behind = STATE::UNDEF; }
 
-  void setXBEHIND(int x) { x_behind = x; };
+  void setXBEHIND(int x) { x_behind = x; }
 
   int getXBEHIND() {
 #ifdef DEB
@@ -271,16 +272,16 @@ public:
     }
 #endif
     return x_behind;
-  };
+  }
 
-  bool atOrigin() { return (_vcur == _vorg); };
+  bool atOrigin() { return (_vcur == _vorg); }
 
   bool getUORD() {
     return (_vcur == &((*_scur).top()));
-  };  //up -> false 0, down -> true 1
+  }  // up -> false 0, down -> true 1
   void getV() {
     printf("top,bottom = %d, %d ", (*_scur).top().id(), (*_scur).bottom().id());
-  };
+  }
 
   void remove();
 
@@ -290,7 +291,7 @@ public:
 //######################################################################
 
 class Site : public Ring<Segment> {
-private:
+ private:
   static int lastID;
   int ID;
   SiteProperty* _SP;
@@ -298,37 +299,36 @@ private:
 
   int NCI;  // the number of connected interactions
   Interaction**
-      ConnectedInteraction;  //Interaction* ConnectedInteraction [ NCI ];
-public:
+      ConnectedInteraction;  // Interaction* ConnectedInteraction [ NCI ];
+
+ public:
   void setNCI(int ni) {
-    NCI                  = ni;
+    NCI = ni;
     ConnectedInteraction = new Interaction*[ni];
   }
   int getNCI() { return NCI; }
   void setCI(int nth, Interaction* CI) { ConnectedInteraction[nth] = CI; }
   Interaction** getCI() { return ConnectedInteraction; }
 
-  void init(SiteProperty& SP) {
-    _SP   = &SP;
-  }
+  void init(SiteProperty& SP) { _SP = &SP; }
 
   Site();
 
   ~Site();
 
-  int id() { return ID; };
+  int id() { return ID; }
 
   int type() {
     if (_SP == 0) return STYPE::UNDEF;
     return (*_SP).STYPE;
-  };
+  }
 
-  void setProperty(SiteProperty& sp) { _SP = &sp; };
+  void setProperty(SiteProperty& sp) { _SP = &sp; }
 
-  SiteProperty& Property() { return *_SP; };
+  SiteProperty& Property() { return *_SP; }
 
   double getBeta() const { return _vterm->time(); }
-  void setBeta(double b) { _vterm->setTime(b); };
+  void setBeta(double b) { _vterm->setTime(b); }
 
   Segment& findS(double t);
 
@@ -339,12 +339,12 @@ public:
     printf("Site(%2d) type= %d | ", id(), type());
     Ring<Segment>::dump();
     printf("\n");
-  };
+  }
 
-  void idclear() { lastID = 0; };
-    //void idclear() { cout << "dddd " << endl; };
+  void idclear() { lastID = 0; }
+  // void idclear() { cout << "dddd " << endl; };
 
-  Vertex& getVterm() { return (*_vterm); };
+  Vertex& getVterm() { return (*_vterm); }
 };
 
 int Site::lastID = 0;
@@ -352,35 +352,37 @@ int Site::lastID = 0;
 //######################################################################
 
 class Interaction : public Ring<Vertex> {
-private:
+ private:
   static int lastID;
   int ID;
   InteractionProperty* _IP;
   Site** _s;
 
-public:
+ public:
   void init() {
     _IP = 0;
-    if (_s != 0) { delete[] _s; }
-  };
+    if (_s != 0) {
+      delete[] _s;
+    }
+  }
 
   void init(InteractionProperty& IP) {
     init();
     _IP = &IP;
-    _s  = new Site*[(*_IP).NBODY];
-  };
+    _s = new Site*[(*_IP).NBODY];
+  }
 
   Interaction();
 
   ~Interaction();
 
-  int id() { return ID; };
+  int id() { return ID; }
 
-  int NBODY() { return (*_IP).NBODY; };
+  int NBODY() { return (*_IP).NBODY; }
 
-  int type() { return (*_IP).ITYPE; };
+  int type() { return (*_IP).ITYPE; }
 
-  void setProperty(InteractionProperty& ip) { _IP = &ip; };
+  void setProperty(InteractionProperty& ip) { _IP = &ip; }
 
   InteractionProperty& property() {
 #ifdef DEB
@@ -391,9 +393,9 @@ public:
     }
 #endif
     return *_IP;
-  };
+  }
 
-  Site& site(int i) { return *(_s[i]); };
+  Site& site(int i) { return *(_s[i]); }
 
   void setSite(int i, Site& s) {
 #ifdef DEB
@@ -404,7 +406,7 @@ public:
     }
 #endif
     _s[i] = &s;
-  };
+  }
 
   void dump() {
     int* sid = new int[NBODY()];
@@ -413,14 +415,13 @@ public:
       if (_s[i] != 0) sid[i] = site(i).id();
     }
     printf("Interaction(%2d) = (", id());
-    for (int i = 0; i < NBODY(); i++)
-      printf(" %2d", sid[i]);
+    for (int i = 0; i < NBODY(); i++) printf(" %2d", sid[i]);
     printf(" ), type= %2d | ", type());
     Ring<Vertex>::dump();
     delete[] sid;
-  };
+  }
 
-  void idclear() { lastID = 0; };
+  void idclear() { lastID = 0; }
 };
 
 int Interaction::lastID = 0;
@@ -459,15 +460,15 @@ inline void BareSegment::dump() {
   //  printf("\nBareSegment::dump> Start.\n");
   fprintf(FERR, " Segment [%3d] : ", id());
   double bt = 0.0;
-  int bid   = -1;
+  int bid = -1;
   if (_v[0] != 0) {
-    bt  = bottomTime();
+    bt = bottomTime();
     bid = bottom().id();
   }
   double tt = 0.0;
-  int tid   = -1;
+  int tid = -1;
   if (_v[1] != 0) {
-    tt  = topTime();
+    tt = topTime();
     tid = top().id();
   }
   if (bt >= tt) bt = 0.0;
@@ -491,10 +492,10 @@ inline Segment& Segment::cut(Vertex& V, int side) {
   //
   // after:    --<V0>---[S0]---<V>---[S1]---<V1>---> tau
   //
-  int x = X();  //int X() { return val; };
+  int x = X();  // int X() { return val; };
 
-  Vertex& V0  = bottom();  //Vertex& bottom() { return *_v[0]; }; Vertex* _v[2];
-  Vertex& V1  = top();     // Vertex& top()    { return *_v[1]; };
+  Vertex& V0 = bottom();  // Vertex& bottom() { return *_v[0]; }; Vertex* _v[2];
+  Vertex& V1 = top();     // Vertex& top()    { return *_v[1]; };
   Segment& S0 = *this;
   Segment& S1 = TheSegmentPool.pop();
   insert_after(S1);
@@ -509,7 +510,7 @@ inline Segment& Segment::cut(Vertex& V, int side) {
   // Since S1 is always below we need investigate only even V1
   for (int l = 0; l < V1.NLEG(); l += 2) {
     if (V1.S(l) == S0) {
-      //printf(" gotcha!\n");
+      // printf(" gotcha!\n");
       V1.setS(l, S1);
     }
   }
@@ -528,7 +529,7 @@ inline void Segment::erase() {
 inline void Segment::absorbNext() {
   Segment& S0 = *this;
   Segment& S1 = S0.next();
-  Vertex& V1  = S1.top();
+  Vertex& V1 = S1.top();
   S0.setTop(V1);
   V1.replace(S1, S0);
   S1.erase();
@@ -551,8 +552,8 @@ inline void BareVertex::init_TERM(
   init();
   _s.init(1, 2);
   _s.set_all(0);
-  _s[0]         = &S;
-  _s[1]         = &S;
+  _s[0] = &S;
+  _s[1] = &S;
   ONINTERACTION = &TerminalOfWorldline;
 }
 //======================================================================
@@ -617,10 +618,9 @@ inline VertexInitialConfiguration& BareVertex::getInitialConfiguration(
   VertexProperty& P = property();
   //  int NLEG = 2 * P.NBODY;
   int NDIM = P.NLEG + 2;
-  int* x   = new int[NDIM];  //edit sakakura
-                             //  int x[NDIM];
-  for (int i = 0; i < P.NLEG; i++)
-    x[i] = X(i);
+  int* x = new int[NDIM];  // edit sakakura
+                           //  int x[NDIM];
+  for (int i = 0; i < P.NLEG; i++) x[i] = X(i);
   int st = P.StateCode(x);
 
 #ifdef DEB
@@ -628,8 +628,7 @@ inline VertexInitialConfiguration& BareVertex::getInitialConfiguration(
     printf("BareVertex::getInitialConfiguration> Error.\n");
     printf("  An forbidden state has been encountered.\n");
     printf(" x= (");
-    for (int i = 0; i < P.NLEG; i++)
-      printf(" %d", x[i]);
+    for (int i = 0; i < P.NLEG; i++) printf(" %d", x[i]);
     printf(") \n");
     dump();
     P.dump();
@@ -672,20 +671,19 @@ void BareVertex::dump() {
 //######################################################################
 
 inline void Vertex::reconnect() {
-  for (int l = 0; l < size(); l += 2)
-    S(l).absorbNext();
+  for (int l = 0; l < size(); l += 2) S(l).absorbNext();
 }
 
 //======================================================================
 
 inline void Vertex::erase() {
   reconnect();
-  //if (ALERT) {
+  // if (ALERT) {
   //  printf("\nVertex::erase> ### Erasing\n");
   //  dump();
   //}
   Linked<BareVertex>::remove();
-  //if (ALERT) {
+  // if (ALERT) {
   //  printf("\nVertex::erase> ### Done\n");
   //  dump();
   //}
@@ -696,7 +694,8 @@ inline void Vertex::erase() {
 
 inline Worm::Worm() {
   Vertex& V = TheVertexPool.pop();
-  V.init_WORM();  // initialization is the same as TERM, since Worm is a two leg vertex
+  V.init_WORM();  // initialization is the same as TERM, since Worm is a two leg
+                  // vertex
   _vorg = &V;
   _vcur = 0;
   _scur = 0;
@@ -726,7 +725,7 @@ inline void Worm::dump() {
     fprintf(FERR, "  _vorg (the worm tail) is not defined.\n");
   } else {
     fprintf(FERR, "  Tail:\n");
-    _vorg->dump();  //barevertex.dump()
+    _vorg->dump();  // barevertex.dump()
   }
   if (_vcur == 0) {
     fprintf(FERR, "  _vcur (the current vertex) is not defined.\n");
@@ -745,11 +744,11 @@ inline void Worm::dump() {
 //######################################################################
 
 inline Site::Site() {
-  //printf("Site::Site> Start.\n");
+  // printf("Site::Site> Start.\n");
   lastID++;
-  ID         = lastID;
-  _SP        = 0;
-  Vertex& v  = TheVertexPool.pop();
+  ID = lastID;
+  _SP = 0;
+  Vertex& v = TheVertexPool.pop();
   Segment& s = TheSegmentPool.pop();
   v.BareVertex::init_TERM(s);
   s.set(0, v, v);
@@ -771,7 +770,7 @@ inline Site::~Site() {
     Segment& S = first();
     S.remove();
     TheSegmentPool.push(S);
-  };
+  }
   TheVertexPool.push(*_vterm);
 }
 
@@ -779,7 +778,8 @@ inline Site::~Site() {
 
 inline Segment& Site::findS(double t) {
   iterator p(*this);
-  while ((++p)->topTime() < t) {}
+  while ((++p)->topTime() < t) {
+  }
 
   return *p;
 }
@@ -788,9 +788,9 @@ inline Segment& Site::findS(double t) {
 
 inline Interaction::Interaction() {
   lastID++;
-  ID  = lastID;
+  ID = lastID;
   _IP = 0;
-  _s  = 0;
+  _s = 0;
 }
 
 //======================================================================
@@ -801,42 +801,42 @@ inline Interaction::~Interaction() {
     Vertex& V = first();
     V.remove();
     TheVertexPool.push(V);
-  };
+  }
   if (_s != 0) delete[] _s;
 }
 
-//##########################katou#######################################
+// ##########################katou#######################################
 class UniformInterval {
-public:
+ public:
   Interaction* I_n;
   VertexInitialConfiguration* VIC;  //
   VertexProperty* VP;
 
-  //Segment* n_S[nbody]
+  // Segment* n_S[nbody]
   Segment** n_S;
-  //int x[nbody]
+  // int x[nbody]
   int* x;
   int inc;  //
   int xinc;
   int nbody;
-  bool DefinedVIC;  //Defined StateCode yes no
+  bool DefinedVIC;  // Defined StateCode yes no
   void init(Interaction* Ia, int xbehind) {
-    I_n   = Ia;
+    I_n = Ia;
     nbody = (*I_n).NBODY();
-    VP    = &((*I_n).property().getVertexProperty());
+    VP = &((*I_n).property().getVertexProperty());
 
-    n_S        = new Segment*[nbody];
-    x          = new int[nbody];
-    xinc       = xbehind;
+    n_S = new Segment*[nbody];
+    x = new int[nbody];
+    xinc = xbehind;
     DefinedVIC = false;
   }
   void setVIC() {
     int st = (*VP).SCNK(x);
     if (st < 0) {
-      VIC        = 0;
+      VIC = 0;
       DefinedVIC = false;
     } else {
-      VIC        = &((*VP).getIC(st, inc, xinc));
+      VIC = &((*VP).getIC(st, inc, xinc));
       DefinedVIC = true;
     }
   }
@@ -854,19 +854,19 @@ public:
 };
 //######################################################################
 class RegisteredVertexInfo {
-public:
+ public:
   Vertex* V_x;
   int i_UI;
   int i_body;
   double V_time;
   void setRVI(Vertex* Vx, int iUI, int ibody, double Vtime) {
-    V_x    = Vx;
-    i_UI   = iUI;
+    V_x = Vx;
+    i_UI = iUI;
     i_body = ibody;
     V_time = Vtime;
   }
   RegisteredVertexInfo() : V_x(0) {}
-  void init(){};
+  void init(){}
 };
 inline bool operator<(const RegisteredVertexInfo& obj0,
                       const RegisteredVertexInfo& obj) {
@@ -880,11 +880,11 @@ inline bool operator>(const RegisteredVertexInfo& obj0,
 //######################################################################
 
 class RegVInfo : public Linked<RegisteredVertexInfo> {
-public:
+ public:
   void erase();
-  RegVInfo& prev() { return (RegVInfo&)Linked<RegisteredVertexInfo>::prev(); };
-  RegVInfo& next() { return (RegVInfo&)Linked<RegisteredVertexInfo>::next(); };
-  bool operator==(RegVInfo& s) { return this == &s; };
+  RegVInfo& prev() { return (RegVInfo&)Linked<RegisteredVertexInfo>::prev(); }
+  RegVInfo& next() { return (RegVInfo&)Linked<RegisteredVertexInfo>::next(); }
+  bool operator==(RegVInfo& s) { return this == &s; }
 };
 
 Pool<RegVInfo> TheRVIPool;
@@ -894,4 +894,4 @@ inline void RegVInfo::erase() {
   TheRVIPool.push(*this);
 }
 
-#endif
+#endif  // SRC_DLA_OBJECTS_HPP_

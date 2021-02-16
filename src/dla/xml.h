@@ -1,3 +1,19 @@
+// DSQSS (Discrete Space Quantum Systems Solver)
+// Copyright (C) 2018- The University of Tokyo
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 //######################################################################
 //####
 //####  World-Line Monte Carlo simulation
@@ -16,32 +32,14 @@
 //####
 //######################################################################
 
-// DSQSS (Discrete Space Quantum Systems Solver)
-// Copyright (C) 2018- The University of Tokyo
-//
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-
-
 // Known bugs:
 // (1) Tags must be separated from other words by one or more spaces or
 //     line breaks. Otherwise they are not recognized.
 // (2) The comment identifiers <!-- and --> must be separated by spaces or
 //     line breaks, too.
 
-#ifndef XML_H
-#define XML_H
+#ifndef SRC_DLA_XML_H_
+#define SRC_DLA_XML_H_
 
 #include "array.h"
 #include "io.h"
@@ -52,7 +50,7 @@ class Block;
 
 inline bool isCommentOpening(const std::string& key) {
   std::string sopen = "<!--";
-  int n             = key.length();
+  int n = key.length();
   if (n < 4) return false;
   if (key.substr(0, 4) == sopen) return true;
   return false;
@@ -76,14 +74,14 @@ inline bool isClosing(const std::string& key) {
 
 inline const std::string getOpeningName(const std::string& key) {
   if (!isOpening(key)) exit(0);
-  int n           = key.length();
+  int n = key.length();
   std::string ans = key.substr(1, n - 2);
   return ans;
 }
 
 inline const std::string getClosingName(const std::string& key) {
   if (!isClosing(key)) exit(0);
-  int n           = key.length();
+  int n = key.length();
   std::string ans = key.substr(2, n - 3);
   return ans;
 }
@@ -91,7 +89,7 @@ inline const std::string getClosingName(const std::string& key) {
 //#######################################################################
 
 class Block {
-private:
+ private:
   std::string Name;   // the name of the element
   std::string* Word;  // the whole list of words to be processed
   std::string Open;   // the key at which to start the process
@@ -101,27 +99,27 @@ private:
   int NV;  // the number of values
   Array<std::string> Value;
 
-public:
+ public:
   void initialize(std::string* word, const std::string& name = "");
   void initialize(const std::string& FNAME, const std::string& name = "");
 
   Block() {
     NB = 0;
     NV = 0;
-  };
+  }
 
   Block(const std::string& FNAME, const std::string& BNAME = "") {
     NB = 0;
     NV = 0;
     initialize(FNAME, BNAME);
-  };
+  }
 
   ~Block(){
       //    printf("*** Destroying XML::Block (%s)\n", Name.c_str());
-  };
+  }
 
-  const int& NumberOfBlocks() const { return NB; };
-  const int& NumberOfValues() const { return NV; };
+  const int& NumberOfBlocks() const { return NB; }
+  const int& NumberOfValues() const { return NV; }
   std::string getJoinedString();
   const std::string& getName() const;
   bool syntax_error();
@@ -131,8 +129,9 @@ public:
   std::string& getString(const int i = 0);
   Block& getElement(const int i);
   Block& getElement(const std::string& name);
-  Block& getElement(const std::string& name, const std::string& idkey, const int id);
-  Block& operator[](const int& i) { return SubBlock[i]; };
+  Block& getElement(const std::string& name, const std::string& idkey,
+                    const int id);
+  Block& operator[](const int& i) { return SubBlock[i]; }
   Block& operator[](const std::string& name);
   void dump(const std::string& prompt = "");
 };
@@ -154,10 +153,10 @@ inline void Block::initialize(std::string* word, const std::string& name) {
   Name = name;
   Word = word;
   if (name == "") {
-    Open  = "";
+    Open = "";
     Close = "";
   } else {
-    Open  = "<" + name + ">";
+    Open = "<" + name + ">";
     Close = "</" + name + ">";
   }
   read();
@@ -174,20 +173,20 @@ void Block::initialize(const std::string& FNAME, const std::string& name) {
 
 bool Block::syntax_error() {
   using std::string;
-  NB                 = 0;
-  NV                 = 0;
-  int depth          = 0;
-  bool open          = false;
+  NB = 0;
+  NV = 0;
+  int depth = 0;
+  bool open = false;
   string SkipTo = "";
-  int i              = 0;
+  int i = 0;
   while (Word[i] != EOL) {
     string& w = Word[i++];
     if (Name == "") {
       if (isOpening(w)) {
         const std::string name = getOpeningName(w);
-        Name                   = name;
-        Open                   = "<" + name + ">";
-        Close                  = "</" + name + ">";
+        Name = name;
+        Open = "<" + name + ">";
+        Close = "</" + name + ">";
       }
     }
     if (w == Open) {
@@ -207,16 +206,16 @@ bool Block::syntax_error() {
       continue;
     }
     if (isCommentOpening(w)) {
-      //cout << "  ... beginning of a comment" << endl;
+      // cout << "  ... beginning of a comment" << endl;
       depth++;
       SkipTo = "-->";
       continue;
     }
     if (isOpening(w)) {
-      //cout << "  ... beginning of a subelement [" << w << "]" << endl;
+      // cout << "  ... beginning of a subelement [" << w << "]" << endl;
       depth++;
       const string name = getOpeningName(w);
-      //cout << "opening name : " << name << endl;
+      // cout << "opening name : " << name << endl;
       SkipTo = "</" + name + ">";
       NB++;
       continue;
@@ -224,19 +223,23 @@ bool Block::syntax_error() {
     if (isClosing(w)) {
       printf("Block::read> Error.\n");
       printf("  An unexpected closing tag %s\n", w.c_str());
-      printf("  is detected in reading an element of name [%s].\n", getName().c_str());
+      printf("  is detected in reading an element of name [%s].\n",
+             getName().c_str());
       return true;
     }
-    //cout << "  ... a value" << endl;
+    // cout << "  ... a value" << endl;
     NV++;
   }
 
   if (depth != 0) {
     printf("Block::read> Error.\n");
     string expected = SkipTo;
-    if (expected == "") { expected = Close; }
+    if (expected == "") {
+      expected = Close;
+    }
     printf("  A missing closing tag %s\n", expected.c_str());
-    printf("  is detected in reading an element of name [%s].\n", getName().c_str());
+    printf("  is detected in reading an element of name [%s].\n",
+           getName().c_str());
     return true;
   }
 
@@ -251,16 +254,16 @@ void Block::read() {
   if (NV > 0) Value.init("Value", 1, NV);
   if (NB > 0) SubBlock.init("SubBlock", 1, NB);
 
-  bool open     = false;
+  bool open = false;
   string SkipTo = "";
-  int ib        = 0;
-  int iv        = 0;
-  int i         = 0;
+  int ib = 0;
+  int iv = 0;
+  int i = 0;
   while (true) {
     string& w = Word[i++];
     //    cout << "### " << w << endl;
     if (w == Open) {
-      //printf("Opened. %s\n", w.c_str());
+      // printf("Opened. %s\n", w.c_str());
       open = true;
       continue;
     }
@@ -319,7 +322,7 @@ inline double Block::getDouble(const int i) {
   }
 #endif
   std::string& s = getString(i);
-  return (double)atof(s.c_str());
+  return static_cast<double>(atof(s.c_str()));
 }
 
 inline Block& Block::getElement(const int i) { return SubBlock[i]; }
@@ -339,7 +342,8 @@ inline Block& Block::getElement(const std::string& name) {
   }
 }
 
-inline Block& Block::getElement(const std::string& name, const std::string& idkey, const int id) {
+inline Block& Block::getElement(const std::string& name,
+                                const std::string& idkey, const int id) {
   int ib;
   for (ib = 0; ib < NB; ib++) {
     if (name == SubBlock[ib].getName()) {
@@ -387,4 +391,4 @@ inline void Block::dump(const std::string& prompt) {
 
 }  // namespace XML
 
-#endif
+#endif  // SRC_DLA_XML_H_

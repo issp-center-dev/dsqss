@@ -10,9 +10,8 @@ inline void FileReader::getWordList(int &NW, std::string *&W) {
   NW = 0;
   rewind();
 
-  while (read())
-    NW += split();
-  W      = new std::string[NW + 1];
+  while (read()) NW += split();
+  W = new std::string[NW + 1];
   int iw = 0;
   rewind();
   while (read()) {
@@ -33,19 +32,18 @@ void IndexSystem::init(const int d, const int *l, const std::string &LBL0) {
   }
   INI = true;
   LBL = LBL0;
-  D   = d;
-  L   = new int[d];
-  N   = 1;
+  D = d;
+  L = new int[d];
+  N = 1;
   for (int i = 0; i < d; i++) {
     N *= l[i];
     L[i] = l[i];
   }
   if (N == 0) {
     printf("IndexSystem::init> Error. N = 0.\n");
-    for (int i = 0; i < d; i++)
-      printf("  L[%d] = %d\n", i, L[i]);
+    for (int i = 0; i < d; i++) printf("  L[%d] = %d\n", i, L[i]);
     exit(0);
-  };
+  }
 }
 
 template <class C>
@@ -60,7 +58,7 @@ template <class C>
 void Array<C>::init(va_list &ap) {
   reset();
   int *L = new int[D];
-  int N  = 1;
+  int N = 1;
   int l;
   int i = 0;
   for (i = 0; i < D; i++) {
@@ -89,7 +87,7 @@ void Array<C>::init(va_list &ap) {
 template <class C>
 void Array<C>::init(const std::string &s, int d, ...) {
   LBL = s;
-  D   = d;
+  D = d;
   va_list ap;
   va_start(ap, d);
   init(ap);
@@ -117,7 +115,7 @@ inline Block &Block::getElement(const std::string &name) {
   }
 }
 
-Block &Block::operator[](const int &i) { return SubBlock[i]; };
+Block &Block::operator[](const int &i) { return SubBlock[i]; }
 
 Block &Block::operator[](const std::string &name) {
   Block &B = getElement(name);
@@ -125,14 +123,14 @@ Block &Block::operator[](const std::string &name) {
 }
 
 inline void Block::initialize(std::string *word, const std::string &name) {
-  //printf("Block::initialize> Pass 1\n");
+  // printf("Block::initialize> Pass 1\n");
   Name = name;
   Word = word;
   if (name == "") {
-    Open  = "";
+    Open = "";
     Close = "";
   } else {
-    Open  = "<" + name + ">";
+    Open = "<" + name + ">";
     Close = "</" + name + ">";
   }
   read();
@@ -153,12 +151,11 @@ void Block::initialize(const std::string &FNAME, const std::string &name) {
 
 inline bool isCommentOpening(const std::string &key) {
   std::string sopen = "<!--";
-  int n        = key.length();
+  int n = key.length();
   if (n < 4) return false;
   if (key.substr(0, 4) == sopen) return true;
   return false;
 }
-
 
 inline bool isOpening(const std::string &key) {
   int n = key.length();
@@ -168,7 +165,6 @@ inline bool isOpening(const std::string &key) {
   return true;
 }
 
-
 inline bool isClosing(const std::string &key) {
   int n = key.length();
   if (key[0] != '<') return false;
@@ -177,37 +173,35 @@ inline bool isClosing(const std::string &key) {
   return true;
 }
 
-
 inline const std::string getOpeningName(const std::string &key) {
   if (!isOpening(key)) exit(0);
-  int n      = key.length();
+  int n = key.length();
   std::string ans = key.substr(1, n - 2);
   return ans;
 }
 
-
 inline const std::string getClosingName(const std::string &key) {
   if (!isClosing(key)) exit(0);
-  int n      = key.length();
+  int n = key.length();
   std::string ans = key.substr(2, n - 3);
   return ans;
 }
 
 inline bool Block::syntax_error() {
-  NB            = 0;
-  NV            = 0;
-  int depth     = 0;
-  bool open     = false;
+  NB = 0;
+  NV = 0;
+  int depth = 0;
+  bool open = false;
   std::string SkipTo = "";
-  int i         = 0;
+  int i = 0;
   while (Word[i] != EOL) {
     std::string &w = Word[i++];
     if (Name == "") {
       if (isOpening(w)) {
         const std::string name = getOpeningName(w);
-        Name              = name;
-        Open              = "<" + name + ">";
-        Close             = "</" + name + ">";
+        Name = name;
+        Open = "<" + name + ">";
+        Close = "</" + name + ">";
       }
     }
     if (w == Open) {
@@ -227,16 +221,16 @@ inline bool Block::syntax_error() {
       continue;
     }
     if (isCommentOpening(w)) {
-      //cout << "  ... beginning of a comment" << endl;
+      // cout << "  ... beginning of a comment" << endl;
       depth++;
       SkipTo = "-->";
       continue;
     }
     if (isOpening(w)) {
-      //cout << "  ... beginning of a subelement [" << w << "]" << endl;
+      // cout << "  ... beginning of a subelement [" << w << "]" << endl;
       depth++;
       const std::string name = getOpeningName(w);
-      //cout << "opening name : " << name << endl;
+      // cout << "opening name : " << name << endl;
       SkipTo = "</" + name + ">";
       NB++;
       continue;
@@ -244,25 +238,28 @@ inline bool Block::syntax_error() {
     if (isClosing(w)) {
       printf("Block::read> Error.\n");
       printf("  An unexpected closing tag %s\n", w.c_str());
-      printf("  is detected in reading an element of name [%s].\n", getName().c_str());
+      printf("  is detected in reading an element of name [%s].\n",
+             getName().c_str());
       return true;
     }
-    //cout << "  ... a value" << endl;
+    // cout << "  ... a value" << endl;
     NV++;
   }
 
   if (depth != 0) {
     printf("Block::read> Error.\n");
     std::string expected = SkipTo;
-    if (expected == "") { expected = Close; }
+    if (expected == "") {
+      expected = Close;
+    }
     printf("  A missing closing tag %s\n", expected.c_str());
-    printf("  is detected in reading an element of name [%s].\n", getName().c_str());
+    printf("  is detected in reading an element of name [%s].\n",
+           getName().c_str());
     return true;
   }
 
   return false;
 }
-
 
 void Block::read() {
   //  printf("Block::read> Pass 1\n");
@@ -271,16 +268,16 @@ void Block::read() {
   if (NV > 0) Value.init("Value", 1, NV);
   if (NB > 0) SubBlock.init("SubBlock", 1, NB);
   // cout<<"Block.NV = "<<NV<<",  NB = "<<NB<<endl;
-  bool open     = false;
+  bool open = false;
   std::string SkipTo = "";
-  int ib        = 0;
-  int iv        = 0;
-  int i         = 0;
+  int ib = 0;
+  int iv = 0;
+  int i = 0;
   while (true) {
     std::string &w = Word[i++];
-    //  cout << "### " << w << endl;//koko
+    // cout << "### " << w << endl;  // koko
     if (w == Open) {
-      //	printf("Opened. %s\n", w.c_str());//koko
+      // printf("Opened. %s\n", w.c_str());  // koko
       open = true;
       continue;
     }
@@ -307,7 +304,6 @@ void Block::read() {
   }
 }
 
-
 Lattice::Lattice(const std::string &FNAME) {
 #ifdef DEBUG
   printf("\nLattice::Lattice> Start.\n");  // koko
@@ -321,14 +317,11 @@ Lattice::Lattice(const std::string &FNAME) {
 #endif
 }
 
-
 void Lattice::read() {
   D = X["Dimension"].getInteger();
   // cout<<"D="<<D<<endl;
-  for (int i = 0; i < 4; i++)
-    L[i] = 1;
-  for (int i = 0; i < D; i++)
-    L[i] = X["LinearSize"].getInteger(i);
+  for (int i = 0; i < 4; i++) L[i] = 1;
+  for (int i = 0; i < D; i++) L[i] = X["LinearSize"].getInteger(i);
 
   //  cout<<"L="<<L[0]<<" "<<L[1]<<" "<<L[2]<<endl;
   NLdiv = X["NumberOfLDecomposition"].getInteger();
@@ -337,28 +330,28 @@ void Lattice::read() {
   Nx = X["LinearDomainSize"].getInteger(0);
   Ny = (D > 1) ? X["LinearDomainSize"].getInteger(1) : 1;
   Nz = (D == 3) ? X["LinearDomainSize"].getInteger(2) : 1;
-  //cout<<"Ldom="<<Nx<<" "<<Ny<<" "<<Nz<<endl;
+  // cout<<"Ldom="<<Nx<<" "<<Ny<<" "<<Nz<<endl;
 
   BETA = X["Beta"].getDouble();
-  //cout<<"BETA="<<BETA<<endl;
-  //oldBETA = X["OldBeta"].getDouble();
-  NBdiv   = X["NumberOfBDecomposition"].getInteger();
+  // cout<<"BETA="<<BETA<<endl;
+  // oldBETA = X["OldBeta"].getDouble();
+  NBdiv = X["NumberOfBDecomposition"].getInteger();
   // B       = X["BetaOfDomain"].getDouble();
-  NCELL   = X["NumberOfCells"].getInteger();
-  V       = X["NumberOfSites"].getInteger();
-  TB      = X["NumberOfInteractions"].getInteger();
-  //cout<<"TB="<<TB<<endl;
-  //cout<<"V="<<V<<endl;
-  lc   = TB / V;
+  NCELL = X["NumberOfCells"].getInteger();
+  V = X["NumberOfSites"].getInteger();
+  TB = X["NumberOfInteractions"].getInteger();
+  // cout<<"TB="<<TB<<endl;
+  // cout<<"V="<<V<<endl;
+  lc = TB / V;
   bnum = lc;
-  //cout<<"lc="<<lc<<endl;
+  // cout<<"lc="<<lc<<endl;
   NSTYPE = X["NumberOfSiteTypes"].getInteger();
   NITYPE = X["NumberOfInteractionTypes"].getInteger();
   NFIELD = X["NumberOfExternalField"].getInteger();
 
   newcall_zero(bond_vec, lc, D);
   newcall_zero(bd, V, bnum);
-  newcall_zero(frame, lc, V);  //sites on boundary
+  newcall_zero(frame, lc, V);  // sites on boundary
   newcall_zero(frame_rsite, lc, V);
   newcall_zero(frame_rnum, lc, V);
   newcall_zero(frame_lsite, lc, V);
@@ -403,8 +396,8 @@ void Lattice::read() {
       bd[s0][l] = s1;
 
       if (ei >= 0) {
-        k                 = Fx[l];
-        frame[l][s0]      = true;
+        k = Fx[l];
+        frame[l][s0] = true;
         frame_lsite[l][k] = s0;
         frame_lnum[l][s0] = k;
         frame_rsite[l][k] = s1;
@@ -423,13 +416,13 @@ void Lattice::read() {
 void Lattice::make_Size(Size *_Nsize) {
   N = _Nsize;
 
-  _Nsize->d    = D;
-  _Nsize->x    = L[0];     //14
-  _Nsize->y    = L[1];     //15
-  _Nsize->z    = L[2];     //16
-  _Nsize->B    = BETA;     //17
-  _Nsize->oldB = oldBETA;  //18
-  _Nsize->V    = _Nsize->x * _Nsize->y * _Nsize->z;
+  _Nsize->d = D;
+  _Nsize->x = L[0];        // 14
+  _Nsize->y = L[1];        // 15
+  _Nsize->z = L[2];        // 16
+  _Nsize->B = BETA;        // 17
+  _Nsize->oldB = oldBETA;  // 18
+  _Nsize->V = _Nsize->x * _Nsize->y * _Nsize->z;
 }
 
 void Lattice::make_Parallel(Parallel *_PR) {
@@ -441,10 +434,11 @@ void Lattice::make_Parallel(Parallel *_PR) {
   PR->Ntdiv = NBdiv;
   PR->Rpara = NFIELD;
 
-  PR->B    = BETA/NBdiv;                        // beta for a domain.
-  PR->oldB = oldBETA / (double)NBdiv;  // for annealing.
+  PR->B = BETA / NBdiv;                // beta for a domain.
+  PR->oldB = oldBETA / NBdiv;  // for annealing.
 
-  PR->Nsdiv = PR->Nxdiv * PR->Nydiv * PR->Nzdiv;  // the number of spatial decompositions.
+  PR->Nsdiv = PR->Nxdiv * PR->Nydiv *
+              PR->Nzdiv;  // the number of spatial decompositions.
 
   PR->x = Nx;
   PR->y = Ny;
@@ -452,63 +446,104 @@ void Lattice::make_Parallel(Parallel *_PR) {
 
   PR->V = V;
 
-  PR->NtNs  = PR->Ntdiv * PR->Nsdiv;  //the number of decompositions (non-trivial parallelization).
-  PR->Npara = PR->p_num / PR->NtNs;   //the number of trivial parallelization.
+  PR->NtNs =
+      PR->Ntdiv *
+      PR->Nsdiv;  // the number of decompositions (non-trivial parallelization).
+  PR->Npara = PR->p_num / PR->NtNs;  // the number of trivial parallelization.
 
-  PR->nt = PR->my_rank % PR->Ntdiv;                     // the temporal domain number for the processor.
-  PR->ns = (int)(PR->my_rank / PR->Ntdiv) % PR->Nsdiv;  // the spatial domain number for the processor.
+  PR->nt =
+      PR->my_rank % PR->Ntdiv;  // the temporal domain number for the processor.
+  PR->ns = static_cast<int>(PR->my_rank / PR->Ntdiv) %
+           PR->Nsdiv;  // the spatial domain number for the processor.
 
-  PR->nx = PR->ns % PR->Nxdiv;                // the x-directional domain number for the processor.
-  PR->ny = (PR->ns / PR->Nxdiv) % PR->Nydiv;  // the y-directional domain number for the processor.
-  PR->nz = PR->ns / (PR->Nxdiv * PR->Nydiv);  // the z-directional domain number for the processor.
+  PR->nx =
+      PR->ns % PR->Nxdiv;  // the x-directional domain number for the processor.
+  PR->ny = (PR->ns / PR->Nxdiv) %
+           PR->Nydiv;  // the y-directional domain number for the processor.
+  PR->nz = PR->ns /
+           (PR->Nxdiv *
+            PR->Nydiv);  // the z-directional domain number for the processor.
 
-  PR->nst = PR->my_rank % PR->NtNs;    // the domain number for the processor.
-  PR->np  = PR->my_rank / (PR->NtNs);  // the seed number of the trivial parallelization for the processor.
+  PR->nst = PR->my_rank % PR->NtNs;   // the domain number for the processor.
+  PR->np = PR->my_rank / (PR->NtNs);  // the seed number of the trivial
+                                      // parallelization for the processor.
 
   if (PR->Rpara > 0) {
-    PR->nr = PR->np % PR->Rpara;  // a random potential number (one of trivial parallelization)
-    PR->nq =
-        PR->np
-        / PR->Rpara;  // a seed number of the trivial parallelization for the random potential (one of trivial parallelization)
+    PR->nr = PR->np % PR->Rpara;  // a random potential number (one of trivial
+                                  // parallelization)
+    PR->nq = PR->np /
+             PR->Rpara;  // a seed number of the trivial parallelization for the
+                         // random potential (one of trivial parallelization)
   } else {
     PR->nr = 0;
     PR->nq = PR->np;
   }
 
-  //the coordinate is (nt,nx,ny,nz,np)
+  // the coordinate is (nt,nx,ny,nz,np)
 
-  PR->nst0 = PR->np * PR->NtNs;                       // nst=0 process number for the processor.
-  PR->nt0  = PR->ns * PR->Ntdiv + PR->np * PR->NtNs;  //nt=0 process number for the processor.
-  PR->ns0  = PR->nt + PR->np * PR->NtNs;              //ns=0 process number for the processor.
-  PR->nx0  = PR->nt + (PR->ny * PR->Nxdiv + PR->nz * PR->Nxdiv * PR->Nydiv) * PR->Ntdiv
-            + PR->np * PR->NtNs;  //nx=0 process number for the processor.
+  PR->nst0 = PR->np * PR->NtNs;  // nst=0 process number for the processor.
+  PR->nt0 = PR->ns * PR->Ntdiv +
+            PR->np * PR->NtNs;  // nt=0 process number for the processor.
+  PR->ns0 =
+      PR->nt + PR->np * PR->NtNs;  // ns=0 process number for the processor.
+  PR->nx0 = PR->nt +
+            (PR->ny * PR->Nxdiv + PR->nz * PR->Nxdiv * PR->Nydiv) * PR->Ntdiv +
+            PR->np * PR->NtNs;  // nx=0 process number for the processor.
 
-  PR->upper = (PR->nt + 1) % PR->Ntdiv + PR->ns * PR->Ntdiv
-              + PR->np * PR->Ntdiv * PR->Nsdiv;  //the upper process number for the temporal direction.
-  PR->lower = (PR->nt - 1 + PR->Ntdiv) % PR->Ntdiv + PR->ns * PR->Ntdiv
-              + PR->np * PR->Ntdiv * PR->Nsdiv;  //the lower process number the temporal direction.
+  PR->upper =
+      (PR->nt + 1) % PR->Ntdiv + PR->ns * PR->Ntdiv +
+      PR->np * PR->Ntdiv *
+          PR->Nsdiv;  // the upper process number for the temporal direction.
+  PR->lower =
+      (PR->nt - 1 + PR->Ntdiv) % PR->Ntdiv + PR->ns * PR->Ntdiv +
+      PR->np * PR->Ntdiv *
+          PR->Nsdiv;  // the lower process number the temporal direction.
 
-  PR->right[0] = PR->nt + ((PR->nx + 1) % PR->Nxdiv + PR->ny * PR->Nxdiv + PR->nz * PR->Nxdiv * PR->Nydiv) * PR->Ntdiv
-                 + PR->np * PR->Ntdiv * PR->Nsdiv;  //the right side process number for the x direction.
+  PR->right[0] =
+      PR->nt +
+      ((PR->nx + 1) % PR->Nxdiv + PR->ny * PR->Nxdiv +
+       PR->nz * PR->Nxdiv * PR->Nydiv) *
+          PR->Ntdiv +
+      PR->np * PR->Ntdiv *
+          PR->Nsdiv;  // the right side process number for the x direction.
   PR->left[0] =
-      PR->nt + ((PR->nx - 1 + PR->Nxdiv) % PR->Nxdiv + PR->ny * PR->Nxdiv + PR->nz * PR->Nxdiv * PR->Nydiv) * PR->Ntdiv
-      + PR->np * PR->Ntdiv * PR->Nsdiv;  //the left side process number for the x direction.
+      PR->nt +
+      ((PR->nx - 1 + PR->Nxdiv) % PR->Nxdiv + PR->ny * PR->Nxdiv +
+       PR->nz * PR->Nxdiv * PR->Nydiv) *
+          PR->Ntdiv +
+      PR->np * PR->Ntdiv *
+          PR->Nsdiv;  // the left side process number for the x direction.
 
-  PR->right[1] = PR->nt + (PR->nx + ((PR->ny + 1) % PR->Nydiv) * PR->Nxdiv + PR->nz * PR->Nxdiv * PR->Nydiv) * PR->Ntdiv
-                 + PR->np * PR->Ntdiv * PR->Nsdiv;  //the right side process number for the y direction.
+  PR->right[1] =
+      PR->nt +
+      (PR->nx + ((PR->ny + 1) % PR->Nydiv) * PR->Nxdiv +
+       PR->nz * PR->Nxdiv * PR->Nydiv) *
+          PR->Ntdiv +
+      PR->np * PR->Ntdiv *
+          PR->Nsdiv;  // the right side process number for the y direction.
   PR->left[1] =
-      PR->nt
-      + (PR->nx + ((PR->ny - 1 + PR->Nydiv) % PR->Nydiv) * PR->Nxdiv + PR->nz * PR->Nxdiv * PR->Nydiv) * PR->Ntdiv
-      + PR->np * PR->Ntdiv * PR->Nsdiv;  //the left side process number for the y direction.
+      PR->nt +
+      (PR->nx + ((PR->ny - 1 + PR->Nydiv) % PR->Nydiv) * PR->Nxdiv +
+       PR->nz * PR->Nxdiv * PR->Nydiv) *
+          PR->Ntdiv +
+      PR->np * PR->Ntdiv *
+          PR->Nsdiv;  // the left side process number for the y direction.
 
-  PR->right[2] = PR->nt + (PR->nx + PR->ny * PR->Nxdiv + ((PR->nz + 1) % PR->Nzdiv) * PR->Nxdiv * PR->Nydiv) * PR->Ntdiv
-                 + PR->np * PR->Ntdiv * PR->Nsdiv;  //the right side process number for the z direction.
+  PR->right[2] =
+      PR->nt +
+      (PR->nx + PR->ny * PR->Nxdiv +
+       ((PR->nz + 1) % PR->Nzdiv) * PR->Nxdiv * PR->Nydiv) *
+          PR->Ntdiv +
+      PR->np * PR->Ntdiv *
+          PR->Nsdiv;  // the right side process number for the z direction.
   PR->left[2] =
-      PR->nt
-      + (PR->nx + PR->ny * PR->Nxdiv + ((PR->nz - 1 + PR->Nzdiv) % PR->Nzdiv) * PR->Nxdiv * PR->Nydiv) * PR->Ntdiv
-      + PR->np * PR->Ntdiv * PR->Nsdiv;  //the left side process number for the z direction.
+      PR->nt +
+      (PR->nx + PR->ny * PR->Nxdiv +
+       ((PR->nz - 1 + PR->Nzdiv) % PR->Nzdiv) * PR->Nxdiv * PR->Nydiv) *
+          PR->Ntdiv +
+      PR->np * PR->Ntdiv *
+          PR->Nsdiv;  // the left side process number for the z direction.
 }
-
 
 Lattice::~Lattice() {
   delcall(bond_vec, lc);
@@ -556,21 +591,20 @@ inline void Lattice::dump() {
 }
 
 void Lattice::show_param(std::ofstream &F) {
-  using namespace std;
+  using std::endl;
   F << "P D       = " << N->d << endl;
   F << "P L       = " << N->x << " " << N->y << " " << N->z << endl;
   F << "P BETA    = " << BETA << endl;
   F << "P DOML    = " << PR->x << " " << PR->y << " " << PR->z << endl;
   F << "P DOMBETA = " << PR->B << endl;
-  F << "P NDIVL   = " << PR->Nxdiv << " " << PR->Nydiv << " " << PR->Nzdiv << endl;
+  F << "P NDIVL   = " << PR->Nxdiv << " " << PR->Nydiv << " " << PR->Nzdiv
+    << endl;
   F << "P NDIVBETA= " << PR->Ntdiv << endl;
 }
 
-void Lattice::set_beta(double beta){
+void Lattice::set_beta(double beta) {
   BETA = beta;
   B = BETA / NBdiv;
 }
 
-void Lattice::set_oldbeta(double oldbeta){
-  oldBETA = oldbeta;
-}
+void Lattice::set_oldbeta(double oldbeta) { oldBETA = oldbeta; }

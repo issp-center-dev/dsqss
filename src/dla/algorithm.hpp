@@ -1,3 +1,19 @@
+// DSQSS (Discrete Space Quantum Systems Solver)
+// Copyright (C) 2018- The University of Tokyo
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 //######################################################################
 //####
 //####  World-Line Monte Carlo simulation
@@ -16,30 +32,16 @@
 //####
 //######################################################################
 
-// DSQSS (Discrete Space Quantum Systems Solver)
-// Copyright (C) 2018- The University of Tokyo
-//
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-
-#ifndef ALGORITHM_H
-#define ALGORITHM_H
+#ifndef SRC_DLA_ALGORITHM_HPP_
+#define SRC_DLA_ALGORITHM_HPP_
 
 #include <cstdio>
 #include <iostream>
-#include "debug.hpp"
+#include <string>
+#include <vector>
+
 #include "array.h"
+#include "debug.hpp"
 #include "io.h"
 #include "link.hpp"
 #include "name.h"
@@ -58,18 +60,18 @@ class ScatteringChannel;
 //######################################################################
 
 class SiteInitialConfiguration {
-public:
+ public:
   int State;
   int NCH;
   Array<ScatteringChannel> CH;
-  SiteInitialConfiguration() { CH.setLabel("SiteInitialConfiguration::CH"); };
-  int id() { return State; };
+  SiteInitialConfiguration() { CH.setLabel("SiteInitialConfiguration::CH"); }
+  int id() { return State; }
   void initialize(XML::Block& X);
   void dump();
 };
 
 class SiteProperty {
-public:
+ public:
   int STYPE;
   int VTYPE;
   VertexProperty* _VP;
@@ -79,16 +81,16 @@ public:
   Array<SiteInitialConfiguration> IC;
   SiteProperty() : _VP(0) { IC.setLabel("SiteProperty::IC"); };
 
-  int id() { return STYPE; };
+  int id() { return STYPE; }
   void initialize(XML::Block& X);
-  void setVertexProperty(VertexProperty& VP) { _VP = &VP; };
-  VertexProperty& getVertexProperty() { return *_VP; };
+  void setVertexProperty(VertexProperty& VP) { _VP = &VP; }
+  VertexProperty& getVertexProperty() { return *_VP; }
   SiteInitialConfiguration& getInitialConfiguration(int x) { return IC[x]; }
   void dump();
 };
 
 class ScatteringChannel {
-public:
+ public:
   int OUT;
   int XOUT;
   double PROB;
@@ -98,7 +100,7 @@ public:
 };
 
 class InteractionProperty {
-public:
+ public:
   int ITYPE;
   int VTYPE;
   int NBODY;
@@ -116,20 +118,19 @@ public:
     AverageInterval.setLabel("InteractionProperty::AverageInterval");
   };
 
-  void setVertexProperty(VertexProperty& vp) { _VP = &vp; };
-  VertexProperty& getVertexProperty() { return *_VP; };
+  void setVertexProperty(VertexProperty& vp) { _VP = &vp; }
+  VertexProperty& getVertexProperty() { return *_VP; }
 
-  double sign(int *x) {return Sign(x);}
-  double sign(std::vector<int> const& x) {return Sign(x);}
+  double sign(int* x) { return Sign(x); }
+  double sign(std::vector<int> const& x) { return Sign(x); }
 
-  int id() { return ITYPE; };
+  int id() { return ITYPE; }
   void initialize(XML::Block& X);
   void dump();
 };
 
 class VertexProperty {
-private:
-public:
+ public:
   int VTYPE;
   int VCAT;
   int NBODY;
@@ -151,22 +152,21 @@ public:
     _IC.setLabel("VertexProperty::_IC");
     StateCode.setLabel("VertexProperty::StateCode");
     SCNK.setLabel("VertexProperty::StateCode4NON-KINK");
-  };
+  }
 
-  int id() { return VTYPE; };
+  int id() { return VTYPE; }
 
   void initialize(XML::Block& X, int i);
 
   int getSiteType(int out);
-  bool isTerminal() { return VCAT == VCAT::TERM; };
+  bool isTerminal() { return VCAT == VCAT::TERM; }
   VertexInitialConfiguration& getIC(int st, int inc, int xinc);
 
   void dump();
 };
 
 class VertexInitialConfiguration {
-private:
-public:
+ public:
   int ID;
 
   Array<ScatteringChannel> CH;
@@ -174,11 +174,11 @@ public:
   VertexInitialConfiguration() : State(0) {
     ID = -1;
     CH.setLabel("VertexInitialConfiguration::CH");
-  };
+  }
 
   ~VertexInitialConfiguration() {
     if (State != 0) delete[] State;
-  };
+  }
 
   int NLEG;
   int* State;
@@ -186,10 +186,10 @@ public:
   int XINC;
   int NCH;
 
-  int MCH;  // max of NCH
+  int MCH;      // max of NCH
   double dRHO;  // [vertex density] * [1-p1]
-  void setID(int i) { ID = i; };
-  int id() { return ID; };
+  void setID(int i) { ID = i; }
+  int id() { return ID; }
   void initialize(XML::Block& X);
 
   void initialize();
@@ -199,21 +199,24 @@ public:
 };
 
 class Algorithm {
-private:
+ private:
   XML::Block X;
   Array<SiteProperty> SPROP;
   Array<InteractionProperty> IPROP;
   Array<VertexProperty> VPROP;
 
   int ix;
-public:
+
+ public:
   double getBlock(const std::string& s, double i) {
     return X["General"][s].getDouble();
   }
-  int getBlock(const std::string& s, int i) { return X["General"][s].getInteger(); }
+  int getBlock(const std::string& s, int i) {
+    return X["General"][s].getInteger();
+  }
 
-  Algorithm(std::string const& FNAME);
-  Algorithm(){}
+  explicit Algorithm(std::string const& FNAME);
+  Algorithm() {}
   ~Algorithm();
 
   int NSTYPE;  // Number of site types
@@ -221,7 +224,7 @@ public:
   int NVTYPE;  // Number of bond types
   int NXMAX;   // Maximum number of segment states
 
-  //double WDIAG; // Artifitial weight attached to the diagonal state
+  // double WDIAG; // Artifitial weight attached to the diagonal state
   // Used in relating the worm-head mean-path to the susceptibility
 
   void read();
@@ -231,18 +234,18 @@ public:
   void set_i(int n) { ix = n; }
   void set_alg(int n);
 
-  SiteProperty& getSiteProperty(int i) { return SPROP[i]; };  //return val[i]
-  InteractionProperty& getInteractionProperty(int i) { return IPROP[i]; };
-  VertexProperty& getVertexProperty(int i) { return VPROP[i]; };
+  SiteProperty& getSiteProperty(int i) { return SPROP[i]; }
+  InteractionProperty& getInteractionProperty(int i) { return IPROP[i]; }
+  VertexProperty& getVertexProperty(int i) { return VPROP[i]; }
 
-  void dump() { X.dump(); };
+  void dump() { X.dump(); }
 };
 
 //######################################################################
 //###########  Member Functions  #######################################
 //######################################################################
 
-inline Algorithm::Algorithm(std::string const & FNAME) {
+inline Algorithm::Algorithm(std::string const& FNAME) {
   AutoDebugDump("Algorithm::Algorithm");
 
   SPROP.setLabel("Algorithm::SPROP");
@@ -252,7 +255,7 @@ inline Algorithm::Algorithm(std::string const & FNAME) {
   X.initialize(FNAME.c_str());
 
   int ixx = X["General"]["NXMAX"].getInteger();
-  MXNIC1  = 24 * (ixx - 1) * (ixx - 1);
+  MXNIC1 = 24 * (ixx - 1) * (ixx - 1);
 
   read();
   initialize();
@@ -277,41 +280,42 @@ void Algorithm::set_alg(int ix) {
 void Algorithm::read() {
   AutoDebugDump("Algorithm::read");
 
-  NSTYPE = X["General"]["NSTYPE"].getInteger();  //1 []operator
-  NITYPE = X["General"]["NITYPE"].getInteger();  //1
-  NVTYPE = X["General"]["NVTYPE"].getInteger();  //2
-  NXMAX  = X["General"]["NXMAX"].getInteger();   //2
+  NSTYPE = X["General"]["NSTYPE"].getInteger();  // 1 []operator
+  NITYPE = X["General"]["NITYPE"].getInteger();  // 1
+  NVTYPE = X["General"]["NVTYPE"].getInteger();  // 2
+  NXMAX = X["General"]["NXMAX"].getInteger();    // 2
   // WDIAG  = X["General"]["WDIAG" ].getDouble(); // 0.25
 
-  SPROP.init(1, NSTYPE);  //1,SiteProperty
-  IPROP.init(1, NITYPE);  //1,InteractionProperty
-  VPROP.init(1, NVTYPE);  //2,VertexProperty
+  SPROP.init(1, NSTYPE);  // 1,SiteProperty
+  IPROP.init(1, NITYPE);  // 1,InteractionProperty
+  VPROP.init(1, NVTYPE);  // 2,VertexProperty
 
-  for (int i = 0; i < NITYPE; i++) {  //1 IPROP(i) : return val[i]
+  for (int i = 0; i < NITYPE; i++) {  // 1 IPROP(i) : return val[i]
     IPROP(i).NXMAX = NXMAX;
   }
 
-  for (int i = 0; i < NVTYPE; i++) {  //2
+  for (int i = 0; i < NVTYPE; i++) {  // 2
     VPROP(i).NXMAX = NXMAX;
   }
 
-  for (int i = 0; i < X.NumberOfBlocks(); i++) {  //X.numberofblocks=6
-    XML::Block& B      = X[i];
+  for (int i = 0; i < X.NumberOfBlocks(); i++) {  // X.numberofblocks=6
+    XML::Block& B = X[i];
     const std::string& name = B.getName();
 
     if (name == "Site") {
-      int id = B["STYPE"].getInteger();  //id=0
-      SPROP(id).initialize(B);  //  SitePropertyClass setting is finished at this point
-      //SPROP(0) returns SiteProperty& val[0]
+      int id = B["STYPE"].getInteger();  // id=0
+      SPROP(id).initialize(
+          B);  //  SitePropertyClass setting is finished at this point
+      // SPROP(0) returns SiteProperty& val[0]
     }
 
     if (name == "Interaction") {
-      int id = B["ITYPE"].getInteger();  //id=0
+      int id = B["ITYPE"].getInteger();  // id=0
       IPROP(id).initialize(B);
     }
 
     if (name == "Vertex") {
-      int id = B["VTYPE"].getInteger();  //id=0,1
+      int id = B["VTYPE"].getInteger();  // id=0,1
       VPROP(id).initialize(B, MXNIC1);
     }
   }
@@ -321,25 +325,24 @@ void Algorithm::initialize() {
   AutoDebugDump("Algorithm::initialize");
 
   // Site::_VP
-  for (int i = 0; i < NSTYPE; i++) {        //1
-    int vt = SPROP(i).VTYPE;                //2
-    SPROP(i).setVertexProperty(VPROP(vt));  //VPROP(vt) {return val}
-
+  for (int i = 0; i < NSTYPE; i++) {        // 1
+    int vt = SPROP(i).VTYPE;                // 2
+    SPROP(i).setVertexProperty(VPROP(vt));  // VPROP(vt) {return val}
   }
 
   // scattering prob
-  for (int i = 0; i < NSTYPE; i++) {  //1
+  for (int i = 0; i < NSTYPE; i++) {  // 1
     SiteProperty& SP = SPROP(i);
-    for (int j = 0; j < SP.NIC; j++) {          //NIC=NX=Numberofstates 2
-      SiteInitialConfiguration& IC = SP.IC[j];  //[]operator return val[i]
-      double p                     = 0.0;
+    for (int j = 0; j < SP.NIC; j++) {          // NIC=NX=Numberofstates 2
+      SiteInitialConfiguration& IC = SP.IC[j];  // operator return val[i]
+      double p = 0.0;
 
-      for (int k = 0; k < IC.NCH; k++) {  //numberofchannnels
+      for (int k = 0; k < IC.NCH; k++) {  // numberofchannnels
         ScatteringChannel& SC = IC.CH[k];
         p += SC.PROB;
         SC.PROB = p;
       }
-      if (fabs(p - 1.0) > EPS) {  //EPS=1.d-14
+      if (fabs(p - 1.0) > EPS) {  // EPS=1.d-14
         printf("Algorithm::initialize> Error.\n");
         printf("  The sum of probabilities is not equal to 1.\n");
         SP.dump();
@@ -352,7 +355,7 @@ void Algorithm::initialize() {
 
   // Sitetype of vertices
   for (int i = 0; i < NSTYPE; i++) {
-    SiteProperty& S   = SPROP(i);
+    SiteProperty& S = SPROP(i);
     VertexProperty& V = VPROP(S.VTYPE);
 
     int NLEG = 2;
@@ -362,8 +365,8 @@ void Algorithm::initialize() {
   }
   for (int i = 0; i < NITYPE; i++) {
     InteractionProperty& I = IPROP(i);
-    VertexProperty& V      = VPROP(I.VTYPE);
-    int NLEG               = 2 * I.NBODY;
+    VertexProperty& V = VPROP(I.VTYPE);
+    int NLEG = 2 * I.NBODY;
     for (int l = 0; l < NLEG; l++) {
       V.STYPE[l] = I.STYPE[l / 2];
     }
@@ -379,13 +382,13 @@ void Algorithm::initialize() {
     for (int ic = 0; ic < VP.NIC; ic++) {
       VertexInitialConfiguration& IC = VP.IC[ic];
 
-      int nl   = VP.NLEG;
-      int* x   = IC.State;
-      int inc  = IC.INC;
+      int nl = VP.NLEG;
+      int* x = IC.State;
+      int inc = IC.INC;
       int xinc = IC.XINC;
       int st;
       bool isKink = false;
-      std::vector<int> xx(nl/2);
+      std::vector<int> xx(nl / 2);
 
       for (int il = 0; il < nl; il += 2) {
         if (x[il] != x[il + 1])
@@ -394,9 +397,9 @@ void Algorithm::initialize() {
           xx[il / 2] = x[il];
       }
 
-      if (VP.StateCode(x) == STATE::UNDEF) {  //operator return val(ID(x))
+      if (VP.StateCode(x) == STATE::UNDEF) {  // operator return val(ID(x))
         VP.StateCode(x) = nst;
-        st              = nst;
+        st = nst;
         if (!isKink) VP.SCNK(xx) = nst;
         nst++;
       } else {
@@ -404,7 +407,7 @@ void Algorithm::initialize() {
       }
 
       VP._IC(st, inc, xinc) = &IC;  // generate INDEX using st,inc,xinc
-    }  //end VP.NICloop
+    }                               // end VP.NICloop
   }
 
   // _VP of InteractionProperty
@@ -424,19 +427,22 @@ void Algorithm::initialize() {
       bool isKink = false;
       std::vector<int> x(VP.NBODY);
       for (int ileg = 0; ileg < IC.NLEG; ileg += 2) {
-        if (IC.State[ileg] != IC.State[ileg + 1]) { isKink = true; }
+        if (IC.State[ileg] != IC.State[ileg + 1]) {
+          isKink = true;
+        }
         x[ileg / 2] = IC.State[ileg];
       }
       double p = 0.0;
 
       bool isVertex = false;  // false: kink or term , true: means interaction
-      int i_type    = 0;
+      int i_type = 0;
       for (i_type = 0; i_type < NITYPE; i_type++) {
         if (IPROP[i_type].VTYPE == i) {
           isVertex = true;
           break;
         }
-      }  // If VTYPE is for Vertex (not for term or tail), there should be InteractionProperty with density of vertex.
+      }  // If VTYPE is for Vertex (not for term or tail), there should be
+         // InteractionProperty with density of vertex.
 
       if (isKink || (!isVertex)) {
         //      printf("i=%d j=%d iskink \n",i,j);
@@ -449,8 +455,8 @@ void Algorithm::initialize() {
 
       } else {
         double Vdensity = IPROP[i_type].VertexDensity(x);
-        int count_ch    = 0;
-        double dR       = Vdensity;
+        int count_ch = 0;
+        double dR = Vdensity;
         //       printf("i=%d j=%d dR=%f \n",i,j,dR);
 
         for (int k = 0; k < IC.NCH; k++) {
@@ -459,13 +465,13 @@ void Algorithm::initialize() {
             dR = (1.0 - SC.PROB) * Vdensity;
           } else {
             p += (SC.PROB * Vdensity);
-            IC.CH[count_ch]      = SC;
+            IC.CH[count_ch] = SC;
             IC.CH[count_ch].PROB = p;
             count_ch++;
           }
         }
         IC.dRHO = dR;
-        IC.NCH  = count_ch;
+        IC.NCH = count_ch;
       }
       if (fabs(p - IC.dRHO) > EPS * 10.0) {
         printf("Algorithm::initialize> Error.\n");
@@ -484,22 +490,20 @@ void Algorithm::initialize() {
   }
 }
 
+inline Algorithm::~Algorithm() {}
 
-inline Algorithm::~Algorithm() {
-}
-
-void SiteProperty::initialize(XML::Block& X) {  //<Site>
+void SiteProperty::initialize(XML::Block& X) {  // <Site>
   AutoDebugDump("SiteProperty::initialize");
 
   STYPE = X["STYPE"].getInteger();
-  NX    = X["NumberOfStates"].getInteger();
+  NX = X["NumberOfStates"].getInteger();
   VTYPE = X["VertexTypeOfSource"].getInteger();
-  NIC   = NX;
+  NIC = NX;
 
   IC.init(1, NIC);
 
   XVALS.resize(NX);
-  for (int i=0; i<NX; ++i){
+  for (int i = 0; i < NX; ++i) {
     XVALS[i] = X["LocalStates"].getDouble(i);
   }
 
@@ -520,17 +524,15 @@ void SiteProperty::dump() {
   printf("  NX=    %d\n", NX);
   printf("  VTYPE= %d\n", VTYPE);
   printf("  NIC=   %d\n", NIC);
-  for (int i = 0; i < NIC; i++)
-    IC[i].dump();
+  for (int i = 0; i < NIC; i++) IC[i].dump();
   printf("</SiteProperty>\n");
 }
-
 
 void SiteInitialConfiguration::initialize(XML::Block& X) {
   AutoDebugDump("SiteInitialConfiguration::initialize");
 
   State = X["State"].getInteger();
-  NCH   = X["NumberOfChannels"].getInteger();
+  NCH = X["NumberOfChannels"].getInteger();
   CH.init("SCH", 1, NCH);
 
   int ch = 0;
@@ -552,14 +554,12 @@ void SiteInitialConfiguration::dump() {
   printf("<SiteInitialConfiguration>\n");
   printf("  State= %d\n", State);
   printf("  NCH=   %d\n", NCH);
-  for (int i = 0; i < NCH; i++)
-    CH[i].dump();
+  for (int i = 0; i < NCH; i++) CH[i].dump();
   printf("</SiteInitialConfiguration>\n");
 }
 
-
 void ScatteringChannel::initialize(XML::Block& X) {
-  OUT  = X.getInteger(0);
+  OUT = X.getInteger(0);
   XOUT = X.getInteger(1);
   PROB = X.getDouble(2);
 }
@@ -573,7 +573,6 @@ void ScatteringChannel::dump() {
   printf("\n");
 }
 
-
 void InteractionProperty::initialize(XML::Block& X) {
   AutoDebugDump("InteractionProperty::initialize");
   ITYPE = X["ITYPE"].getInteger();
@@ -586,7 +585,7 @@ void InteractionProperty::initialize(XML::Block& X) {
   VertexDensity.set_all(0.0);
   AverageInterval.init(NBODY, NXMAX, ARRAY::EOL);
   AverageInterval.set_all(-1.0);
-  Sign.init(2*NBODY, NXMAX, ARRAY::EOL);
+  Sign.init(2 * NBODY, NXMAX, ARRAY::EOL);
   Sign.set_all(1.0);
 
   for (int i = 0; i < X.NumberOfBlocks(); i++) {
@@ -603,11 +602,11 @@ void InteractionProperty::initialize(XML::Block& X) {
       AverageInterval(x) = 1.0 / d;
     }
     if (B.getName() == "Sign") {
-      std::vector<int> x(2*NBODY);
-      for (int ii = 0; ii < 2*NBODY; ii++) {
+      std::vector<int> x(2 * NBODY);
+      for (int ii = 0; ii < 2 * NBODY; ii++) {
         x[ii] = B.getInteger(ii);
       }
-      double sgn = B.getDouble(2*NBODY);
+      double sgn = B.getDouble(2 * NBODY);
       Sign(x) = sgn;
     }
   }
@@ -631,21 +630,18 @@ inline void InteractionProperty::dump() {
     for (int j = 0; j < I.dimension(); j++) {
       printf(" %1d", x[j]);
     }
-    printf(") --> %8.3f, %8.3f\n", VertexDensity(x),
-           AverageInterval(x));
+    printf(") --> %8.3f, %8.3f\n", VertexDensity(x), AverageInterval(x));
   }
   printf("</InteractionProperty>\n");
 }
 
-
-
 void VertexProperty::initialize(XML::Block& X, int mx) {
   AutoDebugDump("VertexProperty::initialize");
   VTYPE = X["VTYPE"].getInteger();
-  VCAT  = X["VCATEGORY"].getInteger();
+  VCAT = X["VCATEGORY"].getInteger();
   NBODY = X["NBODY"].getInteger();
-  NIC   = X["NumberOfInitialConfigurations"].getInteger();
-  NLEG  = 2 * NBODY;
+  NIC = X["NumberOfInitialConfigurations"].getInteger();
+  NLEG = 2 * NBODY;
 
   STYPE.init(1, NLEG);
   STYPE.set_all(STYPE::UNDEF);
@@ -691,7 +687,6 @@ void VertexProperty::initialize(XML::Block& X, int mx) {
   }
 }
 
-
 inline int VertexProperty::getSiteType(int out) {
 #ifdef DEB
   if (out < 0 || out >= NLEG) {
@@ -703,8 +698,6 @@ inline int VertexProperty::getSiteType(int out) {
 #endif
   return STYPE[out];
 }
-
-
 
 inline VertexInitialConfiguration& VertexProperty::getIC(int st, int inc,
                                                          int xinc) {
@@ -722,8 +715,7 @@ void VertexProperty::dump() {
   printf("  NIC    = %d\n", NIC);
   printf("  NXMAX  = %d\n", NXMAX);
   printf("  STYPE  = ");
-  for (int i = 0; i < NLEG; i++)
-    printf(" %d", STYPE[i]);
+  for (int i = 0; i < NLEG; i++) printf(" %d", STYPE[i]);
   printf("\n");
   std::vector<int> x(NLEG);
   IndexSystem& I = StateCode.index_system();
@@ -738,7 +730,7 @@ void VertexProperty::dump() {
   }
   IndexSystem& I2 = SCNK.index_system();
   for (int i = 0; i < I2.size(); i++) {
-    I2.coord(i,&(x[0]));
+    I2.coord(i, &(x[0]));
     int sc = SCNK[i];
     printf("  StateCode4NON-KINK");
     for (int j = 0; j < I2.dimension(); j++) {
@@ -756,12 +748,11 @@ void VertexProperty::dump() {
       printf("  (_IC[%1d][%1d][%1d])->id() = %d\n", y[0], y[1], y[2], icc);
     }
   }
-  for (int i = 0; i < NIC; i++)
-    IC[i].dump();
+  for (int i = 0; i < NIC; i++) IC[i].dump();
   printf("</VertexProperty>\n");
 }
 
-void VertexInitialConfiguration::initialize(XML::Block& X) {  //<initialconfig>
+void VertexInitialConfiguration::initialize(XML::Block& X) {  // <initialconfig>
   AutoDebugDump("VertexInitialConfiguration::initialize");
 
   if (NLEG == 0) {
@@ -775,9 +766,9 @@ void VertexInitialConfiguration::initialize(XML::Block& X) {  //<initialconfig>
     State[i] = X["State"].getInteger(i);
   }
 
-  INC  = X["IncomingDirection"].getInteger();
+  INC = X["IncomingDirection"].getInteger();
   XINC = X["NewState"].getInteger();
-  NCH  = X["NumberOfChannels"].getInteger();
+  NCH = X["NumberOfChannels"].getInteger();
 
   MCH = 4;
   CH.init("VCH", 1, MCH);
@@ -795,8 +786,7 @@ void VertexInitialConfiguration::initialize(XML::Block& X) {  //<initialconfig>
   }
 }
 
-
-void VertexInitialConfiguration::initialize() {  //<initialconfig>
+void VertexInitialConfiguration::initialize() {  // <initialconfig>
   AutoDebugDump("VertexInitialConfiguration::initialize");
 
   if (NLEG == 0) {
@@ -807,10 +797,9 @@ void VertexInitialConfiguration::initialize() {  //<initialconfig>
 
   State = new int[NLEG];
 
-  NCH = 4;  //X["NumberOfChannels"].getInteger();
+  NCH = 4;  // X["NumberOfChannels"].getInteger();
   CH.init("VCH", 1, NCH);
 }
-
 
 inline ScatteringChannel& VertexInitialConfiguration::getScatteringChannel() {
   double p;
@@ -850,7 +839,6 @@ inline ScatteringChannel& VertexInitialConfiguration::getScatteringChannel(
   return CH[ch];
 }
 
-
 void VertexInitialConfiguration::dump() {
   AutoDebugDump("VertexInitialConfiguration::dump");
   printf("\n");
@@ -862,12 +850,10 @@ void VertexInitialConfiguration::dump() {
   printf(", dRHO= %f", dRHO);
 
   printf(", X= (");
-  for (int i = 0; i < NLEG; i++)
-    printf(" %1d", State[i]);
+  for (int i = 0; i < NLEG; i++) printf(" %1d", State[i]);
   printf(")\n");
-  for (int i = 0; i < NCH; i++)
-    CH[i].dump();
+  for (int i = 0; i < NCH; i++) CH[i].dump();
   printf("</VertexInitialConfiguration>\n");
 }
 
-#endif
+#endif  // SRC_DLA_ALGORITHM_HPP_

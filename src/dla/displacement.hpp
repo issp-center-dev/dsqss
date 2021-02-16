@@ -14,15 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef DISPLACEMENT_H
-#define DISPLACEMENT_H
+#ifndef SRC_DLA_DISPLACEMENT_HPP_
+#define SRC_DLA_DISPLACEMENT_HPP_
 
+#include <cmath>
 #include <cstdio>
 #include <fstream>
 #include <sstream>
-#include <cmath>
-#include "debug.hpp"
+#include <vector>
+#include <utility>
+
+#include <boost/unordered_map.hpp>
+#include <boost/functional/hash.hpp>
+
 #include "accumulator.hpp"
+#include "debug.hpp"
 #include "parameter.hpp"
 #include "xml.h"
 
@@ -31,15 +37,22 @@ struct Displacement {
   int NSITES;
   int nkinds;
 
-  std::vector<int> NR; // the number of pairs with the same dR
-  std::vector<std::vector<int> > IR; // IR[isite][jsite] == disp_index
+  std::vector<int> NR;  // the number of pairs with the same dR
+  // std::vector<std::vector<int> > IR;  // IR[isite][jsite] == disp_index
 
-  Displacement(Parameter const& param);
+  // IR[std::make_pair(isite,jsite)] == disp_index
+  typedef boost::unordered_map<std::pair<int, int>, int,
+                               boost::hash<std::pair<int, int> > >
+      IR_type;
+  typedef IR_type::iterator IR_iterator;
+  IR_type IR;
+
+  explicit Displacement(Parameter const& param);
   void read(XML::Block const& X);
 };
 
-Displacement::Displacement(Parameter const& param) : defined(false), NSITES(0), nkinds(0)
-{
+Displacement::Displacement(Parameter const& param)
+    : defined(false), NSITES(0), nkinds(0) {
   AutoDebugDump("Displacement::Displacement");
   if (param.DISPFILE.length() > 0) {
     defined = true;
@@ -48,23 +61,19 @@ Displacement::Displacement(Parameter const& param) : defined(false), NSITES(0), 
     NSITES = X["NumberOfSites"].getInteger();
     nkinds = X["NumberOfKinds"].getInteger();
 
-    NR.resize(nkinds,0);
-
-    for (int i = 0; i < NSITES; i++) {
-      IR.push_back(std::vector<int>(NSITES, nkinds));
-    }
+    NR.resize(nkinds, 0);
 
     for (int i = 0; i < X.NumberOfBlocks(); i++) {
       XML::Block& B = X[i];
       if (B.getName() == "R") {
-        int kind  = B.getInteger(0);
+        int kind = B.getInteger(0);
         int isite = B.getInteger(1);
         int jsite = B.getInteger(2);
-        IR[isite][jsite] = kind;
+        IR[std::make_pair(isite, jsite)] = kind;
         NR[kind]++;
       }
     }
   }
-};
+}
 
-#endif  //DISPLACEMENT_H
+#endif  // SRC_DLA_DISPLACEMENT_HPP_

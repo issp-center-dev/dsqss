@@ -9,26 +9,26 @@ void Measurement::measure(double sgn) {
   double MZSA = 0.0;  // staggered, tau=0
   double MZSB = 0.0;  // staggered, integrated
 
-  const double T = 1.0/LAT.BETA;
-  const double invV = 1.0/LAT.NSITE;
+  const double T = 1.0 / LAT.BETA;
+  const double invV = 1.0 / LAT.NSITE;
 
   std::vector<double> phase(LAT.NSMTYPE);
-  for(int m = 0; m < LAT.NSMTYPE; ++m){
-    phase[m] = std::cos(2.0*M_PI*m/LAT.NSMTYPE);
+  for (int m = 0; m < LAT.NSMTYPE; ++m) {
+    phase[m] = std::cos(2.0 * M_PI * m / LAT.NSMTYPE);
   }
 
   for (int s = 0; s < LAT.NSITE; s++) {
-    Site& SITE  = LAT.S(s);
-    int mt      = SITE.getMTYPE();
-    double ph   = phase[mt];
+    Site& SITE = LAT.S(s);
+    int mt = SITE.getMTYPE();
+    double ph = phase[mt];
     Segment& S0 = SITE.first();
-    double mz0  = dvals[S0.X()];
+    double mz0 = dvals[S0.X()];
     Site::iterator p(SITE);
     double mza0 = 0.0;
 
     while (!(++p).atOrigin()) {
       Segment& S = *p;
-      double mz  = dvals[S.X()];
+      double mz = dvals[S.X()];
       mza0 += mz * S.length();
     }
 
@@ -44,16 +44,16 @@ void Measurement::measure(double sgn) {
   MZUB *= T;
   MZSB *= T;
 
-  double EBSAMP = -(double)NV;
+  double EBSAMP = -1.0*NV;
 
   for (int b = 0; b < LAT.NINT; b++) {
-    Interaction& I          = LAT.I(b);
+    Interaction& I = LAT.I(b);
     InteractionProperty& IP = I.property();
-    //VertexProperty& VP = IP.getVertexProperty();
-    int NBODY         = IP.NBODY;
+    // VertexProperty& VP = IP.getVertexProperty();
+    int NBODY = IP.NBODY;
     std::vector<double> tau(NBODY);
     std::vector<int> x(NBODY);
-    std::vector<int> x2(2*NBODY);
+    std::vector<int> x2(2 * NBODY);
     std::vector<Site::iterator> p(NBODY);
 
     for (int i = 0; i < NBODY; i++) {
@@ -61,7 +61,7 @@ void Measurement::measure(double sgn) {
       p[i].init(S);
       ++p[i];
       tau[i] = p[i]->topTime();
-      x[i]   = p[i]->X();
+      x[i] = p[i]->X();
     }
 
     double t = 0.0;
@@ -75,14 +75,13 @@ void Measurement::measure(double sgn) {
       t = tau[it];
       ++p[it];
       tau[it] = p[it]->topTime();
-      x[it]   = p[it]->X();
+      x[it] = p[it]->X();
     }
   }
 
   ACC[SGN].accumulate(sgn);
 
-  ACC[NV1].accumulate(sgn*NV);
-
+  ACC[NV1].accumulate(sgn * NV);
 
   ACC[MZUA1].accumulate(sgn * MZUA);
   ACC[MZUA2].accumulate(sgn * MZUA * MZUA);
@@ -99,24 +98,25 @@ void Measurement::measure(double sgn) {
 
 void Measurement::setsummary() {
   using namespace Specific;
-  const double WDIAG = ALG.getBlock("WDIAG", (double)1.0);  //ALG.X["General"]["WDIAG" ].getDouble(); // 0.25
+  const double WDIAG = ALG.getBlock(
+      "WDIAG", (double)1.0);  // ALG.X["General"]["WDIAG" ].getDouble(); // 0.25
 
   std::vector<double> X(NACC);
 
-  for (int i = 0; i < NACC; i++){
+  for (int i = 0; i < NACC; i++) {
     ACC[i].average();
     X[i] = ACC[i].mean();
   }
 
   const double B = LAT.BETA;
-  const double T = 1.0/B;
+  const double T = 1.0 / B;
   const double V = LAT.NSITE;
-  const double invV = 1.0/V;
+  const double invV = 1.0 / V;
   const double D = LAT.D;
 
-  double invsign = 1.0/X[SGN];
+  double invsign = 1.0 / X[SGN];
 
-  for (int i=0; i<NACC; ++i){
+  for (int i = 0; i < NACC; ++i) {
     X[i] *= invsign;
   }
 
@@ -139,6 +139,5 @@ void Measurement::setsummary() {
   Q[SMZS] = (X[MZSA2] - X[MZSA1] * X[MZSA1]) * V;
   Q[XMZS] = (X[MZSB2] - X[MZSB1] * X[MZSB1]) * B * V;
 
-  for (int i = 0; i < NPHY; i++)
-    PHY[i].accumulate(Q[i]);
+  for (int i = 0; i < NPHY; i++) PHY[i].accumulate(Q[i]);
 }

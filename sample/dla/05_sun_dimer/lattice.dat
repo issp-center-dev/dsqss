@@ -1,0 +1,24 @@
+name
+hypercubic
+
+lattice
+1 # dim
+2 # size
+0 # 0:open boundary, 1:periodic boundary
+0 1.0 # latvec_0
+
+directions
+1 # ndirections
+# id, coords...
+0 1.0 
+
+sites
+2 # nsites
+# id, type, coord...
+0 0 0.0
+1 0 1.0
+
+interactions
+1 # nints
+# id, type, nbody, sites..., edge_flag, direction
+0 0 2 0 1 0 0

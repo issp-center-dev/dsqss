@@ -5,14 +5,14 @@
 #include <fstream>
 #include <iostream>
 using namespace std;
-//using namespace boost;
+// using namespace boost;
 
 class My_rdm {
   boost::mt19937 gen_d;
   boost::uniform_real<> dst_d;  // [0,1)
   boost::variate_generator<boost::mt19937, boost::uniform_real<> > rdm_d;
 
-public:
+ public:
   void outgen(char *fname);
   void ingen(char *fname);
 
@@ -27,7 +27,7 @@ class My_rdms {
   boost::uniform_smallint<> dst_s;  // [0,iMax]
   boost::variate_generator<boost::mt19937, boost::uniform_smallint<> > rdm_s;
 
-public:
+ public:
   void outgen(char *fname);
   void ingen(char *fname);
 
@@ -42,7 +42,7 @@ class My_rdmi {
   boost::uniform_int<> dst_i;  // [0,iMax]
   boost::variate_generator<boost::mt19937, boost::uniform_int<> > rdm_i;
 
-public:
+ public:
   void outgen(char *fname);
   void ingen(char *fname);
 

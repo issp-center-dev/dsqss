@@ -1,24 +1,26 @@
 #include <iostream>
 
-#include <debug.hpp>
-
 #include <Configuration.h>
 #include <Probability.h>
 
+#include <debug.hpp>
+
 #include "../common/timer.hpp"
 
-//#define Bcheck
-//#include "graphspace.cpp"
+// #define Bcheck
+// #include "graphspace.cpp"
 
-Configuration::Configuration(MC_p *m_MC, Size *m_N, int m_nmax, Lattice *m_LT, Probability *m_P, Parallel *PR,
-                             long long m_IMAX, long long m_WMAX, std::string const& m_Eventfile, My_rdm *MR, bool cb,
-                             std::string const& m_outfile)
-    : GraphSpace(m_N, m_nmax, m_LT, m_P, PR, m_IMAX, m_WMAX, m_Eventfile, MR, cb, m_outfile) {
-  N     = m_N;
-  LT    = m_LT;
-  BV    = PR->B * PR->V;
+Configuration::Configuration(MC_p *m_MC, Size *m_N, int m_nmax, Lattice *m_LT,
+                             Probability *m_P, Parallel *PR, long long m_IMAX,
+                             long long m_WMAX, std::string const &m_Eventfile,
+                             My_rdm *MR, bool cb, std::string const &m_outfile)
+    : GraphSpace(m_N, m_nmax, m_LT, m_P, PR, m_IMAX, m_WMAX, m_Eventfile, MR,
+                 cb, m_outfile) {
+  N = m_N;
+  LT = m_LT;
+  BV = PR->B * PR->V;
   p_num = PR->p_num;
-  MC    = m_MC;
+  MC = m_MC;
 
   ALGFILE = "algorithm.xml";
   LATFILE = "lattice.xml";
@@ -33,7 +35,8 @@ void Configuration::DeterminationNworm(int MCS, My_rdm *MR, Quantities *QNT) {
 }
 
 /*
- * Determine NCycle so that total distance of all the worms during NCycle updates is about V*beta
+ * Determine NCycle so that total distance of all the worms during NCycle
+ * updates is about V*beta
  */
 void Configuration::updateAnner(int MCS, My_rdm *MR, Quantities *QNT) {
   AutoPlog("");
@@ -54,8 +57,8 @@ void Configuration::updateAnner(int MCS, My_rdm *MR, Quantities *QNT) {
   For_Nworm = true;
   MCS /= step;
 
-  if(PR->my_rank==0){
-      if(PR->FlgAnneal==true) cout << "start anneal" << endl;
+  if (PR->my_rank == 0) {
+    if (PR->FlgAnneal == true) cout << "start anneal" << endl;
   }
 
   for (int i = 0; i < step1; i++) {
@@ -67,35 +70,39 @@ void Configuration::updateAnner(int MCS, My_rdm *MR, Quantities *QNT) {
     //    cout << i <<"-th step:: Ncyc="<<Ncyc<<endl;
 
     if (Wlen != 0.0) {
-      ave_Wlen = Wlen / (double)(Ncyc * MCS);
-      Ncyc     = (long)(BV / ave_Wlen);
+      ave_Wlen = Wlen / (Ncyc * MCS);
+      Ncyc = BV / ave_Wlen;
       if (Ncyc == 0) Ncyc = 1;
-    } else
+    } else {
       Ncyc = 0;
+    }
 
     MPI_Allgather(&Ncyc, 1, MPI_LONG, pcyc, 1, MPI_LONG, comm_nst0);
     //    cout<<"rank"<<PR->my_rank<<"::Wnum="<<W[0]<<endl;
     count = (Ncyc) ? 1 : 0;
-    Ncyc  = 0;
+    Ncyc = 0;
     for (int tag = 0; tag < PR->NtNs; tag++) {
       if (pcyc[tag] > 0) {
         count++;
-        //	cout<<"rank"<<tag<<":: Ncyc="<<pcyc[tag]<<endl;
+        // cout<<"rank"<<tag<<":: Ncyc="<<pcyc[tag]<<endl;
         Ncyc += pcyc[tag];
-      } else
+      } else {
         cout << "rank::" << tag << " !!!!!No worm!!!!!" << endl;
+      }
     }
 
-    if (count > PR->NtNs / 2)
+    if (count > PR->NtNs / 2) {
       Ncyc /= count;
-    else {
+    } else {
       cout << "Larger eta is recommended." << endl;
       Ncyc = 100000;
     }
 
     if (Ncyc > 100000) Ncyc = 100000;
 
-    //    cout<< i <<"::rank"<<PR->my_rank<<":: Wlen="<<Wlen/(double)MCS<<",  Ncyc="<<Ncyc<< ",  Wnum=" << W[0] << ",  EV=" << EVmax << ", pr.nst0="<< PR->nst0<<endl;
+    //    cout<< i <<"::rank"<<PR->my_rank<<":: Wlen="<<Wlen/(double)MCS<<",
+    //    Ncyc="<<Ncyc<< ",  Wnum=" << W[0] << ",  EV=" << EVmax << ",
+    //    pr.nst0="<< PR->nst0<<endl;
   }
 
   double ave = 0.0;
@@ -108,39 +115,47 @@ void Configuration::updateAnner(int MCS, My_rdm *MR, Quantities *QNT) {
     //    cout << i+step1 <<"-th step:: Ncyc="<<Ncyc<<endl;
 
     if (Wlen != 0.0) {
-      ave_Wlen = Wlen / (double)(Ncyc * MCS);
-      Ncyc     = (long)(BV / ave_Wlen);
-      if (Ncyc == 0) Ncyc = 1;
-    } else
+      ave_Wlen = Wlen / (Ncyc * MCS);
+      Ncyc = BV / ave_Wlen;
+      if (Ncyc == 0) {
+        Ncyc = 1;
+      }
+    } else {
       Ncyc = 0;
+    }
     ave += Ncyc;
   }
 
-  ave /= (double)step1;
-  Ncyc = (long)ave;
+  ave /= step1;
+  Ncyc = ave;
 
   MPI_Allgather(&Ncyc, 1, MPI_LONG, pcyc, 1, MPI_LONG, comm_nst0);
   count = (Ncyc) ? 1 : 0;
-  Ncyc  = 0;
+  Ncyc = 0;
   for (int tag = 0; tag < PR->NtNs; tag++) {
     if (pcyc[tag] > 0) {
       count++;
       //      cout<<"rank"<<tag<<":: Ncyc="<<pcyc[tag]<<endl;
       Ncyc += pcyc[tag];
-    } else
+    } else {
       cout << "rank::" << tag << " !!!!!No worm!!!!!" << endl;
+    }
   }
 
-  if (count > PR->NtNs / 2)
+  if (count > PR->NtNs / 2) {
     Ncyc /= count;
-  else {
+  } else {
     cout << "Larger eta is recommended." << endl;
     Ncyc = 100000;
   }
 
-  if (Ncyc > 100000) Ncyc = 100000;
+  if (Ncyc > 100000) {
+    Ncyc = 100000;
+  }
 
-  //  cout<<"final ::rank"<<PR->my_rank<<":: Wlen="<<Wlen/(double)MCS<<",  Ncyc="<<Ncyc<< ",  Wnum=" << W[0] << ",  EV=" << EVmax << ", pr.nst0="<< PR->nst0 <<endl;
+  //  cout<<"final ::rank"<<PR->my_rank<<":: Wlen="<<Wlen/(double)MCS<<",
+  //  Ncyc="<<Ncyc<< ",  Wnum=" << W[0] << ",  EV=" << EVmax << ", pr.nst0="<<
+  //  PR->nst0 <<endl;
 
   delcall(pcyc);
 
@@ -150,7 +165,7 @@ void Configuration::updateAnner(int MCS, My_rdm *MR, Quantities *QNT) {
 void Configuration::sweep(int MCS, My_rdm *MR, Quantities *QNT) {
   AutoPlog("");
   For_Nworm = false;
-  Wlen      = 0.0;
+  Wlen = 0.0;
   while (MCS--) {
     if (Diagonal_Update(MR, QNT)) Worm_Update(MR);
   }
@@ -158,36 +173,37 @@ void Configuration::sweep(int MCS, My_rdm *MR, Quantities *QNT) {
 
 void Configuration::measurement(Quantities *QNT, My_rdm *MR) {
   AutoPlog("");
-  if(PR->my_rank == 0){
+  if (PR->my_rank == 0) {
     std::cout << "start main calculation" << std::endl;
   }
   QNT->Init();
 
   Timer tm;
   for (int bin = 0; bin < MC->Nbin; bin++) {
-
     sweep(MC->Nstep, MR, QNT);
 
     QNT->Init();
 
     for (int i = 0; i < MC->Nsample; i++) {
       For_Nworm = true;
-      Wlen      = 0.0;
+      Wlen = 0.0;
       if (Diagonal_Update(MR, QNT)) Worm_Update(MR);
 
       QNT->Measure(Nv, Nk, ev, WORM, world, worldB, Wlen, W[0], i);
     }
 
-    // calculate observables as functions of expectation value of other observables,
-    // e.g., compressibility
+    // calculate observables as functions of expectation value of other
+    // observables, e.g., compressibility
     QNT->Measure();
 
     QNT->BINsum(bin);
-    
+
     const double elapsed = tm.elapsed();
-    const double ETR = elapsed * (MC->Nbin - bin-1) / (bin+1);
-    if (PR->my_rank == 0){
-      std::cout << bin+1 << " / " << MC->Nbin << " done. [Elapsed: " << elapsed << " sec. ETR: " << ETR << " sec.]" << std::endl;
+    const double ETR = elapsed * (MC->Nbin - bin - 1) / (bin + 1);
+    if (PR->my_rank == 0) {
+      std::cout << bin + 1 << " / " << MC->Nbin
+                << " done. [Elapsed: " << elapsed << " sec. ETR: " << ETR
+                << " sec.]" << std::endl;
     }
   }
 
