@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3.2. Energy calculation of the antiferromagnetic Heisenberg dimer by DSQSS/DLA &#8212; DSQSS 2.0.4 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.3. Magnetic Susceptibility of antiferromagnetic spin chains" href="spinchain.html" />
+    <link rel="prev" title="3.1. What’s DSQSS/DLA?" href="intro.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="energy-calculation-of-the-antiferromagnetic-heisenberg-dimer-by-dsqss-dla">
+<h1><span class="section-number">3.2. </span>Energy calculation of the antiferromagnetic Heisenberg dimer by DSQSS/DLA<a class="headerlink" href="#energy-calculation-of-the-antiferromagnetic-heisenberg-dimer-by-dsqss-dla" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial gives how to use DSQSS/DLA through a calculation the energy of the <span class="math notranslate nohighlight">\(S=1/2\)</span> antiferromagnetic Heisenberg dimer <span class="math notranslate nohighlight">\(\mathcal{H} = -J \vec{S}_1 \cdot \vec{S}_2\)</span> .</p>
+<p>DSQSS/DLA calculation has the following three parts:</p>
+<ol class="arabic simple">
+<li><p>Prepare the input files</p></li>
+<li><p>Perform QMC calculation</p></li>
+<li><p>Analyze the result</p></li>
+</ol>
+<div class="section" id="prepare-the-input-files">
+<h2><span class="section-number">3.2.1. </span>Prepare the input files<a class="headerlink" href="#prepare-the-input-files" title="Permalink to this headline">¶</a></h2>
+<p>DSQSS/DLA requires the following input files:</p>
+<ol class="arabic simple">
+<li><p>Parameter file</p></li>
+<li><p>lattice file</p></li>
+<li><p>algorithm file</p></li>
+</ol>
+<p><code class="docutils literal notranslate"><span class="pre">dla_pre</span></code> is a utility tool to generate these files from one textfile such as the following (sample/dla/01_spindimer/std.toml)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">hamiltonian</span><span class="p">]</span>
+<span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;spin&quot;</span>
+<span class="n">M</span> <span class="o">=</span>  <span class="mi">1</span>                 <span class="c1"># S=1/2</span>
+<span class="n">Jz</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>              <span class="c1"># coupling constant, negative for AF</span>
+<span class="n">Jxy</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>             <span class="c1"># coupling constant, negative for AF</span>
+<span class="n">h</span> <span class="o">=</span> <span class="mf">0.0</span>                <span class="c1"># magnetic field</span>
+
+<span class="p">[</span><span class="n">lattice</span><span class="p">]</span>
+<span class="n">lattice</span> <span class="o">=</span> <span class="s2">&quot;hypercubic&quot;</span> <span class="c1"># hypercubic, periodic</span>
+<span class="n">dim</span> <span class="o">=</span> <span class="mi">1</span>                <span class="c1"># dimension</span>
+<span class="n">L</span> <span class="o">=</span> <span class="mi">2</span>                  <span class="c1"># number of sites along each direction</span>
+<span class="n">bc</span> <span class="o">=</span> <span class="n">false</span>             <span class="c1"># open boundary</span>
+
+<span class="p">[</span><span class="n">parameter</span><span class="p">]</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="mi">100</span>             <span class="c1"># inverse temperature</span>
+<span class="n">nset</span> <span class="o">=</span> <span class="mi">5</span>               <span class="c1"># set of Monte Carlo sweeps</span>
+<span class="n">npre</span> <span class="o">=</span> <span class="mi">10</span>              <span class="c1"># MCSteps to estimate hyperparameter</span>
+<span class="n">ntherm</span> <span class="o">=</span> <span class="mi">10</span>            <span class="c1"># MCSweeps for thermalization</span>
+<span class="n">nmcs</span> <span class="o">=</span> <span class="mi">100</span>             <span class="c1"># MCSweeps for measurement</span>
+<span class="n">seed</span> <span class="o">=</span> <span class="mi">31415</span>           <span class="c1"># seed of RNG</span>
+</pre></div>
+</div>
+<p>Give this file to <code class="docutils literal notranslate"><span class="pre">dla_pre</span></code> as</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dla_pre std.toml
+</pre></div>
+</div>
+<p>This generates the following four files:
+a parameter file <code class="docutils literal notranslate"><span class="pre">param.in</span></code>, a lattice file <code class="docutils literal notranslate"><span class="pre">lattice.xml</span></code>, an algorithm file <code class="docutils literal notranslate"><span class="pre">algorithm.xml</span></code>.</p>
+</div>
+<div class="section" id="perform-qmc-calculation">
+<h2><span class="section-number">3.2.2. </span>Perform QMC calculation<a class="headerlink" href="#perform-qmc-calculation" title="Permalink to this headline">¶</a></h2>
+<p>Once input files are prepared, you can perform a quantum Monte Carlo calculation based on the directed loop algorithm (dla) by DSQSS/DLA.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dla param.in
+</pre></div>
+</div>
+<p>You can perform random number parallelization by using MPI. <a class="footnote-reference brackets" href="#fn-ompi-macos" id="id1">1</a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ mpiexec -np 4 dla param.in
+</pre></div>
+</div>
+<p>By the above command, the total number of Monte Carlo samples times by four (equals to the number of process)
+and the obtained statistical error is expected to reduce to half (equals to the inverse square root of the number of process).</p>
+</div>
+<div class="section" id="analyze-the-result">
+<h2><span class="section-number">3.2.3. </span>Analyze the result<a class="headerlink" href="#analyze-the-result" title="Permalink to this headline">¶</a></h2>
+<p>The result of the calculation is written into a text file <code class="docutils literal notranslate"><span class="pre">sample.log</span></code>.
+Since the energy per site is recorded with a name <code class="docutils literal notranslate"><span class="pre">ene</span></code>,
+you can for example draw this by the <code class="docutils literal notranslate"><span class="pre">grep</span></code> command by the following.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ grep ene sample.log
+R ene = -3.74380000e-01 5.19493985e-03
+</pre></div>
+</div>
+<p>The two figures stand for the expectation value and the statistical error, respectively.
+The result value is compatible with the exact solution, <span class="math notranslate nohighlight">\(-3|J|/8 = -0.375|J|\)</span>, within the statistical error.</p>
+<p class="rubric">Footnote</p>
+<dl class="footnote brackets">
+<dt class="label" id="fn-ompi-macos"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>After finishing DSQSS/DLA, the OpenMPI on macOS may say an error message, <code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">such</span> <span class="pre">file</span> <span class="pre">or</span> <span class="pre">directory</span> <span class="pre">(errno</span> <span class="pre">2)</span></code>.
+You can ignore this error safely.
+If you’re annoyed by it, please put an extra option <code class="docutils literal notranslate"><span class="pre">--mca</span> <span class="pre">shmem</span> <span class="pre">posix</span></code> to <code class="docutils literal notranslate"><span class="pre">mpiexec</span></code>.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. About DSQSS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. How to install</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. Tutorial of DSQSS/DLA</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">3.1. What’s DSQSS/DLA?</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.2. Energy calculation of the antiferromagnetic Heisenberg dimer by DSQSS/DLA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prepare-the-input-files">3.2.1. Prepare the input files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#perform-qmc-calculation">3.2.2. Perform QMC calculation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#analyze-the-result">3.2.3. Analyze the result</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="spinchain.html">3.3. Magnetic Susceptibility of antiferromagnetic spin chains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bosesquare.html">3.4. Number density of the hardcore Bosons on a square lattice</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../users-manual/index.html">4. User’s manual of DSQSS/DLA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tutorial.html">5. Tutorial of DSQSS/PMWA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tu-index.html">6. User’s manual for DSQSS/PMWA</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="index.html"><span class="section-number">3. </span>Tutorial of DSQSS/DLA</a><ul>
+      <li>Previous: <a href="intro.html" title="previous chapter"><span class="section-number">3.1. </span>What’s DSQSS/DLA?</a></li>
+      <li>Next: <a href="spinchain.html" title="next chapter"><span class="section-number">3.3. </span>Magnetic Susceptibility of antiferromagnetic spin chains</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/dla/tutorial/spindimer.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

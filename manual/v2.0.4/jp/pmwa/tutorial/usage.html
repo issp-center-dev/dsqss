@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>5.2. 使用方法 &#8212; DSQSS 2.0.4 ドキュメント</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="検索" href="../../search.html" />
+    <link rel="next" title="5.2.1. 格子定義ファイルの作成" href="lattgene.html" />
+    <link rel="prev" title="5.1. DSQSS/PMWAとは？" href="intro.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">5.2. </span>使用方法<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>PMWAは以下の手順で使用します。</p>
+<ol class="arabic simple">
+<li><p>格子定義ファイルの作成 (<code class="docutils literal notranslate"><span class="pre">lattgene_P</span></code> を利用)</p></li>
+<li><p>入力ファイルの作成</p></li>
+<li><p>PMWAの実行 (ボソン系：<code class="docutils literal notranslate"><span class="pre">pmwa_B</span></code> ,スピン系：<code class="docutils literal notranslate"><span class="pre">pmwa_H</span></code> の実行)</p></li>
+<li><p>出力ファイルの生成</p></li>
+</ol>
+<p>また,1, 2を同時に行うための簡易ツール <code class="docutils literal notranslate"><span class="pre">pmwa_pre.py</span></code> も用意されています。
+ここでは1-4について使用方法やパラメータについて順に説明します。</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="lattgene.html">5.2.1. 格子定義ファイルの作成</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">5.2.2. DSQSS/PMWAの入力ファイルの作成</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">5.2.3. 計算実行</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html#id2">5.2.4. 出力ファイル</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>ナビゲーション</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. DSQSSとは？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. インストール</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dla/tutorial/index.html">3. DLAのチュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dla/users-manual/index.html">4. DSQSS/DLAのユーザーマニュアル</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tutorial.html">5. DSQSS/PMWAのチュートリアル</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">5.1. DSQSS/PMWAとは？</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.2. 使用方法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lattgene.html">5.2.1. 格子定義ファイルの作成</a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html">5.2.2. DSQSS/PMWAの入力ファイルの作成</a></li>
+<li class="toctree-l3"><a class="reference internal" href="output.html">5.2.3. 計算実行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="output.html#id2">5.2.4. 出力ファイル</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sample_Heisenberg.html">5.3. DSQSS/PMWAによるスピン鎖のエネルギー計算</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tu-index.html">6. DSQSS/PMWAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/algorithm.html">7. アルゴリズム</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="tutorial.html"><span class="section-number">5. </span>DSQSS/PMWAのチュートリアル</a><ul>
+      <li>Previous: <a href="intro.html" title="前の章へ"><span class="section-number">5.1. </span>DSQSS/PMWAとは？</a></li>
+      <li>Next: <a href="lattgene.html" title="次の章へ"><span class="section-number">5.2.1. </span>格子定義ファイルの作成</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="検索" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/pmwa/tutorial/usage.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

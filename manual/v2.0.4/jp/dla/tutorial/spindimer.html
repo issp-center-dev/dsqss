@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3.2. DSQSS/DLA による反強磁性ハイゼンベルグダイマーのエネルギー計算 &#8212; DSQSS 2.0.4 ドキュメント</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="検索" href="../../search.html" />
+    <link rel="next" title="3.3. DSQSS/DLA によるスピン鎖の帯磁率計算" href="spinchain.html" />
+    <link rel="prev" title="3.1. DSQSS/DLA とは" href="intro.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="dsqss-dla">
+<h1><span class="section-number">3.2. </span>DSQSS/DLA による反強磁性ハイゼンベルグダイマーのエネルギー計算<a class="headerlink" href="#dsqss-dla" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>このチュートリアルでは, <span class="math notranslate nohighlight">\(S=1/2\)</span> 反強磁性ハイゼンベルグダイマー <span class="math notranslate nohighlight">\(\mathcal{H}= J \vec{S}_1 \cdot \vec{S}_2\)</span> の基底状態エネルギー計算をすることで,
+DSQSS/DLA の使い方を学びます.</p>
+<p>DSQSS/DLA による計算は,</p>
+<ol class="arabic simple">
+<li><p>入力ファイルの準備</p></li>
+<li><p>計算の実行</p></li>
+<li><p>計算結果の解釈</p></li>
+</ol>
+<p>の3段階に分かれます.</p>
+<div class="section" id="id1">
+<h2><span class="section-number">3.2.1. </span>入力ファイルの準備<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>DSQSS/DLA を実行するには,</p>
+<ol class="arabic simple">
+<li><p>パラメータファイル</p></li>
+<li><p>格子定義ファイル</p></li>
+<li><p>アルゴリズム定義ファイル</p></li>
+</ol>
+<p>の3つの入力ファイルが必要です.
+そのため, まずはこれらの入力ファイルを作成します.
+そのためのユーティリティツールが dla_pre です.
+これは単一の入力ファイルから, DSQSS/DLA  の入力ファイルを生成するPython スクリプトです.
+まず, dla_pre.py の入力ファイルとして, 次の内容を持つテキストファイル std.toml を準備します(sample/dla/01_spindimer/std.toml).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">hamiltonian</span><span class="p">]</span>
+<span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;spin&quot;</span>
+<span class="n">M</span> <span class="o">=</span>  <span class="mi">1</span>                 <span class="c1"># S=1/2</span>
+<span class="n">Jz</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>              <span class="c1"># coupling constant, negative for AF</span>
+<span class="n">Jxy</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>             <span class="c1"># coupling constant, negative for AF</span>
+<span class="n">h</span> <span class="o">=</span> <span class="mf">0.0</span>                <span class="c1"># magnetic field</span>
+<span class="p">[</span><span class="n">lattice</span><span class="p">]</span>
+<span class="n">lattice</span> <span class="o">=</span> <span class="s2">&quot;hypercubic&quot;</span> <span class="c1"># hypercubic, periodic</span>
+<span class="n">dim</span> <span class="o">=</span> <span class="mi">1</span>                <span class="c1"># dimension</span>
+<span class="n">L</span> <span class="o">=</span> <span class="mi">2</span>                  <span class="c1"># number of sites along each direction</span>
+<span class="n">bc</span> <span class="o">=</span> <span class="n">false</span>             <span class="c1"># open boundary</span>
+<span class="p">[</span><span class="n">parameter</span><span class="p">]</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="mi">100</span>             <span class="c1"># inverse temperature</span>
+<span class="n">nset</span> <span class="o">=</span> <span class="mi">5</span>               <span class="c1"># set of Monte Carlo sweeps</span>
+<span class="n">npre</span> <span class="o">=</span> <span class="mi">10</span>              <span class="c1"># MCSteps to estimate hyperparameter</span>
+<span class="n">ntherm</span> <span class="o">=</span> <span class="mi">10</span>            <span class="c1"># MCSweeps for thermalization</span>
+<span class="n">nmcs</span> <span class="o">=</span> <span class="mi">100</span>             <span class="c1"># MCSweeps for measurement</span>
+<span class="n">seed</span> <span class="o">=</span> <span class="mi">31415</span>           <span class="c1"># seed of RNG</span>
+</pre></div>
+</div>
+<p>このファイルを dla_pre.py に与えます.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dla_pre std.toml
+</pre></div>
+</div>
+<p>この結果, パラメータファイル param.in, 格子定義ファイル lattice.xml, アルゴリズム定義ファイル algorithm.xml が生成されます。</p>
+</div>
+<div class="section" id="id2">
+<h2><span class="section-number">3.2.2. </span>計算の実行<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>入力ファイルを作成したら, DSQSS/DLA による計算を実行します.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dla param.in
+</pre></div>
+</div>
+<p>なお, 計算を実行するときにMPI を用いることで, 乱数並列計算が可能です.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ mpiexec -np 4 dla param.in
+</pre></div>
+</div>
+<p>乱数並列計算では並列数 (この例では4) だけ独立に計算が行われ, その分モンテカルロサンプル数を増えるために計算精度が向上します. <a class="footnote-reference brackets" href="#fn-ompi-macos" id="id3">1</a></p>
+</div>
+<div class="section" id="id4">
+<h2><span class="section-number">3.2.3. </span>計算結果の解釈<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>計算結果は出力ファイル sample.log に書き出されます.
+サイトあたりのエネルギーは <code class="docutils literal notranslate"><span class="pre">ene</span></code> という名前で記されており, たとえば <code class="docutils literal notranslate"><span class="pre">grep</span></code> コマンドで</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ grep ene sample.log
+R ene = -3.74380000e-01 5.19493985e-03
+</pre></div>
+</div>
+<p>と取得できます.
+2つある数字はそれぞれ期待値と統計誤差です.
+反強磁性ハイゼンベルグダイマーの基底状態でのサイトあたりエネルギーは <span class="math notranslate nohighlight">\(-3|J|/8 = -0.375|J|\)</span> なので, 問題なく計算されていることがわかります.</p>
+<p class="rubric">脚注</p>
+<dl class="footnote brackets">
+<dt class="label" id="fn-ompi-macos"><span class="brackets"><a class="fn-backref" href="#id3">1</a></span></dt>
+<dd><p>macOS 上のOpenMPI を使う場合, プログラム終了時にエラーメッセージが出ることがあります（ <code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">such</span> <span class="pre">file</span> <span class="pre">or</span> <span class="pre">directory</span> <span class="pre">(errno</span> <span class="pre">2)</span></code> ）. DSQSS/DLA の実行自体に影響はありませんが, これを抑制したい場合は,  <code class="docutils literal notranslate"><span class="pre">--mca</span> <span class="pre">shmem</span> <span class="pre">posix</span></code> オプションを <code class="docutils literal notranslate"><span class="pre">mpiexec</span></code> に付与してください.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>ナビゲーション</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. DSQSSとは？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. インストール</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. DLAのチュートリアル</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">3.1. DSQSS/DLA とは</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.2. DSQSS/DLA による反強磁性ハイゼンベルグダイマーのエネルギー計算</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">3.2.1. 入力ファイルの準備</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">3.2.2. 計算の実行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">3.2.3. 計算結果の解釈</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="spinchain.html">3.3. DSQSS/DLA によるスピン鎖の帯磁率計算</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bosesquare.html">3.4. DSQSS/DLA による正方格子上ハードコアボソン系の粒子数計算</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../users-manual/index.html">4. DSQSS/DLAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tutorial.html">5. DSQSS/PMWAのチュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tu-index.html">6. DSQSS/PMWAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/algorithm.html">7. アルゴリズム</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="index.html"><span class="section-number">3. </span>DLAのチュートリアル</a><ul>
+      <li>Previous: <a href="intro.html" title="前の章へ"><span class="section-number">3.1. </span>DSQSS/DLA とは</a></li>
+      <li>Next: <a href="spinchain.html" title="次の章へ"><span class="section-number">3.3. </span>DSQSS/DLA によるスピン鎖の帯磁率計算</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="検索" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/dla/tutorial/spindimer.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

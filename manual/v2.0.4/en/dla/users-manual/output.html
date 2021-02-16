@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>4.6. Output of DSQSS/DLA &#8212; DSQSS 2.0.4 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5. Tutorial of DSQSS/PMWA" href="../../pmwa/tutorial/tutorial.html" />
+    <link rel="prev" title="4.5. Directed loop algorithm solver dla" href="engine.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="output-of-dsqss-dla">
+<h1><span class="section-number">4.6. </span>Output of DSQSS/DLA<a class="headerlink" href="#output-of-dsqss-dla" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="format">
+<h2><span class="section-number">4.6.1. </span>Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h2>
+<p>DSQSS/DLA generates the result of a simulation as a plain-text file.
+The first character stands for the meaning of the line.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">&lt;name&gt;</span> <span class="pre">=</span> <span class="pre">&lt;value&gt;</span></code></dt><dd><p>Parameters read from the input files.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">R</span> <span class="pre">&lt;name&gt;</span> <span class="pre">=</span> <span class="pre">&lt;mean&gt;</span> <span class="pre">&lt;error&gt;</span></code></dt><dd><p>Results of observables. <code class="docutils literal notranslate"><span class="pre">&lt;mean&gt;</span></code> denotes the expected value and <code class="docutils literal notranslate"><span class="pre">&lt;error&gt;</span></code> denotes the statistical error of <code class="docutils literal notranslate"><span class="pre">&lt;mean&gt;</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">I</span> <span class="pre">&lt;text&gt;</span> <span class="pre">=</span> <span class="pre">&lt;value&gt;</span></code></dt><dd><p>Other information.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">C</span> <span class="pre">&lt;text&gt;</span></code></dt><dd><p>Comments.</p>
+</dd>
+</dl>
+<p>The following one is a result of an antiferromagnetic Heisenberg chain.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>C This is DSQSS ver.v2.0.0
+
+I N_PROC = 1
+P D       =            1
+P L       =            8
+P BETA    =      10.0000000000000000
+P NSET    =           10
+P NPRE    =         1000
+P NTHERM  =         1000
+P NDECOR  =         1000
+P NMCS    =         1000
+P SEED    =    198212240
+P NSEGMAX =        10000
+P NVERMAX =        10000
+P BETA    = 10.000000000000
+P NTAU    =           10
+P NCYC    =            7
+P ALGFILE = algorithm.xml
+P LATFILE = lattice.xml
+P WVFILE = wv.xml
+P DISPFILE  = disp.xml
+P OUTFILE    = sample.log
+P CFOUTFILE  = cf.dat
+P SFOUTFILE  = sf.dat
+P CKOUTFILE  = ck.dat
+P SIMULATIONTIME   =     0.000000
+R sign = 1.00000000e+00 0.00000000e+00
+R anv = 3.03805000e+00 1.25395375e-02
+R ene = -4.55991910e-01 1.20267537e-03
+R spe = -1.76672204e-02 4.09064489e-02
+R som = -1.76672204e-01 4.09064489e-01
+R len = 1.20014021e+01 4.78403202e-02
+R xmx = 3.00035053e-01 1.19600800e-03
+R amzu = -2.00000000e-04 1.08972474e-04
+R bmzu = -2.00000000e-04 1.08972474e-04
+R smzu = 1.32382500e-03 1.40792745e-04
+R xmzu = 1.32382500e-02 1.40792745e-03
+R ds1 = -1.32954309e-03 7.87178338e-04
+R wi2 = 2.31040000e+01 3.83762890e-01
+R rhos = 1.44400000e-01 2.39851806e-03
+R rhof = inf nan
+R comp = 2.43165481e+35 1.71412709e+35
+R amzs0 = -2.00000000e-04 1.08972474e-04
+R bmzs0 = 1.65625000e-04 1.76161818e-05
+R smzs0 = 1.32382500e-03 1.40792745e-04
+R xmzs0 = 1.32382500e-02 1.40792745e-03
+R amzs1 = -9.25000000e-04 4.02247160e-03
+R bmzs1 = 1.09209375e-01 1.12051866e-03
+R smzs1 = 8.72503175e-01 8.93939492e-03
+R xmzs1 = 3.00500011e+00 2.99056535e-02
+R time = 1.03679300e-07 1.22794234e-09
+I [the maximum number of segments]          = 123
+I [the maximum number of vertices]          = 66
+I [the maximum number of reg. vertex info.] = 3
+</pre></div>
+</div>
+<div class="section" id="notations">
+<h3><span class="section-number">4.6.1.1. </span>Notations<a class="headerlink" href="#notations" title="Permalink to this headline">¶</a></h3>
+<dl>
+<dt><span class="math notranslate nohighlight">\(N_s\)</span></dt><dd><p>The number of sites.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(Q(\vec{k})\)</span></dt><dd><p>The Fourier transformation of an arbitrary operator on a site <span class="math notranslate nohighlight">\(i\)</span>, <span class="math notranslate nohighlight">\(Q_i\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\displaystyle Q(\vec{k}) \equiv \frac{1}{\sqrt{N_s}} \sum_i^{N_s} Q_i e^{-i\vec{r}_i\cdot\vec{k}}\)</span></p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(Q(\tau)\)</span></dt><dd><p>An arbitrary operator at imaginary time <span class="math notranslate nohighlight">\(\tau\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\displaystyle Q(\tau) \equiv \exp\left[\tau \mathcal{H}\right] Q(\tau=0) \exp\left[-\tau \mathcal{H}\right]\)</span></p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\tilde{Q}\)</span></dt><dd><p>The average of an arbitrary operator <span class="math notranslate nohighlight">\(Q\)</span> over the imaginary time,
+<span class="math notranslate nohighlight">\(\displaystyle \frac{1}{\beta}\int_0^\beta \! \mathrm{d} \tau Q(\tau)\)</span></p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(M^z\)</span></dt><dd><p>The component of a local degree of freedom along with the quantized axis.
+For example, <span class="math notranslate nohighlight">\(z\)</span> component of the local spin operator <span class="math notranslate nohighlight">\(S^z\)</span> for spin systems
+and the number operator <span class="math notranslate nohighlight">\(n\)</span> for the Bose-Hubbard models.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(M^\pm\)</span></dt><dd><p>The ladder operator.
+<span class="math notranslate nohighlight">\(M^{\pm} \equiv S^\pm\)</span> for spin systems, and
+the creation/annihilation operators <span class="math notranslate nohighlight">\(M^+ \equiv b^\dagger\)</span> , <span class="math notranslate nohighlight">\(M^- \equiv b\)</span> for the Bose-Hubbard models.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(M^x\)</span></dt><dd><p>The off-diagonal order parameter.
+<span class="math notranslate nohighlight">\(M^x \equiv (S^+ + S^-)/2\)</span> for spin systems and
+<span class="math notranslate nohighlight">\(M^x \equiv (b + b^\dagger)\)</span> for the Bose-Hubbard models.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(T\)</span></dt><dd><p>The temperature.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\beta\)</span></dt><dd><p>The inverse temperature.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(h\)</span></dt><dd><p>The conjugate field to the operator <span class="math notranslate nohighlight">\(M^z\)</span> .
+The longitudinal magnetic field for spin systems and the chemical potential for the Bose-Hubbard models.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\left\langle Q \right\rangle\)</span></dt><dd><p>The expectation value of an arbitrary operator <span class="math notranslate nohighlight">\(Q\)</span> over the grand canonical ensemble.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="main-results">
+<h2><span class="section-number">4.6.2. </span>Main results<a class="headerlink" href="#main-results" title="Permalink to this headline">¶</a></h2>
+<p>Main results are written in a file with the name specified by <code class="docutils literal notranslate"><span class="pre">outfile</span></code> keyword in the input parameter file.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">sign</span></code></dt><dd><p>The sign of the weights.</p>
+<p><span class="math notranslate nohighlight">\(\sum_i W_i / \sum_i |W_i\)</span></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">anv</span></code></dt><dd><p>The mean number of the vertices.</p>
+<p><span class="math notranslate nohighlight">\(\displaystyle \frac{\langle N_v \rangle}{N_s}\)</span></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ene</span></code></dt><dd><p>The energy density (energy per site)</p>
+<p><span class="math notranslate nohighlight">\(\displaystyle \epsilon \equiv \frac{1}{N_s}\left(E_0 - T\langle N_v\rangle\right)\)</span></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">spe</span></code></dt><dd><p>The specific heat</p>
+<p><span class="math notranslate nohighlight">\(\displaystyle C_V \equiv \frac{\partial \epsilon}{\partial T}\)</span></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">som</span></code></dt><dd><p>The ratio of the specific heat and the temperature.</p>
+<p><span class="math notranslate nohighlight">\(\displaystyle \gamma \equiv \frac{C_V}{T} = \beta C_V\)</span></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">len</span></code></dt><dd><p>The mean length of worm</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">xmx</span></code></dt><dd><p>The transverse susceptibility</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">amzu</span></code></dt><dd><p>The “magnetization” (uniform, <span class="math notranslate nohighlight">\(\tau=0\)</span>).</p>
+<p><span class="math notranslate nohighlight">\(\left\langle m^z \right\rangle\)</span> , where
+<span class="math notranslate nohighlight">\(\displaystyle m^z \equiv \frac{1}{N_s} \sum_i^{N_s} M^z_i\)</span></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bmzu</span></code></dt><dd><p>The “magnetization” (uniform, average over <span class="math notranslate nohighlight">\(\tau\)</span>). <span class="math notranslate nohighlight">\(\left\langle \tilde{m}^z \right\rangle\)</span> .</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">smzu</span></code></dt><dd><p>The structure factor (uniform).</p>
+<p><span class="math notranslate nohighlight">\(\displaystyle S^{zz}(\vec{k}=0) \equiv \frac{1}{N_s}
+\sum_{i, j} e^{i \vec{k}\cdot(\vec{r}_i-\vec{r}_j)} \left[
+\left\langle M^z_i M^z_j\right\rangle
+- \left\langle M_i^z \right\rangle \left\langle M_j^z \right\rangle
+\right] \Bigg|_{\vec{k}=0}
+=
+N_s \left[ \left\langle (m^z)^2\right\rangle
+- \left\langle m^z\right\rangle^2 \right]\)</span></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">xmzu</span></code></dt><dd><p>The longitudinal susceptibility (uniform).</p>
+<p><span class="math notranslate nohighlight">\(\displaystyle \chi^{zz}(\vec{k}=0,  \omega=0) \equiv
+\frac{\partial \left\langle \tilde{m}^z \right\rangle}{\partial h} =
+\beta N_s\left[ \left\langle \left(\tilde{m}^z\right)^2\right\rangle
+- \left\langle \tilde{m}^z\right\rangle^2 \right]\)</span></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">amzsK</span></code></dt><dd><p>The “magnetization” (“staggered”, <span class="math notranslate nohighlight">\(\tau=0\)</span>)</p>
+<p><span class="math notranslate nohighlight">\(\left\langle m_s^z \right\rangle\)</span> where
+<span class="math notranslate nohighlight">\(\displaystyle m_K^z \equiv \frac{1}{N_s} \sum_i^{N_s} M_i^z \cos\left( \vec{k}\cdot\vec{r_i} \right)\)</span> .</p>
+<p><span class="math notranslate nohighlight">\(K\)</span> is an index of wavevector <span class="math notranslate nohighlight">\(k\)</span> specified in the wavevector XML file.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bmzu</span></code></dt><dd><p>The “magnetization” (“staggered”, average over <span class="math notranslate nohighlight">\(\tau\)</span>).
+<span class="math notranslate nohighlight">\(\left\langle \tilde{m}_K^z \right\rangle\)</span> .</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">smzs</span></code></dt><dd><p>The structure factor (“staggered”).</p>
+<p><span class="math notranslate nohighlight">\(\displaystyle S^{zz}(\vec{k}) = N_s \left[ \left\langle (m_K^z)^2 \right\rangle - \left\langle m_K^z \right\rangle^2 \right]\)</span></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">xmzs</span></code></dt><dd><p>The longitudinal susceptibility (“staggered”).</p>
+<p><span class="math notranslate nohighlight">\(\displaystyle \chi^{zz}(\vec{k},  \omega=0)
+= \beta N_s \left[\left\langle (\tilde{m}_K^z)^2 \right\rangle - \left\langle \tilde{m}_K^z \right\rangle^2 \right]\)</span></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">wi2</span></code></dt><dd><p>The winding number.</p>
+<p><span class="math notranslate nohighlight">\(\displaystyle W^2 = \sum_{d=1}^D L_d^2 \left\langle W_d^2 \right\rangle\)</span></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rhos</span></code></dt><dd><p>The superfluid density.</p>
+<p><span class="math notranslate nohighlight">\(\displaystyle \rho_s = \frac{W^2}{2DV\beta}\)</span></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rhof</span></code></dt><dd><p>The superfluid fraction.</p>
+<p><span class="math notranslate nohighlight">\(\displaystyle \frac{\rho_s}{\left\langle m^z \right\rangle}\)</span></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">comp</span></code></dt><dd><p>The compressibility.</p>
+<p><span class="math notranslate nohighlight">\(\displaystyle \frac{\chi^{zz}(\vec{k}=0,\omega=0)} {\left\langle \tilde{m}^z \right\rangle^2}\)</span></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">time</span></code></dt><dd><p>The time in a Monte Carlo sweep (in seconds.)</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="structure-factor-output">
+<h2><span class="section-number">4.6.3. </span>Structure factor output<a class="headerlink" href="#structure-factor-output" title="Permalink to this headline">¶</a></h2>
+<p>The structure factor is written into a file with the name specified by <code class="docutils literal notranslate"><span class="pre">sfoutfile</span></code> keyword in the input file.
+The structure factor is defined as the following:</p>
+<div class="math notranslate nohighlight">
+\[S^{zz}(\vec{k}, \tau) \equiv
+\left\langle M^z(\vec{k},  \tau) M^z(-\vec{k},  0) \right\rangle
+- \left\langle M^z(\vec{k},  \tau)\right\rangle \left\langle M^z(-\vec{k},  0)\right\rangle\]</div>
+<p>Wave vector <span class="math notranslate nohighlight">\(\vec{k}\)</span> and imaginary time <span class="math notranslate nohighlight">\(\tau\)</span> are specified by the name <code class="docutils literal notranslate"><span class="pre">C&lt;k&gt;t&lt;t&gt;</span></code> as the following:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>R C0t0 = 1.32500000e-03 1.40929454e-04
+R C0t1 = 1.32500000e-03 1.40929454e-04
+R C1t0 = 7.35281032e-02 3.18028565e-04
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">&lt;k&gt;</span></code> is an index of the wave vector specified by <code class="docutils literal notranslate"><span class="pre">kindex</span></code> (the last element of each <code class="docutils literal notranslate"><span class="pre">RK</span></code> tag) in the wavevector XML file
+and <code class="docutils literal notranslate"><span class="pre">&lt;t&gt;</span></code> is an index of the discretized imaginary time.</p>
+</div>
+<div class="section" id="real-space-temperature-green-s-function-output">
+<h2><span class="section-number">4.6.4. </span>Real space temperature Green’s function output<a class="headerlink" href="#real-space-temperature-green-s-function-output" title="Permalink to this headline">¶</a></h2>
+<p>The real space temperature Green’s function is written into a file with the name specified by <code class="docutils literal notranslate"><span class="pre">cfoutfile</span></code> keyword in the input file.
+The real space temperature Green’s function is defined as the following:</p>
+<div class="math notranslate nohighlight">
+\[G(\vec{r}_{ij}, \tau) \equiv \left\langle M_i^+(\tau) M_j^- \right\rangle\]</div>
+<p>Displacement <span class="math notranslate nohighlight">\(\vec{r}_{ij}\)</span> and imaginary time <span class="math notranslate nohighlight">\(\tau\)</span> are specified by the name <code class="docutils literal notranslate"><span class="pre">C&lt;k&gt;t&lt;t&gt;</span></code> as the same way of structure factor,
+where <code class="docutils literal notranslate"><span class="pre">&lt;k&gt;</span></code> is an index of the displacement specified by <code class="docutils literal notranslate"><span class="pre">kind</span></code> (the first element of each <code class="docutils literal notranslate"><span class="pre">R</span></code> tag) in the relative coordinate XML file,
+and <code class="docutils literal notranslate"><span class="pre">&lt;t&gt;</span></code> is an index of the discretized imaginary time.</p>
+</div>
+<div class="section" id="momentum-space-temperature-green-s-function-output">
+<h2><span class="section-number">4.6.5. </span>Momentum space temperature Green’s function output<a class="headerlink" href="#momentum-space-temperature-green-s-function-output" title="Permalink to this headline">¶</a></h2>
+<p>The momentum space temperature Green’s function is written into a file with the name specified by <code class="docutils literal notranslate"><span class="pre">ckoutfile</span></code> keyword in the input file.
+The momentum space temperature Green’s function is defined as the following:</p>
+<div class="math notranslate nohighlight">
+\[G(\vec{k}, \tau) \equiv \left\langle M^+(\vec{k},  \tau) M^-(-\vec{k}, 0) \right\rangle\]</div>
+<p>Wave vector <span class="math notranslate nohighlight">\(\vec{r}_{ij}\)</span> and imaginary time <span class="math notranslate nohighlight">\(\tau\)</span> are specified by the name <code class="docutils literal notranslate"><span class="pre">C&lt;k&gt;t&lt;t&gt;</span></code> as the same way of structure factor,
+where <code class="docutils literal notranslate"><span class="pre">&lt;k&gt;</span></code> is an index of the displacement specified by <code class="docutils literal notranslate"><span class="pre">kind</span></code> (the last element of each <code class="docutils literal notranslate"><span class="pre">RK</span></code> tag) in the wavevector XML file,
+and <code class="docutils literal notranslate"><span class="pre">&lt;t&gt;</span></code> is an index of the discretized imaginary time.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. About DSQSS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">3. Tutorial of DSQSS/DLA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. User’s manual of DSQSS/DLA</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="input_simple.html">4.1. Simple mode of DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_standard.html">4.2. Standard input files for DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_expert.html">4.3. Input files for DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generator.html">4.4. Input file generators for DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="engine.html">4.5. Directed loop algorithm solver <code class="docutils literal notranslate"><span class="pre">dla</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.6. Output of DSQSS/DLA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#format">4.6.1. Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#notations">4.6.1.1. Notations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#main-results">4.6.2. Main results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#structure-factor-output">4.6.3. Structure factor output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#real-space-temperature-green-s-function-output">4.6.4. Real space temperature Green’s function output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#momentum-space-temperature-green-s-function-output">4.6.5. Momentum space temperature Green’s function output</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tutorial.html">5. Tutorial of DSQSS/PMWA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tu-index.html">6. User’s manual for DSQSS/PMWA</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="index.html"><span class="section-number">4. </span>User’s manual of DSQSS/DLA</a><ul>
+      <li>Previous: <a href="engine.html" title="previous chapter"><span class="section-number">4.5. </span>Directed loop algorithm solver <code class="docutils literal notranslate"><span class="pre">dla</span></code></a></li>
+      <li>Next: <a href="../../pmwa/tutorial/tutorial.html" title="next chapter"><span class="section-number">5. </span>Tutorial of DSQSS/PMWA</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/dla/users-manual/output.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

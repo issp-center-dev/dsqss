@@ -1,0 +1,420 @@
+
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>使用方法 &#8212; DSQSS 2.0.4 ドキュメント</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>使用方法<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>DSQSSでは予め定義されたモデルを簡易実行できるよう,
+入力ファイル作成ツール <code class="docutils literal notranslate"><span class="pre">dsqss_pre.py</span></code> を用意しています.
+ここでは, このツールを利用したDSQSSの実行方法について簡単に説明します.
+なお, DSQSS/DLAでは, 複雑な模型をユーザーが定義し実行することも出来ます.
+詳細については <a class="reference internal" href="../dla/users-manual/index.html#chap-dla-usermanual"><span class="std std-ref">DSQSS/DLAのユーザーマニュアル</span></a> をご覧ください.</p>
+<div class="section" id="id2">
+<h2>入力ファイルの作成<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">dsqss_pre.py</span></code> の実行には, テキストベースの入力ファイルが必要です.
+以下に, 入力ファイルの例を記載します.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[System]
+solver = DLA
+[Hamiltonian]
+model_type = spin
+M = 1
+J = 1.0
+F = 0.0
+[Lattice]
+lattice_type = square
+D = 1
+L = 8
+Beta = 10
+[Parameter]
+NPRE = 1000
+NTHERM = 1000
+NMCS = 1000
+NSET = 10
+SEED = 31415
+NVERMAX = 10000000
+algfile = algorithm.xml
+latfile = lattice.xml
+outfile = sample.log
+</pre></div>
+</div>
+<p>入力ファイルでは, 4つの区分で大別されるパラメータを指定します.
+<code class="docutils literal notranslate"><span class="pre">keyword</span> <span class="pre">=</span> <span class="pre">parameter</span></code> の形式で指定します.</p>
+<ol class="arabic simple">
+<li><p>Systemセクション</p></li>
+</ol>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">solver</span></code> をkeywordとして各種ソルバーを設定します.
+ソルバーは <code class="docutils literal notranslate"><span class="pre">DLA</span></code> と <code class="docutils literal notranslate"><span class="pre">PMWA</span></code> の2種類から選択することが可能です.</p>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>Hamiltonianセクション</p></li>
+</ol>
+<blockquote>
+<div><p>系の種別 (スピンもしくはボソン系)とハミルトニアンを構成するパラメータを指定します.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 44%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Solver</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>default</p></th>
+<th class="head"><p>備考</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">model_type</span></code></p></td>
+<td><p>共通</p></td>
+<td><p>str</p></td>
+<td><p>spin</p></td>
+<td><p>モデルのタイプは <code class="docutils literal notranslate"><span class="pre">spin</span></code> もしくは <code class="docutils literal notranslate"><span class="pre">boson</span></code> から選択します.</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">=</span> <span class="pre">spin</span></code> の場合</p></li>
+</ul>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 44%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Solver</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>default</p></th>
+<th class="head"><p>備考</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">M</span></code></p></td>
+<td><p>DLA</p></td>
+<td><p>int</p></td>
+<td><p>1</p></td>
+<td><p>局在スピンの大きさ <span class="math notranslate nohighlight">\(S\)</span> の2倍に等しい整数.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">F</span></code></p></td>
+<td><p>DLA</p></td>
+<td><p>double</p></td>
+<td><p>0.0</p></td>
+<td><p>サイトにかかるボンドあたりの磁場 <span class="math notranslate nohighlight">\(F=h/z\)</span> . <span class="math notranslate nohighlight">\(z\)</span> はサイトの配位数で, 例えば正方格子なら <span class="math notranslate nohighlight">\(z=4\)</span> .</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">J</span></code></p></td>
+<td><p>DLA</p></td>
+<td><p>double</p></td>
+<td><p>1.0</p></td>
+<td><p>交換相互作用. 正で強磁性, 負で反強磁性.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Jxy</span></code></p></td>
+<td><p>PMWA</p></td>
+<td><p>double</p></td>
+<td><p>0.0</p></td>
+<td><p>交換相互作用 <span class="math notranslate nohighlight">\(J_{xy}\)</span> . 正で強磁性, 負で反強磁性.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Jz</span></code></p></td>
+<td><p>PMWA</p></td>
+<td><p>double</p></td>
+<td><p>0.0</p></td>
+<td><p>交換相互作用 <span class="math notranslate nohighlight">\(J_{z}\)</span> . 正で強磁性, 負で反強磁性.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">h</span></code></p></td>
+<td><p>PMWA</p></td>
+<td><p>double</p></td>
+<td><p>0.0</p></td>
+<td><p>縦磁場 <span class="math notranslate nohighlight">\(h\)</span> . 正で強磁性, 負で反強磁性.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Gamma</span></code></p></td>
+<td><p>PMWA</p></td>
+<td><p>double</p></td>
+<td><p>0.0</p></td>
+<td><p>横磁場 <span class="math notranslate nohighlight">\(\Gamma\)</span> . 正で強磁性, 負で反強磁性.</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">=</span> <span class="pre">boson</span></code> の場合</p></li>
+</ul>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 44%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Solver</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>default</p></th>
+<th class="head"><p>備考</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">t</span></code></p></td>
+<td><p>共通</p></td>
+<td><p>double</p></td>
+<td><p>1.0</p></td>
+<td><p>粒子のホッピングパラメータ.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">U</span></code></p></td>
+<td><p>共通</p></td>
+<td><p>double</p></td>
+<td><p>0.0</p></td>
+<td><p>サイト内二体相互作用. 正が斥力.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">V</span></code></p></td>
+<td><p>共通</p></td>
+<td><p>double</p></td>
+<td><p>0.0</p></td>
+<td><p>最近接二体相互作用. 正が斥力.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">M</span></code></p></td>
+<td><p>DLA</p></td>
+<td><p>int</p></td>
+<td><p>1</p></td>
+<td><p>サイトあたりに占めることのできる粒子数の最大値.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">F</span></code></p></td>
+<td><p>DLA</p></td>
+<td><p>double</p></td>
+<td><p>0.0</p></td>
+<td><p>ボンドあたりの化学ポテンシャル <span class="math notranslate nohighlight">\(F=\mu/z\)</span> . <span class="math notranslate nohighlight">\(z\)</span> はサイトの配位数で, 例えば正方格子なら <span class="math notranslate nohighlight">\(z=4\)</span> .</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mu</span></code></p></td>
+<td><p>PMWA</p></td>
+<td><p>double</p></td>
+<td><p>0.0</p></td>
+<td><p>化学ポテンシャル.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Gamma</span></code></p></td>
+<td><p>PMWA</p></td>
+<td><p>double</p></td>
+<td><p>0.0</p></td>
+<td><p>ソースターム( <span class="math notranslate nohighlight">\(b_i^{\dagger}+b_i\)</span> の係数).</p></td>
+</tr>
+</tbody>
+</table>
+<p>ハミルトニアンを構成するパラメータの詳細については,
+<code class="docutils literal notranslate"><span class="pre">DSQSS/DLA</span></code> については <code class="docutils literal notranslate"><span class="pre">hamgen_B</span></code> もしくは <code class="docutils literal notranslate"><span class="pre">hamgen_H</span></code> の入力ファイルの説明を,
+<code class="docutils literal notranslate"><span class="pre">DSQSS/PMWA</span></code> では入力ファイルの説明をご覧ください.</p>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li><p>Latticeセクション</p></li>
+</ol>
+<blockquote>
+<div><p>格子形状と逆温度を指定するセクションです.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>default</p></th>
+<th class="head"><p>備考</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lattice_type</span></code></p></td>
+<td><p>str</p></td>
+<td><p>square</p></td>
+<td><p>格子形状を超格子 <code class="docutils literal notranslate"><span class="pre">square</span></code> もしくは三角格子 <code class="docutils literal notranslate"><span class="pre">triangular</span></code> から選択します (格子形状の種類は順次追加予定). <code class="docutils literal notranslate"><span class="pre">PMWA</span></code> では <code class="docutils literal notranslate"><span class="pre">square</span></code> のみ選択可能です.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">D</span></code></p></td>
+<td><p>int</p></td>
+<td></td>
+<td><p>格子の次元.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">L</span></code></p></td>
+<td><p>int</p></td>
+<td></td>
+<td><p>格子のサイズ. , で区切って``D`` 次元空間のサイズを指定します. 例えば, 二次元 <span class="math notranslate nohighlight">\(2 \times 4\)</span> の格子の場合は <code class="docutils literal notranslate"><span class="pre">L</span> <span class="pre">=</span> <span class="pre">2,</span> <span class="pre">4</span></code> として指定します.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Beta</span></code></p></td>
+<td><p>double</p></td>
+<td><p>10.0</p></td>
+<td><p>逆温度</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">NLdiv</span></code></p></td>
+<td><p>int</p></td>
+<td><p>1</p></td>
+<td><p>( <code class="docutils literal notranslate"><span class="pre">DSQSS/PMWA</span></code> のみ使用)： <code class="docutils literal notranslate"><span class="pre">L</span></code> で指定された格子の分割数(各次元について等分割します).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">NBdiv</span></code></p></td>
+<td><p>int</p></td>
+<td><p>1</p></td>
+<td><p>( <code class="docutils literal notranslate"><span class="pre">DSQSS/PMWA</span></code> のみ使用)： <code class="docutils literal notranslate"><span class="pre">Beta</span></code> の分割数.</p></td>
+</tr>
+</tbody>
+</table>
+<p>各パラメータのより詳細な説明は, 対応する実行ファイルの説明をご覧ください.</p>
+</div></blockquote>
+<ol class="arabic simple" start="4">
+<li><p>Parameterセクション</p></li>
+</ol>
+<blockquote>
+<div><p>計算条件を指定するセクションで, <code class="docutils literal notranslate"><span class="pre">DSQSS/DLA</span></code> および <code class="docutils literal notranslate"><span class="pre">DSQSS/PMWA</span></code> の入力ファイルと共通のキーワードを使用してパラメータを設定します.
+定義可能なパラメータの詳細については各ソルバーの入力ファイルを参考にしてください.</p>
+</div></blockquote>
+</div>
+<div class="section" id="id3">
+<h2>実行方法<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>入力ファイル作成後は以下のコマンドを入力することで, ソルバー用の入力ファイルが作成されます(以下では入力ファイル名を <code class="docutils literal notranslate"><span class="pre">std.in</span></code> としています).</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dsqss_pre.py -i std.in
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">DSQSS/DLA</span></code> の場合は, <code class="docutils literal notranslate"><span class="pre">algorithm.xml,</span> <span class="pre">hamiltonian.xml,</span> <span class="pre">lattice.xml,</span> <span class="pre">param.in</span></code> が出力されます.
+<code class="docutils literal notranslate"><span class="pre">DSQSS/PMWA</span></code> の場合には, <code class="docutils literal notranslate"><span class="pre">lattice.xml,</span> <span class="pre">param.in</span></code> が出力されます.
+ソルバーの実行方法は, <code class="docutils literal notranslate"><span class="pre">dsqss_pre.py</span></code> の標準出力の最後に</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Please type: xxxxxx
+</pre></div>
+</div>
+<p>として, <code class="docutils literal notranslate"><span class="pre">xxxxxx</span></code> に実行すべきコマンドが記載されます(例えば, <code class="docutils literal notranslate"><span class="pre">DLA_H</span> <span class="pre">param.in</span></code>).
+MPIを利用する場合には, <code class="docutils literal notranslate"><span class="pre">xxxxxx</span></code> の前に <code class="docutils literal notranslate"><span class="pre">mpirun</span> <span class="pre">-np</span> <span class="pre">8</span></code> などをつけて実行してください。
+なお, DSQSSでは並列する乱数の数, PMWAでは並列する乱数の数と総分割数 (空間分割数と虚時間分割数の積)の積をプロセス数に指定します.
+コマンドの実行結果の詳細については各ソルバーのチュートリアル・出力結果に記載してありますので, そちらを参照してください.</p>
+</div>
+<div class="section" id="id4">
+<h2>モンテカルロ計算の流れ<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p><code class="xref std std-numref docutils literal notranslate"><span class="pre">fig_nmcs</span></code> にモンテカルロ計算の流れを示します。</p>
+<div class="figure align-default" id="fig-nmcs">
+<img alt="モンテカルロ計算の流れとパラメータの図解" src="../_images/nmcs.png" />
+<p class="caption"><span class="caption-text">モンテカルロ計算のおおまかな流れと各種回数パラメータの図解</span><a class="headerlink" href="#fig-nmcs" title="この画像へのパーマリンク">¶</a></p>
+</div>
+<p>DSQSS では, ワームヘッド対が生成されてから消滅するまでを 1 MCステップと呼び,
+<span class="math notranslate nohighlight">\(N_\text{cyc}\)</span> MCステップをまとめて 1 MCスイープと呼びます.
+(ワームヘッド対の生成そのものに失敗した場合も 1 MC ステップです.)
+<span class="math notranslate nohighlight">\(N_\text{cyc}\)</span> の値ははじめの <code class="docutils literal notranslate"><span class="pre">NPRE</span></code> MC ステップで決定されます.</p>
+<p><span class="math notranslate nohighlight">\(N_\text{cyc}\)</span> が決まったら, 初期緩和フェーズとして <code class="docutils literal notranslate"><span class="pre">NTHERM</span></code> MC スイープのシミュレーションが行われ,
+引き続き <code class="docutils literal notranslate"><span class="pre">NMCS</span></code> MC スイープのシミュレーションが物理量測定フェーズとして行われます.</p>
+<p>ある物理量測定フェーズと次の物理量測定過程フェーズとの間には,
+自己相関軽減フェーズとして <code class="docutils literal notranslate"><span class="pre">NDECOR</span></code> MC スイープのシミュレーションが行われます.</p>
+<p>初期緩和フェーズと物理量測定フェーズ, あるいは自己相関軽減フェーズと物理量測定フェーズの2つのフェーズをあわせたものが
+1 セット となり,
+全体のシミュレーションは <code class="docutils literal notranslate"><span class="pre">NSET</span></code> 個のセットを含みます.
+物理量の期待値 <span class="math notranslate nohighlight">\(\langle Q \rangle\)</span> と誤差 <span class="math notranslate nohighlight">\(\sigma_Q\)</span> は,
+<code class="docutils literal notranslate"><span class="pre">NSET</span></code> 個のセットそれぞれから得られる物理量の平均および標準誤差として得られます.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>ナビゲーション</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about_dsqss.html">1. DSQSSとは？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">2. インストール</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dla/tutorial/index.html">3. DLAのチュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dla/users-manual/index.html">4. DSQSS/DLAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pmwa/tutorial/tutorial.html">5. DSQSS/PMWAのチュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pmwa/tutorial/tu-index.html">6. DSQSS/PMWAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="algorithm.html">7. アルゴリズム</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="検索" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/dsqss/usage.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
