@@ -96,7 +96,7 @@ class Interaction:
         self.vtype = -1
 
     def __str__(self) -> str:
-        s = f"{self.id} {self.itype} {self.nbody}"
+        s = f"{self.id} {self.itype_org} {self.nbody}"
         edgeflag = 1 if self.edge >= 0 else 0
         for site in self.sites:
             s += f" {site}"
