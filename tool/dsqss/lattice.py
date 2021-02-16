@@ -393,7 +393,7 @@ class Lattice:
                 count = 0
                 continue
             elif state == "dirs":
-                self._load_direction(body)
+                self._load_direction(dirs, body)
                 count += 1
                 if count == self.ndir:
                     self.dirs = typing.cast(List[np.ndarray], dirs)
@@ -406,7 +406,7 @@ class Lattice:
                 sites = [None for i in range(self.nsites)]
                 continue
             elif state == "sites":
-                self._load_site(body)
+                self._load_site(sites, body)
                 count += 1
                 if count == self.nsites:
                     self.sites = typing.cast(List[Site], sites)
@@ -419,7 +419,7 @@ class Lattice:
                 ints = [None for i in range(self.nints)]
                 continue
             elif state == "ints":
-                self._load_int(body)
+                self._load_int(ints, body)
                 count += 1
                 if count == self.nints:
                     self.ints = typing.cast(List[Interaction], ints)
@@ -439,29 +439,29 @@ class Lattice:
                 util.ERROR("too many elements ({0})".format(body))
         self.latvec[:, int(elem[0])] = list(map(float, elem[1:]))
 
-    def _load_direction(self, body: str) -> None:
+    def _load_direction(self, dirs:List, body: str) -> None:
         elem = body.split()
         if len(elem) != self.dim + 1:
             if len(elem) < self.dim + 1:
                 util.ERROR(f"too few elements ({body})")
             else:
                 util.ERROR(f"too many elements ({body})")
-        self.dirs[int(elem[0])] = np.array(list(map(float, elem[1:])))
+        dirs[int(elem[0])] = np.array(list(map(float, elem[1:])))
 
-    def _load_site(self, body: str) -> None:
+    def _load_site(self, sites:List, body: str) -> None:
         elem = body.split()
         if len(elem) != self.dim + 2:
             if len(elem) < self.dim + 2:
                 util.ERROR(f"too few elements ({body})")
             else:
                 util.ERROR(f"too many elements ({body})")
-        self.sites[int(elem[0])] = Site(
+        sites[int(elem[0])] = Site(
             site_id=int(elem[0]),
             site_type=int(elem[1]),
             coordinate=np.array(list(map(float, elem[2:]))),
         )
 
-    def _load_int(self, body: str) -> None:
+    def _load_int(self, ints:List, body: str) -> None:
         elem = body.split()
         nbody = int(elem[2])
         if len(elem) != nbody + 5:
@@ -469,7 +469,7 @@ class Lattice:
                 util.ERROR(f"too few elements ({body})")
             else:
                 util.ERROR(f"too many elements ({body})")
-        self.ints[int(elem[0])] = Interaction(
+        ints[int(elem[0])] = Interaction(
             int_id=int(elem[0]),
             int_type=int(elem[1]),
             nbody=nbody,
