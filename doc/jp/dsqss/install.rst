@@ -14,6 +14,7 @@ DSQSSの使用には以下のプログラム・ライブラリが必要です.
    - numpy
    - scipy
    - toml
+   - typing_extensions
    
 
 ダウンロード

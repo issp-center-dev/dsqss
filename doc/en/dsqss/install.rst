@@ -13,6 +13,7 @@ Requirements
    - numpy
    - scipy
    - toml
+   - typing_extensions
    - pip (essential for ``make install``)
 
 Download
