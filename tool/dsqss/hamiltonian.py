@@ -70,18 +70,18 @@ def append_matelem(
         if value is None:
             raise RuntimeError("value is required")
         if istate is not None and fstate is not None:
-            matelems[keystate(istate, fstate)] = value
+            matelems[keystate(istate, fstate)] = float(value)
         elif state is not None:
-            matelems[keystate(state, state)] = value
+            matelems[keystate(state, state)] = float(value)
         else:
             raise RuntimeError("(istate and fstate) or state is required")
     else:
         if "value" not in param:
             raise RuntimeError("value is required")
         if "istate" in param and "fstate" in param:
-            matelems[keystate(param["istate"], param["fstate"])] = param["value"]
+            matelems[keystate(param["istate"], param["fstate"])] = float(param["value"])
         elif "state" in param:
-            matelems[keystate(param["state"], param["state"])] = param["value"]
+            matelems[keystate(param["state"], param["state"])] = float(param["value"])
         else:
             raise RuntimeError("(istate and fstate) or state is required")
     return matelems
