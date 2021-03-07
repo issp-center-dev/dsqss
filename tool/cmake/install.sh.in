@@ -4,7 +4,7 @@ export PIPX_BIN_DIR=@CMAKE_INSTALL_PREFIX@/bin
 
 cd @CMAKE_CURRENT_BINARY_DIR@
 
-find @CMAKE_INSTALL_PREFIX@/bin -name 'dla_*' | xargs rm
+find @CMAKE_INSTALL_PREFIX@/bin -name 'dla_*' | xargs rm -f
 rm -f @CMAKE_INSTALL_PREFIX@/bin/pmwa_pre
-
+echo "-- Installing dsqss tools. It may take long, please be patiant..."
 @PYTHON_EXECUTABLE@ -m pipx install --force @CMAKE_CURRENT_SOURCE_DIR@
