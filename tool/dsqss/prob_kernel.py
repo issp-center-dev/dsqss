@@ -14,7 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Sequence, Protocol
+from typing import Sequence
+from typing_extensions import Protocol
 
 import numpy as np
 
