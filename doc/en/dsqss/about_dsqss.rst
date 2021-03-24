@@ -50,11 +50,11 @@ Collaborators
 License
 ****************
 - GNU General Public License (GPL)
-The users are kindly requested to acknowledge the usage of this software in their publication, if any, based on the software, and let the developers know its reference information.
+- The users are kindly requested to cite the following paper in their publication, if any, based on the software.
   
-.. topic:: Acknowledgment Sample
+.. topic:: Reference
 
-    Numerical results in the present paper were obtained by the quantum Monte Carlo program DSQSS(https://github.com/qmc/dsqss/wiki). This package is distributed under GNU General Public License version 3 (GPL v3) or later.
+    Y. Motoyama, K. Yoshimi, A. Masaki-Kato, T. Kato, and N. Kawashima, Comput. Phys. Commun. 264, 107944 (2021).
 
 Acknowledgment
 ****************

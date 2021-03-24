@@ -113,6 +113,13 @@ cat sample.log | grep ene
 
 For details, [see manual page](https://issp-center-dev.github.io/dsqss/manual/master/en/dla/tutorial/spindimer.html).
 
+## Paper
+
+We would appreciate if you cite the following article in your research with DSQSS,
+[Y. Motoyama, K. Yoshimi, A. Masaki-Kato, T. Kato, and N. Kawashima, Comput. Phys. Commun. 264, 107944 (2021)](https://www.sciencedirect.com/science/article/pii/S0010465521000692).
+
+The preprint is [arXiv:2007.11329](https://arxiv.org/abs/2007.11329).
+
 ## License
 ### License of DSQSS
 DSQSS is distributed under the GNU GPL v3.
