@@ -94,12 +94,11 @@ DSQSSは, 以下のサブシステム群から構成されています.
 ライセンス
 ****************
 - GNU General Public License (GPL)に基づきます. 
-- 利用のための必須条件ではありませんが, 利用実態を把握したいので, 科学計算などに使用した場合, 関連公表論文の書誌情報などをアプリケーション管理者までお知らせ下さることを希望します. また, 論文などによる成果公開に際して謝辞に記載していただければ幸いです. 
+- 利用のための必須条件ではありませんが, DSQSS を利用した論文を執筆した際には, 以下の文献を引いていただけると幸いです.
    
-.. topic:: Acknowledgment Sample
+.. topic:: Reference
 
-    Numerical results in the present paper were obtained by the quantum Monte Carlo program DSQSS(https://github.com/issp-center-dev/dsqss).
-    This package is distributed under GNU General Public License version 3 (GPL v3) or later. 
+  Y. Motoyama, K. Yoshimi, A. Masaki-Kato, T. Kato, and N. Kawashima, Comput. Phys. Commun. 264, 107944 (2021).
 
 
 謝辞
