@@ -422,7 +422,7 @@ Algorithm/Vertex/InitialConfiguration/Channel
 波数ベクトルXMLファイルは, スタッガード秩序変数
 
 .. math::
-   M^{z}(\vec{k}) \equiv \frac{1}{N} \sum_i e^{-i\vec{k}\vec\vec{r}_i} \left\langle M^{z}_i \right\rangle
+   M^{z}(\vec{k}) \equiv \frac{1}{N} \sum_i e^{-i\vec{k}\cdot\vec{r}_i} \left\langle M^{z}_i \right\rangle
 
 や動的構造因子
 
