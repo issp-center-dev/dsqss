@@ -25,11 +25,11 @@ The parameters to be specified are as follows.
 
 Examples of use are described below.
 
-1. One-dimensional 8-sites chain, inverse temperature 10.0, definition of lattice file when division number is 1:
+1. One-dimensional 8-sites chain, inverse temperature 10.0, the definition of lattice file when division number is 1:
 
    ``$ lattgene_P 1 8 10.0 1 1 0``
 
-2. Two dimensional 4*4 sites lattice, reverse temperature 10.0, definition of lattice file when division number is 1:
+2. Two-dimensional 4*4 sites lattice, reverse temperature 10.0, the definition of lattice file when division number is 1:
 
    ``$ lattgene_P 2 4 4 10.0 1 1 0``
 
