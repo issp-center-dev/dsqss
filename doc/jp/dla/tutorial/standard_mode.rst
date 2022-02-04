@@ -101,6 +101,12 @@ lattice.toml を入力ファイルとして, gnuplotファイル lattice.pltを�
 lattce.plt を gnuplot に与えると2次元の格子の概形が得られます::
 
 
+.. figure:: ../../../image/dla/tutorial/spinchain.*
+  :name: fig_spinchain
+  :alt: スピン鎖の帯磁率
+
+  反強磁性ハイゼンベルグスピン鎖の帯磁率の温度依存性. 青が :math:`S=1/2` で 赤が :math:`S=1` の結果.
+
 
 
 
