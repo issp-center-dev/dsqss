@@ -122,7 +122,7 @@ lattice.tomlファイルでは格子の情報をユニットセルと基本並�
 ::
 
    name
-hypercubic
+   hypercubic
 
 lattice
 2 # dim
