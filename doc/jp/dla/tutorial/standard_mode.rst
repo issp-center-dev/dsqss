@@ -120,16 +120,16 @@ lattice.tomlファイルでは格子の情報をユニットセルと基本並�
 
 この結果, 以下のようなlattice.datファイルが得られます
 ::
-
+     
    name
    hypercubic
 
-lattice
-2 # dim
-4 4 # size
-0 0 # 0:open boundary, 1:periodic boundary
-0 1.0 0.0 # latvec_0
-1 0.0 1.0 # latvec_1
+   lattice
+   2 # dim
+   4 4 # size
+   0 0 # 0:open boundary, 1:periodic boundary
+   0 1.0 0.0 # latvec_0
+   1 0.0 1.0 # latvec_1
 
 directions
 2 # ndirections
@@ -183,8 +183,7 @@ interactions
 20 3 2 11 15 0 1
 21 0 2 12 13 0 0
 22 1 2 13 14 0 0
-23 3 2 14 15 0 0
-   
+23 3 2 14 15 0 0     
 
 
 
