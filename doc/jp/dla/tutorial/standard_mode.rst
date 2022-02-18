@@ -186,7 +186,7 @@ lattice.tomlファイルでは格子の情報をユニットセルと基本並�
    23 3 2 14 15 0 0     
    
    
-次に, kpoints.datを作成します。kpoint.datは波数ベクトルを逆格子ベクトルで展開した際の係数を指定するテキストファイルです. 格子サイズを指定する -sを用いた dla_wvgen -s に std.tomlファイルを与えます::
+次に, kpoints.datを作成します。kpoint.datは波数ベクトルを逆格子ベクトルで展開した際の係数を指定するテキストファイルです. -sを使うことでサイズを指定できます. dla_wvgen -s に std.tomlファイルを与えます::
 
   $ dla_wvgen -s "8 8" std.toml 
 
