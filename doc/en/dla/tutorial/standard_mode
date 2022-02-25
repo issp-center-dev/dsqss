@@ -1,30 +1,29 @@
-DSQSS/DLA のスタンダードモードによる反強磁性ハイゼンベルグダイマーの模型や格子の定義
+Definition of models and lattices of antiferromagnetic Heisenberg dimers by standard mode of DSQSS/DLA
 ===============================================================
 
-このチュートリアルでは, :math:`S=1/2` 反強磁性ハイゼンベルグダイマーに外部磁場が印加されている系 :math:`\mathcal{H}= \sum_{\langle i,j \rangle}-J_z S^z_i S^z_j -\frac{J_{xy}}{2}(S^+_i S^-_j +S^-_i S^+_j)-h\sum_i S^z_i ,~J_z<0, J_xy<0, h>0` の格子の概形を計算をすることで,
-DSQSS/DLA のスタンダードモード使い方を学びます.
+In this tutorial, we will consider a system in which an external magnetic field is applied to a :math:`S=1/2` antiferromagnetic Heisenberg dimer :math:`\mathcal{H}= \sum_{\langle i,j \rangle}-J_z S^z_i S^z_j -\frac{J_{xy}}{2}(S^+_i S^-_j +S^-_i S^+_j)-h\sum_i S^z_i ,~J_z<0, J_xy<0, h>0`
+by calculating the approximate form of the lattice,
+you learn how to use the standard mode of DSQSS/DLA.
 
-DSQSS/DLA のスタンダードモードによる計算は,
+The calculations in the standard mode of DSQSS/DLA are as follows
 
-1. シンプルモードの入力ファイルの準備
-2. スタンダードモードの入力ファイルの作成
-3. 計算の実行
-
-の3段階に分かれます.
+1. prepare an input file for simple mode,
+2. create an input file for standard mode,
+3. run the calculation.
 
 
-シンプルモードの入力ファイルの準備
+
+Preparing the input file for simple mode
 ********************
 
-DSQSS/DLA を実行するには,
+To run DSQSS/DLA, you will need the simple mode file std.toml in TOML format with the following information
 
-#. ハミルトニアンの情報
-#. 格子の情報
-#. 逆温度やモンテカルロステップ数などのパラメータの情報
+#. Hamiltonian Information,
+#. Information on lattices,
+#. Information on parameters such as inverse temperature and number of Monte Carlo steps.
 
-を指定したTOML形式のシンプルモードファイル std.tomlが必要です.
-そのため, まずはこの入力ファイルを準備します.
-反強磁性ハイゼンベルグダイマーのファイルは以下の場所に用意されています
+Thus, the first step is to prepare this input file.
+The file of antiferromagnetic Heisenberg dimer is available in the following location
 (sample/dla/01_spindimer/std.toml)
 ::
 
@@ -47,7 +46,8 @@ DSQSS/DLA を実行するには,
    nmcs = 100             # MCSweeps for measurement
    seed = 31415           # seed of RNG
 
-このファイルにz方向の外部磁場の印加の効果を付け加え, 格子の次元とサイトの数をそれぞれ2と4にします
+To this file, we add the effect of applying an external magnetic field in the z direction,
+and set the lattice dimension and the number of sites to 2 and 4, respectively
 ::
 
    [hamiltonian]
@@ -70,55 +70,59 @@ DSQSS/DLA を実行するには,
    seed = 31415           # seed of RNG
    
 
-スタンダードモードの入力ファイルの作成
+Writing an input file for standard mode
 **********
 
-このファイルを dla_hamgen に与えます.
+This file is given to dla_hamgen
 ::
 
   $ dla_hamgen std.toml
 
-この結果, サイトハミルトニアンや多体相互作用の情報を記述するTOML形式のテキストファイル hamiltonian.toml が生成されます.
+As a result, a text file in TOML format, hamiltonian.toml, 
+is generated to describe the information of the site Hamiltonian and the many-body interaction.
 
 
-次に, std.toml を dla_latgen に与えます.
+Next, you give std.toml to dla_latgen
 ::
 
   $ dla_latgen -t lattice.toml std.toml
 
 
-この結果, ユニットセルと基本並進ベクトルを用いて空間の情報を記述するTOML形式のテキストファイルlattice.toml が生成されます.
+As a result, a text file in TOML format, lattice.toml, 
+is generated to describe the information of the space using unit cells and basic translation vectors.
 
 
-計算の実行
+Running the calculation
 ****************
 
-lattice.toml を入力ファイルとして, gnuplotファイル lattice.pltを作成できます::
+With lattice.toml as input file, you can create a gnuplot file lattice.plt::
 ::
 
   $ dla_latgen -g lattice.plt lattice.toml
 
-lattce.plt を gnuplot に与えると2次元の格子の概形が得られます::
+Giving lattce.plt to gnuplot will produce a two-dimensional schematic of the lattice::
 
 
 .. figure:: ../../../image/dla/tutorial/2Dlattice.png
   :name: fig_2Dlattice
-  :alt: 2次元格子
+  :alt: Two-dimensional lattice
 
-  z方向の外部磁場中の反強磁性ハイゼンベルグスピン鎖の格子の概形.
+ Schematic of the lattice of an antiferromagnetic Heisenberg spin chain in an external magnetic field in the z direction.
   
   
   
-lattice.datとkpoints.datの作成
+Writing lattice.dat and kpoints.dat
 ********************
 
-lattice.tomlファイルでは格子の情報をユニットセルと基本並進ベクトルを用いて定義しました。一方, lattice.datファイルは格子の情報をサイトの数やサイト間の相互作用を用いて定義します。lattice.datもTOML形式のシンプルモードファイル std.tomlを用いて作成できます。
-上で用いたz方向の外部磁場の印加の効果が入っているstd.tomlを dla_latgen に与えます.
+The lattice.toml file defines the lattice information using unit cells and fundamental translation vectors, 
+while the lattice.dat file defines the lattice information using the number of sites and interactions between sites. 
+The lattice.dat file also can be generated using the simple mode file std.toml in TOML format.
+You give std.toml to dla_latgen, which contains the effect of applying an external magnetic field in the z direction as used earlier
 ::
 
   $ dla_latgen -o lattice.dat std.toml 
 
-この結果, 以下のようなlattice.datファイルが得られます
+As a result, you will get the lattice.dat file as follows
 ::
      
    name
@@ -186,11 +190,13 @@ lattice.tomlファイルでは格子の情報をユニットセルと基本並�
    23 3 2 14 15 0 0     
    
    
-次に, kpoints.datを作成します。kpoint.datは波数ベクトルを逆格子ベクトルで展開した際の係数を指定するテキストファイルです. -sを使うことでサイズを指定できます. dla_wvgen -s に std.tomlファイルを与えます::
+Next, you can create kpoints.dat, 
+which is a text file that specifies the coefficients of the reciprocal grid vector expansion of the wavenumber vector.
+You can specify the size by using -s. Please give the std.toml file to dla_wvgen -s ::
 
   $ dla_wvgen -s "8 8" std.toml 
 
-この結果, 以下の kpoints.datファイルが得られます
+As a result, you will get the following kpoints.dat file
 ::
 
    dim
