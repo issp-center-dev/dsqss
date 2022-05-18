@@ -270,6 +270,8 @@ Displacement :math:`\vec{r}_{ij}` and imaginary time :math:`\tau` are specified 
 where ``<k>`` is an index of the displacement specified by ``kind`` (the first element of each ``R`` tag) in the relative coordinate XML file,
 and ``<t>`` is an index of the discretized imaginary time.
 
+NOTE: The current version, this works only for :math:`S=1/2` model.
+
 Momentum space temperature Green's function output
 **************************************************
 The momentum space temperature Green's function is written into a file with the name specified by ``ckoutfile`` keyword in the input file.
@@ -281,3 +283,5 @@ The momentum space temperature Green's function is defined as the following:
 Wave vector :math:`\vec{r}_{ij}` and imaginary time :math:`\tau` are specified by the name ``C<k>t<t>`` as the same way of structure factor,
 where ``<k>`` is an index of the displacement specified by ``kind`` (the last element of each ``RK`` tag) in the wavevector XML file,
 and ``<t>`` is an index of the discretized imaginary time.
+
+NOTE: The current version, this works only for :math:`S=1/2` model.
