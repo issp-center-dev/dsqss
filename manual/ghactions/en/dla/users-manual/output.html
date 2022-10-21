@@ -4,15 +4,18 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <title>4.6. Output of DSQSS/DLA &#8212; DSQSS 2.0.3 documentation</title>
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="5. Tutorial of DSQSS/PMWA" href="../../pmwa/tutorial/tutorial.html" />
@@ -33,10 +36,10 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="output-of-dsqss-dla">
-<h1><span class="section-number">4.6. </span>Output of DSQSS/DLA<a class="headerlink" href="#output-of-dsqss-dla" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="format">
-<h2><span class="section-number">4.6.1. </span>Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h2>
+  <section id="output-of-dsqss-dla">
+<h1><span class="section-number">4.6. </span>Output of DSQSS/DLA<a class="headerlink" href="#output-of-dsqss-dla" title="Permalink to this heading">¶</a></h1>
+<section id="format">
+<h2><span class="section-number">4.6.1. </span>Format<a class="headerlink" href="#format" title="Permalink to this heading">¶</a></h2>
 <p>DSQSS/DLA generates the result of a simulation as a plain-text file.
 The first character stands for the meaning of the line.</p>
 <dl class="simple">
@@ -106,8 +109,8 @@ I [the maximum number of vertices]          = 66
 I [the maximum number of reg. vertex info.] = 3
 </pre></div>
 </div>
-<div class="section" id="notations">
-<h3><span class="section-number">4.6.1.1. </span>Notations<a class="headerlink" href="#notations" title="Permalink to this headline">¶</a></h3>
+<section id="notations">
+<h3><span class="section-number">4.6.1.1. </span>Notations<a class="headerlink" href="#notations" title="Permalink to this heading">¶</a></h3>
 <dl>
 <dt><span class="math notranslate nohighlight">\(N_s\)</span></dt><dd><p>The number of sites.</p>
 </dd>
@@ -142,10 +145,10 @@ The longitudinal magnetic field for spin systems and the chemical potential for 
 <dt><span class="math notranslate nohighlight">\(\left\langle Q \right\rangle\)</span></dt><dd><p>The expectation value of an arbitrary operator <span class="math notranslate nohighlight">\(Q\)</span> over the grand canonical ensemble.</p>
 </dd>
 </dl>
-</div>
-</div>
-<div class="section" id="main-results">
-<h2><span class="section-number">4.6.2. </span>Main results<a class="headerlink" href="#main-results" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="main-results">
+<h2><span class="section-number">4.6.2. </span>Main results<a class="headerlink" href="#main-results" title="Permalink to this heading">¶</a></h2>
 <p>Main results are written in a file with the name specified by <code class="docutils literal notranslate"><span class="pre">outfile</span></code> keyword in the input parameter file.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">sign</span></code></dt><dd><p>The sign of the weights.</p>
@@ -219,9 +222,9 @@ N_s \left[ \left\langle (m^z)^2\right\rangle
 <dt><code class="docutils literal notranslate"><span class="pre">time</span></code></dt><dd><p>The time in a Monte Carlo sweep (in seconds.)</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="structure-factor-output">
-<h2><span class="section-number">4.6.3. </span>Structure factor output<a class="headerlink" href="#structure-factor-output" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="structure-factor-output">
+<h2><span class="section-number">4.6.3. </span>Structure factor output<a class="headerlink" href="#structure-factor-output" title="Permalink to this heading">¶</a></h2>
 <p>The structure factor is written into a file with the name specified by <code class="docutils literal notranslate"><span class="pre">sfoutfile</span></code> keyword in the input file.
 The structure factor is defined as the following:</p>
 <div class="math notranslate nohighlight">
@@ -236,9 +239,9 @@ R C1t0 = 7.35281032e-02 3.18028565e-04
 </div>
 <p>where <code class="docutils literal notranslate"><span class="pre">&lt;k&gt;</span></code> is an index of the wave vector specified by <code class="docutils literal notranslate"><span class="pre">kindex</span></code> (the last element of each <code class="docutils literal notranslate"><span class="pre">RK</span></code> tag) in the wavevector XML file
 and <code class="docutils literal notranslate"><span class="pre">&lt;t&gt;</span></code> is an index of the discretized imaginary time.</p>
-</div>
-<div class="section" id="real-space-temperature-green-s-function-output">
-<h2><span class="section-number">4.6.4. </span>Real space temperature Green’s function output<a class="headerlink" href="#real-space-temperature-green-s-function-output" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="real-space-temperature-green-s-function-output">
+<h2><span class="section-number">4.6.4. </span>Real space temperature Green’s function output<a class="headerlink" href="#real-space-temperature-green-s-function-output" title="Permalink to this heading">¶</a></h2>
 <p>The real space temperature Green’s function is written into a file with the name specified by <code class="docutils literal notranslate"><span class="pre">cfoutfile</span></code> keyword in the input file.
 The real space temperature Green’s function is defined as the following:</p>
 <div class="math notranslate nohighlight">
@@ -246,9 +249,10 @@ The real space temperature Green’s function is defined as the following:</p>
 <p>Displacement <span class="math notranslate nohighlight">\(\vec{r}_{ij}\)</span> and imaginary time <span class="math notranslate nohighlight">\(\tau\)</span> are specified by the name <code class="docutils literal notranslate"><span class="pre">C&lt;k&gt;t&lt;t&gt;</span></code> as the same way of structure factor,
 where <code class="docutils literal notranslate"><span class="pre">&lt;k&gt;</span></code> is an index of the displacement specified by <code class="docutils literal notranslate"><span class="pre">kind</span></code> (the first element of each <code class="docutils literal notranslate"><span class="pre">R</span></code> tag) in the relative coordinate XML file,
 and <code class="docutils literal notranslate"><span class="pre">&lt;t&gt;</span></code> is an index of the discretized imaginary time.</p>
-</div>
-<div class="section" id="momentum-space-temperature-green-s-function-output">
-<h2><span class="section-number">4.6.5. </span>Momentum space temperature Green’s function output<a class="headerlink" href="#momentum-space-temperature-green-s-function-output" title="Permalink to this headline">¶</a></h2>
+<p>NOTE: The current version, this works only for <span class="math notranslate nohighlight">\(S=1/2\)</span> model.</p>
+</section>
+<section id="momentum-space-temperature-green-s-function-output">
+<h2><span class="section-number">4.6.5. </span>Momentum space temperature Green’s function output<a class="headerlink" href="#momentum-space-temperature-green-s-function-output" title="Permalink to this heading">¶</a></h2>
 <p>The momentum space temperature Green’s function is written into a file with the name specified by <code class="docutils literal notranslate"><span class="pre">ckoutfile</span></code> keyword in the input file.
 The momentum space temperature Green’s function is defined as the following:</p>
 <div class="math notranslate nohighlight">
@@ -256,8 +260,9 @@ The momentum space temperature Green’s function is defined as the following:</
 <p>Wave vector <span class="math notranslate nohighlight">\(\vec{r}_{ij}\)</span> and imaginary time <span class="math notranslate nohighlight">\(\tau\)</span> are specified by the name <code class="docutils literal notranslate"><span class="pre">C&lt;k&gt;t&lt;t&gt;</span></code> as the same way of structure factor,
 where <code class="docutils literal notranslate"><span class="pre">&lt;k&gt;</span></code> is an index of the displacement specified by <code class="docutils literal notranslate"><span class="pre">kind</span></code> (the last element of each <code class="docutils literal notranslate"><span class="pre">RK</span></code> tag) in the wavevector XML file,
 and <code class="docutils literal notranslate"><span class="pre">&lt;t&gt;</span></code> is an index of the discretized imaginary time.</p>
-</div>
-</div>
+<p>NOTE: The current version, this works only for <span class="math notranslate nohighlight">\(S=1/2\)</span> model.</p>
+</section>
+</section>
 
 
           </div>
@@ -323,12 +328,12 @@ and <code class="docutils literal notranslate"><span class="pre">&lt;t&gt;</span
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -345,7 +350,7 @@ and <code class="docutils literal notranslate"><span class="pre">&lt;t&gt;</span
       &copy;2018-, DSQSS developers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
