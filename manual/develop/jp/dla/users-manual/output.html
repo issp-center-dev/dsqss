@@ -4,7 +4,7 @@
 <html lang="ja">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>4.6. DLA の出力ファイル &#8212; DSQSS 2.0.3 ドキュメント</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
@@ -12,7 +12,9 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/translations.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
@@ -36,9 +38,9 @@
           <div class="body" role="main">
             
   <section id="dla">
-<h1><span class="section-number">4.6. </span>DLA の出力ファイル<a class="headerlink" href="#dla" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<h1><span class="section-number">4.6. </span>DLA の出力ファイル<a class="headerlink" href="#dla" title="この見出しへのパーマリンク">¶</a></h1>
 <section id="id1">
-<h2><span class="section-number">4.6.1. </span>フォーマット<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2><span class="section-number">4.6.1. </span>フォーマット<a class="headerlink" href="#id1" title="この見出しへのパーマリンク">¶</a></h2>
 <p>DLA は計算結果を行区切りのプレーンテキストファイルで出力します.
 行頭の文字はその行の意味を表します.</p>
 <dl class="simple">
@@ -144,7 +146,7 @@ I [the maximum number of reg. vertex info.] = 3
 </dl>
 </section>
 <section id="id2">
-<h2><span class="section-number">4.6.2. </span>メイン出力<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2><span class="section-number">4.6.2. </span>メイン出力<a class="headerlink" href="#id2" title="この見出しへのパーマリンク">¶</a></h2>
 <p>メイン出力ファイルは, 入力パラメータファイルの <code class="docutils literal notranslate"><span class="pre">outfile</span></code> キーワードで指定した名前で出力されます.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">sign</span></code></dt><dd><p>重みの符号.</p>
@@ -219,7 +221,7 @@ N_s \left[ \left\langle (m^z)^2\right\rangle
 </dl>
 </section>
 <section id="id3">
-<h2><span class="section-number">4.6.3. </span>構造因子出力ファイル<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2><span class="section-number">4.6.3. </span>構造因子出力ファイル<a class="headerlink" href="#id3" title="この見出しへのパーマリンク">¶</a></h2>
 <p>構造因子出力ファイルは, 入力パラメータファイルの <code class="docutils literal notranslate"><span class="pre">sfoutfile</span></code> キーワードで指定した名前で出力されます.
 このファイルには虚時間構造因子</p>
 <div class="math notranslate nohighlight">
@@ -238,7 +240,7 @@ R C1t0 = 7.35281032e-02 3.18028565e-04
 <code class="docutils literal notranslate"><span class="pre">&lt;t&gt;</span></code> は離散化した虚時間のインデックス.</p>
 </section>
 <section id="id4">
-<h2><span class="section-number">4.6.4. </span>実空間表示温度グリーン関数出力ファイル<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2><span class="section-number">4.6.4. </span>実空間表示温度グリーン関数出力ファイル<a class="headerlink" href="#id4" title="この見出しへのパーマリンク">¶</a></h2>
 <p>実空間表示温度グリーン関数出力ファイルは, 入力パラメータファイルの <code class="docutils literal notranslate"><span class="pre">cfoutfile</span></code> キーワードで指定した名前で出力されます.
 このファイルには温度グリーン関数</p>
 <div class="math notranslate nohighlight">
@@ -251,7 +253,7 @@ R C1t0 = 7.35281032e-02 3.18028565e-04
 現在のバージョンでは <span class="math notranslate nohighlight">\(S=1/2\)</span> のモデル以外はうまく計算できません.</p>
 </section>
 <section id="id5">
-<h2><span class="section-number">4.6.5. </span>波数表示温度グリーン関数出力ファイル<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2><span class="section-number">4.6.5. </span>波数表示温度グリーン関数出力ファイル<a class="headerlink" href="#id5" title="この見出しへのパーマリンク">¶</a></h2>
 <p>波数表示温度グリーン関数出力ファイルは, 入力パラメータファイルの <code class="docutils literal notranslate"><span class="pre">ckoutfile</span></code> キーワードで指定した名前で出力されます.
 このファイルには温度グリーン関数</p>
 <div class="math notranslate nohighlight">
@@ -333,7 +335,7 @@ R C1t0 = 7.35281032e-02 3.18028565e-04
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -350,7 +352,7 @@ R C1t0 = 7.35281032e-02 3.18028565e-04
       &copy;2018-, DSQSS developers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

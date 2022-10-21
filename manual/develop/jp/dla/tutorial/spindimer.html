@@ -4,7 +4,7 @@
 <html lang="ja">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>3.2. DSQSS/DLA による反強磁性ハイゼンベルグダイマーのエネルギー計算 &#8212; DSQSS 2.0.3 ドキュメント</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
@@ -12,7 +12,9 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/translations.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
@@ -36,7 +38,7 @@
           <div class="body" role="main">
             
   <section id="dsqss-dla">
-<h1><span class="section-number">3.2. </span>DSQSS/DLA による反強磁性ハイゼンベルグダイマーのエネルギー計算<a class="headerlink" href="#dsqss-dla" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<h1><span class="section-number">3.2. </span>DSQSS/DLA による反強磁性ハイゼンベルグダイマーのエネルギー計算<a class="headerlink" href="#dsqss-dla" title="この見出しへのパーマリンク">¶</a></h1>
 <p>このチュートリアルでは, <span class="math notranslate nohighlight">\(S=1/2\)</span> 反強磁性ハイゼンベルグダイマー <span class="math notranslate nohighlight">\(\mathcal{H}= J \vec{S}_1 \cdot \vec{S}_2\)</span> の基底状態エネルギー計算をすることで,
 DSQSS/DLA の使い方を学びます.</p>
 <p>DSQSS/DLA による計算は,</p>
@@ -47,7 +49,7 @@ DSQSS/DLA の使い方を学びます.</p>
 </ol>
 <p>の3段階に分かれます.</p>
 <section id="id1">
-<h2><span class="section-number">3.2.1. </span>入力ファイルの準備<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2><span class="section-number">3.2.1. </span>入力ファイルの準備<a class="headerlink" href="#id1" title="この見出しへのパーマリンク">¶</a></h2>
 <p>DSQSS/DLA を実行するには,</p>
 <ol class="arabic simple">
 <li><p>パラメータファイル</p></li>
@@ -86,7 +88,7 @@ DSQSS/DLA の使い方を学びます.</p>
 <p>この結果, パラメータファイル param.in, 格子定義ファイル lattice.xml, アルゴリズム定義ファイル algorithm.xml が生成されます。</p>
 </section>
 <section id="id2">
-<h2><span class="section-number">3.2.2. </span>計算の実行<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2><span class="section-number">3.2.2. </span>計算の実行<a class="headerlink" href="#id2" title="この見出しへのパーマリンク">¶</a></h2>
 <p>入力ファイルを作成したら, DSQSS/DLA による計算を実行します.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dla param.in
 </pre></div>
@@ -95,10 +97,10 @@ DSQSS/DLA の使い方を学びます.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ mpiexec -np 4 dla param.in
 </pre></div>
 </div>
-<p>乱数並列計算では並列数 (この例では4) だけ独立に計算が行われ, その分モンテカルロサンプル数を増えるために計算精度が向上します. <a class="footnote-reference brackets" href="#fn-ompi-macos" id="id3">1</a></p>
+<p>乱数並列計算では並列数 (この例では4) だけ独立に計算が行われ, その分モンテカルロサンプル数を増えるために計算精度が向上します. <a class="footnote-reference brackets" href="#fn-ompi-macos" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
 </section>
 <section id="id4">
-<h2><span class="section-number">3.2.3. </span>計算結果の解釈<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2><span class="section-number">3.2.3. </span>計算結果の解釈<a class="headerlink" href="#id4" title="この見出しへのパーマリンク">¶</a></h2>
 <p>計算結果は出力ファイル sample.log に書き出されます.
 サイトあたりのエネルギーは <code class="docutils literal notranslate"><span class="pre">ene</span></code> という名前で記されており, たとえば <code class="docutils literal notranslate"><span class="pre">grep</span></code> コマンドで</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ grep ene sample.log
@@ -109,11 +111,12 @@ R ene = -3.74380000e-01 5.19493985e-03
 2つある数字はそれぞれ期待値と統計誤差です.
 反強磁性ハイゼンベルグダイマーの基底状態でのサイトあたりエネルギーは <span class="math notranslate nohighlight">\(-3|J|/8 = -0.375|J|\)</span> なので, 問題なく計算されていることがわかります.</p>
 <p class="rubric">脚注</p>
-<dl class="footnote brackets">
-<dt class="label" id="fn-ompi-macos"><span class="brackets"><a class="fn-backref" href="#id3">1</a></span></dt>
-<dd><p>macOS 上のOpenMPI を使う場合, プログラム終了時にエラーメッセージが出ることがあります（ <code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">such</span> <span class="pre">file</span> <span class="pre">or</span> <span class="pre">directory</span> <span class="pre">(errno</span> <span class="pre">2)</span></code> ）. DSQSS/DLA の実行自体に影響はありませんが, これを抑制したい場合は,  <code class="docutils literal notranslate"><span class="pre">--mca</span> <span class="pre">shmem</span> <span class="pre">posix</span></code> オプションを <code class="docutils literal notranslate"><span class="pre">mpiexec</span></code> に付与してください.</p>
-</dd>
-</dl>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="fn-ompi-macos" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">1</a><span class="fn-bracket">]</span></span>
+<p>macOS 上のOpenMPI を使う場合, プログラム終了時にエラーメッセージが出ることがあります（ <code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">such</span> <span class="pre">file</span> <span class="pre">or</span> <span class="pre">directory</span> <span class="pre">(errno</span> <span class="pre">2)</span></code> ）. DSQSS/DLA の実行自体に影響はありませんが, これを抑制したい場合は,  <code class="docutils literal notranslate"><span class="pre">--mca</span> <span class="pre">shmem</span> <span class="pre">posix</span></code> オプションを <code class="docutils literal notranslate"><span class="pre">mpiexec</span></code> に付与してください.</p>
+</aside>
+</aside>
 </section>
 </section>
 
@@ -180,7 +183,7 @@ R ene = -3.74380000e-01 5.19493985e-03
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -197,7 +200,7 @@ R ene = -3.74380000e-01 5.19493985e-03
       &copy;2018-, DSQSS developers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -4,7 +4,7 @@
 <html lang="ja">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>使用方法 &#8212; DSQSS 2.0.3 ドキュメント</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
@@ -12,7 +12,9 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/translations.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="索引" href="../genindex.html" />
@@ -34,14 +36,14 @@
           <div class="body" role="main">
             
   <section id="id1">
-<h1>使用方法<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<h1>使用方法<a class="headerlink" href="#id1" title="この見出しへのパーマリンク">¶</a></h1>
 <p>DSQSSでは予め定義されたモデルを簡易実行できるよう,
 入力ファイル作成ツール <code class="docutils literal notranslate"><span class="pre">dsqss_pre.py</span></code> を用意しています.
 ここでは, このツールを利用したDSQSSの実行方法について簡単に説明します.
 なお, DSQSS/DLAでは, 複雑な模型をユーザーが定義し実行することも出来ます.
 詳細については <a class="reference internal" href="../dla/users-manual/index.html#chap-dla-usermanual"><span class="std std-ref">DSQSS/DLAのユーザーマニュアル</span></a> をご覧ください.</p>
 <section id="id2">
-<h2>入力ファイルの作成<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>入力ファイルの作成<a class="headerlink" href="#id2" title="この見出しへのパーマリンク">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">dsqss_pre.py</span></code> の実行には, テキストベースの入力ファイルが必要です.
 以下に, 入力ファイルの例を記載します.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[System]
@@ -82,13 +84,13 @@ outfile = sample.log
 </ol>
 <blockquote>
 <div><p>系の種別 (スピンもしくはボソン系)とハミルトニアンを構成するパラメータを指定します.</p>
-<table class="colwidths-given docutils align-default">
+<table class="docutils align-default">
 <colgroup>
-<col style="width: 22%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 44%" />
+<col style="width: 22.2%" />
+<col style="width: 11.1%" />
+<col style="width: 11.1%" />
+<col style="width: 11.1%" />
+<col style="width: 44.4%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameter</p></th>
@@ -110,13 +112,13 @@ outfile = sample.log
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">=</span> <span class="pre">spin</span></code> の場合</p></li>
 </ul>
-<table class="colwidths-given docutils align-default">
+<table class="docutils align-default">
 <colgroup>
-<col style="width: 22%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 44%" />
+<col style="width: 22.2%" />
+<col style="width: 11.1%" />
+<col style="width: 11.1%" />
+<col style="width: 11.1%" />
+<col style="width: 44.4%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameter</p></th>
@@ -174,13 +176,13 @@ outfile = sample.log
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">model_type</span> <span class="pre">=</span> <span class="pre">boson</span></code> の場合</p></li>
 </ul>
-<table class="colwidths-given docutils align-default">
+<table class="docutils align-default">
 <colgroup>
-<col style="width: 22%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 44%" />
+<col style="width: 22.2%" />
+<col style="width: 11.1%" />
+<col style="width: 11.1%" />
+<col style="width: 11.1%" />
+<col style="width: 44.4%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameter</p></th>
@@ -244,12 +246,12 @@ outfile = sample.log
 </ol>
 <blockquote>
 <div><p>格子形状と逆温度を指定するセクションです.</p>
-<table class="colwidths-given docutils align-default">
+<table class="docutils align-default">
 <colgroup>
-<col style="width: 25%" />
-<col style="width: 13%" />
-<col style="width: 13%" />
-<col style="width: 50%" />
+<col style="width: 25.0%" />
+<col style="width: 12.5%" />
+<col style="width: 12.5%" />
+<col style="width: 50.0%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameter</p></th>
@@ -302,7 +304,7 @@ outfile = sample.log
 </div></blockquote>
 </section>
 <section id="id3">
-<h2>実行方法<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>実行方法<a class="headerlink" href="#id3" title="この見出しへのパーマリンク">¶</a></h2>
 <p>入力ファイル作成後は以下のコマンドを入力することで, ソルバー用の入力ファイルが作成されます(以下では入力ファイル名を <code class="docutils literal notranslate"><span class="pre">std.in</span></code> としています).</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dsqss_pre.py -i std.in
 </pre></div>
@@ -319,7 +321,7 @@ MPIを利用する場合には, <code class="docutils literal notranslate"><span
 コマンドの実行結果の詳細については各ソルバーのチュートリアル・出力結果に記載してありますので, そちらを参照してください.</p>
 </section>
 <section id="id4">
-<h2>モンテカルロ計算の流れ<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>モンテカルロ計算の流れ<a class="headerlink" href="#id4" title="この見出しへのパーマリンク">¶</a></h2>
 <p><code class="xref std std-numref docutils literal notranslate"><span class="pre">fig_nmcs</span></code> にモンテカルロ計算の流れを示します。</p>
 <figure class="align-default" id="fig-nmcs">
 <img alt="モンテカルロ計算の流れとパラメータの図解" src="../_images/nmcs.png" />
@@ -391,7 +393,7 @@ MPIを利用する場合には, <code class="docutils literal notranslate"><span
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -408,7 +410,7 @@ MPIを利用する場合には, <code class="docutils literal notranslate"><span
       &copy;2018-, DSQSS developers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
