@@ -55,7 +55,7 @@ Before executing this script, ``source`` a configuring file ``dsqssvars-VERSION.
 
 The result of :math:`S=1/2,1` will be written to ``xmzu_1.dat`` and ``xmzu_2.dat``, respectively (:numref:`fig_spinchain`).
 The :math:`S=1/2` chain is gapless and so the magnetic susceptibility remains finite at absolute zero (note that in the simulation the finite size effect opens energy gap).
-On the other hand the magnetic susceptibility of the :math:`S=1` chain drops to zero at finite temperature due to the spin gap.
+On the other hand, the magnetic susceptibility of the :math:`S=1` chain drops to zero at finite temperature due to the spin gap.
 
 .. figure:: ../../../image/dla/tutorial/spinchain.*
   :name: fig_spinchain
