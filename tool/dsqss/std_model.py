@@ -16,6 +16,7 @@
 
 import sys
 
+from dsqss import __version__
 from dsqss import util
 from dsqss import bosehubbard
 from dsqss import xxz
@@ -55,6 +56,7 @@ def main():
     parser.add_argument(
         "-o", "--output", dest="out", default="hamiltonian.toml", help="Output filename"
     )
+    parser.add_argument("--version", action="version", version=__version__)
     args = parser.parse_args()
 
     inp = toml.load(args.input)

@@ -135,6 +135,7 @@ def main():
         default=0.0,
         help="extra energy shift",
     )
+    parser.add_argument("--version", action="version", version=dsqss.__version__)
 
     args = parser.parse_args()
 

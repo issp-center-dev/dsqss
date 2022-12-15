@@ -150,6 +150,7 @@ def main():
         help='system size (specified by space separated integers like "4 4"). '
         + "This option ignores the setting in [lattice] section of input TOML file",
     )
+    parser.add_argument("--version", action="version", version=dsqss.__version__)
 
     args = parser.parse_args()
 
