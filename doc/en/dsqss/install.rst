@@ -85,6 +85,15 @@ It is noted that the default install directory is set as ``/usr/local/bin`` .
 
   For details, see https://github.com/issp-center-dev/HPhi/wiki/FAQ .
 
+
+.. note::
+
+   CMake automatically search for an interpreter of Python.
+   If you want to use a specific one,
+   you should tell it to CMake by using ``-DPYTHON_EXECUTABLE`` option::
+
+     $ cmake ../ -DPYTHON_EXECUTABLE=`which python3`
+
 Each binary files for dsqss will be made in ``src`` and ``tool`` directories.
 To check whether the binary files are correctly made or not,  
 please type the following command:

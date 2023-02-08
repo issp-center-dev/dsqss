@@ -67,7 +67,7 @@ DSQSSのダウンロード後にzipファイルを解凍すると, ファイル�
 ::
    
    $ mkdir dsqss.build && cd dsqss.build
-   $ cmake ../ -DCMAKE_INSTALL_PREFIX=/path/to/install/to 
+   $ cmake ../ -DCMAKE_INSTALL_PREFIX=/path/to/install/to
    $ make
 
 ``/path/to/install/to`` をインストールしたい先のパスに設定してください（例： ``$HOME/opt/dsqss`` ）. 
@@ -88,6 +88,12 @@ DSQSSのダウンロード後にzipファイルを解凍すると, ファイル�
 
   詳細については https://github.com/issp-center-dev/HPhi/wiki/FAQ をご覧ください. 
 
+.. note::
+
+   CMake は自動的に Python のインタープリタを探します。
+   明示的に指定したいときは ``-DPYTHON_EXECUTABLE`` オプションを用いてください::
+
+     $ cmake ../ -DPYTHON_EXECUTABLE=`which python3`
 
 これにより各実行ファイルが ``dsqss.build/src`` ディレクトリ以下に, 
 入力ファイルの生成ツールが ``dsqss.build/tool`` ディレクトリ以下に作成されます. 
