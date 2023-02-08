@@ -1,10 +1,16 @@
-export PYTHONPATH=@pythonpath_build@
-export PIPX_HOME=@CMAKE_INSTALL_PREFIX@/pipx
-export PIPX_BIN_DIR=@CMAKE_INSTALL_PREFIX@/bin
+PYTHONPATH_BUILD=@pythonpath_build@
+export PYTHONPATH=@pythonpath_path@
+PREFIX=@CMAKE_INSTALL_PREFIX@
+# export PIPX_HOME=@CMAKE_INSTALL_PREFIX@/pipx
+# export PIPX_BIN_DIR=@CMAKE_INSTALL_PREFIX@/bin
 
 cd @CMAKE_CURRENT_BINARY_DIR@
 
 find @CMAKE_INSTALL_PREFIX@/bin -name 'dla_*' | xargs rm -f
 rm -f @CMAKE_INSTALL_PREFIX@/bin/pmwa_pre
-echo "-- Installing dsqss tools. It may take long, please be patiant..."
-@PYTHON_EXECUTABLE@ -m pipx install --force @CMAKE_CURRENT_SOURCE_DIR@
+# echo "-- Installing poetry to $PYTHONPATH_BUILD"
+# @PYTHON_EXECUTABLE@ -m pip install --prefix=$PYTHONPATH_BUILD poetry-core poetry
+echo "-- Installing dsqss tools to $PREFIX"
+# echo "--- PYTHONPATH=$PYTHONPATH"
+# PYTHONPATH=$PYTHONPATH @PYTHON_EXECUTABLE@ -c 'import poetry; print(poetry.__path__)'
+@PYTHON_EXECUTABLE@ -m pip install --prefix=$PREFIX --no-deps @CMAKE_CURRENT_SOURCE_DIR@
