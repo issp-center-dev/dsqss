@@ -38,9 +38,6 @@ struct Displacement {
   int nkinds;
 
   std::vector<int> NR;  // the number of pairs with the same dR
-  // std::vector<std::vector<int> > IR;  // IR[isite][jsite] == disp_index
-
-  // IR[std::make_pair(isite,jsite)] == disp_index
   typedef boost::unordered_map<std::pair<int, int>, int,
                                boost::hash<std::pair<int, int> > >
       IR_type;

@@ -115,14 +115,14 @@ class BareVertex {
   // Used when PlaceWorm
   void init(double t, VertexProperty& VP) {
     TIME = t;
-    _s.init(1, VP.NLEG);  // koko !!!
+    _s.init(1, VP.NLEG);
     _s.set_all(0);
     _VP = &VP;
   }
 
   void init(Interaction* O_I, double t, VertexProperty& VP) {
     TIME = t;
-    _s.init(1, VP.NLEG);  // koko !!!
+    _s.init(1, VP.NLEG);
     _s.set_all(0);
     _VP = &VP;
     ONINTERACTION = O_I;
@@ -342,7 +342,6 @@ class Site : public Ring<Segment> {
   }
 
   void idclear() { lastID = 0; }
-  // void idclear() { cout << "dddd " << endl; };
 
   Vertex& getVterm() { return (*_vterm); }
 };
@@ -457,7 +456,6 @@ inline double BareSegment::length() { return topTime() - bottomTime(); }
 //======================================================================
 
 inline void BareSegment::dump() {
-  //  printf("\nBareSegment::dump> Start.\n");
   fprintf(FERR, " Segment [%3d] : ", id());
   double bt = 0.0;
   int bid = -1;
@@ -678,15 +676,7 @@ inline void Vertex::reconnect() {
 
 inline void Vertex::erase() {
   reconnect();
-  // if (ALERT) {
-  //  printf("\nVertex::erase> ### Erasing\n");
-  //  dump();
-  //}
   Linked<BareVertex>::remove();
-  // if (ALERT) {
-  //  printf("\nVertex::erase> ### Done\n");
-  //  dump();
-  //}
   TheVertexPool.push(*this);
 }
 
@@ -760,11 +750,6 @@ inline Site::Site() {
 //======================================================================
 
 inline Site::~Site() {
-  /*
-  for(int iCI = 0; iCI<NCI; ++iCI){
-    (*ConnectedInteraction[iCI]).dump();
-  }
-  */
   delete[] ConnectedInteraction;
   while (!empty()) {
     Segment& S = first();
