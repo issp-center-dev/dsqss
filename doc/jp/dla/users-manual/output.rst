@@ -150,7 +150,7 @@ DLA は計算結果を行区切りのプレーンテキストファイルで出�
 ``spe``
   比熱.
 
-  :math:`\displaystyle C_V \equiv \frac{\partial \epsilon}{\partial T} = \frac{1}{N_s T^2} \left[\left\langle\left(E_0 - TN_v\right)^2\right\rangle - \left\langle\left(E_0 - TN_v\right)\right\rangle - T^2\left\langle N_v \right\rangle\right]`
+  :math:`\displaystyle C_V \equiv \frac{\partial \epsilon}{\partial T} = \frac{1}{N_s T^2} \left[\left\langle\left(E_0 - TN_v\right)^2\right\rangle - \left\langle\left(E_0 - TN_v\right)\right\rangle^2 - T^2\left\langle N_v \right\rangle\right]`
 
   NOTICE: 量子モンテカルロ法において, 比熱の計算は他の物理量と比べて精度が悪く, サンプル数 :math:`N` (``nmcs``)に対して :math:`1/N` の系統誤差も現れます.
   特に, エネルギーギャップ以下の極低温領域など, 比熱の値が非常に小さくなるような場合には, 計算結果が負になることがあります.

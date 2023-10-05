@@ -152,7 +152,7 @@ Main results are written in a file with the name specified by ``outfile`` keywor
 ``spe``
   The specific heat
 
-  :math:`\displaystyle C_V \equiv \frac{\partial \epsilon}{\partial T} = \frac{1}{N_s T^2} \left[\left\langle\left(E_0 - TN_v\right)^2\right\rangle - \left\langle\left(E_0 - TN_v\right)\right\rangle - T^2\left\langle N_v \right\rangle\right]`
+  :math:`\displaystyle C_V \equiv \frac{\partial \epsilon}{\partial T} = \frac{1}{N_s T^2} \left[\left\langle\left(E_0 - TN_v\right)^2\right\rangle - \left\langle\left(E_0 - TN_v\right)\right\rangle^2 - T^2\left\langle N_v \right\rangle\right]`
 
   NOTICE: In quantum Monte Carlo simulations, the specific heat is calculated with poor accuracy compared with other physical quantities.
   Moreover, the systematic error :math:`1/N` also appears with respect to the number of samples :math:`N` (``nmcs``).
