@@ -118,6 +118,13 @@ Notations
 :math:`\beta`
   The inverse temperature.
 
+:math:`E_0`
+  The imaginary time average of the expectation value of the unperturbed Hamiltonian
+  :math:`\displaystyle \frac{1}{\beta}\int d\tau \langle \phi(\tau)|\mathcal{H}_0|\phi(\tau)\rangle`.
+
+:math:`N_v`
+  The number of vertices, i.e., the order of the perturbation.
+
 :math:`h`
   The conjugate field to the operator :math:`M^z` .
   The longitudinal magnetic field for spin systems and the chemical potential for the Bose-Hubbard models.
@@ -135,7 +142,7 @@ Main results are written in a file with the name specified by ``outfile`` keywor
   :math:`\sum_i W_i / \sum_i |W_i`
 
 ``anv``
-  The mean number of the vertices.
+  The number of the vertices per site.
 
   :math:`\displaystyle \frac{\langle N_v \rangle}{N_s}`
 ``ene``
@@ -145,7 +152,11 @@ Main results are written in a file with the name specified by ``outfile`` keywor
 ``spe``
   The specific heat
 
-  :math:`\displaystyle C_V \equiv \frac{\partial \epsilon}{\partial T}`
+  :math:`\displaystyle C_V \equiv \frac{\partial \epsilon}{\partial T} = \frac{1}{N_s T^2} \left[\left\langle\left(E_0 - TN_v\right)^2\right\rangle - \left\langle\left(E_0 - TN_v\right)\right\rangle - T^2\left\langle N_v \right\rangle\right]`
+
+  NOTICE: In quantum Monte Carlo simulations, the specific heat is calculated with poor accuracy compared with other physical quantities.
+  Moreover, the systematic error :math:`1/N` also appears with respect to the number of samples :math:`N` (``nmcs``).
+  Especially, in the region where the specific heat becomes very small, e.g., in the low-temperature region below the energy gap, the calculated value may be negative.
 
 ``som``
   The ratio of the specific heat and the temperature.
