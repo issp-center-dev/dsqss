@@ -160,7 +160,7 @@ I [the maximum number of reg. vertex info.] = 3
 <p><span class="math notranslate nohighlight">\(\displaystyle \epsilon \equiv \frac{1}{N_s}\left(\langle E_0 \rangle - T\langle N_v\rangle\right)\)</span></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">spe</span></code></dt><dd><p>比熱.</p>
-<p><span class="math notranslate nohighlight">\(\displaystyle C_V \equiv \frac{\partial \epsilon}{\partial T} = \frac{1}{N_s T^2} \left[\left\langle\left(E_0 - TN_v\right)^2\right\rangle - \left\langle\left(E_0 - TN_v\right)\right\rangle - T^2\left\langle N_v \right\rangle\right]\)</span></p>
+<p><span class="math notranslate nohighlight">\(\displaystyle C_V \equiv \frac{\partial \epsilon}{\partial T} = \frac{1}{N_s T^2} \left[\left\langle\left(E_0 - TN_v\right)^2\right\rangle - \left\langle\left(E_0 - TN_v\right)\right\rangle^2 - T^2\left\langle N_v \right\rangle\right]\)</span></p>
 <p>NOTICE: 量子モンテカルロ法において, 比熱の計算は他の物理量と比べて精度が悪く, サンプル数 <span class="math notranslate nohighlight">\(N\)</span> (<code class="docutils literal notranslate"><span class="pre">nmcs</span></code>)に対して <span class="math notranslate nohighlight">\(1/N\)</span> の系統誤差も現れます.
 特に, エネルギーギャップ以下の極低温領域など, 比熱の値が非常に小さくなるような場合には, 計算結果が負になることがあります.</p>
 </dd>
