@@ -149,6 +149,9 @@ I [the maximum number of reg. vertex info.] = 3
 <section id="id2">
 <h2><span class="section-number">4.6.2. </span>メイン出力<a class="headerlink" href="#id2" title="この見出しへのパーマリンク">¶</a></h2>
 <p>メイン出力ファイルは, 入力パラメータファイルの <code class="docutils literal notranslate"><span class="pre">outfile</span></code> キーワードで指定した名前で出力されます.</p>
+<p>NOTICE: 一般にモンテカルロ法では, 比熱や感受率など, サンプル平均の非線形関数を含むような量の期待値には, モンテカルロサンプル数 <span class="math notranslate nohighlight">\(N\)</span> (<code class="docutils literal notranslate"><span class="pre">nmcs</span></code>)に対して <span class="math notranslate nohighlight">\(O(1/N)\)</span> の系統誤差も含まれます.
+たとえば, エネルギーギャップ以下の極低温領域など, 比熱の値が非常に小さくなるような場合には計算結果が負になることがあります.
+精密な解析には統計誤差だけではなく, 系統誤差にも注意する必要があります.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">sign</span></code></dt><dd><p>重みの符号.</p>
 <p><span class="math notranslate nohighlight">\(\frac{\sum_i W_i }{ \sum_i |W_i| }\)</span>, ここで <span class="math notranslate nohighlight">\(i\)</span> はモンテカルロサンプルの番号.</p>
@@ -161,8 +164,6 @@ I [the maximum number of reg. vertex info.] = 3
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">spe</span></code></dt><dd><p>比熱.</p>
 <p><span class="math notranslate nohighlight">\(\displaystyle C_V \equiv \frac{\partial \epsilon}{\partial T} = \frac{1}{N_s T^2} \left[\left\langle\left(E_0 - TN_v\right)^2\right\rangle - \left\langle\left(E_0 - TN_v\right)\right\rangle^2 - T^2\left\langle N_v \right\rangle\right]\)</span></p>
-<p>NOTICE: 量子モンテカルロ法において, 比熱の計算は他の物理量と比べて精度が悪く, サンプル数 <span class="math notranslate nohighlight">\(N\)</span> (<code class="docutils literal notranslate"><span class="pre">nmcs</span></code>)に対して <span class="math notranslate nohighlight">\(1/N\)</span> の系統誤差も現れます.
-特に, エネルギーギャップ以下の極低温領域など, 比熱の値が非常に小さくなるような場合には, 計算結果が負になることがあります.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">som</span></code></dt><dd><p>比熱と温度の比.</p>
 <p><span class="math notranslate nohighlight">\(\displaystyle \gamma \equiv \frac{C_V}{T} = \beta C_V\)</span></p>

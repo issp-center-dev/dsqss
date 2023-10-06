@@ -151,6 +151,9 @@ The longitudinal magnetic field for spin systems and the chemical potential for 
 <section id="main-results">
 <h2><span class="section-number">4.6.2. </span>Main results<a class="headerlink" href="#main-results" title="Permalink to this heading">¶</a></h2>
 <p>Main results are written in a file with the name specified by <code class="docutils literal notranslate"><span class="pre">outfile</span></code> keyword in the input parameter file.</p>
+<p>NOTICE: In general, Monte Carlo simulations have systematic errors of <span class="math notranslate nohighlight">\(O(1/N)\)</span> with respect to the number of samples <span class="math notranslate nohighlight">\(N\)</span> (<code class="docutils literal notranslate"><span class="pre">nmcs</span></code>) for the expectation values including nonlinear functions of the sample average like the specific heat and the susceptibility.
+For example, in the region where the specific heat becomes very small, e.g., in the low-temperature region below the energy gap, the calculated value may be negative.
+For precise analysis, we need to take into account not only the statistical errors but also the systematic errors.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">sign</span></code></dt><dd><p>The sign of the weights.</p>
 <p><span class="math notranslate nohighlight">\(\sum_i W_i / \sum_i |W_i\)</span></p>
@@ -163,9 +166,6 @@ The longitudinal magnetic field for spin systems and the chemical potential for 
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">spe</span></code></dt><dd><p>The specific heat</p>
 <p><span class="math notranslate nohighlight">\(\displaystyle C_V \equiv \frac{\partial \epsilon}{\partial T} = \frac{1}{N_s T^2} \left[\left\langle\left(E_0 - TN_v\right)^2\right\rangle - \left\langle\left(E_0 - TN_v\right)\right\rangle^2 - T^2\left\langle N_v \right\rangle\right]\)</span></p>
-<p>NOTICE: In quantum Monte Carlo simulations, the specific heat is calculated with poor accuracy compared with other physical quantities.
-Moreover, the systematic error <span class="math notranslate nohighlight">\(1/N\)</span> also appears with respect to the number of samples <span class="math notranslate nohighlight">\(N\)</span> (<code class="docutils literal notranslate"><span class="pre">nmcs</span></code>).
-Especially, in the region where the specific heat becomes very small, e.g., in the low-temperature region below the energy gap, the calculated value may be negative.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">som</span></code></dt><dd><p>The ratio of the specific heat and the temperature.</p>
 <p><span class="math notranslate nohighlight">\(\displaystyle \gamma \equiv \frac{C_V}{T} = \beta C_V\)</span></p>
