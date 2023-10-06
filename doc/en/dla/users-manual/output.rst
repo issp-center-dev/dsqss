@@ -136,6 +136,10 @@ Main results
 *****************
 Main results are written in a file with the name specified by ``outfile`` keyword in the input parameter file.
 
+NOTICE: In general, Monte Carlo simulations have systematic errors of :math:`O(1/N)` with respect to the number of samples :math:`N` (``nmcs``) for the expectation values including nonlinear functions of the sample average like the specific heat and the susceptibility.
+For example, in the region where the specific heat becomes very small, e.g., in the low-temperature region below the energy gap, the calculated value may be negative.
+For precise analysis, we need to take into account not only the statistical errors but also the systematic errors.
+
 ``sign``
   The sign of the weights.
 
@@ -153,10 +157,6 @@ Main results are written in a file with the name specified by ``outfile`` keywor
   The specific heat
 
   :math:`\displaystyle C_V \equiv \frac{\partial \epsilon}{\partial T} = \frac{1}{N_s T^2} \left[\left\langle\left(E_0 - TN_v\right)^2\right\rangle - \left\langle\left(E_0 - TN_v\right)\right\rangle^2 - T^2\left\langle N_v \right\rangle\right]`
-
-  NOTICE: In quantum Monte Carlo simulations, the specific heat is calculated with poor accuracy compared with other physical quantities.
-  Moreover, the systematic error :math:`1/N` also appears with respect to the number of samples :math:`N` (``nmcs``).
-  Especially, in the region where the specific heat becomes very small, e.g., in the low-temperature region below the energy gap, the calculated value may be negative.
 
 ``som``
   The ratio of the specific heat and the temperature.
