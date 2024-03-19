@@ -221,6 +221,10 @@ For precise analysis, we need to take into account not only the statistical erro
   :math:`\displaystyle \chi^{zz}(\vec{k},  \omega=0) 
   = \beta N_s \left[\left\langle (\tilde{m}_K^z)^2 \right\rangle - \left\langle \tilde{m}_K^z \right\rangle^2 \right]`
 
+``ds1``
+  The derivative of the "magnetization" (``amzu``) with respect to the temperature.
+
+  :math:`\displaystyle T\frac{\partial \left\langle \tilde{m}^z \right\rangle}{\partial T} = -\beta\frac{\partial \left\langle \tilde{m}^z \right\rangle}{\partial\beta}`
 
 ``wi2``
   The winding number.

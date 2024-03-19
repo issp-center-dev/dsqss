@@ -217,6 +217,11 @@ NOTICE: 一般にモンテカルロ法では, 比熱や感受率など, サン�
   :math:`\displaystyle \chi^{zz}(\vec{k},  \omega=0) 
   = \beta N_s \left[\left\langle (\tilde{m}_K^z)^2 \right\rangle - \left\langle \tilde{m}_K^z \right\rangle^2 \right]`
 
+``ds1``
+  「磁化 ``amzu`` 」の温度微分.
+
+  :math:`\displaystyle T\frac{\partial \left\langle \tilde{m}^z \right\rangle}{\partial T} = -\beta\frac{\partial \left\langle \tilde{m}^z \right\rangle}{\partial\beta}`
+
 ``wi2``
   ワインディングナンバー.
 
