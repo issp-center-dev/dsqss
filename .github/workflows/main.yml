@@ -69,6 +69,7 @@ jobs:
 
     - name: Prepare LaTeX env
       run: |
+        sudo apt update
         sudo apt install \
           texlive-latex-recommended texlive-latex-extra \
           texlive-lang-japanese texlive-fonts-recommended texlive-fonts-extra latexmk
