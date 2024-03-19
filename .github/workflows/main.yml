@@ -38,7 +38,7 @@ jobs:
       - name: cmake
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/usr -DCMAKE_VERBOSE_MAKEFILE=1 $GITHUB_WORKSPACE
+        run: cmake -DPYTHON_EXECUTABLE=$(which python3) -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/usr -DCMAKE_VERBOSE_MAKEFILE=1 $GITHUB_WORKSPACE
 
       - name: build
         working-directory: ${{runner.workspace}}/build
