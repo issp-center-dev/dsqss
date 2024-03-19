@@ -18,7 +18,6 @@
 
 import sys
 sys.path.append('@CMAKE_CURRENT_BINARY_DIR@')
-sys.path.append('@pythonpath_build@')
 from dsqss.std_model import main
 if __name__ == '__main__':
     main()

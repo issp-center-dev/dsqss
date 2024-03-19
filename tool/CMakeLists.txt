@@ -1,7 +1,3 @@
-set(pythonpath_build "${CMAKE_CURRENT_BINARY_DIR}/pythonmodule")
-set(pythonpath_path "${CMAKE_CURRENT_BINARY_DIR}/pythonmodule/lib/python${python_version_mm}/site-packages")
-set(ENV{PYTHONPATH} "${pythonpath_build}:$ENV{PYTHONPATH}")
-
 file(COPY dsqss DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 set(dla_scripts
@@ -24,7 +20,7 @@ configure_file(cmake/dsqssvars.sh.in
                ${CMAKE_CURRENT_BINARY_DIR}/dsqssvars-${DSQSS_VERSION}.sh @ONLY)
 configure_file(cmake/install.sh.in ${CMAKE_CURRENT_BINARY_DIR}/install.sh @ONLY)
 
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/dsqssvars-${DSQSS_VERSION}.sh
-        DESTINATION share/dsqss)
+# install(FILES ${CMAKE_CURRENT_BINARY_DIR}/dsqssvars-${DSQSS_VERSION}.sh
+#         DESTINATION share/dsqss)
 install(
   CODE "execute_process(COMMAND sh ${CMAKE_CURRENT_BINARY_DIR}/install.sh)")

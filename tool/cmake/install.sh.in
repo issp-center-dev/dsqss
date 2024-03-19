@@ -1,16 +1,18 @@
-PYTHONPATH_BUILD=@pythonpath_build@
-export PYTHONPATH=@pythonpath_path@
 PREFIX=@CMAKE_INSTALL_PREFIX@
-# export PIPX_HOME=@CMAKE_INSTALL_PREFIX@/pipx
-# export PIPX_BIN_DIR=@CMAKE_INSTALL_PREFIX@/bin
 
 cd @CMAKE_CURRENT_BINARY_DIR@
 
-find @CMAKE_INSTALL_PREFIX@/bin -name 'dla_*' | xargs rm -f
-rm -f @CMAKE_INSTALL_PREFIX@/bin/pmwa_pre
-# echo "-- Installing poetry to $PYTHONPATH_BUILD"
-# @PYTHON_EXECUTABLE@ -m pip install --prefix=$PYTHONPATH_BUILD poetry-core poetry
 echo "-- Installing dsqss tools to $PREFIX"
-# echo "--- PYTHONPATH=$PYTHONPATH"
-# PYTHONPATH=$PYTHONPATH @PYTHON_EXECUTABLE@ -c 'import poetry; print(poetry.__path__)'
 @PYTHON_EXECUTABLE@ -m pip install --prefix=$PREFIX --no-deps @CMAKE_CURRENT_SOURCE_DIR@
+
+echo "export PATH=${PREFIX}/bin:\$PATH" > dsqssvars.sh
+
+# Some systems like Ubuntu 22.04 install python packages under ${PREFIX}/local instead of ${PREFIX}
+if [ -d ${PREFIX}/local ]; then
+    echo "export PATH=${PREFIX}/local/bin:\$PATH" >> dsqssvars.sh
+fi
+DSQSS_PYTHONPATH=$(@PYTHON_EXECUTABLE@ @CMAKE_CURRENT_SOURCE_DIR@/cmake/get_site_packages.py $PREFIX)
+
+echo "export PYTHONPATH=${DSQSS_PYTHONPATH}:\$PYTHONPATH" >> dsqssvars.sh
+mkdir -p ${PREFIX}/share/dsqss
+cp dsqssvars.sh ${PREFIX}/share/dsqss/dsqssvars-@DSQSS_VERSION@.sh

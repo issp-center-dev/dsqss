@@ -4,13 +4,18 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: ['ubuntu-20.04', 'ubuntu-22.04']
+      fail-fast: false
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: 3.8
 
@@ -33,7 +38,7 @@ jobs:
       - name: cmake
         working-directory: ${{runner.workspace}}/build
         shell: bash
-        run: cmake -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/usr -DCMAKE_VERBOSE_MAKEFILE=1 $GITHUB_WORKSPACE
+        run: cmake -DPYTHON_EXECUTABLE=$(which python3) -DCMAKE_INSTALL_PREFIX=${{runner.workspace}}/usr -DCMAKE_VERBOSE_MAKEFILE=1 $GITHUB_WORKSPACE
 
       - name: build
         working-directory: ${{runner.workspace}}/build
@@ -52,18 +57,19 @@ jobs:
 
 
   docs:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: 3.8
 
     - name: Prepare LaTeX env
       run: |
+        sudo apt update
         sudo apt install \
           texlive-latex-recommended texlive-latex-extra \
           texlive-lang-japanese texlive-fonts-recommended texlive-fonts-extra latexmk

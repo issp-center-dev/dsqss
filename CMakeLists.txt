@@ -95,7 +95,6 @@ else()
   list(GET result 0 Python3_VERSION_MAJOR)
   list(GET result 1 Python3_VERSION_MINOR)
   list(GET result 2 Python3_VERSION_MICRO)
-  # message(STATUS "Python version: ${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}.${Python3_VERSION_MICRO}")
   set(python_version_mm "${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}")
 endif()
 
