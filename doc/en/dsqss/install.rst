@@ -8,12 +8,11 @@ Requirements
 ********************
 
 - (Optional) MPI (essential for PMWA)
-- python 3.6+
+- python 3.8+
 
    - numpy
    - scipy
    - toml
-   - typing_extensions
    - pip (essential for ``make install``)
 
 Download
