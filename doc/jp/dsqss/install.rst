@@ -9,12 +9,11 @@
 DSQSSの使用には以下のプログラム・ライブラリが必要です. 
 
 - (Optional) MPI (PMWAを使用する場合には必須)
-- python 3.6+
+- python 3.8+
 
    - numpy
    - scipy
    - toml
-   - typing_extensions
    
 
 ダウンロード
