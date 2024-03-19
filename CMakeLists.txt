@@ -99,6 +99,9 @@ else()
   set(python_version_mm "${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}")
 endif()
 
+message(STATUS "Python: ${PYTHON_EXECUTABLE}")
+message(STATUS "Python version (X.Y): ${python_version_mm}")
+
 add_subdirectory(src/dla)
 if(MPI_FOUND)
   add_subdirectory(src/pmwa)
