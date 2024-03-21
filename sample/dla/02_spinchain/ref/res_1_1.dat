@@ -1,4 +1,4 @@
-C This is DSQSS ver.v2.1.0-dev
+C This is DSQSS ver.2.0.5
 
 I N_PROC = 1
 P D       =            1
@@ -10,8 +10,8 @@ P NTHERM  =         1000
 P NDECOR  =         1000
 P NMCS    =         1000
 P SEED    =    198212240
-P NSEGMAX =        10000
-P NVERMAX =        10000
+P NSEGMAX =       100000
+P NVERMAX =       100000
 P BETA    = 10.000000000000
 P NTAU    =           10
 P NCYC    =           13
@@ -48,7 +48,7 @@ R amzs1 = 1.11250000e-03 2.56968505e-03
 R bmzs1 = 3.60984375e-02 4.39629565e-04
 R smzs1 = 1.15426517e+00 1.35930914e-02
 R xmzs1 = 6.52427950e+00 1.46556323e-01
-R time = 3.41457000e-07 9.05533103e-10
+R time = 1.04100600e-04 9.18576649e-07
 I [the maximum number of segments]          = 331
 I [the maximum number of vertices]          = 182
 I [the maximum number of reg. vertex info.] = 3

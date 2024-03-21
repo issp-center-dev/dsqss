@@ -2,10 +2,10 @@
 <LATTICE>
 <Comment> hypercubic </Comment>
 <Dimension> 1 </Dimension>
-<LinearSize> 30 </LinearSize>
+<LinearSize> 32 </LinearSize>
 <BoundaryCondition> True </BoundaryCondition>
-<NumberOfSites> 30 </NumberOfSites>
-<NumberOfInteractions> 30 </NumberOfInteractions>
+<NumberOfSites> 32 </NumberOfSites>
+<NumberOfInteractions> 32 </NumberOfInteractions>
 <NumberOfSiteTypes> 1 </NumberOfSiteTypes>
 <NumberOfBondDirections> 1 </NumberOfBondDirections>
 <NumberOfInteractionTypes> 1 </NumberOfInteractionTypes>
@@ -44,6 +44,8 @@
 <S> 27 0 </S>
 <S> 28 0 </S>
 <S> 29 0 </S>
+<S> 30 0 </S>
+<S> 31 0 </S>
 
 <!-- <SiteCoordinate> site_index coord... </SiteCoordinate> -->
 <SiteCoordinate> 0 0.0 </SiteCoordinate>
@@ -76,6 +78,8 @@
 <SiteCoordinate> 27 27.0 </SiteCoordinate>
 <SiteCoordinate> 28 28.0 </SiteCoordinate>
 <SiteCoordinate> 29 29.0 </SiteCoordinate>
+<SiteCoordinate> 30 30.0 </SiteCoordinate>
+<SiteCoordinate> 31 31.0 </SiteCoordinate>
 
 <!-- <I> int_index int_type nbody site_index... edge_index direction_index </I> -->
 <I> 0 0 2 0 1 -1 0 </I>
@@ -107,7 +111,9 @@
 <I> 26 0 2 26 27 -1 0 </I>
 <I> 27 0 2 27 28 -1 0 </I>
 <I> 28 0 2 28 29 -1 0 </I>
-<I> 29 0 2 29 0 0 0 </I>
+<I> 29 0 2 29 30 -1 0 </I>
+<I> 30 0 2 30 31 -1 0 </I>
+<I> 31 0 2 31 0 0 0 </I>
 
 <!-- <Direction> direction_index direction... </Direction> -->
 <Direction> 0 1.0 </Direction>

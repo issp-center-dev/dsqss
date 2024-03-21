@@ -1,4 +1,4 @@
-C This is DSQSS ver.2.0.0-DEV
+C This is DSQSS ver.2.0.5
 
 I N_PROC = 1
 P D       =            1
@@ -10,8 +10,9 @@ P NTHERM  =           10
 P NDECOR  =         1000
 P NMCS    =          100
 P SEED    =        31415
-P NSEGMAX =        10000
-P NVERMAX =        10000
+P NSEGMAX =       100000
+P NVERMAX =       100000
+P BETA    = 100.000000000000
 P NTAU    =           10
 P NCYC    =           51
 P ALGFILE = algorithm.xml
@@ -27,6 +28,7 @@ R sign = 1.00000000e+00 0.00000000e+00
 R anv = 2.49300000e+01 2.96344394e-01
 R ene = -3.74300000e-01 2.96344394e-03
 R spe = 8.16400000e-02 1.47017825e+00
+R som = 8.16400000e+00 1.47017825e+02
 R len = 4.00127485e+00 2.92088648e-02
 R xmx = 1.00031871e-02 7.30221620e-05
 R amzu = 0.00000000e+00 0.00000000e+00
@@ -38,7 +40,7 @@ R wi2 = 0.00000000e+00 0.00000000e+00
 R rhos = 0.00000000e+00 0.00000000e+00
 R rhof = nan nan
 R comp = nan nan
-R time = 1.34456000e-06 8.16957074e-08
+R time = 2.92420000e-05 1.77773564e-06
 I [the maximum number of segments]          = 165
 I [the maximum number of vertices]          = 84
 I [the maximum number of reg. vertex info.] = 1
