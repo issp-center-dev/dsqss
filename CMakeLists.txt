@@ -66,7 +66,7 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/third-party/plog)
 
-set(python_version_required 3.8)
+set(python_version_required 3.6)
 
 if(NOT PYTHON_EXECUTABLE)
   if(BUILD_NEW_GENERATORS OR Testing OR Document)
