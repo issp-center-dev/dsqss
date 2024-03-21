@@ -14,23 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-//######################################################################
-//####
-//####  World-Line Monte Carlo simulation
-//####                       by the Directed-Loop Algorithm
-//####
-//####                                 Mar.03 / 2005, Naoki Kawashima
-//####
-//######################################################################
+// ######################################################################
+// ####
+// ####  World-Line Monte Carlo simulation
+// ####                       by the Directed-Loop Algorithm
+// ####
+// ####                                 Mar.03 / 2005, Naoki Kawashima
+// ####
+// ######################################################################
 
-//######################################################################
-//####
-//####  World-Line Monte Carlo simulation
-//####                       by the non-Vertex Directed-Loop Algorithm
-//####
-//####                                 Nov.11 / 2007, Yasuyuki Kato
-//####
-//######################################################################
+// ######################################################################
+// ####
+// ####  World-Line Monte Carlo simulation
+// ####                       by the non-Vertex Directed-Loop Algorithm
+// ####
+// ####                                 Nov.11 / 2007, Yasuyuki Kato
+// ####
+// ######################################################################
 
 #ifndef SRC_DLA_ALGORITHM_HPP_
 #define SRC_DLA_ALGORITHM_HPP_
@@ -55,9 +55,9 @@ class VertexProperty;
 class VertexInitialConfiguration;
 class ScatteringChannel;
 
-//######################################################################
-//####  Object Property Declarations
-//######################################################################
+// ######################################################################
+// ####  Object Property Declarations
+// ######################################################################
 
 class SiteInitialConfiguration {
  public:
@@ -224,13 +224,13 @@ class Algorithm {
   int NVTYPE;  // Number of bond types
   int NXMAX;   // Maximum number of segment states
 
-  // double WDIAG; // Artifitial weight attached to the diagonal state
+  // double WDIAG; // Artificial weight attached to the diagonal state
   // Used in relating the worm-head mean-path to the susceptibility
 
   void read();
   void initialize();
 
-  int MXNIC1;  // Maximum number of Vertex InitialConfigureations
+  int MXNIC1;  // Maximum number of Vertex InitialConfigurations
   void set_i(int n) { ix = n; }
   void set_alg(int n);
 
@@ -241,9 +241,9 @@ class Algorithm {
   void dump() { X.dump(); }
 };
 
-//######################################################################
-//###########  Member Functions  #######################################
-//######################################################################
+// ######################################################################
+// ###########  Member Functions  #######################################
+// ######################################################################
 
 inline Algorithm::Algorithm(std::string const& FNAME) {
   AutoDebugDump("Algorithm::Algorithm");
@@ -304,9 +304,9 @@ void Algorithm::read() {
 
     if (name == "Site") {
       int id = B["STYPE"].getInteger();  // id=0
-      SPROP(id).initialize(
-          B);  //  SitePropertyClass setting is finished at this point
-      // SPROP(0) returns SiteProperty& val[0]
+      // SitePropertyClass setting is finished at this point
+      // note: SPROP(0) returns SiteProperty& val[0]
+      SPROP(id).initialize(B);
     }
 
     if (name == "Interaction") {
@@ -333,11 +333,11 @@ void Algorithm::initialize() {
   // scattering prob
   for (int i = 0; i < NSTYPE; i++) {  // 1
     SiteProperty& SP = SPROP(i);
-    for (int j = 0; j < SP.NIC; j++) {          // NIC=NX=Numberofstates 2
+    for (int j = 0; j < SP.NIC; j++) {          // NIC=NX=Number of states 2
       SiteInitialConfiguration& IC = SP.IC[j];  // operator return val[i]
       double p = 0.0;
 
-      for (int k = 0; k < IC.NCH; k++) {  // numberofchannnels
+      for (int k = 0; k < IC.NCH; k++) {  // number of channnels
         ScatteringChannel& SC = IC.CH[k];
         p += SC.PROB;
         SC.PROB = p;
@@ -434,7 +434,7 @@ void Algorithm::initialize() {
       }
       double p = 0.0;
 
-      bool isVertex = false;  // false: kink or term , true: means interaction
+      bool isVertex = false;  // false: kink or term, true: means interaction
       int i_type = 0;
       for (i_type = 0; i_type < NITYPE; i_type++) {
         if (IPROP[i_type].VTYPE == i) {
@@ -445,7 +445,6 @@ void Algorithm::initialize() {
          // InteractionProperty with density of vertex.
 
       if (isKink || (!isVertex)) {
-        //      printf("i=%d j=%d iskink \n",i,j);
         IC.dRHO = 1.0;
         for (int k = 0; k < IC.NCH; k++) {
           ScatteringChannel& SC = IC.CH[k];
@@ -457,7 +456,6 @@ void Algorithm::initialize() {
         double Vdensity = IPROP[i_type].VertexDensity(x);
         int count_ch = 0;
         double dR = Vdensity;
-        //       printf("i=%d j=%d dR=%f \n",i,j,dR);
 
         for (int k = 0; k < IC.NCH; k++) {
           ScatteringChannel& SC = IC.CH[k];

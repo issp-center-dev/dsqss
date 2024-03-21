@@ -75,9 +75,9 @@ class Lattice {
 
   void initialize();
 
-  Site& S(int i) { return site[i]; };
+  Site& S(int i) { return site[i]; }
 
-  Interaction& I(int i) { return interaction[i]; };
+  Interaction& I(int i) { return interaction[i]; }
 
   Edge& EDGE(int i) { return edge[i]; }
 

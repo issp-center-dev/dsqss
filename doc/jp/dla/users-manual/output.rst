@@ -116,6 +116,13 @@ DLA は計算結果を行区切りのプレーンテキストファイルで出�
 :math:`\beta`
   逆温度.
 
+:math:`E_0`
+  非摂動ハミルトニアンの期待値の虚時間平均
+  :math:`\displaystyle \frac{1}{\beta}\int d\tau \langle \phi(\tau)|\mathcal{H}_0|\phi(\tau)\rangle`.
+
+:math:`N_v`
+  バーテックスの数, すなわち摂動の次数.
+
 :math:`h`
   :math:`M^z` に共役な外場.
   スピン系では縦磁場, ボース粒子系では化学ポテンシャル.
@@ -127,23 +134,27 @@ DLA は計算結果を行区切りのプレーンテキストファイルで出�
 *****************
 メイン出力ファイルは, 入力パラメータファイルの ``outfile`` キーワードで指定した名前で出力されます.
 
+NOTICE: 一般にモンテカルロ法では, 比熱や感受率など, サンプル平均の非線形関数を含むような量の期待値には, モンテカルロサンプル数 :math:`N` (``nmcs``)に対して :math:`O(1/N)` の系統誤差も含まれます.
+たとえば, エネルギーギャップ以下の極低温領域など, 比熱の値が非常に小さくなるような場合には計算結果が負になることがあります.
+精密な解析には統計誤差だけではなく, 系統誤差にも注意する必要があります.
+
 ``sign``
   重みの符号.
 
   :math:`\frac{\sum_i W_i }{ \sum_i |W_i| }`, ここで :math:`i` はモンテカルロサンプルの番号.
 
 ``anv``
-  平均バーテックス数.
+  サイトあたりの平均バーテックス数.
 
   :math:`\displaystyle \frac{\langle N_v \rangle}{N_s}`
 ``ene``
   エネルギー密度.
 
-  :math:`\displaystyle \epsilon \equiv \frac{1}{N_s}\left(E_0 - T\langle N_v\rangle\right)`
+  :math:`\displaystyle \epsilon \equiv \frac{1}{N_s}\left(\langle E_0 \rangle - T\langle N_v\rangle\right)`
 ``spe``
   比熱.
 
-  :math:`\displaystyle C_V \equiv \frac{\partial \epsilon}{\partial T}`
+  :math:`\displaystyle C_V \equiv \frac{\partial \epsilon}{\partial T} = \frac{1}{N_s T^2} \left[\left\langle\left(E_0 - TN_v\right)^2\right\rangle - \left\langle\left(E_0 - TN_v\right)\right\rangle^2 - T^2\left\langle N_v \right\rangle\right]`
 
 ``som``
   比熱と温度の比. 
@@ -205,6 +216,11 @@ DLA は計算結果を行区切りのプレーンテキストファイルで出�
 
   :math:`\displaystyle \chi^{zz}(\vec{k},  \omega=0) 
   = \beta N_s \left[\left\langle (\tilde{m}_K^z)^2 \right\rangle - \left\langle \tilde{m}_K^z \right\rangle^2 \right]`
+
+``ds1``
+  「磁化 ``amzu`` 」の温度微分.
+
+  :math:`\displaystyle T\frac{\partial \left\langle \tilde{m}^z \right\rangle}{\partial T} = -\beta\frac{\partial \left\langle \tilde{m}^z \right\rangle}{\partial\beta}`
 
 ``wi2``
   ワインディングナンバー.
@@ -268,6 +284,9 @@ DLA は計算結果を行区切りのプレーンテキストファイルで出�
 ここで ``<k>`` は変位XML ファイルの ``kind`` (``R`` タグの第一要素) で指定される変位のインデックスで, 
 ``<t>`` は離散化した虚時間のインデックス.
 
+NOTICE:
+現在のバージョンでは :math:`S=1/2` のモデル以外はうまく計算できません.
+
 波数表示温度グリーン関数出力ファイル
 ****************************************
 波数表示温度グリーン関数出力ファイルは, 入力パラメータファイルの ``ckoutfile`` キーワードで指定した名前で出力されます.
@@ -281,3 +300,6 @@ DLA は計算結果を行区切りのプレーンテキストファイルで出�
 ``C<k>t<t>`` という形で物理量名によって区別されます.
 ここで ``<k>`` は波数ベクトルXMLファイルの ``kindex`` (``RK`` タグの最終要素) で指定される波数のインデックスで, 
 ``<t>`` は離散化した虚時間のインデックス.
+
+NOTICE:
+現在のバージョンでは :math:`S=1/2` のモデル以外はうまく計算できません.

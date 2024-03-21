@@ -9,6 +9,12 @@ endif()
 
 find_package(LATEX)
 
+# For Apple silicon, pyenchant (used by sphinxcontrib.spelling) may fail to find the enchant library.
+# https://github.com/pyenchant/pyenchant/issues/265
+find_library(ENCHANT_LIBRARIES
+  NAMES enchant-2
+  )
+
 add_subdirectory(en)
 add_subdirectory(jp)
 

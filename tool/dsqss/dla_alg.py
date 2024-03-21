@@ -6,7 +6,7 @@
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version. 
+# (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,45 +16,46 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import print_function
+import sys
 
-import argparse
-
-from .algorithm import Algorithm
-from .displacement import Displacement
-from .hamiltonian import GraphedHamiltonian
-from .lattice import Lattice
-from .prob_kernel import (heat_bath, metropolis, reversible_suwa_todo,
-                          suwa_todo)
-from .util import ERROR
-from .wavevector import Wavevector
+import dsqss
+import dsqss.util
+import dsqss.algorithm
+import dsqss.hamiltonian
+import dsqss.displacement
+import dsqss.lattice
+import dsqss.wavevector
+import dsqss.prob_kernel
 
 
 def dla_alg(
     lat,
-    ham=None,
-    wv=None,
-    latxml=None,
-    algxml=None,
-    wvxml=None,
-    dispxml=None,
-    prob_kernel=suwa_todo,
-    ebase_extra=0.0,
-    distance_only=False,
+    ham: dsqss.hamiltonian.GraphedHamiltonian = None,
+    wv: dsqss.wavevector.Wavevector = None,
+    latxml: str = None,
+    algxml: str = None,
+    wvxml: str = None,
+    dispxml: str = None,
+    prob_kernel: dsqss.prob_kernel.KernelCallBack = dsqss.prob_kernel.suwa_todo,
+    ebase_extra: float = 0.0,
+    distance_only: bool = False,
 ):
     if latxml is not None:
         lat.write_xml(latxml)
     if ham is not None and algxml is not None:
-        alg = Algorithm(ham, prob_kernel=prob_kernel, ebase_extra=ebase_extra)
+        alg = dsqss.algorithm.Algorithm(
+            ham, prob_kernel=prob_kernel, ebase_extra=ebase_extra
+        )
         alg.write_xml(algxml)
     if wv is not None and wvxml is not None:
         wv.write_xml(wvxml, lat)
     if dispxml is not None:
-        disp = Displacement(lat, distance_only=distance_only)
+        disp = dsqss.displacement.Displacement(lat, distance_only=distance_only)
         disp.write_xml(dispxml)
 
 
 def main():
+    import argparse
 
     parser = argparse.ArgumentParser(
         description="Generate algorithm and lattice XML files for DSQSS/DLA",
@@ -134,27 +135,36 @@ def main():
         default=0.0,
         help="extra energy shift",
     )
+    parser.add_argument("--version", action="version", version=dsqss.__version__)
 
     args = parser.parse_args()
 
     if args.kernel == "suwa todo":
-        kernel = suwa_todo
+        kernel = dsqss.prob_kernel.suwa_todo
     elif args.kernel == "reversible suwa todo":
-        kernel = reversible_suwa_todo
+        kernel = dsqss.prob_kernel.reversible_suwa_todo
     elif args.kernel == "heat bath":
-        kernel = heat_bath
+        kernel = dsqss.prob_kernel.heat_bath
     elif args.kernel == "metropolis":
-        kernel = metropolis
+        kernel = dsqss.prob_kernel.metropolis
     elif args.kernel == "metropolice":
-        ERROR('kenel = "metropolice" is now an invalid option because this is a typographic error in old DSQSS. Use "metropolis".')
+        dsqss.util.ERROR(
+            'kernel = "metropolice" is now an invalid option'
+            ' because this is a typographic error in old DSQSS.'
+            ' Use "metropolis".'
+        )
+        sys.exit(1)
     else:
-        ERROR("unknown kernel: {0}".format(args.kernel))
+        dsqss.util.ERROR(f"unknown kernel: {args.kernel}")
+        sys.exit(1)
 
-    lat = Lattice(args.lat)
-    ham = GraphedHamiltonian(args.ham, lat) if not args.woalg else None
+    lat = dsqss.lattice.Lattice(args.lat)
+    ham = (
+        dsqss.hamiltonian.GraphedHamiltonian(args.ham, lat) if not args.woalg else None
+    )
     wv = None
     if args.kpoint is not None:
-        wv = Wavevector()
+        wv = dsqss.wavevector.Wavevector()
         wv.load(args.kpoint)
 
     dla_alg(
@@ -169,21 +179,6 @@ def main():
         ebase_extra=args.extra_shift,
         distance_only=args.distance_only,
     )
-
-    # lat = Lattice(args.lat)
-    # if not args.wolat:
-    #     lat.write_xml(args.latxml)
-    # if not args.woalg:
-    #     ham = GraphedHamiltonian(args.ham, lat)
-    #     alg = Algorithm(ham, prob_kernel=kernel, ebase_extra=args.extra_shift)
-    #     alg.write_xml(args.algxml)
-    # if args.kpoint is not None:
-    #     wv = Wavevector()
-    #     wv.load(args.kpoint)
-    #     wv.write_xml(args.wv, lat)
-    # if args.disp is not None:
-    #     disp = Displacement(lat, distance_only=args.distance_only)
-    #     disp.write_xml(args.disp)
 
 
 if __name__ == "__main__":

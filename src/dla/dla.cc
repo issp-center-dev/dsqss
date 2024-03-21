@@ -67,6 +67,10 @@ int main(int argc, char* argv[]) {
   printf("\n\n>>> The program is being run on DEBUG mode.\n\n\n");
 #endif
 
+  if (I_PROC == 0) {
+    printf("This is DSQSS ver.%s\n\n", DSQSS_VERSION);
+  }
+
   Parameter P(argc, argv);
 
   TheSegmentPool.init(P.NSEGMAX);

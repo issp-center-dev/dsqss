@@ -4,7 +4,7 @@
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version. 
+# (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,13 +16,13 @@
 
 import numpy as np
 
-from ..util import get_as_list
+import dsqss.util
 
 
 def generate(param):
     dim = param["dim"]
-    L = get_as_list(param, "L", extendto=dim)
-    bc = get_as_list(param, "bc", default=True, extendto=dim)
+    L = dsqss.util.get_as_list(param, "L", extendto=dim)
+    bc = dsqss.util.get_as_list(param, "bc", default=True, extendto=dim)
     basis = np.eye(dim)
 
     sites = [{"siteid": 0, "type": 0, "coord": [0.0] * dim}]

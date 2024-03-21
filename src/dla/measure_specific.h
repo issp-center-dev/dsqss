@@ -14,22 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#if 0
-#if defined(MEASURE_BOSON) && !defined(MEASURE_SPIN) && \
-    !defined(MEASURE_USER_SPECIFIC)
-#include "SPECIFIC/Boson/measure_specific.h"
-#elif !defined(MEASURE_BOSON) && defined(MEASURE_SPIN) && \
-    !defined(MEASURE_USER_SPECIFIC)
-#include "SPECIFIC/Heisenberg/measure_specific.h"
-#elif !defined(MEASURE_BOSON) && !defined(MEASURE_SPIN) && \
-    defined(MEASURE_USER_SPECIFIC)
-#include "SPECIFIC/User/measure_specific.h"
-#else
-#error You should define ONE of the following tokens: MEASURE_BOSON, MEASURE_SPIN, or MEASURE_USER_SPECIFIC.
-#endif
-#endif
+#ifndef SRC_DLA_MEASURE_SPECIFIC_H
+#define SRC_DLA_MEASURE_SPECIFIC_H
 
 #include <vector>
+#include <string>
 
 namespace Specific {
 
@@ -92,3 +81,5 @@ static std::string PNAME[NPHY] = {"sign", "anv",  "ene",  "spe",  "som",  "len",
                                   "wi2",  "rhos", "rhof", "comp"};
 
 }  // namespace Specific
+
+#endif  // SRC_DLA_MEASURE_SPECIFIC_H

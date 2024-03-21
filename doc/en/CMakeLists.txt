@@ -6,25 +6,40 @@ set(DSQSS_DOC_DIR share/dsqss/${DSQSS_VERSION}/doc/en)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/conf.py ${CMAKE_CURRENT_BINARY_DIR})
 
+set(cmd_list
+  env PYTHONPATH="${pythonpath_build}:$ENV{PYTHONPATH}"
+  ${SPHINX_EXECUTABLE}
+  -b html
+  -d ${SPHINX_CACHE_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${SPHINX_HTML_DIR}
+)
+
+if(ENCHANT_LIBRARIES)
+  list(INSERT cmd_list 0 env PYENCHANT_LIBRARY_PATH=${ENCHANT_LIBRARIES})
+endif()
+
 add_custom_target(doc-en-html ALL
   COMMAND
-    env PYTHONPATH="${pythonpath_build}:$ENV{PYTHONPATH}"
-    ${SPHINX_EXECUTABLE}
-    -b html
-    -d ${SPHINX_CACHE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${SPHINX_HTML_DIR}
+    ${cmd_list}
   )
 
 if(LATEX_FOUND)
-  add_custom_target(doc-en-pdf ALL
-    COMMAND
+  set(cmd_list
       env PYTHONPATH="${pythonpath_build}:$ENV{PYTHONPATH}"
+      ${ENC_ENV}
       ${SPHINX_EXECUTABLE}
       -b latex
       -d ${SPHINX_CACHE_DIR}
       ${CMAKE_CURRENT_SOURCE_DIR}
       ${SPHINX_PDF_DIR}
+      )
+  if(ENCHANT_LIBRARIES)
+    list(INSERT cmd_list 0 env PYENCHANT_LIBRARY_PATH=${ENCHANT_LIBRARIES})
+  endif()
+  add_custom_target(doc-en-pdf ALL
+    COMMAND
+      ${cmd_list}
     COMMAND
       cd pdf && make
     )

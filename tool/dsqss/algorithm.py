@@ -4,7 +4,7 @@
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version. 
+# (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,27 +14,41 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import codecs
+from typing import List, Iterable, TextIO, Sequence, Optional, NamedTuple, Tuple
+
 import math
-from collections import namedtuple
 from copy import deepcopy
 from itertools import chain, product
 
 import numpy as np
 
-from .hamiltonian import append_matelem, keystate
-from .prob_kernel import suwa_todo
-from .util import tagged
-
-Channel = namedtuple("Channel", ["outleg", "state", "prob"])
-SiteInitialConfiguration = namedtuple("SiteInitialConfiguration", ["state", "channels"])
-
-InitialConfiguration = namedtuple(
-    "InitialConfiguration", ["istate", "fstate", "direction", "newstate", "channels"]
-)
+import dsqss
+from dsqss import prob_kernel
+import dsqss.hamiltonian
+import dsqss.util
+from dsqss.util import tagged
 
 
-def num_channels(sources, nx):
+class Channel(NamedTuple):
+    outleg: int
+    state: int
+    prob: float
+
+
+class SiteInitialConfiguration(NamedTuple):
+    state: int
+    channels: List[Channel]
+
+
+class InitialConfiguration(NamedTuple):
+    istate: Tuple[int, ...]
+    fstate: Tuple[int, ...]
+    direction: int
+    newstate: int
+    channels: List[Channel]
+
+
+def num_channels(sources: dsqss.hamiltonian.MatElems, nx: int) -> np.ndarray:
     nchs = np.zeros(nx, dtype=int)
     for source in sources:
         st = source[0][0]
@@ -43,14 +57,20 @@ def num_channels(sources, nx):
 
 
 class AlgSite:
-    def __init__(self, hamsite, cutoff=1e-10):
+    id: int
+    N: int
+    values: np.ndarray
+    vtype: int
+    initialconfigurations: List[SiteInitialConfiguration]
+
+    def __init__(self, hamsite: dsqss.hamiltonian.Site, cutoff=1e-10) -> None:
         self.id = hamsite.id
         self.N = hamsite.N
-        self.values = hamsite.values
+        self.values = np.array(hamsite.values)
         self.vtype = self.id
         self.initialconfigurations = []
         for st in range(self.N):
-            channels = []
+            channels: List[Channel] = []
             bouncew = 1.0
             for source in hamsite.sources:
                 if source[0][0] != st:
@@ -58,14 +78,14 @@ class AlgSite:
                 weight = hamsite.sources[source] ** 2
                 t = source[1][0]
                 bouncew -= weight
-                channels.append(Channel(0, t, 0.5 * weight))
-                channels.append(Channel(1, t, 0.5 * weight))
+                channels.append(Channel(outleg=0, state=t, prob=0.5 * weight))
+                channels.append(Channel(outleg=1, state=t, prob=0.5 * weight))
             if bouncew > cutoff:
-                channels.append(Channel(-1, -1, bouncew))
+                channels.append(Channel(outleg=-1, state=-1, prob=bouncew))
             self.initialconfigurations.append(SiteInitialConfiguration(st, channels))
         self.vertex = WormVertex(hamsite)
 
-    def write_xml(self, f, level):
+    def write_xml(self, f: TextIO, level: int) -> None:
         indent = "  "
         f.write(indent * level + "<Site>\n")
         level += 1
@@ -93,13 +113,20 @@ class AlgSite:
 
 
 class Vertex(object):
-    def __init__(self, vtype, category, nbody, ics):
+    id: int
+    category: int
+    nbody: int
+    initialconfigurations: List[InitialConfiguration]
+
+    def __init__(
+        self, vtype: int, category: int, nbody: int, ics: Iterable[InitialConfiguration]
+    ):
         self.id = vtype
         self.category = category
         self.nbody = nbody
-        self.initialconfigurations = ics
+        self.initialconfigurations = list(ics)
 
-    def write_xml(self, f, level):
+    def write_xml(self, f: TextIO, level: int) -> None:
         indent = "  "
         f.write(indent * level + "<Vertex>\n")
         level += 1
@@ -134,7 +161,12 @@ class Vertex(object):
 
 
 class WormVertex(Vertex):
-    def __init__(self, hamsite):
+    id: int
+    category: int
+    nbody: int
+    initialconfigurations: List[InitialConfiguration]
+
+    def __init__(self, hamsite: dsqss.hamiltonian.Site) -> None:
         self.id = hamsite.id
         self.category = 1
         self.nbody = 1
@@ -142,30 +174,62 @@ class WormVertex(Vertex):
         for source in hamsite.sources:
             self.initialconfigurations.append(
                 InitialConfiguration(
-                    source[0], source[1], 0, source[1][0], [Channel(-1, -1, 1.0)]
+                    source.initial,
+                    source.final,
+                    0,
+                    source.final[0],
+                    [Channel(outleg=-1, state=-1, prob=1.0)],
                 )
             )
             self.initialconfigurations.append(
                 InitialConfiguration(
-                    source[0], source[1], 1, source[0][0], [Channel(-1, -1, 1.0)]
+                    source.initial,
+                    source.final,
+                    1,
+                    source.initial[0],
+                    [Channel(outleg=-1, state=-1, prob=1.0)],
                 )
             )
 
 
 class IntVertex(Vertex):
-    def __init__(self, vtype, nbody, ics):
+    id: int
+    category: int
+    nbody: int
+    initialconfigurations: List[InitialConfiguration]
+
+    def __init__(
+        self, vtype: int, nbody: int, ics: Iterable[InitialConfiguration]
+    ) -> None:
         self.id = vtype
         self.category = 2
         self.nbody = nbody
-        self.initialconfigurations = ics
+        self.initialconfigurations = list(ics)
 
 
 class AlgInteraction:
-    def __init__(self, hamint, hamsites, prob_kernel=suwa_todo, ebase_extra=0.0):
+    itype: int
+    vtype: int
+    nbody: int
+    kernel: prob_kernel.KernelCallBack
+    hamint: dsqss.hamiltonian.IndeedInteraction
+    sites: List[dsqss.hamiltonian.Site]
+    sitesources: List[dsqss.hamiltonian.MatElems]
+    intelements: dsqss.hamiltonian.MatElems
+    ebase_negsign: float
+    signs: dsqss.hamiltonian.MatElems
+
+    def __init__(
+        self,
+        hamint: dsqss.hamiltonian.IndeedInteraction,
+        hamsites: Sequence[dsqss.hamiltonian.Site],
+        kernel: prob_kernel.KernelCallBack = prob_kernel.suwa_todo,
+        ebase_extra: float = 0.0,
+    ):
         self.itype = hamint.itype
         self.vtype = hamint.itype + len(hamsites)
         self.nbody = hamint.nbody
-        self.prob_kernel = prob_kernel
+        self.kernel = kernel
 
         self.hamint = hamint
         self.sites = [hamsites[stype] for stype in hamint.stypes]
@@ -185,7 +249,7 @@ class AlgInteraction:
                 self.ebase_negsign = min(self.ebase_negsign, v)
                 maxd = max(maxd, v)
             else:
-                append_matelem(
+                dsqss.hamiltonian.append_matelem(
                     self.signs, istate=elem[0], fstate=elem[1], value=np.sign(v)
                 )
                 v = abs(v)
@@ -198,12 +262,14 @@ class AlgInteraction:
         ndiag = 0
         for st in product(*map(lambda site: range(site.N), self.sites)):
             ndiag += 1
-            k = (st, st)
+            k = dsqss.hamiltonian.keystate(st, st)
             if k in self.intelements:
                 self.intelements[k] += self.ebase_negsign
                 sumw += self.intelements[k]
             else:
-                append_matelem(self.intelements, state=st, value=self.ebase_negsign)
+                dsqss.hamiltonian.append_matelem(
+                    self.intelements, state=st, value=self.ebase_negsign
+                )
                 sumw += self.intelements[k]
         self.ebase_nobounce = max((2 * maxo - sumw) / ndiag, 0.0)
 
@@ -213,7 +279,7 @@ class AlgInteraction:
             self.ebase_extra = 0.5 * maxo
 
         for st in product(*map(lambda site: range(site.N), self.sites)):
-            k = (st, st)
+            k = dsqss.hamiltonian.keystate(st, st)
             self.intelements[k] += self.ebase_nobounce + self.ebase_extra
 
         self.intelements = {k: v for k, v in self.intelements.items() if v > 0.0}
@@ -224,13 +290,18 @@ class AlgInteraction:
                 insite = inleg // 2
                 for instate in range(self.sites[insite].N):
                     ic = self.make_initialconfiguration(st, inleg, instate)
-                    if not ic:
+                    if ic is None:
                         continue
                     else:
                         initialconfigurations.append(ic)
         self.vertex = IntVertex(self.vtype, self.nbody, initialconfigurations)
 
-    def make_initialconfiguration(self, states, inleg, instate):
+    def make_initialconfiguration(
+        self,
+        states: dsqss.hamiltonian.States,
+        inleg: int,
+        instate: int,
+    ) -> Optional[InitialConfiguration]:
         nbody = self.nbody
         insite = inleg // 2
         intau = inleg % 2
@@ -238,22 +309,24 @@ class AlgInteraction:
 
         if intau == 0:
             p = self.sitesources[insite].get(
-                keystate(istate=instate, fstate=states[0][insite]), 0.0
+                dsqss.hamiltonian.keystate(istate=instate, fstate=states[0][insite]),
+                0.0,
             )
         else:
             p = self.sitesources[insite].get(
-                keystate(istate=states[1][insite], fstate=instate), 0.0
+                dsqss.hamiltonian.keystate(istate=states[1][insite], fstate=instate),
+                0.0,
             )
         if p == 0.0:
-            return False
+            return None
 
         midstates = [list(states[0]), list(states[1])]
         midstates[intau][insite] = instate
 
+        incomeindex = 100000  # very large integer
         probs = []
         outlegs = []
         outstates = []
-        # import pdb; pdb.set_trace()
         for outleg in range(2 * nbody):
             outsite = outleg // 2
             outtau = outleg % 2
@@ -261,14 +334,18 @@ class AlgInteraction:
                 st = deepcopy(midstates)
                 oldoutstate = st[outtau][outsite]
                 st[outtau][outsite] = outstate
-                p = self.intelements.get(keystate(istate=st[0], fstate=st[1]), 0.0)
+                p = self.intelements.get(
+                    dsqss.hamiltonian.keystate(istate=st[0], fstate=st[1]), 0.0
+                )
                 if outtau == 0:
                     p *= self.sitesources[outsite].get(
-                        keystate(istate=oldoutstate, fstate=outstate), 0.0
+                        dsqss.hamiltonian.keystate(istate=oldoutstate, fstate=outstate),
+                        0.0,
                     )
                 else:
                     p *= self.sitesources[outsite].get(
-                        keystate(istate=outstate, fstate=oldoutstate), 0.0
+                        dsqss.hamiltonian.keystate(istate=outstate, fstate=oldoutstate),
+                        0.0,
                     )
                 if p == 0.0:
                     continue
@@ -278,14 +355,16 @@ class AlgInteraction:
                 if inleg == outleg and outstate == oldinstate:
                     incomeindex = len(probs) - 1
         if len(probs) == 0:
-            return False
-        W = self.prob_kernel(probs)[incomeindex, :]
+            return None
+        W = self.kernel(probs)[incomeindex, :]
         channels = [
-            Channel(outleg, outstate, p)
+            Channel(outleg=outleg, state=outstate, prob=p)
             for outleg, outstate, p in zip(outlegs, outstates, W)
             if p > 0.0
         ]
-        return InitialConfiguration(states[0], states[1], inleg, instate, channels)
+        return InitialConfiguration(
+            states.initial, states.final, inleg, instate, channels
+        )
 
     def write_xml(self, f, level):
         indent = "  "
@@ -317,7 +396,17 @@ class AlgInteraction:
 
 
 class Algorithm:
-    def __init__(self, ham, prob_kernel=suwa_todo, ebase_extra=0.0):
+    name: str
+    nstypes: int
+    nitypes: int
+    nxmax: int
+
+    def __init__(
+        self,
+        ham: dsqss.hamiltonian.GraphedHamiltonian,
+        prob_kernel: prob_kernel.KernelCallBack = prob_kernel.suwa_todo,
+        ebase_extra: float = 0.0,
+    ):
         self.name = ham.name
         self.nstypes = ham.nstypes
         self.nitypes = ham.nitypes
@@ -335,13 +424,13 @@ class Algorithm:
         self.sites = [AlgSite(site) for site in hamsites]
         self.interactions = [
             AlgInteraction(
-                hamint, hamsites, prob_kernel=prob_kernel, ebase_extra=ebase_extra
+                hamint, hamsites, kernel=prob_kernel, ebase_extra=ebase_extra
             )
             for hamint in ham.indeed_interactions
         ]
 
-    def write_xml(self, filename):
-        with codecs.open(filename, "w", "utf_8") as f:
+    def write_xml(self, filename: dsqss.util.Filename) -> None:
+        with open(filename, "w", encoding="utf_8") as f:
             indent = "  "
             f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
             f.write("<Algorithm>\n")

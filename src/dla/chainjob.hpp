@@ -87,8 +87,8 @@ void Simulation::save() {
     end_job();
   }
 
-  int NVER_ =
-      P.NVERMAX - TheVertexPool.count() - LAT.NSITE - 1;  // -1 means warm's tail
+  // -1 means warm's tail
+  int NVER_ = P.NVERMAX - TheVertexPool.count() - LAT.NSITE - 1;
   save(cjobout, NVER_);
   int NVER_count = 0;
   for (int interaction_ = 0; interaction_ < LAT.NINT; interaction_++) {
@@ -113,7 +113,6 @@ void Simulation::save() {
       }
       ++NVER_count;
     }
-    //    }
   }
   if ((NVER_) != NVER_count) {
     std::cout << "ERROR: We can't keep all vertices." << std::endl;
@@ -162,12 +161,12 @@ void Simulation::save() {
 void Simulation::load() {
   using Serialize::load;
 
-  std::map<int, std::pair<int, int> >
-      newID2V;  // first:new segmentID, second: old vertexIDs
-  std::map<int, Segment *>
-      oldID_S;  // first:old segmentID, second:new segment address
-  std::map<int, Vertex *>
-      oldID_V;  // first:old vertexID, second:new vertex address
+  // new segmentID -> old vertex IDs
+  std::map<int, std::pair<int, int> > newID2V;
+  // old segmentID -> new segment address
+  std::map<int, Segment *> oldID_S;
+  // old vertexID -> new vertex address
+  std::map<int, Vertex *> oldID_V;
 
   load(cjobin, isEnd);
   if (isEnd) {
@@ -205,7 +204,6 @@ void Simulation::load() {
       oldID_S.insert(std::map<int, Segment *>::value_type(ID_, (&S)));
 
       int VID_0 = load<int>(cjobin);
-
       int VID_1 = load<int>(cjobin);
 
       std::pair<int, int> VID2(VID_0, VID_1);

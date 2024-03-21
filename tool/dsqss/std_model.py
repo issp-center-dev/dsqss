@@ -4,7 +4,7 @@
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version. 
+# (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,25 +14,31 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .bosehubbard import BoseHubbard_hamiltonian
-from .util import ERROR
-from .xxz import XXZ_hamiltonian
-from .hamiltonian import Hamiltonian
+import sys
+
+from dsqss import __version__
+from dsqss import util
+from dsqss import bosehubbard
+from dsqss import xxz
+from dsqss import hamiltonian
 
 
-def std_model(param):
+def std_model(param) -> hamiltonian.Hamiltonian:
     if "hamiltonian" in param:
         param = param["hamiltonian"]
     if "model" in param:
+        ham: hamiltonian.Hamiltonian
         if param["model"].lower() == "spin":
-            ham = XXZ_hamiltonian(param)
+            ham = xxz.XXZ_hamiltonian(param)
         elif param["model"].lower() == "boson":
-            ham = BoseHubbard_hamiltonian(param)
+            ham = bosehubbard.BoseHubbard_hamiltonian(param)
         else:
-            ERROR('Unknown model: param["model"] = {0}'.format(param["model"].lower()))
+            util.ERROR(
+                'Unknown model: param["model"] = {0}'.format(param["model"].lower())
+            )
+            sys.exit(1)
     else:
-        ham = Hamiltonian(param)
-
+        ham = hamiltonian.Hamiltonian(param)
     return ham
 
 
@@ -50,6 +56,7 @@ def main():
     parser.add_argument(
         "-o", "--output", dest="out", default="hamiltonian.toml", help="Output filename"
     )
+    parser.add_argument("--version", action="version", version=__version__)
     args = parser.parse_args()
 
     inp = toml.load(args.input)

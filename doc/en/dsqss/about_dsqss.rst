@@ -6,7 +6,7 @@ About DSQSS
 
 Overview
 ****************
-DSQSS is a program package for solving quantum many-body problems defined on lattices. It is based on the quantum Monte Carlo method in Feynman's path integral representation. It covers a broad range of problems written by flexible input files that define arbitrary unit cells in arbitrary dimensions, and arbitrary matrix elements of the interactions among arbitrary number of degrees of freedom.
+DSQSS is a program package for solving quantum many-body problems defined on lattices. It is based on the quantum Monte Carlo method in Feynman's path integral representation. It covers a broad range of problems written by flexible input files that define arbitrary unit cells in arbitrary dimensions and arbitrary matrix elements of the interactions among arbitrary number of degrees of freedom.
 
 For example, you can perform finite temperature calculation of XXZ spin model by specifying parameters such as dimension, size of lattice, anisotropic coupling constants, length of spin, strength of magnetic field, and temperature. You can calculate Bose-Hubbard model as well as quantum spin model. PMWA (Parallel Multi Worm Algorithm) suits for large-scale non-trivial parallel calculation by domain parallelization.
 
@@ -50,11 +50,11 @@ Collaborators
 License
 ****************
 - GNU General Public License (GPL)
-The users are kindly requested to acknowledge the usage of this software in their publication, if any, based on the software, and let the developers know its reference information.
+- The users are kindly requested to cite the following paper in their publication, if any, based on the software.
   
-.. topic:: Acknowledgment Sample
+.. topic:: Reference
 
-    Numerical results in the present paper were obtained by the quantum Monte Carlo program DSQSS(https://github.com/qmc/dsqss/wiki). This package is distributed under GNU General Public License version 3 (GPL v3) or later.
+    Y. Motoyama, K. Yoshimi, A. Masaki-Kato, T. Kato, and N. Kawashima, Comput. Phys. Commun. 264, 107944 (2021).
 
 Acknowledgment
 ****************
