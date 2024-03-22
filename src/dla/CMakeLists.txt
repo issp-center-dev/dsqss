@@ -21,8 +21,3 @@ if(MPI_FOUND)
 endif(MPI_FOUND)
 
 set(dla_deps dla)
-
-if(BUILD_OLD_GENERATORS)
-add_subdirectory(generators)
-set(dla_deps ${dla_deps} dla_alg_old lattgene_C lattgene_T hamgen_H hamgen_B cfgene sfgene)
-endif(BUILD_OLD_GENERATORS)
