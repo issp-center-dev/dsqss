@@ -12,12 +12,11 @@ packages = [
   ]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.8"
 # Users should install dependencies by themselves
 # numpy = "^1.17"
 # toml = ">= 0.10.0"
 # scipy = "^1"
-# typing_extension for python<3.8
 
 [tool.poetry.dev-dependencies]
 
