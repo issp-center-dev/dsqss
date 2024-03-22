@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>DSQSS/DLA のスタンダードモードによる反強磁性ハイゼンベルグダイマーの模型や格子の定義 &#8212; DSQSS 2.0.5 ドキュメント</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=66c3864b" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=b2de83eb"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/translations.js?v=4dbe4bdc"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="検索" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="dsqss-dla">
+<h1>DSQSS/DLA のスタンダードモードによる反強磁性ハイゼンベルグダイマーの模型や格子の定義<a class="headerlink" href="#dsqss-dla" title="この見出しへのパーマリンク">¶</a></h1>
+<p>このチュートリアルでは, <span class="math notranslate nohighlight">\(S=1/2\)</span> 反強磁性ハイゼンベルグダイマーに外部磁場が印加されている系 <span class="math notranslate nohighlight">\(\mathcal{H}= \sum_{\langle i,j \rangle}-J_z S^z_i S^z_j -\frac{J_{xy}}{2}(S^+_i S^-_j +S^-_i S^+_j)-h\sum_i S^z_i ,~J_z&lt;0, J_xy&lt;0, h&gt;0\)</span> の格子の概形を計算をすることで,
+DSQSS/DLA のスタンダードモード使い方を学びます.</p>
+<p>DSQSS/DLA のスタンダードモードによる計算は,</p>
+<ol class="arabic simple">
+<li><p>シンプルモードの入力ファイルの準備</p></li>
+<li><p>スタンダードモードの入力ファイルの作成</p></li>
+<li><p>計算の実行</p></li>
+</ol>
+<p>の3段階に分かれます.</p>
+<section id="id1">
+<h2>シンプルモードの入力ファイルの準備<a class="headerlink" href="#id1" title="この見出しへのパーマリンク">¶</a></h2>
+<p>DSQSS/DLA を実行するには,</p>
+<ol class="arabic simple">
+<li><p>ハミルトニアンの情報</p></li>
+<li><p>格子の情報</p></li>
+<li><p>逆温度やモンテカルロステップ数などのパラメータの情報</p></li>
+</ol>
+<p>を指定したTOML形式のシンプルモードファイル std.tomlが必要です.
+そのため, まずはこの入力ファイルを準備します.
+反強磁性ハイゼンベルグダイマーのファイルは以下の場所に用意されています
+(sample/dla/01_spindimer/std.toml)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">hamiltonian</span><span class="p">]</span>
+<span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;spin&quot;</span>
+<span class="n">M</span> <span class="o">=</span>  <span class="mi">1</span>                 <span class="c1"># S=1/2</span>
+<span class="n">Jz</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>              <span class="c1"># coupling constant, negative for AF</span>
+<span class="n">Jxy</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>             <span class="c1"># coupling constant, negative for AF</span>
+<span class="n">h</span> <span class="o">=</span> <span class="mf">0.0</span>                <span class="c1"># magnetic field</span>
+<span class="p">[</span><span class="n">lattice</span><span class="p">]</span>
+<span class="n">lattice</span> <span class="o">=</span> <span class="s2">&quot;hypercubic&quot;</span> <span class="c1"># hypercubic, periodic</span>
+<span class="n">dim</span> <span class="o">=</span> <span class="mi">1</span>                <span class="c1"># dimension</span>
+<span class="n">L</span> <span class="o">=</span> <span class="mi">2</span>                  <span class="c1"># number of sites along each direction</span>
+<span class="n">bc</span> <span class="o">=</span> <span class="n">false</span>             <span class="c1"># open boundary</span>
+<span class="p">[</span><span class="n">parameter</span><span class="p">]</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="mi">100</span>             <span class="c1"># inverse temperature</span>
+<span class="n">nset</span> <span class="o">=</span> <span class="mi">5</span>               <span class="c1"># set of Monte Carlo sweeps</span>
+<span class="n">npre</span> <span class="o">=</span> <span class="mi">10</span>              <span class="c1"># MCSteps to estimate hyperparameter</span>
+<span class="n">ntherm</span> <span class="o">=</span> <span class="mi">10</span>            <span class="c1"># MCSweeps for thermalization</span>
+<span class="n">nmcs</span> <span class="o">=</span> <span class="mi">100</span>             <span class="c1"># MCSweeps for measurement</span>
+<span class="n">seed</span> <span class="o">=</span> <span class="mi">31415</span>           <span class="c1"># seed of RNG</span>
+</pre></div>
+</div>
+<p>このファイルにz方向の外部磁場の印加の効果を付け加え, 格子の次元とサイトの数をそれぞれ2と4にします</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">hamiltonian</span><span class="p">]</span>
+<span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;spin&quot;</span>
+<span class="n">M</span> <span class="o">=</span>  <span class="mi">1</span>                 <span class="c1"># S=1/2</span>
+<span class="n">Jz</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>              <span class="c1"># coupling constant, negative for AF</span>
+<span class="n">Jxy</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>             <span class="c1"># coupling constant, negative for AF</span>
+<span class="n">h</span> <span class="o">=</span> <span class="mf">0.5</span>                <span class="c1"># magnetic field</span>
+<span class="p">[</span><span class="n">lattice</span><span class="p">]</span>
+<span class="n">lattice</span> <span class="o">=</span> <span class="s2">&quot;hypercubic&quot;</span> <span class="c1"># hypercubic, periodic</span>
+<span class="n">dim</span> <span class="o">=</span> <span class="mi">2</span>                <span class="c1"># dimension</span>
+<span class="n">L</span> <span class="o">=</span> <span class="mi">4</span>                  <span class="c1"># number of sites along each direction</span>
+<span class="n">bc</span> <span class="o">=</span> <span class="n">false</span>             <span class="c1"># open boundary</span>
+<span class="p">[</span><span class="n">parameter</span><span class="p">]</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="mi">100</span>             <span class="c1"># inverse temperature</span>
+<span class="n">nset</span> <span class="o">=</span> <span class="mi">5</span>               <span class="c1"># set of Monte Carlo sweeps</span>
+<span class="n">npre</span> <span class="o">=</span> <span class="mi">10</span>              <span class="c1"># MCSteps to estimate hyperparameter</span>
+<span class="n">ntherm</span> <span class="o">=</span> <span class="mi">10</span>            <span class="c1"># MCSweeps for thermalization</span>
+<span class="n">nmcs</span> <span class="o">=</span> <span class="mi">100</span>             <span class="c1"># MCSweeps for measurement</span>
+<span class="n">seed</span> <span class="o">=</span> <span class="mi">31415</span>           <span class="c1"># seed of RNG</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2>スタンダードモードの入力ファイルの作成<a class="headerlink" href="#id2" title="この見出しへのパーマリンク">¶</a></h2>
+<p>このファイルを dla_hamgen に与えます.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dla_hamgen std.toml
+</pre></div>
+</div>
+<p>この結果, サイトハミルトニアンや多体相互作用の情報を記述するTOML形式のテキストファイル hamiltonian.toml が生成されます.</p>
+<p>次に, std.toml を dla_latgen に与えます.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dla_latgen -t lattice.toml std.toml
+</pre></div>
+</div>
+<p>この結果, ユニットセルと基本並進ベクトルを用いて空間の情報を記述するTOML形式のテキストファイルlattice.toml が生成されます.</p>
+</section>
+<section id="id3">
+<h2>計算の実行<a class="headerlink" href="#id3" title="この見出しへのパーマリンク">¶</a></h2>
+<p>lattice.toml を入力ファイルとして, gnuplotファイル lattice.pltを作成できます::</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dla_latgen -g lattice.plt lattice.toml
+</pre></div>
+</div>
+<p>lattce.plt を gnuplot に与えると2次元の格子の概形が得られます:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">figure</span><span class="p">::</span> <span class="o">../../../</span><span class="n">image</span><span class="o">/</span><span class="n">dla</span><span class="o">/</span><span class="n">tutorial</span><span class="o">/</span><span class="mi">2</span><span class="n">Dlattice</span><span class="o">.</span><span class="n">png</span>
+</pre></div>
+</div>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">name<span class="colon">:</span></dt>
+<dd class="field-odd"><p>fig_2Dlattice</p>
+</dd>
+<dt class="field-even">alt<span class="colon">:</span></dt>
+<dd class="field-even"><p>2次元格子</p>
+</dd>
+</dl>
+<p>z方向の外部磁場中の反強磁性ハイゼンベルグスピン鎖の格子の概形.</p>
+</div></blockquote>
+</section>
+<section id="lattice-datkpoints-dat">
+<h2>lattice.datとkpoints.datの作成<a class="headerlink" href="#lattice-datkpoints-dat" title="この見出しへのパーマリンク">¶</a></h2>
+<p>lattice.tomlファイルでは格子の情報をユニットセルと基本並進ベクトルを用いて定義しました。一方, lattice.datファイルは格子の情報をサイトの数やサイト間の相互作用を用いて定義します。lattice.datもTOML形式のシンプルモードファイル std.tomlを用いて作成できます。
+上で用いたz方向の外部磁場の印加の効果が入っているstd.tomlを dla_latgen に与えます.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dla_latgen -o lattice.dat std.toml
+</pre></div>
+</div>
+<p>この結果, 以下のようなlattice.datファイルが得られます</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">name</span>
+<span class="n">hypercubic</span>
+
+<span class="n">lattice</span>
+<span class="mi">2</span> <span class="c1"># dim</span>
+<span class="mi">4</span> <span class="mi">4</span> <span class="c1"># size</span>
+<span class="mi">0</span> <span class="mi">0</span> <span class="c1"># 0:open boundary, 1:periodic boundary</span>
+<span class="mi">0</span> <span class="mf">1.0</span> <span class="mf">0.0</span> <span class="c1"># latvec_0</span>
+<span class="mi">1</span> <span class="mf">0.0</span> <span class="mf">1.0</span> <span class="c1"># latvec_1</span>
+
+<span class="n">directions</span>
+<span class="mi">2</span> <span class="c1"># ndirections</span>
+<span class="c1"># id, coords...</span>
+<span class="mi">0</span> <span class="mf">1.0</span> <span class="mf">0.0</span>
+<span class="mi">1</span> <span class="mf">0.0</span> <span class="mf">1.0</span>
+
+<span class="n">sites</span>
+<span class="mi">16</span> <span class="c1"># nsites</span>
+<span class="c1"># id, type, coord...</span>
+<span class="mi">0</span> <span class="mi">0</span> <span class="mf">0.0</span> <span class="mf">0.0</span>
+<span class="mi">1</span> <span class="mi">0</span> <span class="mf">1.0</span> <span class="mf">0.0</span>
+<span class="mi">2</span> <span class="mi">0</span> <span class="mf">2.0</span> <span class="mf">0.0</span>
+<span class="mi">3</span> <span class="mi">0</span> <span class="mf">3.0</span> <span class="mf">0.0</span>
+<span class="mi">4</span> <span class="mi">0</span> <span class="mf">0.0</span> <span class="mf">1.0</span>
+<span class="mi">5</span> <span class="mi">0</span> <span class="mf">1.0</span> <span class="mf">1.0</span>
+<span class="mi">6</span> <span class="mi">0</span> <span class="mf">2.0</span> <span class="mf">1.0</span>
+<span class="mi">7</span> <span class="mi">0</span> <span class="mf">3.0</span> <span class="mf">1.0</span>
+<span class="mi">8</span> <span class="mi">0</span> <span class="mf">0.0</span> <span class="mf">2.0</span>
+<span class="mi">9</span> <span class="mi">0</span> <span class="mf">1.0</span> <span class="mf">2.0</span>
+<span class="mi">10</span> <span class="mi">0</span> <span class="mf">2.0</span> <span class="mf">2.0</span>
+<span class="mi">11</span> <span class="mi">0</span> <span class="mf">3.0</span> <span class="mf">2.0</span>
+<span class="mi">12</span> <span class="mi">0</span> <span class="mf">0.0</span> <span class="mf">3.0</span>
+<span class="mi">13</span> <span class="mi">0</span> <span class="mf">1.0</span> <span class="mf">3.0</span>
+<span class="mi">14</span> <span class="mi">0</span> <span class="mf">2.0</span> <span class="mf">3.0</span>
+<span class="mi">15</span> <span class="mi">0</span> <span class="mf">3.0</span> <span class="mf">3.0</span>
+
+<span class="n">interactions</span>
+<span class="mi">24</span> <span class="c1"># nints</span>
+<span class="c1"># id, type, nbody, sites..., edge_flag, direction</span>
+<span class="mi">0</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span>
+<span class="mi">1</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">0</span> <span class="mi">4</span> <span class="mi">0</span> <span class="mi">1</span>
+<span class="mi">2</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">0</span> <span class="mi">0</span>
+<span class="mi">3</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">1</span> <span class="mi">5</span> <span class="mi">0</span> <span class="mi">1</span>
+<span class="mi">4</span> <span class="mi">3</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">0</span> <span class="mi">0</span>
+<span class="mi">5</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">6</span> <span class="mi">0</span> <span class="mi">1</span>
+<span class="mi">6</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">7</span> <span class="mi">0</span> <span class="mi">1</span>
+<span class="mi">7</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">0</span> <span class="mi">0</span>
+<span class="mi">8</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">4</span> <span class="mi">8</span> <span class="mi">0</span> <span class="mi">1</span>
+<span class="mi">9</span> <span class="mi">4</span> <span class="mi">2</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">0</span> <span class="mi">0</span>
+<span class="mi">10</span> <span class="mi">4</span> <span class="mi">2</span> <span class="mi">5</span> <span class="mi">9</span> <span class="mi">0</span> <span class="mi">1</span>
+<span class="mi">11</span> <span class="mi">5</span> <span class="mi">2</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">0</span> <span class="mi">0</span>
+<span class="mi">12</span> <span class="mi">4</span> <span class="mi">2</span> <span class="mi">6</span> <span class="mi">10</span> <span class="mi">0</span> <span class="mi">1</span>
+<span class="mi">13</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">7</span> <span class="mi">11</span> <span class="mi">0</span> <span class="mi">1</span>
+<span class="mi">14</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">0</span> <span class="mi">0</span>
+<span class="mi">15</span> <span class="mi">3</span> <span class="mi">2</span> <span class="mi">8</span> <span class="mi">12</span> <span class="mi">0</span> <span class="mi">1</span>
+<span class="mi">16</span> <span class="mi">4</span> <span class="mi">2</span> <span class="mi">9</span> <span class="mi">10</span> <span class="mi">0</span> <span class="mi">0</span>
+<span class="mi">17</span> <span class="mi">5</span> <span class="mi">2</span> <span class="mi">9</span> <span class="mi">13</span> <span class="mi">0</span> <span class="mi">1</span>
+<span class="mi">18</span> <span class="mi">5</span> <span class="mi">2</span> <span class="mi">10</span> <span class="mi">11</span> <span class="mi">0</span> <span class="mi">0</span>
+<span class="mi">19</span> <span class="mi">5</span> <span class="mi">2</span> <span class="mi">10</span> <span class="mi">14</span> <span class="mi">0</span> <span class="mi">1</span>
+<span class="mi">20</span> <span class="mi">3</span> <span class="mi">2</span> <span class="mi">11</span> <span class="mi">15</span> <span class="mi">0</span> <span class="mi">1</span>
+<span class="mi">21</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">12</span> <span class="mi">13</span> <span class="mi">0</span> <span class="mi">0</span>
+<span class="mi">22</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">13</span> <span class="mi">14</span> <span class="mi">0</span> <span class="mi">0</span>
+<span class="mi">23</span> <span class="mi">3</span> <span class="mi">2</span> <span class="mi">14</span> <span class="mi">15</span> <span class="mi">0</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>次に, kpoints.datを作成します。kpoint.datは波数ベクトルを逆格子ベクトルで展開した際の係数を指定するテキストファイルです. -sを使うことでサイズを指定できます. dla_wvgen -s に std.tomlファイルを与えます:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dla_wvgen -s &quot;8 8&quot; std.toml
+</pre></div>
+</div>
+<p>この結果, 以下の kpoints.datファイルが得られます</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dim</span>
+<span class="mi">2</span>
+
+<span class="n">kpoints</span>
+<span class="mi">4</span>
+<span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span>
+<span class="mi">1</span> <span class="mi">0</span> <span class="mi">4</span>
+<span class="mi">2</span> <span class="mi">4</span> <span class="mi">0</span>
+<span class="mi">3</span> <span class="mi">4</span> <span class="mi">4</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>ナビゲーション</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. DSQSSとは？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. インストール</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">3. DLAのチュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users-manual/index.html">4. DSQSS/DLAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tutorial.html">5. DSQSS/PMWAのチュートリアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tu-index.html">6. DSQSS/PMWAのユーザーマニュアル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/algorithm.html">7. アルゴリズム</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="検索" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../../_sources/dla/tutorial/standard_mode.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
