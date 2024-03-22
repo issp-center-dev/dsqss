@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>4.6. Output of DSQSS/DLA &#8212; DSQSS 2.0.4 documentation</title>
+    <title>4.6. Output of DSQSS/DLA &#8212; DSQSS 2.0.5 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=66c3864b" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=8fbcbc5c"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=2bc43845"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -135,6 +135,11 @@ the creation/annihilation operators <span class="math notranslate nohighlight">\
 </dd>
 <dt><span class="math notranslate nohighlight">\(\beta\)</span></dt><dd><p>The inverse temperature.</p>
 </dd>
+<dt><span class="math notranslate nohighlight">\(E_0\)</span></dt><dd><p>The imaginary time average of the expectation value of the unperturbed Hamiltonian
+<span class="math notranslate nohighlight">\(\displaystyle \frac{1}{\beta}\int d\tau \langle \phi(\tau)|\mathcal{H}_0|\phi(\tau)\rangle\)</span>.</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(N_v\)</span></dt><dd><p>The number of vertices, i.e., the order of the perturbation.</p>
+</dd>
 <dt><span class="math notranslate nohighlight">\(h\)</span></dt><dd><p>The conjugate field to the operator <span class="math notranslate nohighlight">\(M^z\)</span> .
 The longitudinal magnetic field for spin systems and the chemical potential for the Bose-Hubbard models.</p>
 </dd>
@@ -146,18 +151,21 @@ The longitudinal magnetic field for spin systems and the chemical potential for 
 <section id="main-results">
 <h2><span class="section-number">4.6.2. </span>Main results<a class="headerlink" href="#main-results" title="Permalink to this heading">¶</a></h2>
 <p>Main results are written in a file with the name specified by <code class="docutils literal notranslate"><span class="pre">outfile</span></code> keyword in the input parameter file.</p>
+<p>NOTICE: In general, Monte Carlo simulations have systematic errors of <span class="math notranslate nohighlight">\(O(1/N)\)</span> with respect to the number of samples <span class="math notranslate nohighlight">\(N\)</span> (<code class="docutils literal notranslate"><span class="pre">nmcs</span></code>) for the expectation values including nonlinear functions of the sample average like the specific heat and the susceptibility.
+For example, in the region where the specific heat becomes very small, e.g., in the low-temperature region below the energy gap, the calculated value may be negative.
+For precise analysis, we need to take into account not only the statistical errors but also the systematic errors.</p>
 <dl>
 <dt><code class="docutils literal notranslate"><span class="pre">sign</span></code></dt><dd><p>The sign of the weights.</p>
 <p><span class="math notranslate nohighlight">\(\sum_i W_i / \sum_i |W_i\)</span></p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">anv</span></code></dt><dd><p>The mean number of the vertices.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">anv</span></code></dt><dd><p>The number of the vertices per site.</p>
 <p><span class="math notranslate nohighlight">\(\displaystyle \frac{\langle N_v \rangle}{N_s}\)</span></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">ene</span></code></dt><dd><p>The energy density (energy per site)</p>
 <p><span class="math notranslate nohighlight">\(\displaystyle \epsilon \equiv \frac{1}{N_s}\left(E_0 - T\langle N_v\rangle\right)\)</span></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">spe</span></code></dt><dd><p>The specific heat</p>
-<p><span class="math notranslate nohighlight">\(\displaystyle C_V \equiv \frac{\partial \epsilon}{\partial T}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\displaystyle C_V \equiv \frac{\partial \epsilon}{\partial T} = \frac{1}{N_s T^2} \left[\left\langle\left(E_0 - TN_v\right)^2\right\rangle - \left\langle\left(E_0 - TN_v\right)\right\rangle^2 - T^2\left\langle N_v \right\rangle\right]\)</span></p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">som</span></code></dt><dd><p>The ratio of the specific heat and the temperature.</p>
 <p><span class="math notranslate nohighlight">\(\displaystyle \gamma \equiv \frac{C_V}{T} = \beta C_V\)</span></p>
@@ -203,6 +211,9 @@ N_s \left[ \left\langle (m^z)^2\right\rangle
 <p><span class="math notranslate nohighlight">\(\displaystyle \chi^{zz}(\vec{k},  \omega=0)
 = \beta N_s \left[\left\langle (\tilde{m}_K^z)^2 \right\rangle - \left\langle \tilde{m}_K^z \right\rangle^2 \right]\)</span></p>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ds1</span></code></dt><dd><p>The derivative of the “magnetization” (<code class="docutils literal notranslate"><span class="pre">amzu</span></code>) with respect to the temperature.</p>
+<p><span class="math notranslate nohighlight">\(\displaystyle T\frac{\partial \left\langle \tilde{m}^z \right\rangle}{\partial T} = -\beta\frac{\partial \left\langle \tilde{m}^z \right\rangle}{\partial\beta}\)</span></p>
+</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">wi2</span></code></dt><dd><p>The winding number.</p>
 <p><span class="math notranslate nohighlight">\(\displaystyle W^2 = \sum_{d=1}^D L_d^2 \left\langle W_d^2 \right\rangle\)</span></p>
 </dd>
@@ -245,6 +256,7 @@ The real space temperature Green’s function is defined as the following:</p>
 <p>Displacement <span class="math notranslate nohighlight">\(\vec{r}_{ij}\)</span> and imaginary time <span class="math notranslate nohighlight">\(\tau\)</span> are specified by the name <code class="docutils literal notranslate"><span class="pre">C&lt;k&gt;t&lt;t&gt;</span></code> as the same way of structure factor,
 where <code class="docutils literal notranslate"><span class="pre">&lt;k&gt;</span></code> is an index of the displacement specified by <code class="docutils literal notranslate"><span class="pre">kind</span></code> (the first element of each <code class="docutils literal notranslate"><span class="pre">R</span></code> tag) in the relative coordinate XML file,
 and <code class="docutils literal notranslate"><span class="pre">&lt;t&gt;</span></code> is an index of the discretized imaginary time.</p>
+<p>NOTE: The current version, this works only for <span class="math notranslate nohighlight">\(S=1/2\)</span> model.</p>
 </section>
 <section id="momentum-space-temperature-green-s-function-output">
 <h2><span class="section-number">4.6.5. </span>Momentum space temperature Green’s function output<a class="headerlink" href="#momentum-space-temperature-green-s-function-output" title="Permalink to this heading">¶</a></h2>
@@ -255,6 +267,7 @@ The momentum space temperature Green’s function is defined as the following:</
 <p>Wave vector <span class="math notranslate nohighlight">\(\vec{r}_{ij}\)</span> and imaginary time <span class="math notranslate nohighlight">\(\tau\)</span> are specified by the name <code class="docutils literal notranslate"><span class="pre">C&lt;k&gt;t&lt;t&gt;</span></code> as the same way of structure factor,
 where <code class="docutils literal notranslate"><span class="pre">&lt;k&gt;</span></code> is an index of the displacement specified by <code class="docutils literal notranslate"><span class="pre">kind</span></code> (the last element of each <code class="docutils literal notranslate"><span class="pre">RK</span></code> tag) in the wavevector XML file,
 and <code class="docutils literal notranslate"><span class="pre">&lt;t&gt;</span></code> is an index of the discretized imaginary time.</p>
+<p>NOTE: The current version, this works only for <span class="math notranslate nohighlight">\(S=1/2\)</span> model.</p>
 </section>
 </section>
 
