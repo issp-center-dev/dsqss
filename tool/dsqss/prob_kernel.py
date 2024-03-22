@@ -4,7 +4,7 @@
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version. 
+# (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,28 +14,42 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from copy import deepcopy
+from typing import Sequence
+
+import sys
+if sys.version_info >= (3, 8):
+    from typing import Protocol
+else:
+    from typing_extensions import Protocol
 
 import numpy as np
 
 
-def heat_bath(weights, cutoff=1e-10):
+class KernelCallBack(Protocol):
+    def __call__(self, weights: Sequence[float], cutoff: float = ...) -> np.ndarray:
+        ...
+
+
+def heat_bath(weights: Sequence[float], cutoff: float = 1e-10) -> np.ndarray:
     """
     return an array W,
     where W[i,j] is the probability of a transition i=>j
     calculated by the heat bath algorithm
     """
+
     ws = np.array(weights)
     ws /= ws.sum()
-    return np.array([ws for i in range(len(ws))])
+    return np.array([ws for _ in range(len(ws))])
 
 
-def metropolis(weights, cutoff=1e-10):
+def metropolis(weights: Sequence[float], cutoff: float = 1e-10) -> np.ndarray:
     """
     return an array W,
     where W[i,j] is the probability of a transition i=>j
-    calculated by the Metropolice algorithm
+    (including sugestion probability T(i=>j))
+    calculated by the Metropolis algorithm
     """
+
     N = len(weights)
     n = np.count_nonzero(weights)
 
@@ -56,17 +70,18 @@ def metropolis(weights, cutoff=1e-10):
     return W
 
 
-def suwa_todo(weights, cutoff=1e-10):
+def suwa_todo(weights: Sequence[float], cutoff: float = 1e-10) -> np.ndarray:
     """
     return an array W,
     where W[i,j] is the probability of a transition i=>j
     calculated by the Suwa-Todo algorithm
     (H. Suwa and S. Todo, Phys. Rev. Lett. 105, 120603 (2010))
     """
+
     N = len(weights)
     W = np.zeros((N, N))
     indices = np.argsort(weights, kind="mergesort")[::-1]
-    target = deepcopy(weights)
+    target = [w for w in weights]
     for i in range(N):
         s = weights[indices[i]]
         j = 1
@@ -87,7 +102,7 @@ def suwa_todo(weights, cutoff=1e-10):
     return W / W.sum(axis=1).reshape(-1, 1)
 
 
-def reversible_suwa_todo(weights, cutoff=1e-10):
+def reversible_suwa_todo(weights: Sequence[float], cutoff: float = 1e-10) -> np.ndarray:
     """
     return an array W,
     where W[i,j] is the probability of a transition i=>j
@@ -95,37 +110,38 @@ def reversible_suwa_todo(weights, cutoff=1e-10):
     under the detailed balance condition
     (H. Suwa and S. Todo, arXiv:1106.3562)
     """
-    N = len(weights)
-    indices = np.argsort(weights, kind="mergesort")[::-1]
-    weights = np.array(weights)
+    ws = np.array(weights)
+    N = len(ws)
+    indices = np.argsort(ws, kind="mergesort")[::-1]
+    ws = np.array(ws)
     W = np.zeros([N, N])
     for i in range(N):
-        I = indices[i]
-        W[I, I] = weights[I]
+        ii = indices[i]
+        W[ii, ii] = ws[ii]
 
-    S3 = sum(weights[indices[2:]])
-    wdiff = weights[indices[0]] - weights[indices[1]]
+    S3 = sum(ws[indices[2:]])
+    wdiff = ws[indices[0]] - ws[indices[1]]
     if wdiff >= S3:
         for i in range(1, N):
-            I = indices[i]
-            rst_swap(indices[0], I, weights[I], W)
+            ii = indices[i]
+            rst_swap(indices[0], ii, ws[ii], W)
     else:
         w3 = wdiff / S3
         for i in range(2, N):
-            I = indices[i]
-            v = w3 * weights[I]
-            rst_swap(0, I, v, W)
+            ii = indices[i]
+            v = w3 * ws[ii]
+            rst_swap(0, ii, v, W)
         for j in range(N - 1, 0, -1):
-            J = indices[j]
-            v = W[J, J] / j
+            jj = indices[j]
+            v = W[jj, jj] / j
             for k in range(j - 1, -1, -1):
-                rst_swap(J, indices[k], v, W)
+                rst_swap(jj, indices[k], v, W)
     W /= W.sum(axis=1).reshape(-1, 1)
     W[W < cutoff] = 0.0
     return W / W.sum(axis=1).reshape(-1, 1)
 
 
-def rst_swap(i, j, w, W):
+def rst_swap(i: int, j: int, w: np.ndarray, W: np.ndarray) -> None:
     W[i, i] -= w
     W[i, j] += w
     W[j, i] += w

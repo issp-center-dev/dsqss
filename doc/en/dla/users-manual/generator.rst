@@ -21,7 +21,7 @@ Simple mode tool ``dla_pre``
 The meanings of the parameters are following.
 
 ``paramfile``
-  The name of the parameter file to be generated (default: ``qmc.inp``.)
+  The name of the parameter file to be generated (default: ``param.in``.)
 
 ``inputfile``
   The name of the input file.

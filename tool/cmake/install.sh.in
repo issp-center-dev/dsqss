@@ -1,23 +1,18 @@
-export PYTHONPATH=@DSQSS_PYTHONPATH@
+PREFIX=@CMAKE_INSTALL_PREFIX@
 
 cd @CMAKE_CURRENT_BINARY_DIR@
 
-if ! @PYTHON_EXECUTABLE@ -m pip --version >/dev/null 2>/dev/null ;then
-  set -e
-  wget https://bootstrap.pypa.io/get-pip.py -O get-pip.py
-  PIP_USER=0 @PYTHON_EXECUTABLE@ get-pip.py --prefix=@CMAKE_INSTALL_PREFIX@
+echo "-- Installing dsqss tools to $PREFIX"
+@PYTHON_EXECUTABLE@ -m pip install --prefix=$PREFIX --no-deps @CMAKE_CURRENT_SOURCE_DIR@
+
+echo "export PATH=${PREFIX}/bin:\$PATH" > dsqssvars.sh
+
+# Some systems like Ubuntu 22.04 install python packages under ${PREFIX}/local instead of ${PREFIX}
+if [ -d ${PREFIX}/local ]; then
+    echo "export PATH=${PREFIX}/local/bin:\$PATH" >> dsqssvars.sh
 fi
+DSQSS_PYTHONPATH=$(@PYTHON_EXECUTABLE@ @CMAKE_CURRENT_SOURCE_DIR@/cmake/get_site_packages.py $PREFIX)
 
-set -e
-PIP_USER=0 @PYTHON_EXECUTABLE@ -m pip install -U pip --prefix=@CMAKE_INSTALL_PREFIX@ 
-PIP_USER=0 @PYTHON_EXECUTABLE@ -m pip install wheel --prefix=@CMAKE_INSTALL_PREFIX@ --no-warn-script-location
-DSQSS_VERSION=$(@PYTHON_EXECUTABLE@ setup.py --version)
-@PYTHON_EXECUTABLE@ setup.py bdist_wheel --universal
-mkdir -p temp
-cd temp
-
-# To reinstall dsqss forcely, remove old dsqss package
-# `pip uninstall dsqss` removes ALL libraries and binaries 
-rm -rf @DSQSS_PYTHONPATH@/dsqss*
-
-PIP_USER=0 @PYTHON_EXECUTABLE@ -m pip install ../dist/dsqss-${DSQSS_VERSION}-py2.py3-none-any.whl --prefix=@CMAKE_INSTALL_PREFIX@ --no-warn-script-location
+echo "export PYTHONPATH=${DSQSS_PYTHONPATH}:\$PYTHONPATH" >> dsqssvars.sh
+mkdir -p ${PREFIX}/share/dsqss
+cp dsqssvars.sh ${PREFIX}/share/dsqss/dsqssvars-@DSQSS_VERSION@.sh

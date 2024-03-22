@@ -23,28 +23,28 @@ class IndexSystem {
  public:
   void init(const int d, const int* l, const std::string& LBL0 = "");
 
-  IndexSystem() { INI = false; };
+  IndexSystem() { INI = false; }
 
   IndexSystem(const int d, const int* l, const std::string& LBL0 = "") {
     INI = false;
     init(d, l, LBL0);
-  };
+  }
 
   IndexSystem operator=(IndexSystem& I) {
     printf("IndexSystem::=()> Error.\n");
     printf("  ... The copy operation is prohibited.\n");
     exit(0);
-  };
+  }
 
   IndexSystem(IndexSystem& I) {
     printf("IndexSystem::IndexSystem> Error.\n");
     printf("  ... The copy operation is prohibited.\n");
     exit(0);
-  };
+  }
 
   ~IndexSystem() {
     if (initialized()) delete[] L;
-  };
+  }
 
   bool initialized() const { return INI; };
   int coord(const int ist, const int d);
@@ -55,21 +55,21 @@ class IndexSystem {
       exit(0);
     }
     return D;
-  };
+  }
   int size() {
     if (!initialized()) {
       printf("IndexSystem::size()> Error. Not yet initialized.\n");
       exit(0);
     }
     return N;
-  };
+  }
   int size(int i) {
     if (!initialized()) {
       printf("IndexSystem::size(int)> Error. Not yet initialized.\n");
       exit(0);
     }
     return L[i];
-  };
+  }
   int operator()(const int* x) const;
   int operator()(std::vector<int> const& x) const;
   int operator()(const int M, va_list& ap) const;
@@ -87,7 +87,7 @@ class IndexSystem {
       printf(" %d", L[i]);
     }
     printf(") = %d\n", N);
-  };
+  }
 };
 
 void IndexSystem::init(const int d, const int* l, const std::string& LBL0) {
@@ -109,7 +109,7 @@ void IndexSystem::init(const int d, const int* l, const std::string& LBL0) {
     printf("IndexSystem::init> Error. N = 0.\n");
     for (int i = 0; i < d; i++) printf("  L[%d] = %d\n", i, L[i]);
     exit(0);
-  };
+  }
 }
 
 int IndexSystem::coord(const int ist, const int d) {
@@ -209,7 +209,6 @@ int IndexSystem::operator()(const int M, va_list& ap) const {
     exit(0);
   }
   int x[D];
-  // int* x = new int[D]; //edit sakakura
   x[0] = M;
   for (int i = 1; i < D; i++) x[i] = va_arg(ap, int);
   return (*this)(x);
@@ -245,16 +244,15 @@ class Array {
   Array() {
     LBL = "";
     val = 0;
-  };
+  }
   Array(const std::string& LBL0) {
     LBL = LBL0;
     val = 0;
-  };
-  // Array(int d, ...);
+  }
   ~Array();
   void set_all(C v);
   void set_value(double* v);
-  void setLabel(const char* label) { LBL = label; };
+  void setLabel(const char* label) { LBL = label; }
   int index(int i, int d);
   C& operator()(const int M, ...);
   C& operator()(int* x);

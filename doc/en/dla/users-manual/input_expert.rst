@@ -12,7 +12,7 @@ The list of input files
     :header-rows: 0
     :widths: 1,4
 
-    qmc.inp, "Parameter list for the simulation, e.g., the number of Monte Carlo sets."
+    param.in, "Parameter list for the simulation, e.g., the number of Monte Carlo sets."
     lattice.xml, "Definition of the lattice."
     algorithm.xml, "Definition of the algorithm (e.g., scattering rate of a worm)."
     wavevector.xml, "Indication of wave vectors for structure factors. (optional)"

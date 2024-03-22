@@ -8,12 +8,12 @@ Requirements
 ********************
 
 - (Optional) MPI (essential for PMWA)
-- python 2.7 or 3.4+
+- python 3.6+
 
    - numpy
    - scipy
    - toml
-   - pip (essential for ``make install``)
+   - typing_extensions (if python 3.6 or 3.7 is used)
 
 Download
 ********************
@@ -83,6 +83,15 @@ It is noted that the default install directory is set as ``/usr/local/bin`` .
     $ cmake ../ -DCONFIG=intel
 
   For details, see https://github.com/issp-center-dev/HPhi/wiki/FAQ .
+
+
+.. note::
+
+   CMake automatically search for an interpreter of Python.
+   If you want to use a specific one,
+   you should tell it to CMake by using ``-DPYTHON_EXECUTABLE`` option::
+
+     $ cmake ../ -DPYTHON_EXECUTABLE=`which python3`
 
 Each binary files for dsqss will be made in ``src`` and ``tool`` directories.
 To check whether the binary files are correctly made or not,  

@@ -118,6 +118,13 @@ Notations
 :math:`\beta`
   The inverse temperature.
 
+:math:`E_0`
+  The imaginary time average of the expectation value of the unperturbed Hamiltonian
+  :math:`\displaystyle \frac{1}{\beta}\int d\tau \langle \phi(\tau)|\mathcal{H}_0|\phi(\tau)\rangle`.
+
+:math:`N_v`
+  The number of vertices, i.e., the order of the perturbation.
+
 :math:`h`
   The conjugate field to the operator :math:`M^z` .
   The longitudinal magnetic field for spin systems and the chemical potential for the Bose-Hubbard models.
@@ -129,13 +136,17 @@ Main results
 *****************
 Main results are written in a file with the name specified by ``outfile`` keyword in the input parameter file.
 
+NOTICE: In general, Monte Carlo simulations have systematic errors of :math:`O(1/N)` with respect to the number of samples :math:`N` (``nmcs``) for the expectation values including nonlinear functions of the sample average like the specific heat and the susceptibility.
+For example, in the region where the specific heat becomes very small, e.g., in the low-temperature region below the energy gap, the calculated value may be negative.
+For precise analysis, we need to take into account not only the statistical errors but also the systematic errors.
+
 ``sign``
   The sign of the weights.
 
   :math:`\sum_i W_i / \sum_i |W_i`
 
 ``anv``
-  The mean number of the vertices.
+  The number of the vertices per site.
 
   :math:`\displaystyle \frac{\langle N_v \rangle}{N_s}`
 ``ene``
@@ -145,7 +156,7 @@ Main results are written in a file with the name specified by ``outfile`` keywor
 ``spe``
   The specific heat
 
-  :math:`\displaystyle C_V \equiv \frac{\partial \epsilon}{\partial T}`
+  :math:`\displaystyle C_V \equiv \frac{\partial \epsilon}{\partial T} = \frac{1}{N_s T^2} \left[\left\langle\left(E_0 - TN_v\right)^2\right\rangle - \left\langle\left(E_0 - TN_v\right)\right\rangle^2 - T^2\left\langle N_v \right\rangle\right]`
 
 ``som``
   The ratio of the specific heat and the temperature.
@@ -210,6 +221,10 @@ Main results are written in a file with the name specified by ``outfile`` keywor
   :math:`\displaystyle \chi^{zz}(\vec{k},  \omega=0) 
   = \beta N_s \left[\left\langle (\tilde{m}_K^z)^2 \right\rangle - \left\langle \tilde{m}_K^z \right\rangle^2 \right]`
 
+``ds1``
+  The derivative of the "magnetization" (``amzu``) with respect to the temperature.
+
+  :math:`\displaystyle T\frac{\partial \left\langle \tilde{m}^z \right\rangle}{\partial T} = -\beta\frac{\partial \left\langle \tilde{m}^z \right\rangle}{\partial\beta}`
 
 ``wi2``
   The winding number.
@@ -270,6 +285,8 @@ Displacement :math:`\vec{r}_{ij}` and imaginary time :math:`\tau` are specified 
 where ``<k>`` is an index of the displacement specified by ``kind`` (the first element of each ``R`` tag) in the relative coordinate XML file,
 and ``<t>`` is an index of the discretized imaginary time.
 
+NOTE: The current version, this works only for :math:`S=1/2` model.
+
 Momentum space temperature Green's function output
 **************************************************
 The momentum space temperature Green's function is written into a file with the name specified by ``ckoutfile`` keyword in the input file.
@@ -281,3 +298,5 @@ The momentum space temperature Green's function is defined as the following:
 Wave vector :math:`\vec{r}_{ij}` and imaginary time :math:`\tau` are specified by the name ``C<k>t<t>`` as the same way of structure factor,
 where ``<k>`` is an index of the displacement specified by ``kind`` (the last element of each ``RK`` tag) in the wavevector XML file,
 and ``<t>`` is an index of the discretized imaginary time.
+
+NOTE: The current version, this works only for :math:`S=1/2` model.
