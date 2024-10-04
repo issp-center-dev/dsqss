@@ -201,7 +201,7 @@ class Lattice:
 
         self.sites = []
         self.ints = []
-        ncells = np.product(self.size)
+        ncells = np.prod(self.size)
         bid = 0
         for icell in range(ncells):
             cell_coord = np.array(util.index2coord(icell, self.size))
