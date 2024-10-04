@@ -17,6 +17,6 @@
 #ifndef SRC_COMMON_VERSION_H_
 #define SRC_COMMON_VERSION_H_
 
-#define DSQSS_VERSION "2.0.5"
+#define DSQSS_VERSION "2.0.6"
 
 #endif  // SRC_COMMON_VERSION_H_
