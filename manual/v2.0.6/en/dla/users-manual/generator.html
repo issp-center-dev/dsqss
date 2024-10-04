@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>4.4. Input file generators for DSQSS/DLA &#8212; DSQSS 2.0.6 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=66c3864b" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=1c3cb22f"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4.5. Directed loop algorithm solver dla" href="engine.html" />
+    <link rel="prev" title="4.3. Input files for DSQSS/DLA" href="input_expert.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="input-file-generators-for-dsqss-dla">
+<h1><span class="section-number">4.4. </span>Input file generators for DSQSS/DLA<a class="headerlink" href="#input-file-generators-for-dsqss-dla" title="Permalink to this heading">¶</a></h1>
+<p>DSQSS/DLA takes several input files;
+lattice XML file, algorithm XML file, and wavevector XML file,
+and users can simulate any model on any lattice (graph) by defining these files properly.
+They are, however, too complicated to be made by hand.
+To help users, DSQSS/DLA offers utility tools for generating these files for widely used lattices and models
+such as a hypercubic lattice and the Heisenberg model.</p>
+<section id="simple-mode-tool-dla-pre">
+<span id="dla-pre"></span><h2><span class="section-number">4.4.1. </span>Simple mode tool <code class="docutils literal notranslate"><span class="pre">dla_pre</span></code><a class="headerlink" href="#simple-mode-tool-dla-pre" title="Permalink to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">dla_pre</span></code> is a utility tool for generating <a class="reference internal" href="input_expert.html#dla-expert-files"><span class="std std-ref">Input files for DSQSS/DLA</span></a> from <a class="reference internal" href="input_simple.html#simple-mode-file"><span class="std std-ref">Simple mode file std.toml</span></a>.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dla_pre [-p paramfile] &lt;inputfile&gt;
+</pre></div>
+</div>
+<p>The meanings of the parameters are following.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">paramfile</span></code></dt><dd><p>The name of the parameter file to be generated (default: <code class="docutils literal notranslate"><span class="pre">param.in</span></code>.)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">inputfile</span></code></dt><dd><p>The name of the input file.
+For details of the input file, see <a class="reference internal" href="input_simple.html#simple-mode-file"><span class="std std-ref">Simple mode file std.toml</span></a> .</p>
+</dd>
+</dl>
+<p>The names of the XML files such as the lattice XML file are automatically determined from parameters.</p>
+</section>
+<section id="lattice-file-generator-dla-latgen">
+<span id="dla-lat-gen"></span><h2><span class="section-number">4.4.2. </span>Lattice file generator <code class="docutils literal notranslate"><span class="pre">dla_latgen</span></code><a class="headerlink" href="#lattice-file-generator-dla-latgen" title="Permalink to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">dla_latgen</span></code> is a utility tool for generating <a class="reference internal" href="input_standard.html#lattice-data-file"><span class="std std-ref">Lattice datafile</span></a> or <a class="reference internal" href="input_standard.html#lattice-toml-file"><span class="std std-ref">Lattice TOML file lattice.toml</span></a> from <a class="reference internal" href="input_simple.html#simple-mode-file"><span class="std std-ref">Simple mode file std.toml</span></a> .</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dla_latgen [-o datafile] [-t TOML] [-g GNUPLOT] input
+</pre></div>
+</div>
+<p>The meanings of the parameters are following.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">datafile</span></code></dt><dd><p>The name of the generated lattice data file (default: <code class="docutils literal notranslate"><span class="pre">lattice.dat</span></code> .)
+If empty, <code class="docutils literal notranslate"><span class="pre">dla_latgen</span></code> never generate any lattice data file.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TOML</span></code></dt><dd><p>The name of the generated lattice TOML file (default: empty.)
+If empty, <code class="docutils literal notranslate"><span class="pre">dla_latgen</span></code> never generate any lattice TOML file.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GNUPLOT</span></code></dt><dd><p>The name of the generated lattice Gnuplot file (default: empty.)
+If empty, <code class="docutils literal notranslate"><span class="pre">dla_latgen</span></code> never generate any lattice Gnuplot file.
+Users can see the generated lattice by <code class="docutils literal notranslate"><span class="pre">load</span></code> the lattice Gnuplot file in <code class="docutils literal notranslate"><span class="pre">gnuplot</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">inputfile</span></code></dt><dd><p>The name of the input file.
+For details of the input file, see <a class="reference internal" href="input_simple.html#std-toml-lattice"><span class="std std-ref">lattice</span></a> .</p>
+</dd>
+</dl>
+<p>Examples</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># 1d chain with 8 sites
+[lattice]
+lattice = &quot;hypercubic&quot;
+dim = 1
+L = 8
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># 2d square, 4x4 sites
+[lattice]
+lattice = &quot;hypercubic&quot;
+dim = 2
+L = 4
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># two leg ladder, 8x2 sites
+[lattice]
+lattice = &quot;hypercubic&quot;
+dim = 2
+L = [8,2]
+bc = [true, false]
+</pre></div>
+</div>
+</section>
+<section id="hamiltonian-file-generator-dla-hamgen">
+<h2><span class="section-number">4.4.3. </span>Hamiltonian file generator <code class="docutils literal notranslate"><span class="pre">dla_hamgen</span></code><a class="headerlink" href="#hamiltonian-file-generator-dla-hamgen" title="Permalink to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">dla_hamgen</span></code> is a utility tool for generating <a class="reference internal" href="input_standard.html#hamiltonian-file"><span class="std std-ref">Hamiltonian TOML file</span></a> from <a class="reference internal" href="input_simple.html#simple-mode-file"><span class="std std-ref">Simple mode file std.toml</span></a></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dla_hamgen [-o filename] &lt;inputfile&gt;
+</pre></div>
+</div>
+<p>The meanings of the parameters are following.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">filename</span></code></dt><dd><p>The name of the generated Hamiltonian file (default: <code class="docutils literal notranslate"><span class="pre">hamiltonian.toml</span></code> .)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">inputfile</span></code></dt><dd><p>The name of the input file.
+For details of the input file, see <a class="reference internal" href="input_simple.html#std-toml-hamiltonian"><span class="std std-ref">hamiltonian</span></a> .</p>
+</dd>
+</dl>
+<p>Example</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># S=1/2 AF Heisenberg model
+[hamiltonian]
+model = &quot;spin&quot;
+M = 1
+Jz = -1.0
+Jxy = -1.0
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># S=1 J1 AF J2 FM XY model under the field
+[hamiltonian]
+model = &quot;spin&quot;
+M = 2
+Jxy = [-1.0, 1.0]
+h = 1.0
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># hardcore boson
+[hamiltonian]
+model = &quot;boson&quot;
+M = 1
+t = 1.0
+V = 1.0
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># softcore boson (upto N=2)
+[hamiltonian]
+model = &quot;boson&quot;
+M = 2
+t = 1.0
+U = 1.0
+V = 1.0
+mu = 1.0
+</pre></div>
+</div>
+</section>
+<section id="parameter-file-generator-dla-pgen">
+<h2><span class="section-number">4.4.4. </span>Parameter file generator <code class="docutils literal notranslate"><span class="pre">dla_pgen</span></code><a class="headerlink" href="#parameter-file-generator-dla-pgen" title="Permalink to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">dla_pgen</span></code> is utility tool for generating <a class="reference internal" href="input_expert.html#expert-param-file"><span class="std std-ref">Parameter file</span></a> from <a class="reference internal" href="input_simple.html#simple-mode-file"><span class="std std-ref">Simple mode file std.toml</span></a> .</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dla_pgen [-o filename] &lt;inputfile&gt;
+</pre></div>
+</div>
+<p>The meanings of the parameters are following.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">filename</span></code></dt><dd><p>The name of the generated parameter file (default: <code class="docutils literal notranslate"><span class="pre">param.in</span></code> .)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">inputfile</span></code></dt><dd><p>The name of the input file.
+For details of the input file, see <a class="reference internal" href="input_simple.html#std-toml-parameter"><span class="std std-ref">parameter</span></a> .</p>
+</dd>
+</dl>
+</section>
+<section id="wavevector-file-generator-dla-wvgen">
+<h2><span class="section-number">4.4.5. </span>Wavevector file generator <code class="docutils literal notranslate"><span class="pre">dla_wvgen</span></code><a class="headerlink" href="#wavevector-file-generator-dla-wvgen" title="Permalink to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">dla_wvgen</span></code> is a utility tool for generating <a class="reference internal" href="input_standard.html#wavevector-file"><span class="std std-ref">Wavevector datafile</span></a> from <a class="reference internal" href="input_simple.html#simple-mode-file"><span class="std std-ref">Simple mode file std.toml</span></a> .</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dla_wvgen [-o filename] [-s size] &lt;inputfile&gt;
+</pre></div>
+</div>
+<p>The meanings of the parameters are following.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">filename</span></code></dt><dd><p>The name of the generated wavevector file (default: <code class="docutils literal notranslate"><span class="pre">kpoints.dat</span></code> .)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">size</span></code></dt><dd><p>Space separated integers denoting the lattice size (e.g., <code class="docutils literal notranslate"><span class="pre">-s</span> <span class="pre">&quot;4</span> <span class="pre">4&quot;</span></code> .)
+If omitted, it will be detected from the <code class="docutils literal notranslate"><span class="pre">[lattice]</span></code> table of the input TOML file.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">inputfile</span></code></dt><dd><p>The name of the input file.
+For details of the input file, see <a class="reference internal" href="input_simple.html#std-toml-hamiltonian"><span class="std std-ref">hamiltonian</span></a> .</p>
+</dd>
+</dl>
+</section>
+<section id="algorithm-file-generator-dla-alg">
+<h2><span class="section-number">4.4.6. </span>Algorithm file generator <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code><a class="headerlink" href="#algorithm-file-generator-dla-alg" title="Permalink to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> is a utility tool for generating
+<a class="reference internal" href="input_expert.html#lattice-xml-file"><span class="std std-ref">Lattice XML file lattice.xml</span></a>, <a class="reference internal" href="input_expert.html#algorithm-xml-file"><span class="std std-ref">Algorithm XML file algorithm.xml</span></a>, <a class="reference internal" href="input_expert.html#wavevector-xml-file"><span class="std std-ref">Wavevector XML file wavevector.xml</span></a>, and <a class="reference internal" href="input_expert.html#relative-coordinate-xml-file"><span class="std std-ref">Relative coordinate XML file displacement.xml</span></a>
+from <a class="reference internal" href="input_standard.html#lattice-data-file"><span class="std std-ref">Lattice datafile</span></a>, <a class="reference internal" href="input_standard.html#lattice-toml-file"><span class="std std-ref">Lattice TOML file lattice.toml</span></a>, <a class="reference internal" href="input_standard.html#hamiltonian-file"><span class="std std-ref">Hamiltonian TOML file</span></a>, and <a class="reference internal" href="input_standard.html#wavevector-file"><span class="std std-ref">Wavevector datafile</span></a> .</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dla_alg [-l LAT] [-h HAM] [-L LATXML] [-A ALGXML]
+          [--without_lattice] [--without_algorithm] [-k KPOINT]
+          [--wv WV] [--disp DISP] [--distance-only]
+          [--kernel KERNEL]
+</pre></div>
+</div>
+<p>The meanings of the parameters are following.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">LAT</span></code></dt><dd><p>The name of the lattice dat/TOML file (default: <code class="docutils literal notranslate"><span class="pre">lattice.dat</span></code>.)
+The type whether dat or TOML is automatically detected.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HAM</span></code></dt><dd><p>The name of the Hamiltonian TOML file (default: <code class="docutils literal notranslate"><span class="pre">hamiltonian.toml</span></code> .)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">LATXML</span></code></dt><dd><p>The name of the generated lattice XML file (default: <code class="docutils literal notranslate"><span class="pre">lattice.xml</span></code> .)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ALGXML</span></code></dt><dd><p>The name of the generated algorithm XML file (default: <code class="docutils literal notranslate"><span class="pre">algorithm.xml</span></code> .)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">without_lattice</span></code></dt><dd><p>If set, <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> never generate a lattice XML file.
+Even in this case, the lattice dat/TOML file is still required.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">without_algorithm</span></code></dt><dd><p>If set, <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> never generate an algorithm XML file.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">KPOINT</span></code></dt><dd><p>The name of the wavevector file.
+If omit, <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> never generate a wavevector XML file.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">WV</span></code></dt><dd><p>The name of the generated wavevector XML file (default: <code class="docutils literal notranslate"><span class="pre">wavevector.xml</span></code> .)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DISP</span></code></dt><dd><p>The name of the generated relative coordinate XML file.
+If omit, <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> never generate a relative coordinate XML file.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">--distance-only</span></code></dt><dd><p>If set, <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> groups pairs of sites by absolute distance instead of relative coordinate.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">KERNEL</span></code></dt><dd><p>The name of the algorithm for calculating the scattering probability of a worm head at a vertex (default: <code class="docutils literal notranslate"><span class="pre">&quot;suwa</span> <span class="pre">todo&quot;</span></code> .)
+For details, see <a class="reference internal" href="input_simple.html#simple-mode-algorithm"><span class="std std-ref">algorithm</span></a> .</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/about_dsqss.html">1. About DSQSS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dsqss/install.html">2. How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">3. Tutorial of DSQSS/DLA</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. User’s manual of DSQSS/DLA</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="input_simple.html">4.1. Simple mode of DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_standard.html">4.2. Standard input files for DSQSS/DLA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_expert.html">4.3. Input files for DSQSS/DLA</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.4. Input file generators for DSQSS/DLA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#simple-mode-tool-dla-pre">4.4.1. Simple mode tool <code class="docutils literal notranslate"><span class="pre">dla_pre</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lattice-file-generator-dla-latgen">4.4.2. Lattice file generator <code class="docutils literal notranslate"><span class="pre">dla_latgen</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hamiltonian-file-generator-dla-hamgen">4.4.3. Hamiltonian file generator <code class="docutils literal notranslate"><span class="pre">dla_hamgen</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parameter-file-generator-dla-pgen">4.4.4. Parameter file generator <code class="docutils literal notranslate"><span class="pre">dla_pgen</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wavevector-file-generator-dla-wvgen">4.4.5. Wavevector file generator <code class="docutils literal notranslate"><span class="pre">dla_wvgen</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#algorithm-file-generator-dla-alg">4.4.6. Algorithm file generator <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="engine.html">4.5. Directed loop algorithm solver <code class="docutils literal notranslate"><span class="pre">dla</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="output.html">4.6. Output of DSQSS/DLA</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tutorial.html">5. Tutorial of DSQSS/PMWA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pmwa/tutorial/tu-index.html">6. User’s manual for DSQSS/PMWA</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="index.html"><span class="section-number">4. </span>User’s manual of DSQSS/DLA</a><ul>
+      <li>Previous: <a href="input_expert.html" title="previous chapter"><span class="section-number">4.3. </span>Input files for DSQSS/DLA</a></li>
+      <li>Next: <a href="engine.html" title="next chapter"><span class="section-number">4.5. </span>Directed loop algorithm solver <code class="docutils literal notranslate"><span class="pre">dla</span></code></a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-, DSQSS developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../../_sources/dla/users-manual/generator.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
