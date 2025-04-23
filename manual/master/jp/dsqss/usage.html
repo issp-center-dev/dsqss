@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 
-<html lang="ja">
+<html lang="ja" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>使用方法 &#8212; DSQSS 2.0.6 ドキュメント</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=66c3864b" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=85260981"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../_static/translations.js?v=4dbe4bdc"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=9814fe92" />
+    <script src="../_static/documentation_options.js?v=a75cdfc9"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/translations.js?v=4755f45a"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   
@@ -32,14 +34,14 @@
           <div class="body" role="main">
             
   <section id="id1">
-<h1>使用方法<a class="headerlink" href="#id1" title="この見出しへのパーマリンク">¶</a></h1>
+<h1>使用方法<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h1>
 <p>DSQSSでは予め定義されたモデルを簡易実行できるよう,
 入力ファイル作成ツール <code class="docutils literal notranslate"><span class="pre">dsqss_pre.py</span></code> を用意しています.
 ここでは, このツールを利用したDSQSSの実行方法について簡単に説明します.
 なお, DSQSS/DLAでは, 複雑な模型をユーザーが定義し実行することも出来ます.
 詳細については <a class="reference internal" href="../dla/users-manual/index.html#chap-dla-usermanual"><span class="std std-ref">DSQSS/DLAのユーザーマニュアル</span></a> をご覧ください.</p>
 <section id="id2">
-<h2>入力ファイルの作成<a class="headerlink" href="#id2" title="この見出しへのパーマリンク">¶</a></h2>
+<h2>入力ファイルの作成<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">dsqss_pre.py</span></code> の実行には, テキストベースの入力ファイルが必要です.
 以下に, 入力ファイルの例を記載します.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[System]
@@ -300,7 +302,7 @@ outfile = sample.log
 </div></blockquote>
 </section>
 <section id="id3">
-<h2>実行方法<a class="headerlink" href="#id3" title="この見出しへのパーマリンク">¶</a></h2>
+<h2>実行方法<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
 <p>入力ファイル作成後は以下のコマンドを入力することで, ソルバー用の入力ファイルが作成されます(以下では入力ファイル名を <code class="docutils literal notranslate"><span class="pre">std.in</span></code> としています).</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dsqss_pre.py -i std.in
 </pre></div>
@@ -317,12 +319,12 @@ MPIを利用する場合には, <code class="docutils literal notranslate"><span
 コマンドの実行結果の詳細については各ソルバーのチュートリアル・出力結果に記載してありますので, そちらを参照してください.</p>
 </section>
 <section id="id4">
-<h2>モンテカルロ計算の流れ<a class="headerlink" href="#id4" title="この見出しへのパーマリンク">¶</a></h2>
+<h2>モンテカルロ計算の流れ<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
 <p><code class="xref std std-numref docutils literal notranslate"><span class="pre">fig_nmcs</span></code> にモンテカルロ計算の流れを示します。</p>
 <figure class="align-default" id="fig-nmcs">
 <img alt="モンテカルロ計算の流れとパラメータの図解" src="../_images/nmcs.png" />
 <figcaption>
-<p><span class="caption-text">モンテカルロ計算のおおまかな流れと各種回数パラメータの図解</span><a class="headerlink" href="#fig-nmcs" title="この画像へのパーマリンク">¶</a></p>
+<p><span class="caption-text">モンテカルロ計算のおおまかな流れと各種回数パラメータの図解</span><a class="headerlink" href="#fig-nmcs" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>DSQSS では, ワームヘッド対が生成されてから消滅するまでを 1 MCステップと呼び,
@@ -346,11 +348,11 @@ MPIを利用する場合には, <code class="docutils literal notranslate"><span
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
   <a href="../index.html">
-    <img class="logo" src="../_static/title_logo.png" alt="Logo"/>
+    <img class="logo" src="../_static/title_logo.png" alt="Logo" />
     
   </a>
 </p>
@@ -380,7 +382,7 @@ MPIを利用する場合には, <code class="docutils literal notranslate"><span
   </ul></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">クイック検索</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
@@ -388,7 +390,7 @@ MPIを利用する場合には, <code class="docutils literal notranslate"><span
       <input type="submit" value="検索" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
 
 
@@ -403,11 +405,11 @@ MPIを利用する場合には, <code class="docutils literal notranslate"><span
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2018-, DSQSS developers.
+      &#169;2018-, DSQSS developers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
       <a href="../_sources/dsqss/usage.rst.txt"
