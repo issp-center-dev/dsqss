@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>3.3. Magnetic Susceptibility of antiferromagnetic spin chains &#8212; DSQSS 2.1-dev documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=66c3864b" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=38cd6c99"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=9814fe92" />
+    <script src="../../_static/documentation_options.js?v=6fddfc0f"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -19,8 +20,9 @@
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   
@@ -33,13 +35,13 @@
           <div class="body" role="main">
             
   <section id="magnetic-susceptibility-of-antiferromagnetic-spin-chains">
-<h1><span class="section-number">3.3. </span>Magnetic Susceptibility of antiferromagnetic spin chains<a class="headerlink" href="#magnetic-susceptibility-of-antiferromagnetic-spin-chains" title="Permalink to this heading">¶</a></h1>
+<h1><span class="section-number">3.3. </span>Magnetic Susceptibility of antiferromagnetic spin chains<a class="headerlink" href="#magnetic-susceptibility-of-antiferromagnetic-spin-chains" title="Link to this heading">¶</a></h1>
 <p>In this tutorial, we will calculate the temperature dependence of the magnetic susceptibility for two kinds of antiferromagnetic spin chains with the local spin length <span class="math notranslate nohighlight">\(S=1/2, 1\)</span>.</p>
 <p>The following Python script (sample/dla/02_spinchain/exec.py) performs DSQSS/DLA work-flow for each parameter (combination of spin length and temperature) automatically.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">subprocess</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 
-<span class="kn">from</span> <span class="nn">dsqss.dla_pre</span> <span class="kn">import</span> <span class="n">dla_pre</span>
-<span class="kn">from</span> <span class="nn">dsqss.result</span> <span class="kn">import</span> <span class="n">Results</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dsqss.dla_pre</span><span class="w"> </span><span class="kn">import</span> <span class="n">dla_pre</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dsqss.result</span><span class="w"> </span><span class="kn">import</span> <span class="n">Results</span>
 
 <span class="n">L</span> <span class="o">=</span> <span class="mi">30</span>
 
@@ -89,7 +91,7 @@ On the other hand, the magnetic susceptibility of the <span class="math notransl
 <figure class="align-default" id="fig-spinchain">
 <img alt="magnetic susceptibility curves of antiferromagnetic spin chain" src="../../_images/spinchain.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 3.1 </span><span class="caption-text">Temperature v.s. susceptibility curves for <span class="math notranslate nohighlight">\(S=1/2\)</span> (blue) and <span class="math notranslate nohighlight">\(S=1\)</span> (red) antiferromagnetic Heisenberg chain.</span><a class="headerlink" href="#fig-spinchain" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">Fig. 3.1 </span><span class="caption-text">Temperature v.s. susceptibility curves for <span class="math notranslate nohighlight">\(S=1/2\)</span> (blue) and <span class="math notranslate nohighlight">\(S=1\)</span> (red) antiferromagnetic Heisenberg chain.</span><a class="headerlink" href="#fig-spinchain" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 </section>
@@ -99,11 +101,11 @@ On the other hand, the magnetic susceptibility of the <span class="math notransl
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
   <a href="../../index.html">
-    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo" />
     
   </a>
 </p>
@@ -142,7 +144,7 @@ On the other hand, the magnetic susceptibility of the <span class="math notransl
   </ul></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
@@ -150,7 +152,7 @@ On the other hand, the magnetic susceptibility of the <span class="math notransl
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
 
 
@@ -165,11 +167,11 @@ On the other hand, the magnetic susceptibility of the <span class="math notransl
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2018-, DSQSS developers.
+      &#169;2018-, DSQSS developers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
       <a href="../../_sources/dla/tutorial/spinchain.rst.txt"

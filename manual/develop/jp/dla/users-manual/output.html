@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 
-<html lang="ja">
+<html lang="ja" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>4.6. DLA の出力ファイル &#8212; DSQSS 2.1-dev ドキュメント</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=66c3864b" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=a1d7d737"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../../_static/translations.js?v=4dbe4bdc"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=9814fe92" />
+    <script src="../../_static/documentation_options.js?v=f6c747a1"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/translations.js?v=4755f45a"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="検索" href="../../search.html" />
@@ -20,8 +21,9 @@
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   
@@ -34,9 +36,9 @@
           <div class="body" role="main">
             
   <section id="dla">
-<h1><span class="section-number">4.6. </span>DLA の出力ファイル<a class="headerlink" href="#dla" title="この見出しへのパーマリンク">¶</a></h1>
+<h1><span class="section-number">4.6. </span>DLA の出力ファイル<a class="headerlink" href="#dla" title="Link to this heading">¶</a></h1>
 <section id="id1">
-<h2><span class="section-number">4.6.1. </span>フォーマット<a class="headerlink" href="#id1" title="この見出しへのパーマリンク">¶</a></h2>
+<h2><span class="section-number">4.6.1. </span>フォーマット<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
 <p>DLA は計算結果を行区切りのプレーンテキストファイルで出力します.
 行頭の文字はその行の意味を表します.</p>
 <dl class="simple">
@@ -147,7 +149,7 @@ I [the maximum number of reg. vertex info.] = 3
 </dl>
 </section>
 <section id="id2">
-<h2><span class="section-number">4.6.2. </span>メイン出力<a class="headerlink" href="#id2" title="この見出しへのパーマリンク">¶</a></h2>
+<h2><span class="section-number">4.6.2. </span>メイン出力<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
 <p>メイン出力ファイルは, 入力パラメータファイルの <code class="docutils literal notranslate"><span class="pre">outfile</span></code> キーワードで指定した名前で出力されます.</p>
 <p>NOTICE: 一般にモンテカルロ法では, 比熱や感受率など, サンプル平均の非線形関数を含むような量の期待値には, モンテカルロサンプル数 <span class="math notranslate nohighlight">\(N\)</span> (<code class="docutils literal notranslate"><span class="pre">nmcs</span></code>)に対して <span class="math notranslate nohighlight">\(O(1/N)\)</span> の系統誤差も含まれます.
 たとえば, エネルギーギャップ以下の極低温領域など, 比熱の値が非常に小さくなるような場合には計算結果が負になることがあります.
@@ -228,7 +230,7 @@ N_s \left[ \left\langle (m^z)^2\right\rangle
 </dl>
 </section>
 <section id="id3">
-<h2><span class="section-number">4.6.3. </span>構造因子出力ファイル<a class="headerlink" href="#id3" title="この見出しへのパーマリンク">¶</a></h2>
+<h2><span class="section-number">4.6.3. </span>構造因子出力ファイル<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
 <p>構造因子出力ファイルは, 入力パラメータファイルの <code class="docutils literal notranslate"><span class="pre">sfoutfile</span></code> キーワードで指定した名前で出力されます.
 このファイルには虚時間構造因子</p>
 <div class="math notranslate nohighlight">
@@ -247,7 +249,7 @@ R C1t0 = 7.35281032e-02 3.18028565e-04
 <code class="docutils literal notranslate"><span class="pre">&lt;t&gt;</span></code> は離散化した虚時間のインデックス.</p>
 </section>
 <section id="id4">
-<h2><span class="section-number">4.6.4. </span>実空間表示温度グリーン関数出力ファイル<a class="headerlink" href="#id4" title="この見出しへのパーマリンク">¶</a></h2>
+<h2><span class="section-number">4.6.4. </span>実空間表示温度グリーン関数出力ファイル<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
 <p>実空間表示温度グリーン関数出力ファイルは, 入力パラメータファイルの <code class="docutils literal notranslate"><span class="pre">cfoutfile</span></code> キーワードで指定した名前で出力されます.
 このファイルには温度グリーン関数</p>
 <div class="math notranslate nohighlight">
@@ -260,7 +262,7 @@ R C1t0 = 7.35281032e-02 3.18028565e-04
 現在のバージョンでは <span class="math notranslate nohighlight">\(S=1/2\)</span> のモデル以外はうまく計算できません.</p>
 </section>
 <section id="id5">
-<h2><span class="section-number">4.6.5. </span>波数表示温度グリーン関数出力ファイル<a class="headerlink" href="#id5" title="この見出しへのパーマリンク">¶</a></h2>
+<h2><span class="section-number">4.6.5. </span>波数表示温度グリーン関数出力ファイル<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h2>
 <p>波数表示温度グリーン関数出力ファイルは, 入力パラメータファイルの <code class="docutils literal notranslate"><span class="pre">ckoutfile</span></code> キーワードで指定した名前で出力されます.
 このファイルには温度グリーン関数</p>
 <div class="math notranslate nohighlight">
@@ -280,11 +282,11 @@ R C1t0 = 7.35281032e-02 3.18028565e-04
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
   <a href="../../index.html">
-    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo" />
     
   </a>
 </p>
@@ -333,7 +335,7 @@ R C1t0 = 7.35281032e-02 3.18028565e-04
   </ul></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">クイック検索</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
@@ -341,7 +343,7 @@ R C1t0 = 7.35281032e-02 3.18028565e-04
       <input type="submit" value="検索" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
 
 
@@ -356,11 +358,11 @@ R C1t0 = 7.35281032e-02 3.18028565e-04
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2018-, DSQSS developers.
+      &#169;2018-, DSQSS developers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
       <a href="../../_sources/dla/users-manual/output.rst.txt"

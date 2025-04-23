@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 
-<html lang="ja">
+<html lang="ja" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>4.2. DSQSS/DLA のスタンダードモード &#8212; DSQSS 2.1-dev ドキュメント</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=66c3864b" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=a1d7d737"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../../_static/translations.js?v=4dbe4bdc"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=9814fe92" />
+    <script src="../../_static/documentation_options.js?v=f6c747a1"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/translations.js?v=4755f45a"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="検索" href="../../search.html" />
@@ -20,8 +21,9 @@
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   
@@ -34,18 +36,18 @@
           <div class="body" role="main">
             
   <section id="dsqss-dla">
-<h1><span class="section-number">4.2. </span>DSQSS/DLA のスタンダードモード<a class="headerlink" href="#dsqss-dla" title="この見出しへのパーマリンク">¶</a></h1>
+<h1><span class="section-number">4.2. </span>DSQSS/DLA のスタンダードモード<a class="headerlink" href="#dsqss-dla" title="Link to this heading">¶</a></h1>
 <p>DSQSS/DLA のスタンダードモードでは, ユーザが模型や格子を定義して計算することができます.
 あらかじめ定義された模型や格子と組み合わせたり, 拡張することも可能です.
 <a class="reference internal" href="input_simple.html#fig-flow-dla-simple"><span class="std std-numref">図 4.1</span></a> はスタンダードモードによる計算の流れ図です.</p>
 <figure class="align-default" id="fig-flow-dla-std">
 <img alt="DSQSS/DLA のスタンダードモード." src="../../_images/flow_std.png" />
 <figcaption>
-<p><span class="caption-number">図 4.2 </span><span class="caption-text">DSQSS/DLA のスタンダードモード. 丸囲みがファイルを, 四角囲みがツールを表す.</span><a class="headerlink" href="#fig-flow-dla-std" title="この画像へのパーマリンク">¶</a></p>
+<p><span class="caption-number">図 4.2 </span><span class="caption-text">DSQSS/DLA のスタンダードモード. 丸囲みがファイルを, 四角囲みがツールを表す.</span><a class="headerlink" href="#fig-flow-dla-std" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <section id="id1">
-<h2><span class="section-number">4.2.1. </span>入力ファイル一覧<a class="headerlink" href="#id1" title="この見出しへのパーマリンク">¶</a></h2>
+<h2><span class="section-number">4.2.1. </span>入力ファイル一覧<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 20.0%" />
@@ -68,7 +70,7 @@
 </table>
 </section>
 <section id="lattice-data-file">
-<span id="id2"></span><h2><span class="section-number">4.2.2. </span>格子データファイル<a class="headerlink" href="#lattice-data-file" title="この見出しへのパーマリンク">¶</a></h2>
+<span id="id2"></span><h2><span class="section-number">4.2.2. </span>格子データファイル<a class="headerlink" href="#lattice-data-file" title="Link to this heading">¶</a></h2>
 <p>格子データファイルは空間の情報, たとえばサイトの数やサイト同士のつながりかたなどを定義するためのテキストファイルです.
 <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> の入力ファイルとして扱われます.</p>
 <p><code class="docutils literal notranslate"><span class="pre">#</span></code> から行末まではコメントとして読み飛ばされます. また, 空白行も飛ばされます.
@@ -298,7 +300,7 @@ interactions
 </div>
 </section>
 <section id="toml">
-<span id="lattice-toml-file"></span><h2><span class="section-number">4.2.3. </span>格子TOML ファイル<a class="headerlink" href="#toml" title="この見出しへのパーマリンク">¶</a></h2>
+<span id="lattice-toml-file"></span><h2><span class="section-number">4.2.3. </span>格子TOML ファイル<a class="headerlink" href="#toml" title="Link to this heading">¶</a></h2>
 <p>格子TOML ファイルはユニットセルと基本並進ベクトルを用いて空間の情報を定義するための,
 <a class="reference external" href="https://github.com/toml-lang/toml/blob/master/versions/ja/toml-v0.5.0.md">TOML</a> 形式のファイルです.
 <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> の入力ファイルとして扱われます.</p>
@@ -386,7 +388,7 @@ target = { siteid = 0, offset = [0,1] }
 </div>
 </section>
 <section id="hamiltonian-file">
-<span id="id3"></span><h2><span class="section-number">4.2.4. </span>ハミルトニアンTOMLファイル<a class="headerlink" href="#hamiltonian-file" title="この見出しへのパーマリンク">¶</a></h2>
+<span id="id3"></span><h2><span class="section-number">4.2.4. </span>ハミルトニアンTOMLファイル<a class="headerlink" href="#hamiltonian-file" title="Link to this heading">¶</a></h2>
 <p>ハミルトニアンTOMLファイルは局所ハミルトニアン, 例えばボンドハミルトニアン, を指定する,
 <a class="reference external" href="https://github.com/toml-lang/toml/blob/master/versions/ja/toml-v0.5.0.md">TOML</a> 形式で記述されるテキストファイルです.
 <code class="docutils literal notranslate"><span class="pre">dla_alg</span></code> の入力として, アルゴリズム定義ファイルを作成するために用いる補助入力ファイルとなっています.
@@ -512,7 +514,7 @@ value = 0.25
 </div>
 </section>
 <section id="wavevector-file">
-<span id="id4"></span><h2><span class="section-number">4.2.5. </span>波数ファイル<a class="headerlink" href="#wavevector-file" title="この見出しへのパーマリンク">¶</a></h2>
+<span id="id4"></span><h2><span class="section-number">4.2.5. </span>波数ファイル<a class="headerlink" href="#wavevector-file" title="Link to this heading">¶</a></h2>
 <p>波数ファイルは, 波数ベクトル</p>
 <div class="math notranslate nohighlight">
 \[\vec{k}^{(i)} = \sum_{d=1}^{D} n_d^{(i)} \vec{g}_d\]</div>
@@ -564,11 +566,11 @@ kpoints
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
   <a href="../../index.html">
-    <img class="logo" src="../../_static/title_logo.png" alt="Logo"/>
+    <img class="logo" src="../../_static/title_logo.png" alt="Logo" />
     
   </a>
 </p>
@@ -617,7 +619,7 @@ kpoints
   </ul></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">クイック検索</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
@@ -625,7 +627,7 @@ kpoints
       <input type="submit" value="検索" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
 
 
@@ -640,11 +642,11 @@ kpoints
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2018-, DSQSS developers.
+      &#169;2018-, DSQSS developers.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
       <a href="../../_sources/dla/users-manual/input_standard.rst.txt"
