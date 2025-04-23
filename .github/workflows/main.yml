@@ -12,11 +12,8 @@ jobs:
 
     strategy:
       matrix:
-        os: ["ubuntu-20.04", "ubuntu-22.04"]
-        python-version: ["3.6", "3.12"]
-        exclude:
-          - os: "ubuntu-22.04"
-            python-version: "3.6"
+        os: ["ubuntu-latest"]
+        python-version: ["3.13", "3.8"]
       fail-fast: false
 
     steps:
@@ -31,7 +28,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt install \
-            gcc gfortran cmake wget liblapack-dev \
+            gcc gfortran cmake wget libblas-dev liblapack-dev \
             openmpi-bin libopenmpi-dev
 
       - name: pip install
@@ -65,7 +62,7 @@ jobs:
 
 
   docs:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -73,7 +70,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: 3.8
+        python-version: 3.13
 
     - name: Prepare LaTeX env
       run: |
