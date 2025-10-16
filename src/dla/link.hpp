@@ -207,6 +207,8 @@ class Pool : public Ring<C> {
   int size_min;
   int size;
 
+  void expand(int expansion_size);
+
  public:
   Pool() : Ring<C>() { size = 0; }
 
@@ -222,8 +224,9 @@ class Pool : public Ring<C> {
 
   C& pop() {
     if (size == 0) {
-      printf("Pool> ERROR. Attempt to extract from an empty pool.\n");
-      exit(0);
+      const int new_size = size_max * 2;
+      printf( "Pool> INFO: Pool is empty. Expanding pool size from %d to %d.\n", size_max, new_size);
+      expand(new_size - size_max);
     }
 
     size--;
@@ -356,6 +359,18 @@ inline Pool<C>::~Pool() {
     C& x = pop();
     delete &x;
   }
+}
+
+//======================================================================
+
+template <class C>
+inline void Pool<C>::expand(int expansion_size) {
+  for (int i = 0; i < expansion_size; i++) {
+    C& x = *(new C);
+    this->add_tail(x);
+  }
+  size += expansion_size;
+  size_max += expansion_size;
 }
 
 #endif  // SRC_DLA_LINK_HPP_
