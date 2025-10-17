@@ -2,6 +2,7 @@
 #define SRC_DLA_LINK_HPP_
 
 #include <cstdio>
+#include <cassert>
 
 //######################################################################
 
@@ -207,12 +208,15 @@ class Pool : public Ring<C> {
   int size_min;
   int size;
 
- public:
-  Pool() : Ring<C>() { size = 0; }
+  void expand(int expansion_size);
 
-  ~Pool();
+ public:
+  Pool() : Ring<C>(), size_max(0), size_min(0), size(0) {}
+
+  ~Pool(){clear();};
 
   void init(int N);
+  void clear();
 
   void push(C& x) {
     size++;
@@ -222,8 +226,9 @@ class Pool : public Ring<C> {
 
   C& pop() {
     if (size == 0) {
-      printf("Pool> ERROR. Attempt to extract from an empty pool.\n");
-      exit(0);
+      const int new_size = (size_max > 0) ? size_max * 2 : 10;
+      printf( "Pool> INFO: Pool is empty. Expanding pool size from %d to %d.\n", size_max, new_size);
+      expand(new_size - size_max);
     }
 
     size--;
@@ -331,31 +336,33 @@ void Ring<C>::move_to_head(RingIterator<C> it) {
 
 template <class C>
 inline void Pool<C>::init(int N) {
-  // +++ edit sakakura +++
-  // if ( ! Ring<C>::empty() ) {
-  //  printf("Pool: ERROR. Attempt to initialize the pool twice.\n");
-  //  exit(0);
-  //}
-  // +++ edit sakakura +++
-
-  for (int i = 0; i < N; i++) {
-    C& x = *(new C);
-    this->add_tail(x);
-  }
-  size = N;
-  size_max = N;
-  size_min = N;
+  if (size_max > 0) {clear();}
+  expand(N);
 }
 
 //======================================================================
 
 template <class C>
-inline Pool<C>::~Pool() {
-  //  printf("*** Destroying Pool\n");
+inline void Pool<C>::clear() {
   while (!Ring<C>::empty()) {
     C& x = pop();
     delete &x;
   }
+  size_max = size_min = size = 0;
+}
+
+//======================================================================
+
+template <class C>
+inline void Pool<C>::expand(int expansion_size) {
+  assert(expansion_size >= 0);
+  for (int i = 0; i < expansion_size; i++) {
+    C& x = *(new C);
+    this->add_tail(x);
+  }
+  size += expansion_size;
+  size_max += expansion_size;
+  size_min += expansion_size;
 }
 
 #endif  // SRC_DLA_LINK_HPP_
