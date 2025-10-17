@@ -30,7 +30,9 @@ class AutoDebugDump_impl {
     std::cout << message << "> Start.\n" << std::flush;
   }
   ~AutoDebugDump_impl() {
-    { std::cout << message << "> End.\n" << std::flush; }
+    {
+      std::cout << message << "> End.\n" << std::flush;
+    }
   }
 };
 

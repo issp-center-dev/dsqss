@@ -20,8 +20,7 @@ import numpy as np
 
 
 class KernelCallBack(Protocol):
-    def __call__(self, weights: Sequence[float], cutoff: float = ...) -> np.ndarray:
-        ...
+    def __call__(self, weights: Sequence[float], cutoff: float = ...) -> np.ndarray: ...
 
 
 def heat_bath(weights: Sequence[float], cutoff: float = 1e-10) -> np.ndarray:

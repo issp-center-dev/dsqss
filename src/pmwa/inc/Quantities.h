@@ -278,4 +278,4 @@ class Quantities {
   void show(ofstream &F, FILE *SFF);
 };
 
-#endif // SRC_PMWA_INC_QUANTITIES_H_
+#endif  // SRC_PMWA_INC_QUANTITIES_H_

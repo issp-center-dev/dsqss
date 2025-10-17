@@ -16,7 +16,7 @@ class Test_DSQSSPRE_PMWA(unittest.TestCase):
     def test_dsqss_pre_pmwa_1D_Heisenberg(self):
         copy_if_not_exists("lattgene_P", "../../src/pmwa")
         for p in ("dsqss_pre_pmwa_1D_Heisenberg", "dsqss_pre_pmwa_2D_Heisenberg"):
-            cmds = ['./pmwa_pre', os.path.join('data', p, 'std.in')]
+            cmds = ["./pmwa_pre", os.path.join("data", p, "std.in")]
             self.assertIs(
                 0,
                 call(cmds),

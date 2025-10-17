@@ -226,8 +226,8 @@ void Quantities::Init() {
 #ifdef SF
   for (int isf = 0; isf < NSF; isf++)
     for (int it = 0; it < Ntau; it++) MCmean_SF[isf][it] = 0;
-      //  for( int i=0; i<Nq*2*PR->Npara; i++ ) RNDmean_S[i]=0;
-      //  for( int i=0; i<Lsize*PR->Npara; i++ ) RNDmean_L[i]=0;
+  //  for( int i=0; i<Nq*2*PR->Npara; i++ ) RNDmean_S[i]=0;
+  //  for( int i=0; i<Lsize*PR->Npara; i++ ) RNDmean_L[i]=0;
 #endif
 }
 
@@ -1055,7 +1055,8 @@ void Quantities::CorrelationFunction2(
     ///////////////// Gk //////////////////////
     for (int a = 0; a < 2; a++) {
       for (int k = 0; k < Nkxmax; k++) {
-        Nk2 = (Ck[f_ck(k, 0, a)] * Ck[f_ck(k, 1, a)] - Ck[0]) / static_cast<double>(N->V);
+        Nk2 = (Ck[f_ck(k, 0, a)] * Ck[f_ck(k, 1, a)] - Ck[0]) /
+              static_cast<double>(N->V);
         values_L[f_nkr(k + a * Nkxmax)] = real(Nk2);
         values_L[f_nki(k + a * Nkxmax)] = imag(Nk2);
       }

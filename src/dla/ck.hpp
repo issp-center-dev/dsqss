@@ -189,9 +189,8 @@ void CK::setsummary() {
   }
   AutoDebugDump("CK::setsummary");
   const double factor =
-      2 * ALG.getBlock(
-              "WDIAG",
-              1.0);  // ALG.X["General"]["WDIAG" ].getDouble(); // 0.25
+      2 * ALG.getBlock("WDIAG",
+                       1.0);  // ALG.X["General"]["WDIAG" ].getDouble(); // 0.25
   SIGN.average();
   const double sgn = SIGN.mean();
   if (sgn != 0.0) {

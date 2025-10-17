@@ -1,7 +1,7 @@
 #ifndef STDMA_H
 #define STDMA_H
 
-//#include<systemparameter.h>
+// #include<systemparameter.h>
 #include <sstream>  // std::ostringstream
 #include <string>
 

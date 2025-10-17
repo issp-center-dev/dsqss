@@ -86,7 +86,7 @@ ID = ".".join(os.path.basename(JSONFILE).split(".")[0:-1])
 param = data["Parameter"]
 ref = data["Result"]
 
-exename = 'dla'
+exename = "dla"
 
 param["kpoints"] = {"ksteps": 1}
 

@@ -160,7 +160,7 @@ void Probability::look(Size *N, System *sp) {
                 t[h][a][b][i][j][x] = 0.0;
               else if (Om[Tr[b]].val != 0.0)
                 t[h][a][b][i][j][x] = Wall[Tr[b]][Tr[a]] / Om[Tr[b]].val;
-                //*****************************************************
+            //*****************************************************
 #ifdef DEBUG
               if (x == 0)
                 std::cout << "h=" << h << " a=" << a << " b=" << b << " i=" << i

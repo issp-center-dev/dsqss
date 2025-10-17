@@ -1,7 +1,7 @@
 #ifndef SRC_DLA_IO_H_
 #define SRC_DLA_IO_H_
 
-//######################################################################
+// ######################################################################
 
 #include <cstdio>
 #include <cstdlib>
@@ -34,7 +34,9 @@ inline int line_split(char* line, std::string* w) {
   std::string s(line);
   std::istringstream ist(s);
   int nw = 0;
-  while (ist >> w[nw++]){;}
+  while (ist >> w[nw++]) {
+    ;
+  }
   nw--;
   return nw;
 }
@@ -111,7 +113,7 @@ class FileReader {
     IL = 0;
   }
 
-  FileReader(){}
+  FileReader() {}
 
   FileReader(const char* name) { open(name); }
 

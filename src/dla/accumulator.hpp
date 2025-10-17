@@ -14,28 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-//######################################################################
-//####
-//####  World-Line Monte Carlo simulation
-//####                       by the Directed-Loop Algorithm
-//####
-//####                                 Mar.03 / 2005, Naoki Kawashima
-//####
-//######################################################################
+// ######################################################################
+// ####
+// ####  World-Line Monte Carlo simulation
+// ####                       by the Directed-Loop Algorithm
+// ####
+// ####                                 Mar.03 / 2005, Naoki Kawashima
+// ####
+// ######################################################################
 
-//######################################################################
-//####
-//####  World-Line Monte Carlo simulation
-//####                       by the non-Vertex Directed-Loop Algorithm
-//####
-//####                                 Nov.11 / 2007, Yasuyuki Kato
-//####
-//######################################################################
+// ######################################################################
+// ####
+// ####  World-Line Monte Carlo simulation
+// ####                       by the non-Vertex Directed-Loop Algorithm
+// ####
+// ####                                 Nov.11 / 2007, Yasuyuki Kato
+// ####
+// ######################################################################
 
 #ifndef SRC_DLA_ACCUMULATOR_HPP_
 #define SRC_DLA_ACCUMULATOR_HPP_
 
-//######################################################################
+// ######################################################################
 
 #include <cstdio>
 #include <cstring>
@@ -61,8 +61,8 @@ class Accumulator {
   int n;
 
  public:
-  Accumulator() : k("Unset"){}
-  explicit Accumulator(std::string const& s) : k(s){}
+  Accumulator() : k("Unset") {}
+  explicit Accumulator(std::string const& s) : k(s) {}
 
   void reset() {
     k = "Unset";

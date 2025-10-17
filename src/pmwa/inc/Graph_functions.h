@@ -71,7 +71,7 @@ double GraphSpace::msinh(double D) { return sinh(D); }
 
 double GraphSpace::mcosh(double D) { return cosh(D); }
 
-//#######################################################################################################
+// #######################################################################################################
 
 double GraphSpace::P_Stay(double I1, double I2, double I3, double I4, bool py1,
                           bool py2, bool py3, bool py4) {
@@ -159,7 +159,7 @@ double GraphSpace::P_LdRd(double I1, double I2, double I3, double I4, bool py1,
   return fth1 * fth4;
 }
 
-//#######################################################################################################
+// #######################################################################################################
 
 void GraphSpace::All(Vertex *wl, int d, int i, int rnum) {
   wl->dir = !wl->dir;
@@ -206,7 +206,7 @@ void GraphSpace::LdRd(Vertex *wl, int d, int i, int rnum) {
       !(static_cast<bool>(BoxSpace_py_th1[f(d, i, rnum)]));
 }
 
-//#######################################################################################################
+// #######################################################################################################
 void GraphSpace::a00(Vertex *wl, int d, int i, int rnum) {
   wl->type = -2;
   BoxSpace_type_th1[f(d, i, rnum)] = -4;

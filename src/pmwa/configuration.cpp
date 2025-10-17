@@ -29,7 +29,7 @@ Configuration::Configuration(MC_p *m_MC, Size *m_N, int m_nmax, Lattice *m_LT,
 Configuration::~Configuration() {}
 
 void Configuration::DeterminationNworm(int MCS, My_rdm *MR, Quantities *QNT) {
-  //######## Ncyc is obtained here ########
+  // ######## Ncyc is obtained here ########
   QNT->Init();
   updateAnner(MCS, MR, QNT);
 }

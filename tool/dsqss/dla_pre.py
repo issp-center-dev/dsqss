@@ -33,7 +33,6 @@ from dsqss import (
 
 
 def dla_pre(param, pfile: str) -> None:
-
     p = parameter.Parameter(param)
 
     lat, _ = std_lattice.std_lattice(param)

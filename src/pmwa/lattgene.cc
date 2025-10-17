@@ -141,7 +141,7 @@ void WriteXML(int D, int orgL[], double orgB, double orgOB, int NLD, int NBD,
       if (x[p] == L[p] - 1) {
         etype = eid;
         eid++;
-      } else{
+      } else {
         etype = -1;
       }
 

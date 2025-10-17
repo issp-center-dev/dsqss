@@ -150,7 +150,7 @@ def main():
     elif args.kernel == "metropolice":
         dsqss.util.ERROR(
             'kernel = "metropolice" is now an invalid option'
-            ' because this is a typographic error in old DSQSS.'
+            " because this is a typographic error in old DSQSS."
             ' Use "metropolis".'
         )
         sys.exit(1)

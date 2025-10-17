@@ -407,7 +407,7 @@ void Algorithm::initialize() {
       }
 
       VP._IC(st, inc, xinc) = &IC;  // generate INDEX using st,inc,xinc
-    }                               // end VP.NICloop
+    }  // end VP.NICloop
   }
 
   // _VP of InteractionProperty

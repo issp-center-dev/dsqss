@@ -434,7 +434,7 @@ void Lattice::make_Parallel(Parallel *_PR) {
   PR->Ntdiv = NBdiv;
   PR->Rpara = NFIELD;
 
-  PR->B = BETA / NBdiv;                // beta for a domain.
+  PR->B = BETA / NBdiv;        // beta for a domain.
   PR->oldB = oldBETA / NBdiv;  // for annealing.
 
   PR->Nsdiv = PR->Nxdiv * PR->Nydiv *

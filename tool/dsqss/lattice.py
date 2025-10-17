@@ -439,7 +439,7 @@ class Lattice:
                 util.ERROR("too many elements ({0})".format(body))
         self.latvec[:, int(elem[0])] = list(map(float, elem[1:]))
 
-    def _load_direction(self, dirs:List, body: str) -> None:
+    def _load_direction(self, dirs: List, body: str) -> None:
         elem = body.split()
         if len(elem) != self.dim + 1:
             if len(elem) < self.dim + 1:
@@ -448,7 +448,7 @@ class Lattice:
                 util.ERROR(f"too many elements ({body})")
         dirs[int(elem[0])] = np.array(list(map(float, elem[1:])))
 
-    def _load_site(self, sites:List, body: str) -> None:
+    def _load_site(self, sites: List, body: str) -> None:
         elem = body.split()
         if len(elem) != self.dim + 2:
             if len(elem) < self.dim + 2:
@@ -461,7 +461,7 @@ class Lattice:
             coordinate=np.array(list(map(float, elem[2:]))),
         )
 
-    def _load_int(self, ints:List, body: str) -> None:
+    def _load_int(self, ints: List, body: str) -> None:
         elem = body.split()
         nbody = int(elem[2])
         if len(elem) != nbody + 5:
@@ -520,7 +520,7 @@ class Lattice:
         return num_errors
 
     def _update(self) -> None:
-        """ generate vertices"""
+        """generate vertices"""
 
         self.nstypes = 0
         for site in self.sites:
@@ -650,8 +650,8 @@ class Lattice:
 
             f.write("plot ")
             for st in range(self.nstypes):
-                f.write(f'$SITES_{st} w p pt {st+4} ps 2 t "" , \\\n')
+                f.write(f'$SITES_{st} w p pt {st + 4} ps 2 t "" , \\\n')
             for bt in range(self.nitypes):
-                f.write(f'$BONDS_{bt} w l lw 2 lt {bt+1} t "" , \\\n')
+                f.write(f'$BONDS_{bt} w l lw 2 lt {bt + 1} t "" , \\\n')
             f.write("\n")
             f.write("pause -1\n")

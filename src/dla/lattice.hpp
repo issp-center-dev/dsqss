@@ -98,7 +98,7 @@ class Lattice {
   void dump();
 };
 
-//######################################################################
+// ######################################################################
 
 inline Lattice::Lattice(const char* FNAME, Algorithm& A) : ALG(A) {
   AutoDebugDump("Lattice::Lattice");
@@ -165,7 +165,7 @@ void Lattice::read() {
         I(id).setSite(ii, S(sid));
       }
 
-// #ifdef WINDING
+      // #ifdef WINDING
       if (B.NumberOfValues() > 3 + nb) {
         if (INIT_I) {
           NEDGE = X["NumberOfEdgeInteractions"].getInteger();
@@ -179,7 +179,7 @@ void Lattice::read() {
           EDGE(eid).init(edim, I(id).site(0).id() - 1, I(id).site(1).id() - 1);
         }
       }
-// #endif
+      // #endif
     }
     if (B.getName() == "Direction") {
       if (INIT_V) {

@@ -1,7 +1,7 @@
 #ifndef SRC_PMWA_INC_LATTICE_HPP_
 #define SRC_PMWA_INC_LATTICE_HPP_
 
-//######################################################################
+// ######################################################################
 
 #include <stdio.h>
 #include <stdlib.h>

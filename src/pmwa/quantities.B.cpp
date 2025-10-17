@@ -270,8 +270,7 @@ void Quantities::Average(double *g, int Nval, int S, double *MCmean,
     error /= Nval;
 
     MCmean[k] = mean;
-    MCmean[k + 1] =
-        (Nval == 1) ? 0 : sqrt((error - mean * mean) / (Nval - 1));
+    MCmean[k + 1] = (Nval == 1) ? 0 : sqrt((error - mean * mean) / (Nval - 1));
   }
 }
 
@@ -541,15 +540,13 @@ void Quantities::Density(GraphSpace::Vertex *world,
 void Quantities::Compressibility() {
   MCmean_S[comp * 2] =
       N->B * N->V *
-      (MCmean_S[smzu * 2] /
-           (MCmean_S[amzu * 2] * MCmean_S[amzu * 2] * N->V) -
+      (MCmean_S[smzu * 2] / (MCmean_S[amzu * 2] * MCmean_S[amzu * 2] * N->V) -
        1.0);
   MCmean_S[comp * 2 + 1] = MCmean_S[comp * 2] * MCmean_S[comp * 2];
 }
 
 void Quantities::Energy() {
-  MCmean_S[ene * 2] =
-      (sp->Eu + sp->Et - MCmean_S[nver * 2] / N->B) / N->V;
+  MCmean_S[ene * 2] = (sp->Eu + sp->Et - MCmean_S[nver * 2] / N->B) / N->V;
   MCmean_S[ene * 2 + 1] = MCmean_S[ene * 2] * MCmean_S[ene * 2];
 }
 
@@ -832,7 +829,8 @@ void Quantities::CorrelationFunction2(
     ///////////////// Gk //////////////////////
     for (int a = 0; a < 2; a++) {
       for (int k = 0; k < Nkxmax; k++) {
-        Nk2 = (Ck[f_ck(k, 0, a)] * Ck[f_ck(k, 1, a)] - Ck[0]) / static_cast<double>(N->V);
+        Nk2 = (Ck[f_ck(k, 0, a)] * Ck[f_ck(k, 1, a)] - Ck[0]) /
+              static_cast<double>(N->V);
         values_L[f_nkr(k + a * Nkxmax)] = real(Nk2);
         values_L[f_nki(k + a * Nkxmax)] = imag(Nk2);
       }

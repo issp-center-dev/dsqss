@@ -14,23 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-//######################################################################
-//####
-//####  World-Line Monte Carlo simulation
-//####                       by the Directed-Loop Algorithm
-//####
-//####                                 Mar.03 / 2005, Naoki Kawashima
-//####
-//######################################################################
+// ######################################################################
+// ####
+// ####  World-Line Monte Carlo simulation
+// ####                       by the Directed-Loop Algorithm
+// ####
+// ####                                 Mar.03 / 2005, Naoki Kawashima
+// ####
+// ######################################################################
 
-//######################################################################
-//####
-//####  World-Line Monte Carlo simulation
-//####                       by the non-Vertex Directed-Loop Algorithm
-//####
-//####                                 Nov.11 / 2007, Yasuyuki Kato
-//####
-//######################################################################
+// ######################################################################
+// ####
+// ####  World-Line Monte Carlo simulation
+// ####                       by the non-Vertex Directed-Loop Algorithm
+// ####
+// ####                                 Nov.11 / 2007, Yasuyuki Kato
+// ####
+// ######################################################################
 
 #include <cmath>
 #include <string>
@@ -43,7 +43,7 @@
 
 #include "dla.hpp"
 
-//######################################################################
+// ######################################################################
 
 int main(int argc, char* argv[]) {
   AutoDebugDump("main");

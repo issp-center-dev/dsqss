@@ -264,7 +264,7 @@ void GraphSpace::initialev(std::string const &Eventfile_old, My_rdm *MR, int cb,
   // Boundary
   PBv1 = rt_tot / rtot;
 
-  //###################################
+  // ###################################
 
   for (int a = 0; a < 4; a++) {
     for (int b = 0; b <= a; b++) {
@@ -396,7 +396,7 @@ void GraphSpace::Assign_OnsiteVertex(My_rdm *MR) {
       if (Vnum == Ih) cout << PR->my_rank << "!!Vnum=" << Vnum << endl;
 
       xl = i;
-      //##### old kinks #######
+      // ##### old kinks #######
       while (w[xl]->next[1] != &(worldB[xl])) {
         if (targ_time < w[xl]->next[1]->t) break;
         w[xl] = w[xl]->next[1];
@@ -404,7 +404,7 @@ void GraphSpace::Assign_OnsiteVertex(My_rdm *MR) {
 
       if (targ_time == w[xl]->t) continue;
 
-      //##### new vertex #######
+      // ##### new vertex #######
       pl = w[xl]->p;
       if (MR->rdm() < P->ru[pl][xl]) {
         insert(w[xl], 0, targ_time, xl, pl, 0);
@@ -453,7 +453,7 @@ void GraphSpace::Remove_Vertex() {
   }
 }
 
-//#############################################################################################
+// #############################################################################################
 void GraphSpace::Assign_TwoSiteVertex(My_rdm *MR) {
   double R;
   MPI_Status status;
@@ -541,7 +541,7 @@ void GraphSpace::Assign_TwoSiteVertex(My_rdm *MR) {
       }
     }
 
-    //##### onsite vertex and old kinks #######
+    // ##### onsite vertex and old kinks #######
     while (w[xl]->next[1] != &(worldB[xl])) {
       if (targ_time < w[xl]->next[1]->t) break;
       w[xl] = w[xl]->next[1];
@@ -763,7 +763,7 @@ void GraphSpace::worm_release(My_rdm *MR) {
   }
 }
 
-//#################################################################################################
+// #################################################################################################
 
 void GraphSpace::Assign_Worm(My_rdm *MR) {
   Vertex *dw;
@@ -860,7 +860,7 @@ int GraphSpace::NumberOfVertex(My_rdm *MR, double m, int py) {
   }
 }
 
-//#############################################################################################
+// #############################################################################################
 void GraphSpace::SpatialDomainBoundary(My_rdm *MR) {
   int a, b, left, right, rnum;
   double I1, I2, I3, I4;
@@ -1018,7 +1018,7 @@ void GraphSpace::TemporalDomainBoundary(My_rdm *MR, Quantities *QNT) {
   // from the lower domain. )
   OldBox();
 
-  //###### "the domain boundary (world)" is updated in P0 ######
+  // ###### "the domain boundary (world)" is updated in P0 ######
   for (int site = 0; site < V; site++) {
     py0 = world[site].next[1]->dir;            // the parity of P0
     py1 = (p0_box[site] + world[site].p) % 2;  // the parity of P1.
@@ -1028,10 +1028,10 @@ void GraphSpace::TemporalDomainBoundary(My_rdm *MR, Quantities *QNT) {
     exp0 = exp(I0 * P->rh_even);
     exp1 = exp(I1 * P->rh_even);
 
-    //######################## calculation of <Q>, <QQ>
-    //####################################
+    // ######################## calculation of <Q>, <QQ>
+    // ####################################
     CondensateFraction(site, QNT, py0, py1, exp0, exp1);
-    //############################################################
+    // ############################################################
 
     p0_box[site] = py1;
 
@@ -1049,7 +1049,7 @@ void GraphSpace::TemporalDomainBoundary(My_rdm *MR, Quantities *QNT) {
     }
   }
 
-  //############################################################
+  // ############################################################
   NewBox();
 }
 

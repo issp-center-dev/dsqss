@@ -4,7 +4,7 @@
 #include <cstdio>
 #include <cassert>
 
-//######################################################################
+// ######################################################################
 
 template <class C>
 class Linked;
@@ -15,14 +15,14 @@ class Ring;
 template <class C>
 class Pool;
 
-//######################################################################
+// ######################################################################
 /*
 inline void abort() {
   printf("ERROR: Aborting...\n");
   exit(0);
 };
 */
-//######################################################################
+// ######################################################################
 
 template <class C>
 class Linked : public C {
@@ -58,7 +58,7 @@ class Linked : public C {
   void dump();
 };
 
-//######################################################################
+// ######################################################################
 
 // The class C must have the following member functions
 //   C& next() ... returns the reference to the next item
@@ -132,7 +132,7 @@ class RingIterator {
   bool operator!=(const C* p) { return cur != p; }
 };
 
-//######################################################################
+// ######################################################################
 
 // The class C must have the following member functions
 //   C::C() ... A newly created object must form a ring by itself
@@ -199,7 +199,7 @@ class Ring {
   }
 };
 
-//######################################################################
+// ######################################################################
 
 template <class C>
 class Pool : public Ring<C> {
@@ -213,7 +213,7 @@ class Pool : public Ring<C> {
  public:
   Pool() : Ring<C>(), size_max(0), size_min(0), size(0) {}
 
-  ~Pool(){clear();};
+  ~Pool() { clear(); };
 
   void init(int N);
   void clear();
@@ -227,7 +227,8 @@ class Pool : public Ring<C> {
   C& pop() {
     if (size == 0) {
       const int new_size = (size_max > 0) ? size_max * 2 : 10;
-      printf( "Pool> INFO: Pool is empty. Expanding pool size from %d to %d.\n", size_max, new_size);
+      printf("Pool> INFO: Pool is empty. Expanding pool size from %d to %d.\n",
+             size_max, new_size);
       expand(new_size - size_max);
     }
 
@@ -242,9 +243,9 @@ class Pool : public Ring<C> {
   void set_n_of_used_elements(int s_used) { size_min = size_max - s_used; }
 };
 
-//######################################################################
-//  Member Functions
-//######################################################################
+// ######################################################################
+//   Member Functions
+// ######################################################################
 
 template <class C>
 inline void Linked<C>::insert_after(Linked<C>& x) {
@@ -293,7 +294,7 @@ inline void Linked<C>::dump() {
   C::dump();
 }
 
-//######################################################################
+// ######################################################################
 
 template <class C>
 inline int Ring<C>::count() {
@@ -303,8 +304,8 @@ inline int Ring<C>::count() {
   return c;
 }
 
-//######################################################################
-// C requre operation <
+// ######################################################################
+//  C requre operation <
 
 template <class C>
 RingIterator<C> Ring<C>::sort_min() {
@@ -332,11 +333,13 @@ void Ring<C>::move_to_head(RingIterator<C> it) {
   add_head(Cmin);
 }
 
-//######################################################################
+// ######################################################################
 
 template <class C>
 inline void Pool<C>::init(int N) {
-  if (size_max > 0) {clear();}
+  if (size_max > 0) {
+    clear();
+  }
   expand(N);
 }
 
