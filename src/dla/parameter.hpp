@@ -210,7 +210,7 @@ void Parameter::init(std::map<std::string, std::string>& dict) {
   dict["seed"] = "198212240";
   dict["nvermax"] = "10000";
   dict["nsegmax"] = "10000";
-  dict["ntau"] = 10;
+  dict["ntau"] = "10";
   dict["algfile"] = "algorithm.xml";
   dict["latfile"] = "lattice.xml";
   dict["wvfile"] = "wavevector.xml";
