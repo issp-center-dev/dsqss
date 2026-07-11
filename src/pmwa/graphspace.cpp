@@ -877,7 +877,10 @@ int GraphSpace::NumberOfVertex(My_rdm *MR, double m, int py) {
   double R = MR->rdm();
   double POW, EXP;
   POW = (n) ? m : 1.0;
-  int FAC = 1;
+  // FAC accumulates the double factorial of n; as an int it overflowed
+  // (undefined behavior) around n = 20, corrupting the distribution and
+  // potentially never satisfying the exit condition.
+  double FAC = 1.0;
   EXP = (this->*fmath[py])(m);
 
   while (1) {
@@ -888,11 +891,16 @@ int GraphSpace::NumberOfVertex(My_rdm *MR, double m, int py) {
 
     if (R < Pn / EXP) {
       return n;
-    } else {
-      n += 2;
-      fn = n;
-      POW *= m * m;
     }
+    if (pos == 0.0) {
+      // The series terms have underflowed: the remaining tail mass is
+      // not representable, so R cannot be reached anymore. Return the
+      // current n instead of looping forever.
+      return n;
+    }
+    n += 2;
+    fn = n;
+    POW *= m * m;
   }
 }
 
