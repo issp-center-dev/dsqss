@@ -154,31 +154,36 @@ class info:
                 tmp_dict[key] = d_re.group(2).strip()
         """
 
-        if tmp_dict["solver"] == "DLA":
+        solver = tmp_dict.get("solver")
+        if solver is None:
+            ERROR("solver is not specified in the input file")
+        elif solver == "DLA":
             ERROR("Please use dla_pre instead of pmwa_pre")
+        elif solver != "PMWA":
+            ERROR('unknown solver "{0}": pmwa_pre supports only PMWA'.format(solver))
+
+        self.prm.info_dict.update(self.prm.info_dict_pmwa)
+        self.prm.param_dict.update(self.prm.param_dict_pmwa)
+        # if oldbeta exits, add param_dict
+        if tmp_dict.get("oldbeta") is not None:
+            self.prm.param_dict["oldbeta"] = float(tmp_dict.get("oldbeta"))
+
+        # modify parameters for spin model
+        if "model_type" not in tmp_dict:
+            tmp_dict["model_type"] = self.prm.info_dict["model_type"]
+
+        if tmp_dict["model_type"] == "spin":
+            # assume that the lattice is bipartite
+            # this makes that t is always positive (by unitary transform)
+            if tmp_dict.get("jxy") is not None:
+                tmp_dict["jxy"] = abs(float(tmp_dict["jxy"]))
+            self._replace_keyword(tmp_dict, "t", "jxy")
+            self._replace_keyword(tmp_dict, "v", "jz")
+            self._replace_keyword(tmp_dict, "mu", "h")
+            self._replace_keyword(tmp_dict, "g", "gamma")
+            tmp_dict["g"] = float(tmp_dict["g"]) * 0.5
         else:
-            self.prm.info_dict.update(self.prm.info_dict_pmwa)
-            self.prm.param_dict.update(self.prm.param_dict_pmwa)
-            # if oldbeta exits, add param_dict
-            if tmp_dict.get("oldbeta") is not None:
-                self.prm.param_dict["oldbeta"] = float(tmp_dict.get("oldbeta"))
-
-            # modify parameters for spin model
-            if ("model_type" in tmp_dict) is False:
-                tmp_dict["model_type"] = self.prm.info_dict["model_type"]
-
-            if tmp_dict["model_type"] == "spin":
-                # assume that the lattice is bipartite
-                # this makes that t is always positive (by unitary transform)
-                if tmp_dict.get("jxy") is not None:
-                    tmp_dict["jxy"] = abs(float(tmp_dict["jxy"]))
-                self._replace_keyword(tmp_dict, "t", "jxy")
-                self._replace_keyword(tmp_dict, "v", "jz")
-                self._replace_keyword(tmp_dict, "mu", "h")
-                self._replace_keyword(tmp_dict, "g", "gamma")
-                tmp_dict["g"] = float(tmp_dict["g"]) * 0.5
-            else:
-                self._replace_keyword(tmp_dict, "g", "gamma")
+            self._replace_keyword(tmp_dict, "g", "gamma")
 
         self.param_list = list(self.prm.param_dict)
         self.param_list.sort()
@@ -234,8 +239,7 @@ class info:
             print("\n " + " ".join(cmd))
             subprocess.call(cmd)
         else:
-            msg = "pmwa_pre treats only PMWA."
-            sys.exit(1)
+            ERROR("pmwa_pre treats only PMWA.")
 
     def print_init_param(self):
         with open(self.args.pfile, mode="w") as f:
