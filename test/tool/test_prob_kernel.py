@@ -80,24 +80,38 @@ def test_suwa_todo_two_states():
     np.testing.assert_allclose(W.sum(axis=1), 1.0, atol=1e-10)
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="Bug: prob_kernel.py:88 — infinite loop when all remaining targets are 0.0. "
-           "weights=[1.0,0.0,0.0] causes while-loop to spin forever after all targets zeroed.",
-)
 @pytest.mark.skipif(sys.platform == "win32", reason="SIGALRM not available on Windows")
 def test_suwa_todo_single_nonzero_weight_does_not_hang():
     import signal
 
     def _timeout(signum, frame):
-        raise TimeoutError("suwa_todo hung — infinite loop confirmed")
+        raise TimeoutError("suwa_todo hung — infinite loop")
 
     signal.signal(signal.SIGALRM, _timeout)
     signal.alarm(2)
     try:
-        suwa_todo([1.0, 0.0, 0.0])
+        W = suwa_todo([1.0, 0.0, 0.0])
     finally:
         signal.alarm(0)
+    # the only occupied state can only stay put
+    assert W[0, 0] == 1.0
+    # zero-weight states are never occupied: their rows stay zero
+    np.testing.assert_array_equal(W[1, :], 0.0)
+    np.testing.assert_array_equal(W[2, :], 0.0)
+
+
+@pytest.mark.parametrize("kernel", [suwa_todo, reversible_suwa_todo])
+def test_single_element_weights(kernel):
+    W = kernel([2.0])
+    np.testing.assert_array_equal(W, [[1.0]])
+
+
+def test_suwa_todo_no_nan_with_zero_weights():
+    W = suwa_todo([1.0, 0.0, 2.0])
+    assert not np.any(np.isnan(W))
+    # occupied-state rows are normalized
+    assert abs(W[0, :].sum() - 1.0) < 1e-10
+    assert abs(W[2, :].sum() - 1.0) < 1e-10
 
 
 # ---- reversible_suwa_todo ----

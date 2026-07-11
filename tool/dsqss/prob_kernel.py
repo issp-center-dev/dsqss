@@ -23,6 +23,13 @@ class KernelCallBack(Protocol):
     def __call__(self, weights: Sequence[float], cutoff: float = ...) -> np.ndarray: ...
 
 
+def _normalize_rows(W: np.ndarray) -> None:
+    """Normalize each row of W to sum to 1, leaving all-zero rows
+    (states with zero weight) as zeros instead of producing NaN."""
+    rowsum = W.sum(axis=1).reshape(-1, 1)
+    np.divide(W, rowsum, out=W, where=rowsum > 0.0)
+
+
 def heat_bath(weights: Sequence[float], cutoff: float = 1e-10) -> np.ndarray:
     """
     return an array W,
@@ -72,16 +79,28 @@ def suwa_todo(weights: Sequence[float], cutoff: float = 1e-10) -> np.ndarray:
     """
 
     N = len(weights)
+    if N == 1:
+        return np.ones((1, 1))
     W = np.zeros((N, N))
     indices = np.argsort(weights, kind="mergesort")[::-1]
     target = [w for w in weights]
     for i in range(N):
         s = weights[indices[i]]
+        if s <= 0.0:
+            # this state is never occupied; leave its row zero
+            continue
         j = 1
         while target[indices[j]] == 0.0:
             j = (j + 1) % N
+            if j == 1:
+                # scanned a full cycle: no target capacity remains
+                break
         while s > 0.0:
             p = min(s, target[indices[j]])
+            if p <= 0.0:
+                # only rounding leftovers remain and no target can
+                # absorb them; drop the remainder instead of looping
+                break
             s -= p
             target[indices[j]] -= p
             W[indices[i], indices[j]] = p
@@ -90,9 +109,10 @@ def suwa_todo(weights: Sequence[float], cutoff: float = 1e-10) -> np.ndarray:
                 if j == i:
                     break
                 j = (j + 1) % N
-    W /= W.sum(axis=1).reshape(-1, 1)
+    _normalize_rows(W)
     W[W < cutoff] = 0.0
-    return W / W.sum(axis=1).reshape(-1, 1)
+    _normalize_rows(W)
+    return W
 
 
 def reversible_suwa_todo(weights: Sequence[float], cutoff: float = 1e-10) -> np.ndarray:
@@ -105,6 +125,8 @@ def reversible_suwa_todo(weights: Sequence[float], cutoff: float = 1e-10) -> np.
     """
     ws = np.array(weights)
     N = len(ws)
+    if N == 1:
+        return np.ones((1, 1))
     indices = np.argsort(ws, kind="mergesort")[::-1]
     ws = np.array(ws)
     W = np.zeros([N, N])
@@ -129,9 +151,10 @@ def reversible_suwa_todo(weights: Sequence[float], cutoff: float = 1e-10) -> np.
             v = W[jj, jj] / j
             for k in range(j - 1, -1, -1):
                 rst_swap(jj, indices[k], v, W)
-    W /= W.sum(axis=1).reshape(-1, 1)
+    _normalize_rows(W)
     W[W < cutoff] = 0.0
-    return W / W.sum(axis=1).reshape(-1, 1)
+    _normalize_rows(W)
+    return W
 
 
 def rst_swap(i: int, j: int, w: np.ndarray, W: np.ndarray) -> None:
