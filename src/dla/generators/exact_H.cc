@@ -3,8 +3,8 @@
 #include <iostream>
 #include <string>
 using namespace std;
-#include "matrix.h"
-#include "spin_H.h"
+#include "hamgen_common.h"
+#include "site_operators.h"
 
 //----------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ class HeisenbergModel {
     J = J0;
     F = F0;
 
-    HeisenbergSpinSet S(M, NSITE);
+    SiteOperatorSet S(HeisenbergSpin(M), NSITE);
 
     DIM = S.DIM;
     cmatrix h(DIM);
@@ -186,6 +186,10 @@ int main(int argc, char** argv) {
   printf(" F     = %8.3f\n", F);
   HeisenbergSpin S(M);
   HeisenbergModel MDL(M, 2, 0.5 * J, F);
-  WriteXML(M, S.X.re, MDL.H, filename);
+  char comment[128];
+  snprintf(comment, sizeof(comment), "SU(2) Heisenberg model with S=%d/2", M);
+  std::vector<double> localstates(M + 1);
+  for (int i = 0; i <= M; i++) localstates[i] = i - 0.5 * M;
+  WriteHamiltonianXML(M, S.X.re, MDL.H, filename, comment, localstates);
   return 0;
 }

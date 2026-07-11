@@ -3,8 +3,8 @@
 #include <iostream>
 #include <string>
 using namespace std;
-#include "boson_B.h"
-#include "matrix.h"
+#include "hamgen_common.h"
+#include "site_operators.h"
 
 //----------------------------------------------------------------------
 
@@ -41,7 +41,7 @@ class BoseHubbardModel {
     F = F0;
     // double Vh=V*0.5;
 
-    BosonOperatorSet S(M, NSITE);
+    SiteOperatorSet S(BosonOperator(M), NSITE);
 
     DIM = S.DIM;
     cmatrix h(DIM);
@@ -208,7 +208,12 @@ int main(int argc, char** argv) {
   printf(" F     = %8.3f\n", F);
   BosonOperator S(M);
   BoseHubbardModel MDL(M, 2, J, 0.5 * V, 0.5 * U, F);
-  WriteXML(M, S.X.re, MDL.H, filename);
+  char comment[128];
+  snprintf(comment, sizeof(comment), "Extended Bose-Hubbard model with NMAX=%d",
+           M);
+  std::vector<double> localstates(M + 1);
+  for (int i = 0; i <= M; i++) localstates[i] = i;
+  WriteHamiltonianXML(M, S.X.re, MDL.H, filename, comment, localstates);
 
   return 0;
 }

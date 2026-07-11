@@ -469,7 +469,7 @@ cmatrix t(const cmatrix& A) {
 
 //----------------------------------------------------------------------------
 
-cmatrix operator^(cmatrix& A, cmatrix& B) {
+cmatrix operator^(const cmatrix& A, const cmatrix& B) {
   int m = A.m * B.m;
   int n = A.n * B.n;
   cmatrix C(m, n);
