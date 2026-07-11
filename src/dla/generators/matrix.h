@@ -24,33 +24,6 @@ using namespace std;
 //#include <ctime>
 
 //=============================================================================
-#ifdef __INTEL_COMPILER
-#define DSQSS_INT MKL_INT
-#define MKL_Complex16 std::complex<double>
-#else  //__INTEL_COMPILER
-#define DSQSS_INT int
-#endif  //__INTEL_COMPILER
-
-//=============================================================================
-
-#ifdef __INTEL_COMPILER
-#include <mkl.h>
-#define dsyev_ DSYEV
-#define dgemm_ DGEMM
-#else   //__INTEL_COMPILER
-extern "C" {
-
-void dsyev_(const char* jobz, const char* uplo, const DSQSS_INT* N, double* a,
-            const DSQSS_INT* lda, double* w, double* work,
-            const DSQSS_INT* lwork, DSQSS_INT* info);
-
-void dgemm_(const char* transa, const char* transb, const DSQSS_INT* M,
-            const DSQSS_INT* N, const DSQSS_INT* k, const double* alpha,
-            const double* a, const DSQSS_INT* lda, const double* b,
-            const DSQSS_INT* ldb, const double* beta, double* c,
-            const DSQSS_INT* ldc);
-}
-#endif  //__INTEL_COMPILER
 
 //============================================================================
 class dgematrix {
@@ -61,7 +34,7 @@ class dgematrix {
   int n, m;
 
   ////////////////
-  dgematrix(int _n, int _m) {
+  dgematrix(int _m, int _n) {
     resize(_m, _n);
     for (int i = 0; i < m * n; i++) {
       index[i] = 0.0;
@@ -101,7 +74,6 @@ class dgematrix {
     return *this;
   }
 
-  inline dgematrix& operator*=(const dgematrix&);
   inline double& operator()(const int& i, const int& j) {
     return index[i + j * m];
   };
@@ -191,111 +163,23 @@ dgematrix operator*(const double& a, const dgematrix& A) {
 };
 
 dgematrix operator*(const dgematrix& dA, const dgematrix& dB) {
-  DSQSS_INT M = dA.m;
-  DSQSS_INT N = dB.n;
-  DSQSS_INT K = dA.n;
-  double *A, *B, *C;
-
-  A = new double[dA.m * dA.n];
-  B = new double[dB.m * dB.n];
-  C = new double[dA.m * dB.n];
-
+  // Plain matrix product. The matrices handled by the generators are
+  // tiny (pair Hamiltonians), so no BLAS is needed.
+  if (dA.n != dB.m) {
+    printf("dgematrix::operator* >> ERROR: shape mismatch\n");
+    exit(1);
+  }
   dgematrix dC(dA.m, dB.n);
-
-  double alpha = 1.0, beta = 0.0;
-
-  char transa = 'n';
-  char transb = 'n';
-
-  for (int i = 0; i < dA.m; i++) {
-    for (int j = 0; j < dA.n; j++) {
-      A[i + j * dA.m] = dA(i, j);
-    }
-  }
-
-  for (int i = 0; i < dB.m; i++) {
-    for (int j = 0; j < dB.n; j++) {
-      B[i + j * dB.m] = dB(i, j);
-    }
-  }
-
-  DSQSS_INT lda = dA.m;
-  DSQSS_INT ldb = dA.n;
-
-  //  cout<<"M, N, K ="<< M <<" "<<N<<" "<<K<<" "<<endl;
-
-  dgemm_(&transa, &transb, &M, &N, &K, &alpha, A, &lda, B, &ldb, &beta, C, &M);
-
   for (int i = 0; i < dA.m; i++) {
     for (int j = 0; j < dB.n; j++) {
-      dC(i, j) = C[i + j * dA.m];
+      double s = 0.0;
+      for (int k = 0; k < dA.n; k++) {
+        s += dA(i, k) * dB(k, j);
+      }
+      dC(i, j) = s;
     }
   }
-
-  delete[] A;
-  delete[] B;
-  delete[] C;
-
   return dC;
-};
-
-//
-class dsymatrix {
- private:
-  double* index;
-
- public:
-  int n;
-
-  inline double& operator()(const int& i, const int& j) {
-    return index[i + j * n];
-  };
-  inline double operator()(const int& i, const int& j) const {
-    return index[i + j * n];
-  };
-
-  DSQSS_INT dsyev(vector<double>&);
-
-  dsymatrix(int N) {
-    n = N;
-    index = new double[N * N];
-  };
-
-  dsymatrix() { n = 0; };
-
-  ~dsymatrix() { delete[] index; };
-};
-
-DSQSS_INT dsymatrix::dsyev(vector<double>& E) {
-  ////////////////////
-  DSQSS_INT info;
-  char jobz = 'V';
-  char uplo = 'I';
-  DSQSS_INT w_size = -1;
-  DSQSS_INT size = n;
-  DSQSS_INT size2 = size * size;
-  double* work;
-  work = new double[size * 20];
-  double* vr;
-  vr = new double[size2];
-  double* wr;
-  wr = new double[size];
-  //  wr //eigen value
-  //  vr //eigen vector
-
-  for (int i = 0; i < (int)size2; i++) vr[i] = index[i];
-
-  dsyev_(&jobz, &uplo, &size, vr, &size, wr, work, &w_size, &info);
-
-  for (int i = 0; i < (int)size; i++) E[i] = wr[i];
-  for (int i = 0; i < (int)size2; i++) index[i] = vr[i];
-  ///////////////
-
-  delete[] work;
-  delete[] vr;
-  delete[] wr;
-
-  return info;
 };
 
 //============================================================================
@@ -368,34 +252,6 @@ void dump(char* s, const dgematrix& A) {
 //============================================================================
 //    Diagonalization
 //============================================================================
-
-void diagonalize(dsymatrix& A, vector<double>& E, dgematrix& U) {
-  dsymatrix A0 = A;
-
-  A0.dsyev(E);
-
-  for (int i = 0; i < A.n; i++) {
-    for (int j = 0; j < A.n; j++) {
-      U(i, j) = A0(i, j);
-    }
-  }
-
-  return;
-}
-
-//----------------------------------------------------------------------------
-
-void diagonalize(dgematrix& A, vector<double>& E, dgematrix& U) {
-  dsymatrix A0(A.n);
-  for (int i = 0; i < A.n; i++) {
-    for (int j = 0; j <= i; j++) {
-      A0(i, j) = A(i, j);
-    }
-  }
-  diagonalize(A0, E, U);
-}
-
-//============================================================================
 //    Tensor Product
 //============================================================================
 
@@ -443,7 +299,6 @@ class cmatrix {
   cmatrix(){};
   cmatrix(const long n0) { resize(n0, n0); };
   cmatrix(const long m0, const long n0) { resize(m0, n0); };
-  cmatrix(const cmatrix& X) { resize(X.m, X.n); };
 
   cmatrix& operator+=(const cmatrix& A) {
     if (m != A.m) {
@@ -496,7 +351,7 @@ class cmatrix {
 
   void identity() {
     re.identity();
-    im.identity();
+    im.zero();
   }
 
   void dump(int Mmax);

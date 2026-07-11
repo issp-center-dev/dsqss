@@ -3,7 +3,6 @@
 #include <iostream>
 #include <string>
 using namespace std;
-#include "canonical.h"
 #include "matrix.h"
 #include "spin_H.h"
 
@@ -75,16 +74,6 @@ class HeisenbergModel {
     I = S.I.re;
   };
 };
-
-//============================================================================
-
-void Average(int DIM, dgematrix& R, dgematrix& Q, double& Ave, double& Var) {
-  dgematrix W(DIM, DIM);
-  W = Q * Q;
-  Ave = CanonicalAverage(R, Q);
-  Var = CanonicalAverage(R, W);
-  Var = Var - Ave * Ave;
-}
 
 //============================================================================
 

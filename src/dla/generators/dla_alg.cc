@@ -1129,47 +1129,6 @@ void InitialConfiguration::write() {
 
 //######################################################################
 
-void QUANTITY::load(XML::Block& X) {
-  ID = X["QTYPE"].getInteger();
-  NAME = X["Name"].getString();
-  Value.init(2, NSTYPE, NXMAX);
-  Value.set_all(0.0);
-  isDefined.init(2, NSTYPE, NXMAX);
-  isDefined.set_all(false);
-  for (int i = 0; i < X.NumberOfBlocks(); i++) {
-    XML::Block& B = X[i];
-    if (B.getName() == "Value") {
-      int st = B.getInteger(0);
-      int x = B.getInteger(1);
-      double v = B.getDouble(2);
-      isDefined(st, x) = true;
-      Value(st, x) = v;
-    }
-  }
-}
-
-//======================================================================
-
-void QUANTITY::write() {
-  fprintf(FALG, "\n");
-  fprintf(FALG, "  <Quantity>\n");
-  fprintf(FALG, "    <QTYPE> %d </QTYPE>\n", getID());
-  fprintf(FALG, "    <Name> %s </Name>\n", getName().c_str());
-  for (int st = 0; st < NSTYPE; st++) {
-    for (int x = 0; x < NXMAX; x++) {
-      if (isDefined(st, x)) {
-        fprintf(FALG, "    <Value> %d %d %24.16lf </Value>\n", st, x,
-                Value(st, x));
-      }
-    }
-  }
-  fprintf(FALG, "  </Quantity>\n");
-}
-
-//######################################################################
-
-//######################################################################
-
 void SolveWeightEquation(int N, Array<double>& V, Array<double>& W) {
   /*
   for (int i=0; i<N; i++) {

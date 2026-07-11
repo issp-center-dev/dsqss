@@ -3,8 +3,6 @@ if(${CMAKE_PROJECT_NAME} STREQUAL "Project")
   message(FATAL_ERROR "cmake should be executed not for 'src' subdirectory, but for the top directory of DLA.")
 endif(${CMAKE_PROJECT_NAME} STREQUAL "Project")
 
-find_package(LAPACK REQUIRED)
-
 include_directories(.)
 
 set(dla_alg_old_SOURCES dla_alg.cc)
@@ -21,6 +19,3 @@ foreach(exe IN LISTS exelist)
   add_executable(${exe} ${${exe}_SOURCES})
   install(TARGETS ${exe} RUNTIME DESTINATION bin)
 endforeach(exe)
-
-target_link_libraries(hamgen_H ${LAPACK_LIBRARIES})
-target_link_libraries(hamgen_B ${LAPACK_LIBRARIES})

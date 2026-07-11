@@ -19,7 +19,6 @@ class SITE;
 class SOURCE;
 class INTERACTION;
 class VERTEX;
-class QUANTITY;
 
 //######################################################################
 
@@ -301,25 +300,6 @@ int InitialConfigurationGroup::LastID = 0;
 
 //######################################################################
 
-class QUANTITY {
- private:
-  int ID;
-  std::string NAME;
-
- public:
-  Array<double> Value;
-  Array<bool> isDefined;
-  int getID() { return ID; };
-  void setID(int i) { ID = i; };
-  const std::string& getName() { return NAME; };
-  void setName(const std::string& s) { NAME = s; };
-  void load(XML::Block& X);
-  //  void dump();
-  void write();
-};
-
-//######################################################################
-
 int INTERACTION::STYPE(int i) { return _V->SiteTypeOfLeg(2 * i); }
 
 //######################################################################
@@ -336,14 +316,13 @@ VERTEX& SITE::V() {
 
 const char* HFILE;  // file name of the hamiltonian and the worm
 const char* AFILE;  // file name of algorithm data file
-FileReader H;
 FILE* FALG;
 
 SITE* Site;
 SOURCE* Source;
 INTERACTION* Interaction;
 VERTEX* Vertex;
-QUANTITY* Quantity;
+
 
 bool isKink(int st);
 
