@@ -36,6 +36,7 @@ jobs:
           python -m pip install -U pip
           python -m pip install numpy scipy toml
           python -m pip install typing_extensions
+          python -m pip install pytest
 
       - name: make workspace
         run: cmake -E make_directory ${{runner.workspace}}/build

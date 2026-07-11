@@ -23,6 +23,7 @@ set(python_unit_test_src
   test_displacement
   test_wavevector
   test_algorithm
+  test_pmwa_pre_unit
 )
 
 if(MPI_FOUND)
