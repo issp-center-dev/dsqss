@@ -38,6 +38,14 @@ Dla::Dla(int NP, char **PLIST) {
   MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &p_num);
 
+  if (NP < 2) {
+    if (my_rank == 0) {
+      std::cerr << "usage: " << PLIST[0] << " parameter_file" << std::endl;
+    }
+    MPI_Finalize();
+    std::exit(1);
+  }
+
   std::stringstream logfile;
   logfile << PLIST[1] << "." << my_rank << ".log";
 
