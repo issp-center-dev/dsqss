@@ -73,22 +73,41 @@ def test_hamiltonian_from_dict():
     assert h.nxmax == 2
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="Bug: hamiltonian.py:229,240 — RuntimeError raised with empty message. "
-           "Should include context about which site/interaction slot is None.",
-)
+def _site_dict(stype):
+    return {"type": stype, "N": 2, "values": [0.0, 1.0], "elements": [], "sources": []}
+
+
 def test_hamiltonian_missing_site_gives_informative_error():
     # Two sites in list, both with type=0 — leaves type=1 slot as None
     bad = {
         "name": "bad",
-        "sites": [
-            {"type": 0, "N": 2, "values": [0.0, 1.0], "elements": [], "sources": []},
-            {"type": 0, "N": 2, "values": [0.0, 1.0], "elements": [], "sources": []},
-        ],
+        "sites": [_site_dict(0), _site_dict(0)],
         "interactions": [],
     }
-    with pytest.raises(RuntimeError, match=r".+"):  # fails because message is ""
+    with pytest.raises(RuntimeError, match=r"site type 1 is not defined"):
+        Hamiltonian(bad)
+
+
+def test_hamiltonian_out_of_range_site_type():
+    bad = {
+        "name": "bad",
+        "sites": [_site_dict(0), _site_dict(2)],  # 2 sites but type 2
+        "interactions": [],
+    }
+    with pytest.raises(RuntimeError, match=r"site type 2 is out of range"):
+        Hamiltonian(bad)
+
+
+def test_hamiltonian_missing_interaction_gives_informative_error():
+    bad = {
+        "name": "bad",
+        "sites": [_site_dict(0)],
+        "interactions": [
+            {"type": 0, "nbody": 2, "N": [2, 2], "elements": []},
+            {"type": 0, "nbody": 2, "N": [2, 2], "elements": []},
+        ],
+    }
+    with pytest.raises(RuntimeError, match=r"interaction type 1 is not defined"):
         Hamiltonian(bad)
 
 
