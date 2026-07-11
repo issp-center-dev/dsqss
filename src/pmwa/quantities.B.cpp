@@ -509,6 +509,10 @@ void Quantities::WindingNumber2() {
 
 void Quantities::Density(GraphSpace::Vertex *world,
                          GraphSpace::Vertex *worldB) {
+  // sublattice sign for staggered quantities (lx[i] is the sublattice
+  // index 0/1); multiplying by lx[i] itself summed over one sublattice
+  // only, unlike the spin variant (quantities.H.cpp).
+  double ph[2] = {1.0, -1.0};
   double atot = 0.0, btot = 0.0, stot = 0.0, xtot = 0.0;
 
   for (int i = 0; i < V; i++) {
@@ -525,8 +529,8 @@ void Quantities::Density(GraphSpace::Vertex *world,
     double a0 = world[i].p;
     atot += a0;
 
-    stot += a0 * LT->lx[i];
-    xtot += values_L[f_ld(i)] * LT->lx[i];
+    stot += a0 * ph[LT->lx[i]];
+    xtot += values_L[f_ld(i)] * ph[LT->lx[i]];
   }
 
   values_S[bmzu] = btot;
