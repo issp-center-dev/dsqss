@@ -192,16 +192,27 @@ void GraphSpace::initialev(std::string const &Eventfile_old, My_rdm *MR, int cb,
       fin >> Ncyc;
       for (int i = 0; i < V; i++) fin >> world[i].p >> worldB[i].p;
 
-      while (!fin.eof()) {
-        fin >> dummy >> new_event_L.t >> new_event_L.type >> new_event_L.p >>
-            xl;
-        if (new_event_L.type == 2)
-          fin >> dummy >> new_event_R.t >> new_event_R.type >> new_event_R.p >>
-              xr;
+      // Loop on successful extraction: testing eof() before reading
+      // injected one extra bogus event built from failed extractions.
+      while (fin >> dummy >> new_event_L.t >> new_event_L.type >>
+             new_event_L.p >> xl) {
+        if (new_event_L.type == 2) {
+          if (!(fin >> dummy >> new_event_R.t >> new_event_R.type >>
+                new_event_R.p >> xr)) {
+            if (PR->my_rank == 0) {
+              cerr << "ERROR: event file is truncated: a two-site vertex "
+                      "is missing its partner record."
+                   << endl;
+            }
+            fin.close();
+            MPI_Finalize();
+            exit(1);
+          }
+        }
 
         if (PR->FlgAnneal) {
           new_event_L.t *= B / oldB;
-          new_event_R.t *= B / oldB;
+          if (new_event_L.type == 2) new_event_R.t *= B / oldB;
         }
 
         new_event_L.i = xl;
@@ -329,6 +340,11 @@ void GraphSpace::Output(std::string const &fname, My_rdm *MR) {
     i++;
   }
 
+  file.flush();
+  if (!file) {
+    cerr << "ERROR: rank " << my_rank << ": failed to write event file "
+         << fname << endl;
+  }
   file.close();
 
   std::string rndfile("RND");
