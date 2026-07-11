@@ -5,7 +5,7 @@ endif(${CMAKE_PROJECT_NAME} STREQUAL "Project")
 
 include_directories(.)
 
-set(dla_SOURCES random.cc dla.cc) 
+set(dla_SOURCES dla.cc)
 
 add_executable(dla ${dla_SOURCES})
 install(TARGETS dla RUNTIME DESTINATION bin)

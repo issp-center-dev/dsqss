@@ -1,110 +1,101 @@
-/*
- *=================================================================
- *     Header of Class Random for random number generation
- *=================================================================
- *     $Log: Random.h,v $
- *     Revision 1.1  2000/02/10 16:14:16  kenji
- *     Initial revision
- *
- *=================================================================
- *     The copyright holder of the following codes is
- *
- *     Kenji HARADA
- *     Graduate School of Infomatics, Kyoto University,
- *     Kyoto 606-8501, Japan
- *     e-mail: harada@acs.i.kyoto-u.ac.jp
- *     home-page: http://www-fcs.acs.i.kyoto-u.ac.jp/~harada/
- *=================================================================
- */
-//! id="$Id: Random.h,v 1.1 2000/02/10 16:14:16 kenji Exp $"
-//! author="Kenji Harada"
+// DSQSS (Discrete Space Quantum Systems Solver)
+// Copyright (C) 2018- The University of Tokyo
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifndef _RANDOM_H_
+#define _RANDOM_H_
+
 #include <cmath>
-#define IPP 521
-#define SIZE_SEED IPP
-#define IQQ 32
-#define IPQ (IPP - IQQ)
+#include <cstdint>
+#include <random>
+#include <sstream>
+#include <string>
+
+#include "serialize.hpp"
+
 typedef unsigned int Rint;
 
-// Random Number Generator
-// using M series method
-// X(t) := X(t-32) xor X(t-521)
+// Random number generator based on std::mt19937 (Mersenne Twister).
+//
+// This replaces a two-tap GFSR generator, X(t) = X(t-32) ^ X(t-521),
+// whose generator family is known to exhibit three-point correlations
+// that have produced measurable systematic errors in Monte Carlo
+// studies (Ferrenberg, Landau, and Wong, PRL 69, 3382 (1992)).
+// Simulation results obtained with a given seed differ from those of
+// previous DSQSS versions; statistical properties are unchanged or
+// improved.
 class Random {
  private:
-  Rint nrbit, iptr, navr;
-  Rint iri[IPP];
-  double runit;
-
- private:
-  void initialize(Rint irand0, Rint nrbit0);
-  //: Initialization
-  //! param: irand0 - seed for 521 initial random numbers
-  //! param: nrbit0 - precision (number of bit)
+  std::mt19937 mt;
 
  public:
-  Random(Rint *seed, Rint nrbit0);
-  //: Constructor
-  //! param: seed - 521 initial random numbers
-  //! param: nrbit0 - precision (number of bit)
+  explicit Random(Rint irand0 = 20000101, Rint /*nrbit0*/ = 32)
+      : mt(irand0) {}
 
-  Random(Rint irand0 = 20000101, Rint nrbit0 = 32);
-  //: Constructor
-  //! param: irand0 - seed for 521 initial random numbers
-  //! param: nrbit0 - precision (number of bit)
+  void setSeed(Rint irand0, Rint /*nrbit0*/ = 32) { mt.seed(irand0); }
 
-  void setSeed(Rint irand0, Rint nrbit0 = 32);
-  //: Reset
-  //! param: irand0 - seed for 521 initial random numbers
-  //! param: nrbit0 - precision (number of bit)
-
-  void setSeed(Rint *seed, Rint nrbit0);
-  //: Reset
-  //! param: seed - 521 initial random numbers
-  //! param: nrbit0 - precision (number of bit)
-
-  Rint getSeed(Rint *seed);
-  //: Return seed and nrbit0
-
-  double Uniform(void);
-  double Dicex(void);
-  void InitRand();
-
-  Rint Int(Rint ilimit);
-  //: Uniform integer (0, 1, .. ,ilimit-1)
-
-  Rint Int(void);
-
-  void Uniform(Rint nr, Rint *ir);
-  //: Uniform integers
-  //! param: nr - the number of random numbers to be generated
-  //! param: ir - pointer to store outputs
-
-  void Uniform(Rint nr, double *rx);
-  //: Uniform reals
-  //! param: nr - the number of random numbers to be generated
-  //! param: rx - pointer to store outputs
-
-  void Int(Rint nr, Rint *ir, Rint ilimit);
-  //: Uniform integers
-  //! param: nr - the number of random numbers to be generated
-  //! param: ir - pointer to store outputs
-  //! param: ilimit - maximum
-
-  double Gauss() {
-    double theta;
-    theta = 6.283185307179586477 * Uniform();
-    return sqrt(-2e0 * log(1e0 - Uniform())) * sin(theta);
+  // Uniform real in [0,1) with 53-bit resolution
+  double Uniform() {
+    const std::uint64_t hi = mt() >> 5;  // upper 27 bits
+    const std::uint64_t lo = mt() >> 6;  // lower 26 bits
+    return (hi * 67108864.0 + lo) * (1.0 / 9007199254740992.0);  // 2^-53
   }
 
-  double Exp() { return -log(1e0 - Uniform()); }
+  // Uniform integer in {0, 1, ..., ilimit-1}
+  Rint Int(Rint ilimit) { return static_cast<Rint>(ilimit * Uniform()); }
 
-  int Binary(double P) { return (static_cast<int>(Uniform() / P)); }
+  // Uniform 32-bit integer
+  Rint Int() { return mt(); }
 
-  void Perm(Rint, int *);
+  double Exp() { return -std::log(1e0 - Uniform()); }
 
-  void Scramble(Rint, int *);
+  double Gauss() {
+    const double theta = 6.283185307179586477 * Uniform();
+    return std::sqrt(-2e0 * std::log(1e0 - Uniform())) * std::sin(theta);
+  }
+
+  std::mt19937& engine() { return mt; }
+  const std::mt19937& engine() const { return mt; }
 };
 
-#define _RANDOM_H_
-#endif
+namespace Serialize {
+
+// Checkpoint the engine state as its standard textual representation
+// instead of dumping raw object bytes, which is unspecified for
+// std::mt19937 and not portable between standard library
+// implementations.
+inline void save(std::ofstream& ofs, const Random& rng) {
+  std::ostringstream oss;
+  oss << rng.engine();
+  const std::string state = oss.str();
+  save(ofs, state);
+}
+
+inline void load(std::ifstream& ifs, Random& rng) {
+  std::string state;
+  load(ifs, state);
+  std::istringstream iss(state);
+  iss >> rng.engine();
+  if (!iss) {
+    std::fprintf(stderr,
+                 "ERROR: failed to restore the random number generator "
+                 "state from the checkpoint file.\n");
+    std::exit(1);
+  }
+}
+
+}  // namespace Serialize
+
+#endif  // _RANDOM_H_
