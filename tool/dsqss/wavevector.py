@@ -38,6 +38,10 @@ class Wavevector:
         for d in range(self.dim):
             if steps[d] == 0:
                 steps[d] = size[d] // 2
+            if steps[d] == 0:
+                # size[d] == 1: only k=0 exists along this dimension;
+                # any positive step keeps range() valid
+                steps[d] = 1
         ks = []
         self.nk = 1
         for d in range(self.dim):

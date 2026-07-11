@@ -38,6 +38,23 @@ def test_generate_k_zero_always_present():
     assert list(wv.ks[:, 0]) == [0, 0]
 
 
+def test_generate_size_one_dim():
+    # size 1 along a dimension used to give steps=0 and
+    # "range() arg 3 must not be zero"; only k=0 exists there
+    wv = Wavevector()
+    wv.generate({}, [1])
+    assert wv.nk == 1
+    assert list(wv.ks[:, 0]) == [0]
+
+
+def test_generate_mixed_size_with_one():
+    wv = Wavevector()
+    wv.generate({}, [4, 1])
+    # dim 0 contributes k=0,2 (2 points), dim 1 only k=0
+    assert wv.nk == 2
+    assert all(wv.ks[1, :] == 0)
+
+
 # ---- save / load roundtrip ----
 
 def test_save_load_roundtrip(tmp_path):
