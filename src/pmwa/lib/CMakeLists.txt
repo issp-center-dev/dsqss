@@ -4,7 +4,7 @@ if(${CMAKE_PROJECT_NAME} STREQUAL "Project")
 endif(${CMAKE_PROJECT_NAME} STREQUAL "Project")
 
 include_directories(.)
-set(RDM_SOURCES My_rdm.hrd.cpp random.cpp)
+set(RDM_SOURCES My_rdm.hrd.cpp)
 #set(RDM_SOURCES My_rdm.boost.cpp )
 #set(RDM_SOURCES My_rdm.gsl.cpp )
 set(STDMA_SOURCES stdma.cpp)
