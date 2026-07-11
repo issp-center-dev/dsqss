@@ -522,6 +522,10 @@ double Simulation::UP_ONESTEP(bool thermalized) {
         int s_UI = 0;
         double iRHO = 0.0;
         double sRHO = 0.0;
+        // i_UI < NCI guards against walking past the array when RHORND
+        // reaches the total weight (RHO drifts from sum(dRHO) by rounding
+        // because it is updated incrementally); we then clamp to the last
+        // defined interval.
         do {
           sRHO = iRHO;
           if (UI[i_UI].DefinedVIC) {
@@ -529,7 +533,7 @@ double Simulation::UP_ONESTEP(bool thermalized) {
             s_UI = i_UI;
           }
           ++i_UI;
-        } while (RHORND >= iRHO);
+        } while (RHORND >= iRHO && i_UI < NCI);
         RHORND -= sRHO;
 
         UniformInterval& ui = UI[s_UI];
@@ -737,6 +741,7 @@ double Simulation::DOWN_ONESTEP(bool thermalized) {
         int s_UI = 0;
         double iRHO = 0.0;
         double sRHO = 0.0;
+        // see the corresponding comment in UP_ONESTEP
         do {
           sRHO = iRHO;
           if (UI[i_UI].DefinedVIC) {
@@ -744,7 +749,7 @@ double Simulation::DOWN_ONESTEP(bool thermalized) {
             s_UI = i_UI;
           }
           ++i_UI;
-        } while (RHORND >= iRHO);
+        } while (RHORND >= iRHO && i_UI < NCI);
         RHORND -= sRHO;
 
         UniformInterval& ui = UI[s_UI];
