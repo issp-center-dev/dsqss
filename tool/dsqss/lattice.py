@@ -347,7 +347,9 @@ class Lattice:
                         util.ERROR(f"too few elements ({body})")
                     else:
                         util.ERROR(f"too many elements ({body})")
-                self.bc = list(map(bool, elem))
+                # elem holds "0"/"1" strings; bool("0") is True, so convert
+                # via int to keep open boundaries open
+                self.bc = [bool(int(x)) for x in elem]
                 state = "latvec"
                 continue
             elif state == "latvec":

@@ -82,3 +82,16 @@ def test_lattice_dat_roundtrip(chain_lattice, tmp_path):
     assert lat2.nints == chain_lattice.nints
     assert lat2.dim == chain_lattice.dim
     assert lat2.name == chain_lattice.name
+    assert lat2.bc == chain_lattice.bc
+
+
+def test_lattice_dat_roundtrip_open_bc(tmp_path):
+    # save_dat writes bc as "0"/"1"; load_dat must not turn "0" into True
+    # (bool("0") is True for any non-empty string)
+    lat = _open_chain(4)
+    assert lat.bc == [False]
+    path = str(tmp_path / "open_chain.dat")
+    lat.save_dat(path)
+    lat2 = Lattice()
+    lat2.load_dat(path)
+    assert lat2.bc == [False]
