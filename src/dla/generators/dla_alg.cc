@@ -361,7 +361,11 @@ void INTERACTION::write() {
     if (Weight[i] != 0.0) {
       I.coord(i, x);
       if (!isdiagonal(x, NBODY)) {
-        double sgn = Weight[i] > 0.0 ? 1.0 : -1.0;
+        // The sign of the raw matrix element was recorded in Sign at
+        // load time; Weight itself had negative off-diagonal elements
+        // flipped positive, so recomputing the sign from Weight (as an
+        // earlier version did) always yielded +1.
+        double sgn = (Sign[i] < 0.0) ? -1.0 : 1.0;
         fprintf(FALG, "    <Sign> ");
         for (int j = 0; j < 2 * NBODY; ++j) {
           fprintf(FALG, " %2d", x[j]);
