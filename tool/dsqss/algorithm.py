@@ -233,6 +233,12 @@ class AlgInteraction:
 
         self.hamint = hamint
         self.sites = [hamsites[stype] for stype in hamint.stypes]
+        for stype, site in zip(hamint.stypes, self.sites):
+            if site.N < 1:
+                raise ValueError(
+                    f"site type {stype} in interaction {hamint.itype} has no "
+                    f"states (N={site.N}); each site needs at least one state"
+                )
         self.sitesources = [deepcopy(site.sources) for site in self.sites]
         self.intelements = deepcopy(hamint.elements)
         self.ebase_negsign = float("inf")

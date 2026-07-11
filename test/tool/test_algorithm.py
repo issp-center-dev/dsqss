@@ -39,13 +39,6 @@ def test_algorithm_write_xml(graphed_ham, tmp_path):
 
 # ---- known bug: ZeroDivisionError when a site has zero states ----
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="Bug: algorithm.py:274 — 'ndiag' is the product of each site's N "
-           "(number of states); if any site has N=0, ndiag stays 0 and "
-           "(2*maxo - sumw) / ndiag raises ZeroDivisionError instead of a "
-           "clear validation error.",
-)
 def test_alginteraction_zero_states_site_raises_informative_error():
     fake_site = types.SimpleNamespace(N=0, sources={})
     hamint = types.SimpleNamespace(itype=0, stypes=[0], nbody=1, elements={})
