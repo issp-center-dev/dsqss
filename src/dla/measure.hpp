@@ -258,7 +258,7 @@ inline void Measurement::dump() {
     ACC[i].show();
   }
   printf("\n");
-  for (int i = 0; i <= NPHY; i++) {
+  for (int i = 0; i < NPHY; i++) {
     printf("phy[%2d] : ", i);
     PHY[i].show();
   }

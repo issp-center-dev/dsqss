@@ -142,6 +142,7 @@ void Lattice::read() {
   bool INIT_I = true;
   bool INIT_V = true;
   BD = -1;
+  NEDGE = 0;  // stays 0 when the lattice file has no edge columns
   edge = NULL;
   vec = NULL;
 
