@@ -208,6 +208,26 @@ Simulation::Simulation(Parameter& P0)
   }
 }
 
+bool Simulation::simtime_exceeded() {
+  int expired = (cjob_timer.elapsed() > P.SIMTIME) ? 1 : 0;
+#ifdef MULTI
+  // All ranks must agree on the timeout decision: otherwise one rank
+  // enters save()/end_job() (MPI_Barrier) while another continues into
+  // the final allreduce -- mismatched collectives and a permanent hang.
+  // Every rank reaches this check at the same iteration when RUNTYPE == 0
+  // (all ranks share one parameter file); for RUNTYPE >= 3 each rank has
+  // its own parameters, so sweep counts may differ between ranks and a
+  // collective here would itself desynchronize -- keep the per-rank
+  // decision there, as before.
+  if (P.RUNTYPE == 0) {
+    int expired_any = expired;
+    MPI_Allreduce(&expired, &expired_any, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
+    expired = expired_any;
+  }
+#endif
+  return expired != 0;
+}
+
 void Simulation::reset_counters() {
   ISET = -1;
   IMCSE = -1;
@@ -258,7 +278,7 @@ void Simulation::Set(int ntherm, int nmcs) {
 
   for (IMCSD = IMCSDstart; IMCSD < ntherm; IMCSD++) {
     if (P.SIMTIME > 0) {
-      if (cjob_timer.elapsed() > P.SIMTIME) {
+      if (simtime_exceeded()) {
         IMCS = 0;
         save();
         end_job();
@@ -280,7 +300,7 @@ void Simulation::Set(int ntherm, int nmcs) {
 
   for (IMCS = IMCSstart; IMCS < nmcs; IMCS++) {
     if (P.SIMTIME > 0.0) {
-      if (cjob_timer.elapsed() > P.SIMTIME) {
+      if (simtime_exceeded()) {
         save();
         end_job();
       }
