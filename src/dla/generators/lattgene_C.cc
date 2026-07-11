@@ -27,7 +27,17 @@ void ShowUsage(std::string const& exename) {
 }
 //-------------------------------------------------------------
 void WriteXML(int D, int L[], std::string const& filename) {
+  for (int i = 0; i < D; i++) {
+    if (L[i] < 1) {
+      cout << "error: L must be a positive integer." << endl;
+      exit(1);
+    }
+  }
   ofstream fout(filename.c_str());
+  if (!fout) {
+    cout << "error: cannot open output file " << filename << endl;
+    exit(1);
+  }
   fout.precision(15);
   int N = 1;  // number of sites.
   for (int i = 0; i < D; i++) {
@@ -174,6 +184,11 @@ int main(int argc, char** argv) {
     exit(0);
   }
   const int D = atoi(argv[1]);
+  if (D < 1) {
+    cout << "error: D must be a positive integer." << endl;
+    ShowUsage(exename);
+    exit(1);
+  }
   //  int        L[D] ;
   int* L = new int[D];  // edit sakakura
 

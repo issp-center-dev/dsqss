@@ -104,6 +104,10 @@ void Average(int DIM, dgematrix& R, dgematrix& Q, double& Ave, double& Var) {
 
 void WriteXML(int M, dgematrix& Q, dgematrix& H, std::string const& filename) {
   FILE* FOUT = fopen(filename.c_str(), "w");
+  if (FOUT == NULL) {
+    printf("error: cannot open output file %s\n", filename.c_str());
+    exit(1);
+  }
   int D = M + 1;
   int DD = D * D;
   fprintf(FOUT, "<Hamiltonian>\n");

@@ -67,6 +67,10 @@ void WriteXML(std::vector<int> const& L, int Ntau, int CutoffOfNtau, int KTYPE,
               std::string const& filename) {
   const int D = L.size();
   ofstream fout(filename.c_str());
+  if (!fout) {
+    cout << "error: cannot open output file " << filename << endl;
+    exit(1);
+  }
   fout.precision(15);
   int N = 1;  // number of sites.
   for (int i = 0; i < D; i++) {

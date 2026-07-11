@@ -27,6 +27,10 @@ void ShowUsage(std::string const& exename) {
 void WriteXML(std::vector<int> const& L, std::string const& filename) {
   const int D = L.size();
   ofstream fout(filename.c_str());
+  if (!fout) {
+    cout << "error: cannot open output file " << filename << endl;
+    exit(1);
+  }
   fout.precision(15);
   int N = 1;  // number of sites.
   for (int i = 0; i < D; i++) {
@@ -170,7 +174,7 @@ void WriteXML(std::vector<int> const& L, std::string const& filename) {
 int main(int argc, char** argv) {
   std::string exename(argv[0]);
   std::string filename("lattice.xml");
-  if (argc < 3) {
+  if (argc < 2) {
     ShowUsage(exename);
     exit(0);
   }
@@ -200,6 +204,13 @@ int main(int argc, char** argv) {
     cout << "error: D != number of L[]." << endl;
     ShowUsage(exename);
     exit(0);
+  }
+
+  for (int i = 0; i < D; i++) {
+    if (L[i] < 1) {
+      cout << "error: L must be a positive integer." << endl;
+      exit(1);
+    }
   }
 
   int EvenOrOdd = 0;

@@ -23,6 +23,10 @@ int main(int argc, char** argv) {
 
   XML::Block X(HFILE, "Hamiltonian");
   FALG = fopen(AFILE, "w");
+  if (FALG == NULL) {
+    printf("ERROR: cannot open output file %s\n", AFILE);
+    exit(1);
+  }
   // FALG = stdout;
 
   XML::Block& XGEN = X["General"];

@@ -27,6 +27,10 @@ void ShowUsage(std::string const& exename) {
 
 void WriteXML(int D, int L[], int Ntau, std::string const& filename) {
   ofstream fout(filename.c_str());
+  if (!fout) {
+    cout << "error: cannot open output file " << filename << endl;
+    exit(1);
+  }
   fout.precision(15);
   int N = 1;  // number of sites.
   for (int i = 0; i < D; i++) {
