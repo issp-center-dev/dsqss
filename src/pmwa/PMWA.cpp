@@ -16,7 +16,7 @@
 
 #include <PMWA.h>
 
-#include <boost/lexical_cast.hpp>
+#include "../common/from_string.h"
 #include <debug.hpp>
 
 #include "../common/read_keyvalues.h"
@@ -204,7 +204,6 @@ void Dla::NameOutfiles() {
 }
 
 void Dla::ReadParameterfile(int m_pnum, int m_myrank, int NP, char **PLIST) {
-  using boost::lexical_cast;
 
   PR.p_num = m_pnum;
   PR.my_rank = m_myrank;
@@ -222,32 +221,32 @@ void Dla::ReadParameterfile(int m_pnum, int m_myrank, int NP, char **PLIST) {
   deprecated_parameter(dict, "ntherm", "nmcse");
   deprecated_parameter(dict, "ndecor", "nmcsd");
 
-  MC.runtype = lexical_cast<int>(dict["runtype"]);
-  MC.nc = lexical_cast<int>(dict["nc"]);
-  MC.Nbin = lexical_cast<int>(dict["nset"]);
-  MC.Nsample = lexical_cast<int>(dict["nmcs"]);
-  MC.Nthermal = lexical_cast<int>(dict["ntherm"]);
-  MC.Nstep = lexical_cast<int>(dict["ndecor"]);
-  MC.Ntest = lexical_cast<int>(dict["npre"]);
-  MC.seed = lexical_cast<int>(dict["seed"]);
+  MC.runtype = from_string<int>(dict["runtype"]);
+  MC.nc = from_string<int>(dict["nc"]);
+  MC.Nbin = from_string<int>(dict["nset"]);
+  MC.Nsample = from_string<int>(dict["nmcs"]);
+  MC.Nthermal = from_string<int>(dict["ntherm"]);
+  MC.Nstep = from_string<int>(dict["ndecor"]);
+  MC.Ntest = from_string<int>(dict["npre"]);
+  MC.seed = from_string<int>(dict["seed"]);
 
-  BETA = lexical_cast<double>(dict["beta"]);
-  oldBETA = lexical_cast<double>(dict["oldbeta"]);
+  BETA = from_string<double>(dict["beta"]);
+  oldBETA = from_string<double>(dict["oldbeta"]);
 
   deprecated_parameter(dict, "t", "tb");
   deprecated_parameter(dict, "u", "ub");
   deprecated_parameter(dict, "v", "vbb");
 
-  sp.tb = lexical_cast<double>(dict["t"]);
-  sp.Ubb = lexical_cast<double>(dict["u"]);
-  sp.Vb1 = lexical_cast<double>(dict["v"]);
-  sp.mu = lexical_cast<double>(dict["mu"]);
-  sp.Htr = lexical_cast<double>(dict["g"]);
-  sp.nmax = lexical_cast<int>(dict["nmax"]);
+  sp.tb = from_string<double>(dict["t"]);
+  sp.Ubb = from_string<double>(dict["u"]);
+  sp.Vb1 = from_string<double>(dict["v"]);
+  sp.mu = from_string<double>(dict["mu"]);
+  sp.Htr = from_string<double>(dict["g"]);
+  sp.nmax = from_string<int>(dict["nmax"]);
 
-  cb = lexical_cast<int>(dict["cb"]);
-  IMAX = lexical_cast<int>(dict["nvermax"]);
-  WMAX = lexical_cast<int>(dict["nwormax"]);
+  cb = from_string<int>(dict["cb"]);
+  IMAX = from_string<int>(dict["nvermax"]);
+  WMAX = from_string<int>(dict["nwormax"]);
 
   algfile = dict["algfile"];
   latfile = dict["latfile"];

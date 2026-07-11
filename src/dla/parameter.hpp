@@ -13,7 +13,7 @@
 #include <map>
 #include <string>
 
-#include <boost/lexical_cast.hpp>
+#include "../common/from_string.h"
 
 #include "../common/read_keyvalues.h"
 #include "debug.hpp"
@@ -116,7 +116,6 @@ class Parameter {
 };
 
 void Parameter::readfile(std::string const& filename) {
-  using boost::lexical_cast;
   using std::string;
   double val;
   std::map<string, string> dict;
@@ -127,29 +126,29 @@ void Parameter::readfile(std::string const& filename) {
   deprecated_parameter(dict, "npre", "nmcse");
   deprecated_parameter(dict, "ntherm", "nmcsd");
 
-  BETA = lexical_cast<double>(dict["beta"]);
+  BETA = from_string<double>(dict["beta"]);
   if (std::isinf(BETA) || BETA <= 0.0) {
     util::ERROR("\"beta\" is not specified or invalid.");
   }
 
-  NMCS = lexical_cast<int>(dict["nmcs"]);
-  NTHERM = lexical_cast<int>(dict["ntherm"]);
-  NPRE = lexical_cast<int>(dict["npre"]);
+  NMCS = from_string<int>(dict["nmcs"]);
+  NTHERM = from_string<int>(dict["ntherm"]);
+  NPRE = from_string<int>(dict["npre"]);
   if (NPRE < 1) {
     util::ERROR("\"npre\" must be a positive integer.");
   }
   if (dict.find("ndecor") != dict.end()) {
-    NDECOR = lexical_cast<int>(dict["ndecor"]);
+    NDECOR = from_string<int>(dict["ndecor"]);
   } else {
     NDECOR = NTHERM;
   }
-  NSET = lexical_cast<int>(dict["nset"]);
-  SIMTIME = lexical_cast<double>(dict["simulationtime"]);
-  SEED = lexical_cast<int>(dict["seed"]);
-  NSEGMAX = lexical_cast<int>(dict["nsegmax"]);
-  NVERMAX = lexical_cast<int>(dict["nvermax"]);
+  NSET = from_string<int>(dict["nset"]);
+  SIMTIME = from_string<double>(dict["simulationtime"]);
+  SEED = from_string<int>(dict["seed"]);
+  NSEGMAX = from_string<int>(dict["nsegmax"]);
+  NVERMAX = from_string<int>(dict["nvermax"]);
 
-  NTAU = lexical_cast<int>(dict["ntau"]);
+  NTAU = from_string<int>(dict["ntau"]);
 
   ALGFILE = dict["algfile"];
   LATFILE = dict["latfile"];
@@ -160,7 +159,7 @@ void Parameter::readfile(std::string const& filename) {
   CFOUTFILE = dict["cfoutfile"];
   CKOUTFILE = dict["ckoutfile"];
 
-  RUNTYPE = lexical_cast<int>(dict["runtype"]);
+  RUNTYPE = from_string<int>(dict["runtype"]);
 }
 
 inline Parameter::Parameter(int NP, char** PLIST) {
