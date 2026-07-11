@@ -50,6 +50,7 @@ class SITE {
   int TTYPE;  // the SOURCE type of the worm tail
   int VTYPE;  // the VERTEX type of the worm tail
   int NX;
+  std::vector<double> LocalStates;  // measurement values of local states
   int* NumberOfChannels;
   SOURCE* _T;
   SOURCE& T() { return *_T; };

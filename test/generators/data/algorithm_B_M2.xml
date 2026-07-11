@@ -15,6 +15,7 @@
   <Site>
     <STYPE> 0 </STYPE>
     <NumberOfStates> 3 </NumberOfStates>
+    <LocalStates> 0 1 2 </LocalStates>
     <VertexTypeOfSource> 0 </VertexTypeOfSource>
     <InitialConfiguration>
       <State> 0 </State>

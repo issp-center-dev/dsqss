@@ -10,6 +10,7 @@
     <STYPE> 0 </STYPE>
     <TTYPE> 0 </TTYPE>
     <NX>   3 </NX>
+    <LocalStates> 0 1 2 </LocalStates>
   </Site>
 
   <Source>

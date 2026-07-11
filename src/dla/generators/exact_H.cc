@@ -105,6 +105,11 @@ void WriteXML(int M, dgematrix& Q, dgematrix& H, std::string const& filename) {
   fprintf(FOUT, "    <STYPE> 0 </STYPE>\n");
   fprintf(FOUT, "    <TTYPE> 0 </TTYPE>\n");
   fprintf(FOUT, "    <NX>   %d </NX>\n", D);
+  fprintf(FOUT, "    <LocalStates>");
+  for (int i = 0; i < D; i++) {
+    fprintf(FOUT, " %.16g", i - 0.5 * M);
+  }
+  fprintf(FOUT, " </LocalStates>\n");
   fprintf(FOUT, "  </Site>\n");
   fprintf(FOUT, "\n");
   fprintf(FOUT, "  <Source>\n");

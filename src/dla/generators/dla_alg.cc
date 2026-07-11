@@ -138,6 +138,27 @@ void SITE::load(XML::Block& X) {
   TTYPE = X["TTYPE"].getInteger();
   NX = X["NX"].getInteger();
   _T = &Source[TTYPE];
+
+  LocalStates.clear();
+  for (int i = 0; i < X.NumberOfBlocks(); i++) {
+    if (X[i].getName() == "LocalStates") {
+      for (int x = 0; x < NX; x++) {
+        LocalStates.push_back(X[i].getDouble(x));
+      }
+      break;
+    }
+  }
+  if (LocalStates.empty()) {
+    printf(
+        "WARNING: <Site> block for STYPE %d has no <LocalStates>; "
+        "assuming 0, 1, ..., NX-1. Measured densities/magnetizations "
+        "may be wrong -- regenerate hamiltonian.xml with the current "
+        "hamgen.\n",
+        ID);
+    for (int x = 0; x < NX; x++) {
+      LocalStates.push_back(static_cast<double>(x));
+    }
+  }
 }
 
 //======================================================================
@@ -183,6 +204,11 @@ void SITE::write() {
   fprintf(FALG, "  <Site>\n");
   fprintf(FALG, "    <STYPE> %d </STYPE>\n", ID);
   fprintf(FALG, "    <NumberOfStates> %d </NumberOfStates>\n", NX);
+  fprintf(FALG, "    <LocalStates>");
+  for (int x = 0; x < NX; x++) {
+    fprintf(FALG, " %.16g", LocalStates[x]);
+  }
+  fprintf(FALG, " </LocalStates>\n");
   fprintf(FALG, "    <VertexTypeOfSource> %d </VertexTypeOfSource>\n", VTYPE);
   // printf("    <EBASE> %24.16f </EBASE>\n", V().EBASE );
   // fprintf(FALG,"    <EBASE> %24.16f </EBASE>\n", V().EBASE );
