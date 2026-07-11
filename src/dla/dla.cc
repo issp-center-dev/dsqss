@@ -227,6 +227,7 @@ void Simulation::set_NCYC() {
   double path;
   int ncyc = 1;
   int NSAMP = P.NPRE / 10;
+  if (NSAMP < 1) NSAMP = 1;
   std::vector<int> ncycSAMP(NSAMP);
 
   for (IMCSE = 0; IMCSE < P.NPRE; IMCSE++) {

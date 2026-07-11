@@ -136,6 +136,9 @@ void Parameter::readfile(std::string const& filename) {
   NMCS = lexical_cast<int>(dict["nmcs"]);
   NTHERM = lexical_cast<int>(dict["ntherm"]);
   NPRE = lexical_cast<int>(dict["npre"]);
+  if (NPRE < 1) {
+    util::ERROR("\"npre\" must be a positive integer.");
+  }
   if (dict.find("ndecor") != dict.end()) {
     NDECOR = lexical_cast<int>(dict["ndecor"]);
   } else {
