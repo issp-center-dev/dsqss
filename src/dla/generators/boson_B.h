@@ -1,3 +1,6 @@
+#ifndef DSQSS_GENERATORS_BOSON_B_H
+#define DSQSS_GENERATORS_BOSON_B_H
+#include "matrix.h"
 
 //============================================================================
 //    Spin Matrices
@@ -125,3 +128,5 @@ class BosonOperatorSet {
     };
   };
 };
+
+#endif  // DSQSS_GENERATORS_BOSON_B_H

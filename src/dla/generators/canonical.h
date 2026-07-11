@@ -1,3 +1,6 @@
+#ifndef DSQSS_GENERATORS_CANONICAL_H
+#define DSQSS_GENERATORS_CANONICAL_H
+#include "matrix.h"
 
 //============================================================================
 //    Computation of Canonical Averages
@@ -76,3 +79,5 @@ double CanonicalAverage(dgematrix& R, dgematrix& Q) {
   }
   return z1 / z0;
 }
+
+#endif  // DSQSS_GENERATORS_CANONICAL_H

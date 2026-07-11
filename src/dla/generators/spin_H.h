@@ -1,3 +1,6 @@
+#ifndef DSQSS_GENERATORS_SPIN_H_H
+#define DSQSS_GENERATORS_SPIN_H_H
+#include "matrix.h"
 
 //============================================================================
 //    Spin Matrices
@@ -111,3 +114,5 @@ class HeisenbergSpinSet {
     };
   };
 };
+
+#endif  // DSQSS_GENERATORS_SPIN_H_H

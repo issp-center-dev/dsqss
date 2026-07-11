@@ -1,0 +1,78 @@
+<CorrelationFunction>
+
+<Comment>
+  1-dimension hypercubic lattice
+</Comment>
+
+<Ntau>             10 </Ntau>
+<NumberOfElements> 64 </NumberOfElements>
+<NumberOfKinds>    8 </NumberOfKinds>
+
+<!-- <CF> [kind] [isite] [jsite] </CF> -->
+
+<CF> 0 0 0 </CF>
+<CF> 0 1 1 </CF>
+<CF> 0 2 2 </CF>
+<CF> 0 3 3 </CF>
+<CF> 0 4 4 </CF>
+<CF> 0 5 5 </CF>
+<CF> 0 6 6 </CF>
+<CF> 0 7 7 </CF>
+<CF> 1 0 1 </CF>
+<CF> 1 1 2 </CF>
+<CF> 1 2 3 </CF>
+<CF> 1 3 4 </CF>
+<CF> 1 4 5 </CF>
+<CF> 1 5 6 </CF>
+<CF> 1 6 7 </CF>
+<CF> 1 7 0 </CF>
+<CF> 2 0 2 </CF>
+<CF> 2 1 3 </CF>
+<CF> 2 2 4 </CF>
+<CF> 2 3 5 </CF>
+<CF> 2 4 6 </CF>
+<CF> 2 5 7 </CF>
+<CF> 2 6 0 </CF>
+<CF> 2 7 1 </CF>
+<CF> 3 0 3 </CF>
+<CF> 3 1 4 </CF>
+<CF> 3 2 5 </CF>
+<CF> 3 3 6 </CF>
+<CF> 3 4 7 </CF>
+<CF> 3 5 0 </CF>
+<CF> 3 6 1 </CF>
+<CF> 3 7 2 </CF>
+<CF> 4 0 4 </CF>
+<CF> 4 1 5 </CF>
+<CF> 4 2 6 </CF>
+<CF> 4 3 7 </CF>
+<CF> 4 4 0 </CF>
+<CF> 4 5 1 </CF>
+<CF> 4 6 2 </CF>
+<CF> 4 7 3 </CF>
+<CF> 5 0 5 </CF>
+<CF> 5 1 6 </CF>
+<CF> 5 2 7 </CF>
+<CF> 5 3 0 </CF>
+<CF> 5 4 1 </CF>
+<CF> 5 5 2 </CF>
+<CF> 5 6 3 </CF>
+<CF> 5 7 4 </CF>
+<CF> 6 0 6 </CF>
+<CF> 6 1 7 </CF>
+<CF> 6 2 0 </CF>
+<CF> 6 3 1 </CF>
+<CF> 6 4 2 </CF>
+<CF> 6 5 3 </CF>
+<CF> 6 6 4 </CF>
+<CF> 6 7 5 </CF>
+<CF> 7 0 7 </CF>
+<CF> 7 1 0 </CF>
+<CF> 7 2 1 </CF>
+<CF> 7 3 2 </CF>
+<CF> 7 4 3 </CF>
+<CF> 7 5 4 </CF>
+<CF> 7 6 5 </CF>
+<CF> 7 7 6 </CF>
+
+</CorrelationFunction>

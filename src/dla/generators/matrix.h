@@ -1,3 +1,5 @@
+#ifndef DSQSS_GENERATORS_MATRIX_H
+#define DSQSS_GENERATORS_MATRIX_H
 
 //============================================================================
 //    Exact Calculation of Finite Size Spin Systems
@@ -14,6 +16,10 @@
 #include <map>
 #include <string>
 #include <vector>  //only for ?geev, ?gegv, etc.
+
+// The classes below use unqualified std names; historically this was
+// inherited from `using namespace std;` in the including .cc file.
+using namespace std;
 
 //#include <ctime>
 
@@ -616,3 +622,5 @@ cmatrix operator^(cmatrix& A, cmatrix& B) {
   C.im = ((A.re) ^ (B.im)) + ((A.im) ^ (B.re));
   return C;
 }
+
+#endif  // DSQSS_GENERATORS_MATRIX_H

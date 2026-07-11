@@ -1,0 +1,42 @@
+<Hamiltonian>
+  <General>
+    <Comment> Extended Bose-Hubbard model with NMAX=2 </Comment>
+    <NSTYPE> 1 </NSTYPE>
+    <NITYPE> 1 </NITYPE>
+    <NXMAX>  3 </NXMAX>
+  </General>
+
+  <Site>
+    <STYPE> 0 </STYPE>
+    <TTYPE> 0 </TTYPE>
+    <NX>   3 </NX>
+  </Site>
+
+  <Source>
+    <TTYPE> 0 </TTYPE>
+    <STYPE> 0 </STYPE>
+    <Weight> 0 1       0.5000000000000000 </Weight>
+    <Weight> 1 0       0.5000000000000000 </Weight>
+    <Weight> 1 2       0.7071067811865476 </Weight>
+    <Weight> 2 1       0.7071067811865476 </Weight>
+  </Source>
+
+  <Interaction>
+    <ITYPE> 0 </ITYPE>
+    <NBODY> 2 </NBODY>
+    <STYPE> 0 0 </STYPE>
+    <Weight> 1 1 0 0       0.5000000000000000 </Weight>
+    <Weight> 1 0 0 1       1.0000000000000000 </Weight>
+    <Weight> 2 1 0 1       1.4142135623730951 </Weight>
+    <Weight> 0 1 1 0       1.0000000000000000 </Weight>
+    <Weight> 0 0 1 1       0.5000000000000000 </Weight>
+    <Weight> 1 2 1 0       1.4142135623730951 </Weight>
+    <Weight> 1 0 1 2       1.4142135623730951 </Weight>
+    <Weight> 2 2 1 1      -1.5000000000000000 </Weight>
+    <Weight> 2 1 1 2       2.0000000000000004 </Weight>
+    <Weight> 0 1 2 1       1.4142135623730951 </Weight>
+    <Weight> 1 2 2 1       2.0000000000000004 </Weight>
+    <Weight> 1 1 2 2      -1.5000000000000000 </Weight>
+    <Weight> 2 2 2 2      -4.0000000000000000 </Weight>
+  </Interaction>
+</Hamiltonian>
