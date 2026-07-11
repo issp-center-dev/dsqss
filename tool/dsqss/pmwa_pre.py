@@ -136,23 +136,6 @@ class info:
 
     def _get_info(self, inputfile):
         tmp_dict = read_keyvalues(inputfile)
-        """
-        if inputfile is sys.stdin:
-            print('Waiting for standard input...')
-        data_list = inputfile.readlines()
-        tmp_dict={}
-        # get key and value
-        for data in data_list:
-            data.strip()
-            d_re = re.search("(.*)#(.*)", data)
-            if d_re is not None:
-                data = d_re.group(1)
-            pattern = "(.*)=(.*)"
-            if re.search(pattern,data) is not None:
-                d_re = re.search(pattern,data)
-                key = d_re.group(1).strip().lower()
-                tmp_dict[key] = d_re.group(2).strip()
-        """
 
         solver = tmp_dict.get("solver")
         if solver is None:

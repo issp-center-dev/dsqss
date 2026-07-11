@@ -262,8 +262,10 @@ class Lattice:
         return ret, edge
 
     def save_dat(self, filename: util.Filename) -> None:
-        out = open(filename, "w", encoding="utf-8")
+        with open(filename, "w", encoding="utf-8") as out:
+            self._save_dat_impl(out)
 
+    def _save_dat_impl(self, out) -> None:
         out.write("name\n")
         out.write(f"{self.name}\n")
         out.write("\n")
@@ -305,12 +307,13 @@ class Lattice:
         out.write("# id, type, nbody, sites..., edge_flag, direction\n")
         for inter in self.ints:
             out.write(f"{inter}\n")
-        out.close()
         # end of save_dat
 
     def load_dat(self, filename: util.Filename) -> None:
-        inp = open(filename)
+        with open(filename) as inp:
+            self._load_dat_impl(inp)
 
+    def _load_dat_impl(self, inp) -> None:
         state = "waiting"
         count = 0
         self.dim = 0
@@ -428,7 +431,6 @@ class Lattice:
                     state = "waiting"
                     count = 0
         # end of for line in inp:
-        inp.close()
         self.check_all()
         self._update()
 

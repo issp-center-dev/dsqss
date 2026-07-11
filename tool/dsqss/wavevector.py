@@ -52,7 +52,10 @@ class Wavevector:
             self.ks[:, ik] = list(k)
 
     def load(self, filename: dsqss.util.Filename) -> None:
-        inp = open(filename, encoding="utf-8")
+        with open(filename, encoding="utf-8") as inp:
+            self._load_impl(inp)
+
+    def _load_impl(self, inp) -> None:
         self.dim = 0
         state = "waiting"
         for line in inp:
@@ -88,11 +91,12 @@ class Wavevector:
                 words = body.split()
                 kid = int(words[0])
                 self.ks[:, kid] = list(map(int, words[1:]))
-        inp.close()
 
     def save(self, filename: dsqss.util.Filename) -> None:
-        out = open(filename, "w", encoding="utf-8")
+        with open(filename, "w", encoding="utf-8") as out:
+            self._save_impl(out)
 
+    def _save_impl(self, out) -> None:
         out.write("dim\n{0}\n".format(self.dim))
         out.write("\n")
 
@@ -103,7 +107,6 @@ class Wavevector:
             for k in self.ks[:, ik]:
                 out.write(" {0}".format(k))
             out.write("\n")
-        out.close()
 
     def write_xml(self, filename: dsqss.util.Filename, lat: dsqss.lattice.Lattice):
         tagged = dsqss.util.tagged

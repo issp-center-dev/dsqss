@@ -329,7 +329,7 @@ class AlgInteraction:
         midstates = [list(states[0]), list(states[1])]
         midstates[intau][insite] = instate
 
-        incomeindex = 100000  # very large integer
+        incomeindex = -1  # set when the incoming channel is found below
         probs = []
         outlegs = []
         outstates = []
@@ -362,6 +362,7 @@ class AlgInteraction:
                     incomeindex = len(probs) - 1
         if len(probs) == 0:
             return None
+        assert incomeindex >= 0, "incoming channel not found among candidates"
         W = self.kernel(probs)[incomeindex, :]
         channels = [
             Channel(outleg=outleg, state=outstate, prob=p)
