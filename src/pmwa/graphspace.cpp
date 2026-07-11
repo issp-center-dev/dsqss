@@ -206,14 +206,14 @@ void GraphSpace::initialev(std::string const &Eventfile_old, My_rdm *MR, int cb,
 
         new_event_L.i = xl;
         connect_before(w[(xl % V)], &(new_event_L));
-        ev.push_back(new_event_L);
+        push_event(new_event_L);
         reuse_L = &(ev.back());
         connect_after(w, &(ev.back()), xl % V);
 
         if (new_event_L.type == 2) {
           new_event_R.i = xr;
           connect_before(w[(xr % V)], &(new_event_R));
-          ev.push_back(new_event_R);
+          push_event(new_event_R);
           reuse_R = &(ev.back());
           connect_after(w, &(ev.back()), xr % V);
 
@@ -670,6 +670,19 @@ void GraphSpace::insert(Vertex *v, short new_type, double new_time, int x,
     Renew_Vertex(v, new_type, new_time, x, p, d);
 }
 
+GraphSpace::Vertex &GraphSpace::push_event(const Vertex &new_event) {
+  if (ev.size() >= static_cast<size_t>(IMAX)) {
+    cout << "ERROR: rank " << my_rank
+         << ": the number of vertices reached nvermax (=" << IMAX
+         << "). Growing the event buffer would invalidate all worldline "
+            "links. Increase nvermax."
+         << endl;
+    exit(1);
+  }
+  ev.push_back(new_event);
+  return ev.back();
+}
+
 void GraphSpace::insert_NewEvent(Vertex *v, int new_type, double new_time,
                                  int xx, int px, int d) {
   Vertex new_event;
@@ -679,7 +692,7 @@ void GraphSpace::insert_NewEvent(Vertex *v, int new_type, double new_time,
   new_event.i = xx + d * V;
   new_event.p = px;
 
-  ev.push_back(new_event);
+  push_event(new_event);
 
   relink(v, &(ev.back()), v->next[1]);
 }
@@ -808,6 +821,13 @@ void GraphSpace::parity_check(My_rdm *MR, int py, double *x, int &j,
   double Ia = Il * P->rh_even;
 
   j = (Ia == 0.0) ? 0 : NumberOfVertex(MR, Ia, py);
+
+  if (j > WMAX) {
+    cout << "ERROR: rank " << my_rank
+         << ": the number of worms in a segment (=" << j
+         << ") exceeds nwormax (=" << WMAX << "). Increase nwormax." << endl;
+    exit(1);
+  }
 
   if (j != 0) {
     if (Il <= (j + 1) * NMIN) {
