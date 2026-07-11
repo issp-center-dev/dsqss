@@ -14,7 +14,6 @@
 #include <string>
 
 #include <boost/lexical_cast.hpp>
-#include <boost/math/special_functions/fpclassify.hpp>
 
 #include "../common/read_keyvalues.h"
 #include "debug.hpp"
@@ -129,7 +128,7 @@ void Parameter::readfile(std::string const& filename) {
   deprecated_parameter(dict, "ntherm", "nmcsd");
 
   BETA = lexical_cast<double>(dict["beta"]);
-  if (boost::math::isinf(BETA) || BETA <= 0.0) {
+  if (std::isinf(BETA) || BETA <= 0.0) {
     util::ERROR("\"beta\" is not specified or invalid.");
   }
 
