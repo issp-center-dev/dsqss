@@ -1,0 +1,45 @@
+<Hamiltonian>
+  <General>
+    <Comment> mixed S=1/2 and S=1 test </Comment>
+    <NSTYPE> 2 </NSTYPE>
+    <NITYPE> 1 </NITYPE>
+    <NXMAX>  3 </NXMAX>
+  </General>
+  <Site>
+    <STYPE> 0 </STYPE>
+    <TTYPE> 0 </TTYPE>
+    <NX>   2 </NX>
+    <LocalStates> -0.5 0.5 </LocalStates>
+  </Site>
+  <Site>
+    <STYPE> 1 </STYPE>
+    <TTYPE> 1 </TTYPE>
+    <NX>   3 </NX>
+    <LocalStates> -1 0 1 </LocalStates>
+  </Site>
+  <Source>
+    <TTYPE> 0 </TTYPE>
+    <STYPE> 0 </STYPE>
+    <Weight> 0 1 0.5 </Weight>
+    <Weight> 1 0 0.5 </Weight>
+  </Source>
+  <Source>
+    <TTYPE> 1 </TTYPE>
+    <STYPE> 1 </STYPE>
+    <Weight> 0 1 0.7071067811865475 </Weight>
+    <Weight> 1 0 0.7071067811865475 </Weight>
+    <Weight> 1 2 0.7071067811865475 </Weight>
+    <Weight> 2 1 0.7071067811865475 </Weight>
+  </Source>
+  <Interaction>
+    <ITYPE> 0 </ITYPE>
+    <NBODY> 2 </NBODY>
+    <STYPE> 0 1 </STYPE>
+    <Weight> 0 0 0 0 0.5 </Weight>
+    <Weight> 0 0 1 1 0.25 </Weight>
+    <Weight> 1 1 0 0 0.25 </Weight>
+    <Weight> 0 1 1 0 0.35355339 </Weight>
+    <Weight> 1 0 0 1 0.35355339 </Weight>
+    <Weight> 1 1 2 2 0.5 </Weight>
+  </Interaction>
+</Hamiltonian>

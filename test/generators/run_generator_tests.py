@@ -30,11 +30,13 @@ CASES = [
     ("sf_1d8.xml", "sfgene", ["1", "8", "10", "10", "0"]),
 ]
 
-# dla_alg consumes hamiltonian files produced above
+# dla_alg consumes hamiltonian files produced above (or, for
+# hand-written inputs such as the mixed-spin case, copied from data/)
 ALG_CASES = [
     ("algorithm_H_M1.xml", "ham_H_M1.xml"),
     ("algorithm_H_M2.xml", "ham_H_M2.xml"),
     ("algorithm_B_M2.xml", "ham_B_M2.xml"),
+    ("algorithm_mixed.xml", "ham_mixed.xml"),
 ]
 
 
@@ -69,6 +71,8 @@ def main():
         check(golden, out)
 
     for golden, hamfile in ALG_CASES:
+        if not os.path.exists(hamfile):
+            shutil.copy(os.path.join(datadir, hamfile), hamfile)
         cmd = [os.path.join(bindir, "dla_alg_old"), hamfile, golden]
         r = subprocess.run(cmd, stdout=subprocess.DEVNULL)
         if r.returncode != 0:

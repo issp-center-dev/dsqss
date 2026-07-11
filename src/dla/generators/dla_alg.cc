@@ -37,15 +37,27 @@ int main(int argc, char** argv) {
     const std::string& name = B.getName();
     if (name == "Site") {
       int id = B["STYPE"].getInteger();
+      if (id < 0 || id >= NSTYPE) {
+        printf("ERROR: STYPE %d is out of range [0, %d)\n", id, NSTYPE);
+        exit(1);
+      }
       Site[id].load(B);
       //      Site[id].dump();
     } else if (name == "Source") {
       int id = B["TTYPE"].getInteger();
+      if (id < 0 || id >= NSTYPE) {
+        printf("ERROR: TTYPE %d is out of range [0, %d)\n", id, NSTYPE);
+        exit(1);
+      }
       Source[id].load(B);
       //      Source[id].dump();
       //      Vertex[Source[id].VTYPE].dump();
     } else if (name == "Interaction") {
       int id = B["ITYPE"].getInteger();
+      if (id < 0 || id >= NITYPE) {
+        printf("ERROR: ITYPE %d is out of range [0, %d)\n", id, NITYPE);
+        exit(1);
+      }
       Interaction[id].load(B);
       //      Interaction[id].dump();
       //      Vertex[Interaction[id].VTYPE].dump();
@@ -174,7 +186,11 @@ void SITE::SetInitialHeadTypeProbability() {
   WormCreationDirection.set_all(DIR::UNDEF);
   WormCreationProbability.init(2, NXMAX, 2 * NXMAX);
   WormCreationProbability.set_all(0.0);
-  NumberOfChannels = new int[NX];
+  // Diagonal worm-vertex states run over 0..NXMAX-1 even when this
+  // site has NX < NXMAX states; allocating NX entries overflowed the
+  // heap for mixed-spin Hamiltonians. Zero-initialize so states
+  // without an initial configuration report zero channels.
+  NumberOfChannels = new int[NXMAX]();
   VERTEX& V = Vertex[VTYPE];
   for (int i = 0; i < V.NICG; i++) {
     InitialConfigurationGroup& icg = V.ICG(i);
@@ -854,14 +870,21 @@ double InitialConfigurationGroup::ebase() {
     for (int i = 0; i < NIC; i++) {
       if (!IC[i].isKink()) {
         double wt = IC[i].worm_weight();
-        if (fabs(ww) > EPS && fabs(wt) > EPS && wt != ww) {
+        if (fabs(wt) <= EPS) continue;  // carries no weight information
+        if (fabs(ww) > EPS && wt != ww) {
           printf("InitialConfigurationGroup::ebase> Error.\n");
           printf("  The worm weights of non-kinks are not equal.\n");
           dump();
-          exit(0);
+          exit(1);
         }
-        ww = IC[i].worm_weight();
+        ww = wt;
       }
+    }
+    if (fabs(ww) <= EPS) {
+      printf("InitialConfigurationGroup::ebase> Error.\n");
+      printf("  All non-kink worm weights vanish; cannot normalize EBASE.\n");
+      dump();
+      exit(1);
     }
     eb /= ww;
   }
@@ -1161,8 +1184,11 @@ void SolveWeightEquation(int N, Array<double>& V, Array<double>& W) {
   int N_first;   // the number of the largest elements
   int N_second;  // the number of the second largest
 
-  // First three (unique) weights and indices
-  while (V[1] > EPS) {
+  // First three (unique) weights and indices.
+  // N == 1 must skip the loop: V[1] would read past the end of the
+  // array, and a single state can only scatter into itself (handled
+  // by the W(0,0) += V[0] terminal step below).
+  while (N > 1 && V[1] > EPS) {
     V_first = V[0];
     for (p = 0; p < N; p++)
       if (V[p] != V_first) break;
