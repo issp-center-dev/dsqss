@@ -24,8 +24,13 @@ Filename = Union[str, bytes, os.PathLike]
 
 
 def LOG_IMPL(
-    msg: str, typ: str, to_be_continued: bool, linebreak: bool, file: TextIO
+    msg: str, typ: str, to_be_continued: bool, linebreak: bool,
+    file: Optional[TextIO],
 ) -> None:
+    # file=None resolves to sys.stderr at call time; binding it as a
+    # default argument would freeze the stream captured at import time
+    if file is None:
+        file = sys.stderr
     print(f"{typ}: {msg}\n", file=file)
     if linebreak:
         print("\n", file=file)
@@ -33,11 +38,11 @@ def LOG_IMPL(
         sys.exit(1)
 
 
-def INFO(msg: str, linebreak: bool = True, file: TextIO = sys.stderr) -> None:
+def INFO(msg: str, linebreak: bool = True, file: Optional[TextIO] = None) -> None:
     LOG_IMPL(msg, "INFO", linebreak=linebreak, to_be_continued=True, file=file)
 
 
-def WARN(msg: str, linebreak: bool = True, file: TextIO = sys.stderr) -> None:
+def WARN(msg: str, linebreak: bool = True, file: Optional[TextIO] = None) -> None:
     LOG_IMPL(msg, "WARN", linebreak=linebreak, to_be_continued=True, file=file)
 
 
@@ -45,12 +50,11 @@ def ERROR(
     msg: str,
     to_be_continued: bool = False,
     linebreak: bool = True,
-    file: TextIO = sys.stderr,
+    file: Optional[TextIO] = None,
 ):
     LOG_IMPL(
         msg, "ERROR", linebreak=linebreak, to_be_continued=to_be_continued, file=file
     )
-    pass
 
 
 def extend_list(lst: List, N: int) -> List:

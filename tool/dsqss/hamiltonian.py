@@ -223,21 +223,37 @@ class Hamiltonian:
         sites: List[Optional[Site]] = [None for i in range(self.nstypes)]
         for site in ham_dict["sites"]:
             S = Site(site)
+            if not 0 <= S.id < self.nstypes:
+                raise RuntimeError(
+                    f"site type {S.id} is out of range: "
+                    f"site types must cover 0..{self.nstypes - 1}"
+                )
             sites[S.id] = S
-        for site in sites:
+        for i, site in enumerate(sites):
             if site is None:
-                raise RuntimeError("")
+                raise RuntimeError(
+                    f"site type {i} is not defined: "
+                    f"site types must cover 0..{self.nstypes - 1} without gaps"
+                )
         self.sites = typing.cast(List[Site], sites)
 
         self.nitypes = len(ham_dict["interactions"])
         interactions: List[Optional[Interaction]] = [None for i in range(self.nitypes)]
         for inter in ham_dict["interactions"]:
             Int = Interaction(inter)
+            if not 0 <= Int.id < self.nitypes:
+                raise RuntimeError(
+                    f"interaction type {Int.id} is out of range: interaction "
+                    f"types must cover 0..{self.nitypes - 1}"
+                )
             interactions[Int.id] = Int
 
-        for inter in interactions:
+        for i, inter in enumerate(interactions):
             if inter is None:
-                raise RuntimeError("")
+                raise RuntimeError(
+                    f"interaction type {i} is not defined: interaction types "
+                    f"must cover 0..{self.nitypes - 1} without gaps"
+                )
         self.interactions = typing.cast(List[Interaction], interactions)
 
         self.nxmax = 0

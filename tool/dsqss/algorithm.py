@@ -233,6 +233,12 @@ class AlgInteraction:
 
         self.hamint = hamint
         self.sites = [hamsites[stype] for stype in hamint.stypes]
+        for stype, site in zip(hamint.stypes, self.sites):
+            if site.N < 1:
+                raise ValueError(
+                    f"site type {stype} in interaction {hamint.itype} has no "
+                    f"states (N={site.N}); each site needs at least one state"
+                )
         self.sitesources = [deepcopy(site.sources) for site in self.sites]
         self.intelements = deepcopy(hamint.elements)
         self.ebase_negsign = float("inf")
@@ -323,7 +329,7 @@ class AlgInteraction:
         midstates = [list(states[0]), list(states[1])]
         midstates[intau][insite] = instate
 
-        incomeindex = 100000  # very large integer
+        incomeindex = -1  # set when the incoming channel is found below
         probs = []
         outlegs = []
         outstates = []
@@ -356,6 +362,7 @@ class AlgInteraction:
                     incomeindex = len(probs) - 1
         if len(probs) == 0:
             return None
+        assert incomeindex >= 0, "incoming channel not found among candidates"
         W = self.kernel(probs)[incomeindex, :]
         channels = [
             Channel(outleg=outleg, state=outstate, prob=p)
