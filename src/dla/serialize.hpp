@@ -17,6 +17,8 @@
 #ifndef SRC_DLA_SERIALIZE_HPP_
 #define SRC_DLA_SERIALIZE_HPP_
 
+#include <cstdio>
+#include <cstdlib>
 #include <cstring>
 
 #include <fstream>
@@ -33,6 +35,12 @@ void save(std::ofstream& ofs, const T& val) {
 template <class T>
 void load(std::ifstream& ifs, T& val) {
   ifs.read(reinterpret_cast<char*>(&val), sizeof(T));
+  if (!ifs) {
+    std::fprintf(stderr,
+                 "ERROR: failed to read a value from the checkpoint file "
+                 "(truncated or corrupted).\n");
+    std::exit(1);
+  }
 }
 template <class T>
 T load(std::ifstream& ifs) {

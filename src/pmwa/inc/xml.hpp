@@ -69,7 +69,7 @@ class FileReader {
   }
 
   std::string &word(int i) {
-    if (i < 0 && i >= NW) {
+    if (i < 0 || i >= NW) {
       printf("FileReader::word> Error.\n");
       exit(0);
     }

@@ -767,20 +767,29 @@ void VertexInitialConfiguration::initialize(XML::Block& X) {  // <initialconfig>
   INC = X["IncomingDirection"].getInteger();
   XINC = X["NewState"].getInteger();
   NCH = X["NumberOfChannels"].getInteger();
+  if (NCH < 1) {
+    printf("VertexInitialConfiguration::initialize> Error.\n");
+    printf("  NumberOfChannels (=%d) must be positive.\n", NCH);
+    exit(1);
+  }
 
-  MCH = 4;
+  MCH = NCH;
   CH.init("VCH", 1, MCH);
 
   int ch = 0;
   for (int i = 0; i < X.NumberOfBlocks(); i++) {
     XML::Block& B = X[i];
-    if (B.getName() == "Channel") CH[ch++].initialize(B);
+    if (B.getName() == "Channel") {
+      if (ch < MCH) CH[ch].initialize(B);
+      ch++;
+    }
   }
 
   if (ch != NCH) {
-    printf("SiteInitialConfiguration::initialize> Error.\n");
+    printf("VertexInitialConfiguration::initialize> Error.\n");
     printf("  The actual number of channels (=%d)\n", ch);
     printf("  does not agree with NCH (=%d)\n", NCH);
+    exit(1);
   }
 }
 

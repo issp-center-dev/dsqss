@@ -1,5 +1,7 @@
 #include <lattice.hpp>
 
+#include "mpi.h"
+
 namespace ARRAY {
 int EOL = -1;
 }
@@ -450,6 +452,17 @@ void Lattice::make_Parallel(Parallel *_PR) {
       PR->Ntdiv *
       PR->Nsdiv;  // the number of decompositions (non-trivial parallelization).
   PR->Npara = PR->p_num / PR->NtNs;  // the number of trivial parallelization.
+
+  if (PR->Npara < 1 || PR->p_num % PR->NtNs != 0) {
+    if (PR->my_rank == 0) {
+      std::cerr << "ERROR: the number of MPI processes (" << PR->p_num
+                << ") must be a positive multiple of the number of domains "
+                   "(NLdiv^d * NBdiv = "
+                << PR->NtNs << " for this lattice file)." << std::endl;
+    }
+    MPI_Finalize();
+    exit(1);
+  }
 
   PR->nt =
       PR->my_rank % PR->Ntdiv;  // the temporal domain number for the processor.

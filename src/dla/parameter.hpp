@@ -136,6 +136,9 @@ void Parameter::readfile(std::string const& filename) {
   NMCS = lexical_cast<int>(dict["nmcs"]);
   NTHERM = lexical_cast<int>(dict["ntherm"]);
   NPRE = lexical_cast<int>(dict["npre"]);
+  if (NPRE < 1) {
+    util::ERROR("\"npre\" must be a positive integer.");
+  }
   if (dict.find("ndecor") != dict.end()) {
     NDECOR = lexical_cast<int>(dict["ndecor"]);
   } else {
@@ -210,7 +213,7 @@ void Parameter::init(std::map<std::string, std::string>& dict) {
   dict["seed"] = "198212240";
   dict["nvermax"] = "10000";
   dict["nsegmax"] = "10000";
-  dict["ntau"] = 10;
+  dict["ntau"] = "10";
   dict["algfile"] = "algorithm.xml";
   dict["latfile"] = "lattice.xml";
   dict["wvfile"] = "wavevector.xml";

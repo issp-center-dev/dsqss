@@ -565,8 +565,10 @@ inline bool BareVertex::isTail() const {
 //======================================================================
 
 inline int BareVertex::which(Segment& s) {
-  int i;
-  for (i = 0; i < 4; i++) {
+  // NLEG() is 2 for terminal vertices and 2*NBODY otherwise; a fixed
+  // bound of 4 read past _s for terminals and missed legs for NBODY > 2.
+  const int nleg = NLEG();
+  for (int i = 0; i < nleg; i++) {
     if (_s[i] == &s) return i;
   }
   printf("BareVertex::which> ERROR. No such segment.\n");

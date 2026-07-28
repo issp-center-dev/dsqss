@@ -145,7 +145,7 @@ class FileReader {
   }
 
   std::string& word(int i) {
-    if (i < 0 && i >= NW) {
+    if (i < 0 || i >= NW) {
       std::string msg("FileReader::word> Invalid index ");
       msg += tostring(i);
       throw std::runtime_error(msg);
