@@ -1,10 +1,15 @@
-cmake_minimum_required(VERSION 2.8.12...3.20.2 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.1...3.20.2 FATAL_ERROR)
 project(DSQSS NONE)
 set(DSQSS_VERSION 2.1-dev)
 
 message(STATUS "CMake version: " ${CMAKE_VERSION})
 
-set(CMAKE_CXX_FLAGS_DEBUG "-g -fsanitize=address -fomit-frame-pointer")
+# AddressSanitizer needs the frame pointer kept for usable stack traces
+set(CMAKE_CXX_FLAGS_DEBUG "-g -fsanitize=address -fno-omit-frame-pointer")
+set(CMAKE_EXE_LINKER_FLAGS_DEBUG "-fsanitize=address")
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if(CONFIG)    
   message(STATUS "Loading configration: " ${PROJECT_SOURCE_DIR}/config/${CONFIG}.cmake)
@@ -23,6 +28,10 @@ option(Document "Build HTML document" OFF)
 option(USE_SYSTEM_BOOST "use Boost installed in system" OFF)
 
 enable_language(C CXX)
+
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+  add_compile_options(-Wall)
+endif()
 
 set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 set(CMAKE_SKIP_BUILD_RPATH FALSE)
