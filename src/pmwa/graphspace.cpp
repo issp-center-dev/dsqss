@@ -192,28 +192,39 @@ void GraphSpace::initialev(std::string const &Eventfile_old, My_rdm *MR, int cb,
       fin >> Ncyc;
       for (int i = 0; i < V; i++) fin >> world[i].p >> worldB[i].p;
 
-      while (!fin.eof()) {
-        fin >> dummy >> new_event_L.t >> new_event_L.type >> new_event_L.p >>
-            xl;
-        if (new_event_L.type == 2)
-          fin >> dummy >> new_event_R.t >> new_event_R.type >> new_event_R.p >>
-              xr;
+      // Loop on successful extraction: testing eof() before reading
+      // injected one extra bogus event built from failed extractions.
+      while (fin >> dummy >> new_event_L.t >> new_event_L.type >>
+             new_event_L.p >> xl) {
+        if (new_event_L.type == 2) {
+          if (!(fin >> dummy >> new_event_R.t >> new_event_R.type >>
+                new_event_R.p >> xr)) {
+            if (PR->my_rank == 0) {
+              cerr << "ERROR: event file is truncated: a two-site vertex "
+                      "is missing its partner record."
+                   << endl;
+            }
+            fin.close();
+            MPI_Finalize();
+            exit(1);
+          }
+        }
 
         if (PR->FlgAnneal) {
           new_event_L.t *= B / oldB;
-          new_event_R.t *= B / oldB;
+          if (new_event_L.type == 2) new_event_R.t *= B / oldB;
         }
 
         new_event_L.i = xl;
         connect_before(w[(xl % V)], &(new_event_L));
-        ev.push_back(new_event_L);
+        push_event(new_event_L);
         reuse_L = &(ev.back());
         connect_after(w, &(ev.back()), xl % V);
 
         if (new_event_L.type == 2) {
           new_event_R.i = xr;
           connect_before(w[(xr % V)], &(new_event_R));
-          ev.push_back(new_event_R);
+          push_event(new_event_R);
           reuse_R = &(ev.back());
           connect_after(w, &(ev.back()), xr % V);
 
@@ -329,6 +340,11 @@ void GraphSpace::Output(std::string const &fname, My_rdm *MR) {
     i++;
   }
 
+  file.flush();
+  if (!file) {
+    cerr << "ERROR: rank " << my_rank << ": failed to write event file "
+         << fname << endl;
+  }
   file.close();
 
   std::string rndfile("RND");
@@ -670,6 +686,19 @@ void GraphSpace::insert(Vertex *v, short new_type, double new_time, int x,
     Renew_Vertex(v, new_type, new_time, x, p, d);
 }
 
+GraphSpace::Vertex &GraphSpace::push_event(const Vertex &new_event) {
+  if (ev.size() >= static_cast<size_t>(IMAX)) {
+    cout << "ERROR: rank " << my_rank
+         << ": the number of vertices reached nvermax (=" << IMAX
+         << "). Growing the event buffer would invalidate all worldline "
+            "links. Increase nvermax."
+         << endl;
+    exit(1);
+  }
+  ev.push_back(new_event);
+  return ev.back();
+}
+
 void GraphSpace::insert_NewEvent(Vertex *v, int new_type, double new_time,
                                  int xx, int px, int d) {
   Vertex new_event;
@@ -679,7 +708,7 @@ void GraphSpace::insert_NewEvent(Vertex *v, int new_type, double new_time,
   new_event.i = xx + d * V;
   new_event.p = px;
 
-  ev.push_back(new_event);
+  push_event(new_event);
 
   relink(v, &(ev.back()), v->next[1]);
 }
@@ -809,6 +838,13 @@ void GraphSpace::parity_check(My_rdm *MR, int py, double *x, int &j,
 
   j = (Ia == 0.0) ? 0 : NumberOfVertex(MR, Ia, py);
 
+  if (j > WMAX) {
+    cout << "ERROR: rank " << my_rank
+         << ": the number of worms in a segment (=" << j
+         << ") exceeds nwormax (=" << WMAX << "). Increase nwormax." << endl;
+    exit(1);
+  }
+
   if (j != 0) {
     if (Il <= (j + 1) * NMIN) {
       if (PR->my_rank == 0)
@@ -841,7 +877,10 @@ int GraphSpace::NumberOfVertex(My_rdm *MR, double m, int py) {
   double R = MR->rdm();
   double POW, EXP;
   POW = (n) ? m : 1.0;
-  int FAC = 1;
+  // FAC accumulates the double factorial of n; as an int it overflowed
+  // (undefined behavior) around n = 20, corrupting the distribution and
+  // potentially never satisfying the exit condition.
+  double FAC = 1.0;
   EXP = (this->*fmath[py])(m);
 
   while (1) {
@@ -852,11 +891,16 @@ int GraphSpace::NumberOfVertex(My_rdm *MR, double m, int py) {
 
     if (R < Pn / EXP) {
       return n;
-    } else {
-      n += 2;
-      fn = n;
-      POW *= m * m;
     }
+    if (pos == 0.0) {
+      // The series terms have underflowed: the remaining tail mass is
+      // not representable, so R cannot be reached anymore. Return the
+      // current n instead of looping forever.
+      return n;
+    }
+    n += 2;
+    fn = n;
+    POW *= m * m;
   }
 }
 

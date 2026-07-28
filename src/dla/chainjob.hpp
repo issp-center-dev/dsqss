@@ -18,6 +18,7 @@
 #define SRC_DLA_CHAINJOB_HPP_
 
 // BINARY FILE
+#include <cstdio>
 #include <cstring>
 #include <fstream>
 #include <map>
@@ -49,7 +50,11 @@ void Simulation::BinaryIO() {
 
 void Simulation::save() {
   using Serialize::save;
-  cjobout.open(CJOBFILE.c_str(), std::ios::out | std::ios::binary);
+  // Write to a temporary file and rename over the previous checkpoint
+  // only after a successful write, so that a crash during save() cannot
+  // destroy the only existing checkpoint.
+  const std::string tmpfile = CJOBFILE + ".tmp";
+  cjobout.open(tmpfile.c_str(), std::ios::out | std::ios::binary);
 
   save(cjobout, isEnd);
   save(cjobout, P.NCYC);
@@ -155,7 +160,19 @@ void Simulation::save() {
   cf.save(cjobout);
   ck.save(cjobout);
 
+  cjobout.flush();
+  if (!cjobout) {
+    std::cout << "ERROR: failed to write checkpoint file " << tmpfile
+              << "; keeping the previous checkpoint." << std::endl;
+    cjobout.close();
+    std::remove(tmpfile.c_str());
+    return;
+  }
   cjobout.close();
+  if (std::rename(tmpfile.c_str(), CJOBFILE.c_str()) != 0) {
+    std::cout << "ERROR: failed to replace checkpoint file " << CJOBFILE
+              << std::endl;
+  }
 }
 
 void Simulation::load() {
@@ -174,7 +191,6 @@ void Simulation::load() {
                  "setting Ncycle"
               << std::endl;
     cjobin.close();
-    cjobout.open(CJOBFILE.c_str(), std::ios::out | std::ios::binary);
     end_cjob();
   }
 
@@ -250,8 +266,13 @@ void Simulation::load() {
       }
       for (int leg = 0; leg < NLEG_; leg++) {
         int SID_ = load<int>(cjobin);
-        Segment *findingS = (oldID_S.find(SID_))->second;
-        V.setS(leg, (*findingS));
+        std::map<int, Segment *>::iterator sit = oldID_S.find(SID_);
+        if (sit == oldID_S.end()) {
+          std::cout << "ERROR: broken checkpoint (unknown segment ID " << SID_
+                    << ")." << std::endl;
+          end_job();
+        }
+        V.setS(leg, *(sit->second));
       }
       ++NVER_count;
     }
@@ -278,8 +299,13 @@ void Simulation::load() {
     int NLEG_ = load<int>(cjobin);
     for (int leg = 0; leg < NLEG_; leg++) {
       int SID_ = load<int>(cjobin);
-      Segment *findingS = (oldID_S.find(SID_))->second;
-      V.setS(leg, (*findingS));
+      std::map<int, Segment *>::iterator sit = oldID_S.find(SID_);
+      if (sit == oldID_S.end()) {
+        std::cout << "ERROR: broken checkpoint (unknown segment ID " << SID_
+                  << ")." << std::endl;
+        end_job();
+      }
+      V.setS(leg, *(sit->second));
     }
     ++NVER_count;
   }  // terminal vertices
@@ -295,10 +321,16 @@ void Simulation::load() {
       Segment &S = *itp;
       int VID_0 = (newID2V.find(S.id())->second).first;
       int VID_1 = (newID2V.find(S.id())->second).second;
-      Vertex *V0 = (oldID_V.find(VID_0))->second;
-      Vertex *V1 = (oldID_V.find(VID_1))->second;
-      S.BareSegment::setBottom((*V0));
-      S.BareSegment::setTop((*V1));
+      std::map<int, Vertex *>::iterator vit0 = oldID_V.find(VID_0);
+      std::map<int, Vertex *>::iterator vit1 = oldID_V.find(VID_1);
+      if (vit0 == oldID_V.end() || vit1 == oldID_V.end()) {
+        std::cout << "ERROR: broken checkpoint (unknown vertex ID "
+                  << (vit0 == oldID_V.end() ? VID_0 : VID_1) << ")."
+                  << std::endl;
+        end_job();
+      }
+      S.BareSegment::setBottom(*(vit0->second));
+      S.BareSegment::setTop(*(vit1->second));
     }
   }
 
@@ -320,9 +352,11 @@ void Simulation::load() {
 
 void Simulation::end_cjob() {
   cjobout.close();
-  cjobout.open(CJOBFILE.c_str(), std::ios::out | std::ios::binary);  // reset
+  const std::string tmpfile = CJOBFILE + ".tmp";
+  cjobout.open(tmpfile.c_str(), std::ios::out | std::ios::binary);  // reset
   Serialize::save(cjobout, isEnd);
   cjobout.close();
+  std::rename(tmpfile.c_str(), CJOBFILE.c_str());
   std::cout << "Save checkpoint file and stop the simulation." << std::endl;
   end_job();
 }

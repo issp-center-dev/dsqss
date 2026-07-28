@@ -243,6 +243,10 @@ class GraphSpace {
   void insert_NewEvent(Vertex *v, int new_type, double new_time, int xx, int px,
                        int d);
 
+  // push_back into ev with a capacity check: ev must never reallocate
+  // because the worldline linked lists hold raw pointers into its buffer.
+  Vertex &push_event(const Vertex &new_event);
+
   void Renew_Vertex(Vertex *v, int new_type, double new_time, int xx, int px,
                     int d);
 

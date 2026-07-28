@@ -150,6 +150,7 @@ class Simulation {
   void save();
   void end_cjob();
   void end_job();
+  bool simtime_exceeded();
 };
 
 #endif  // DLA_HPP
