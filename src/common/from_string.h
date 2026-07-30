@@ -23,12 +23,16 @@
 #include <stdexcept>
 #include <string>
 
+#include "fpcheck.h"
+
 // Strict string-to-number conversion replacing boost::lexical_cast:
 // the whole string (after optional leading whitespace) must be
 // consumed, otherwise std::runtime_error is thrown, so inputs like
 // "12abc" are rejected instead of being silently truncated.
-// "inf" / "nan" are accepted for doubles; the parameter defaults rely
-// on from_string<double>("inf") returning infinity.
+// "inf" is accepted for doubles (simulationtime = INF relies on it),
+// but "nan" is rejected: a NaN sneaking in would silently pass every
+// later comparison, and it cannot be detected downstream because
+// std::isnan is unreliable under -ffast-math.
 
 template <typename T>
 T from_string(const std::string& s);
@@ -44,6 +48,10 @@ inline double from_string<double>(const std::string& s) {
   }
   if (errno == ERANGE) {
     throw std::runtime_error("from_string: out of range: \"" + s + "\"");
+  }
+  if (dsqss::is_nan(v)) {
+    throw std::runtime_error("from_string: nan is not allowed: \"" + s +
+                             "\"");
   }
   return v;
 }

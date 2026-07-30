@@ -80,13 +80,11 @@ double Dla::PMWA() {
   AutoPlog("");
   Lattice LT(latfile);
 
-  if (!std::isinf(BETA)) {
-    LT.set_beta(BETA);
-  }
+  LT.set_beta(BETA);
   PR.FlgAnneal = false;
   PR.FlgRestart = (MC.runtype == Restart);
   if (PR.FlgRestart) {
-    if (!std::isinf(oldBETA)) {
+    if (oldBETA > 0.0) {
       LT.set_oldbeta(oldBETA);
       PR.FlgAnneal = true;
       PR.FlgRestart = false;
@@ -231,6 +229,9 @@ void Dla::ReadParameterfile(int m_pnum, int m_myrank, int NP, char **PLIST) {
   MC.seed = from_string<int>(dict["seed"]);
 
   BETA = from_string<double>(dict["beta"]);
+  if (!dsqss::is_finite(BETA) || BETA <= 0.0) {
+    throw std::runtime_error("specify positive \"beta\".");
+  }
   oldBETA = from_string<double>(dict["oldbeta"]);
 
   deprecated_parameter(dict, "t", "tb");
@@ -277,8 +278,8 @@ void Dla::init_paramdict(std::map<std::string, std::string> &dict) {
   dict["nvermax"] = "100000000";
   dict["nwormax"] = "1000";
 
-  dict["beta"] = "Inf";
-  dict["oldbeta"] = "Inf";
+  dict["beta"] = "-1.0";
+  dict["oldbeta"] = "-1.0";
 
   dict["g"] = "0.2";
   dict["t"] = "1.0";

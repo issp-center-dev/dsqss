@@ -17,7 +17,6 @@
 #ifndef SRC_DLA_LATTICE_HPP_
 #define SRC_DLA_LATTICE_HPP_
 
-#include <cmath>
 #include <cstdio>
 #include <exception>
 #include <string>
@@ -111,7 +110,7 @@ inline Lattice::Lattice(Parameter const& P, Algorithm& A) : ALG(A) {
   X.initialize(P.LATFILE, "LATTICE");
   read();
 
-  if (std::isfinite(P.BETA)) {
+  if (P.BETA > 0.0) {
     setBeta(P.BETA);
   }
 
