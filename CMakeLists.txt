@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1...3.20.2 FATAL_ERROR)
 project(DSQSS NONE)
-set(DSQSS_VERSION 2.1-dev)
+set(DSQSS_VERSION 2.1.0)
 
 message(STATUS "CMake version: " ${CMAKE_VERSION})
 
@@ -24,8 +24,6 @@ option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(ENABLE_MPI "Enable MPI Parallelization" ON)
 option(Testing "Enable testing" ON)
 option(Document "Build HTML document" OFF)
-
-option(USE_SYSTEM_BOOST "use Boost installed in system" OFF)
 
 enable_language(C CXX)
 
@@ -61,14 +59,6 @@ if(ENABLE_MPI)
   endif(MPI_FOUND)
 endif(ENABLE_MPI)
 
-if(USE_SYSTEM_BOOST)
-  find_package(Boost REQUIRED)
-else(USE_SYSTEM_BOOST)
-  set(Boost_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/src/third-party/boost)
-  message(STATUS "Use bundled Boost headers (1.67)")
-endif(USE_SYSTEM_BOOST)
-message(STATUS "Boost headers: ${Boost_INCLUDE_DIRS}")
-include_directories(${Boost_INCLUDE_DIRS})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/third-party/plog)
 

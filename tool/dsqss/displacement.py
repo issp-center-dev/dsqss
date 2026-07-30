@@ -41,12 +41,12 @@ class Displacement:
             for t in range(lat.nsites):
                 dr = np.array(lat.sites[t].coord) - sr
                 for d in range(lat.dim):
-                    if lat.bc[d] == 1 and dr[d] <= -lat.size[d] // 2:
+                    if lat.bc[d] and dr[d] <= -lat.size[d] // 2:
                         dr[d] += lat.size[d]
-                    elif lat.bc[d] == 1 and dr[d] > lat.size[d] // 2:
+                    elif lat.bc[d] and dr[d] > lat.size[d] // 2:
                         dr[d] -= lat.size[d]
                 if distance_only:
-                    r = sum(map(lambda x: x * x, np.dot(lat.latvec, dr)))
+                    r = float(np.sum(np.dot(lat.latvec, dr) ** 2))
                 else:
                     r = tuple(dr)
                 if r not in rdict:

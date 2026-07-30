@@ -24,8 +24,7 @@
 #include <vector>
 #include <utility>
 
-#include <boost/unordered_map.hpp>
-#include <boost/functional/hash.hpp>
+#include <unordered_map>
 
 #include "accumulator.hpp"
 #include "debug.hpp"
@@ -38,9 +37,17 @@ struct Displacement {
   int nkinds;
 
   std::vector<int> NR;  // the number of pairs with the same dR
-  typedef boost::unordered_map<std::pair<int, int>, int,
-                               boost::hash<std::pair<int, int> > >
-      IR_type;
+  // std::hash has no specialization for std::pair; combine the two
+  // members the same way boost::hash_combine does.
+  struct PairHash {
+    std::size_t operator()(const std::pair<int, int>& p) const {
+      std::size_t seed = std::hash<int>()(p.first);
+      seed ^= std::hash<int>()(p.second) + 0x9e3779b9 + (seed << 6) +
+              (seed >> 2);
+      return seed;
+    }
+  };
+  typedef std::unordered_map<std::pair<int, int>, int, PairHash> IR_type;
   typedef IR_type::iterator IR_iterator;
   IR_type IR;
 

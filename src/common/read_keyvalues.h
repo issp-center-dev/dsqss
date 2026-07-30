@@ -22,7 +22,6 @@
 #include <exception>
 #include <map>
 #include <string>
-#include <boost/xpressive/xpressive_static.hpp>
 
 void read_keyvalues(std::map<std::string, std::string>& dict,
                     std::string const& filename);
@@ -60,32 +59,36 @@ std::map<std::string, std::string> read_keyvalues(std::string const& filename) {
 
 bool parse_kvline(std::string& key, std::string& value,
                   std::string const& line) {
-  using namespace boost::xpressive;
+  // Equivalent to the former regex pair
+  //   "^\s*(.*?)(#|$)"  (strip comment and leading whitespace)
+  //   "^(.*?)\s*=\s*(.*?)\s*$"  (split at the first '=' and trim)
+  static const char* const ws = " \t\v\f\r\n";
 
-  // same as "^\s*(.*?)(#|$)" in PCRE
-  sregex regex_filter_comment = bos >> *_s >> (s1 = -*_) >> ('#' | eos);
-
-  // same as "^(.*?)\s*=\s*(.*?)\s*$" in PCRE
-  sregex regex_keyvalue =
-      bos >> (s1 = -*_) >> *_s >> '=' >> *_s >> (s2 = -*_) >> *_s >> eos;
-  smatch what;
-
-  if (regex_search(line, what, regex_filter_comment)) {
-    if (static_cast<std::string>(what[1]).empty()) {
-      return false;
-    }
-  } else {
-    return false;
+  // strip the comment and surrounding whitespace
+  std::string body = line.substr(0, line.find('#'));
+  std::string::size_type b = body.find_first_not_of(ws);
+  if (b == std::string::npos) {
+    return false;  // blank or comment-only line
   }
+  std::string::size_type e = body.find_last_not_of(ws);
+  body = body.substr(b, e - b + 1);
 
-  if (regex_match(what[1], what, regex_keyvalue)) {
-    key = what[1];
-    value = what[2];
-  } else {
+  // split at the first '='
+  std::string::size_type eq = body.find('=');
+  if (eq == std::string::npos) {
     std::string msg("parse_kvline> ERROR: missing '=': ");
     msg += line;
     throw std::runtime_error(msg);
   }
+
+  key = body.substr(0, eq);
+  std::string::size_type ke = key.find_last_not_of(ws);
+  key = (ke == std::string::npos) ? "" : key.substr(0, ke + 1);
+
+  value = body.substr(eq + 1);
+  std::string::size_type vb = value.find_first_not_of(ws);
+  value = (vb == std::string::npos) ? "" : value.substr(vb);
+
   return true;
 }
 
