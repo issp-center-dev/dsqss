@@ -23,7 +23,6 @@
 #include <string>
 #include <set>
 
-#include <boost/math/special_functions/fpclassify.hpp>
 
 #include "debug.hpp"
 #include "io.h"
@@ -112,7 +111,7 @@ inline Lattice::Lattice(Parameter const& P, Algorithm& A) : ALG(A) {
   X.initialize(P.LATFILE, "LATTICE");
   read();
 
-  if (boost::math::isfinite(P.BETA)) {
+  if (std::isfinite(P.BETA)) {
     setBeta(P.BETA);
   }
 

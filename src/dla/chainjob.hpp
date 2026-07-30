@@ -25,7 +25,6 @@
 #include <string>
 #include <utility>
 
-#include <boost/lexical_cast.hpp>
 
 #include "../common/timer.hpp"
 #include "dla.hpp"
