@@ -1,3 +1,4 @@
+import glob
 import os
 import subprocess as sub
 import sys
@@ -28,15 +29,23 @@ def cleanup(name=""):
         ("lattice", ".xml"),
         ("wavevector", ".xml"),
         ("displacement", ".xml"),
+        ("wv", ".xml"),
+        ("dp", ".xml"),
         ("res", ".dat"),
         ("sf", ".dat"),
         ("cf", ".dat"),
         ("ck", ".dat"),
-        ("cjob.res", ".dat"),
     ]:
         fname = "{0}{1}{2}".format(prefix, name, suffix)
         if os.path.exists(fname):
             os.remove(fname)
+    # Checkpoint files (res<name>.dat.<rank>.cjob and their .tmp): a stale
+    # one left by an interrupted run would be loaded by the next dla run,
+    # which then skips the simulation instead of starting fresh.
+    for fname in glob.glob("res{0}.dat.*.cjob".format(name)) + glob.glob(
+        "res{0}.dat.*.cjob.tmp".format(name)
+    ):
+        os.remove(fname)
 
 
 def geninp(param, seed, simtime=0.0, name=""):
