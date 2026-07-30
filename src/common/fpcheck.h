@@ -17,15 +17,25 @@
 #ifndef SRC_COMMON_FPCHECK_H_
 #define SRC_COMMON_FPCHECK_H_
 
+#include <cmath>
 #include <cstdint>
 #include <cstring>
+#include <limits>
 
 // Floating-point classification via integer bit operations.
 // std::isfinite / std::isnan may be constant-folded away under
 // -ffast-math (and the default fp-model of the Intel compilers),
-// while these keep working under any compiler flags.
+// while the bit tests keep working under any compiler flags.
+// The bit layout assumes IEEE-754 binary64; on exotic platforms
+// where double is something else, fall back to the std functions
+// (the fast-math concern does not arise for those FP formats anyway).
 
 namespace dsqss {
+
+inline bool double_is_ieee754() {
+  return std::numeric_limits<double>::is_iec559 &&
+         sizeof(double) == sizeof(std::uint64_t);
+}
 
 inline std::uint64_t double_bits(double v) {
   std::uint64_t u;
@@ -35,12 +45,18 @@ inline std::uint64_t double_bits(double v) {
 
 // true iff v is neither infinite nor NaN
 inline bool is_finite(double v) {
-  return ((double_bits(v) >> 52) & 0x7ffULL) != 0x7ffULL;
+  if (double_is_ieee754()) {
+    return ((double_bits(v) >> 52) & 0x7ffULL) != 0x7ffULL;
+  }
+  return std::isfinite(v);
 }
 
 inline bool is_nan(double v) {
-  const std::uint64_t u = double_bits(v);
-  return ((u >> 52) & 0x7ffULL) == 0x7ffULL && (u & 0xfffffffffffffULL) != 0;
+  if (double_is_ieee754()) {
+    const std::uint64_t u = double_bits(v);
+    return ((u >> 52) & 0x7ffULL) == 0x7ffULL && (u & 0xfffffffffffffULL) != 0;
+  }
+  return std::isnan(v);
 }
 
 }  // namespace dsqss

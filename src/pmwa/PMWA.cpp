@@ -233,6 +233,9 @@ void Dla::ReadParameterfile(int m_pnum, int m_myrank, int NP, char **PLIST) {
     throw std::runtime_error("specify positive \"beta\".");
   }
   oldBETA = from_string<double>(dict["oldbeta"]);
+  if (!dsqss::is_finite(oldBETA)) {
+    throw std::runtime_error("specify finite \"oldbeta\".");
+  }
 
   deprecated_parameter(dict, "t", "tb");
   deprecated_parameter(dict, "u", "ub");
