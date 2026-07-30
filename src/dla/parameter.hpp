@@ -2,7 +2,6 @@
 #define SRC_DLA_PARAMETER_HPP_
 
 #include <cctype>
-#include <cmath>
 #include <cstdio>
 #include <cstring>
 
@@ -127,8 +126,8 @@ void Parameter::readfile(std::string const& filename) {
   deprecated_parameter(dict, "ntherm", "nmcsd");
 
   BETA = from_string<double>(dict["beta"]);
-  if (std::isinf(BETA) || BETA <= 0.0) {
-    util::ERROR("\"beta\" is not specified or invalid.");
+  if (!dsqss::is_finite(BETA) || BETA <= 0.0) {
+    util::ERROR("specify positive \"beta\".");
   }
 
   NMCS = from_string<int>(dict["nmcs"]);
@@ -202,7 +201,7 @@ inline Parameter::Parameter(int NP, char** PLIST) {
 
 void Parameter::init(std::map<std::string, std::string>& dict) {
   dict.clear();
-  dict["beta"] = "inf";
+  dict["beta"] = "-1.0";
   dict["nmcs"] = "1000";
   dict["nset"] = "10";
   dict["npre"] = "1000";
