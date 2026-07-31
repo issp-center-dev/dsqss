@@ -121,7 +121,7 @@
     "parameter": {
       "ntherm": 1000,
       "nset": 10,
-      "nmcs": 5000,
+      "nmcs": 20000,
       "npre": 1000,
       "ntau": 5,
       "beta": 3.0
