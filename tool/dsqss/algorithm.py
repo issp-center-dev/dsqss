@@ -247,7 +247,10 @@ class AlgInteraction:
 
         sumw = 0.0
         maxd = -float("inf")
-        maxo = -float("inf")
+        # off-diagonal weights are absolute values, so 0.0 is the identity of
+        # max(); -inf would leak into ebase_extra (and EBASE) when the
+        # interaction has no off-diagonal elements and a constant diagonal
+        maxo = 0.0
         for elem, v in self.intelements.items():
             v = -v
             if elem[0] == elem[1]:
