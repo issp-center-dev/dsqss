@@ -61,10 +61,10 @@ def version_from_cmakelists(root: str) -> str:
 
 
 def _shorten(githash: str) -> str:
-    m = re.fullmatch(r"([0-9a-f]{%d,})(-dirty)?" % HASH_LENGTH, githash.strip())
-    if m is None:
+    githash = githash.strip()
+    if re.fullmatch(r"[0-9a-f]{%d,}" % HASH_LENGTH, githash) is None:
         return UNKNOWN
-    return m.group(1)[:HASH_LENGTH] + (m.group(2) or "")
+    return githash[:HASH_LENGTH]
 
 
 def _git(root: str, *args: str) -> Optional[str]:
@@ -86,27 +86,25 @@ def _git(root: str, *args: str) -> Optional[str]:
 def git_hash_from_source(root: str) -> str:
     """Commit hash of the source tree
 
-    It is that of HEAD in a git repository, and that of the commit which the
-    tarball was made from in a tarball. "-dirty" follows it if files under the
-    version control have changes which are not committed.
+    It is that of HEAD in a git repository, followed by "-dirty" if files
+    under the version control have changes which are not committed.
+    In a tarball, it is that of the commit which the tarball was made from,
+    which "git archive" fills in .git_archival.txt.
     """
     if os.path.exists(os.path.join(root, ".git")):
-        githash = _git(root, "rev-parse", "HEAD")
-        if githash is None:
+        githash = _shorten(_git(root, "rev-parse", "HEAD") or "")
+        if githash == UNKNOWN:
             return UNKNOWN
         if _git(root, "status", "--porcelain", "--untracked-files=no"):
             githash += "-dirty"
-        return _shorten(githash)
+        return githash
 
-    for filename in (".git_hash", ".git_archival.txt"):
-        try:
-            with open(os.path.join(root, filename), encoding="utf_8") as f:
-                githash = _shorten(f.readline())
-        except OSError:
-            continue
-        if githash != UNKNOWN:
-            return githash
-    return UNKNOWN
+    try:
+        with open(os.path.join(root, ".git_archival.txt"), encoding="utf_8") as f:
+            # "$Format:%H$" is left if it is not filled in
+            return _shorten(f.readline())
+    except OSError:
+        return UNKNOWN
 
 
 def _installed_version() -> str:

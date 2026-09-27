@@ -7,12 +7,13 @@
 # The commit hash is the first 8 digits of
 #   - the hash of HEAD, in a git repository
 #   - the hash of the commit which the tarball was made from, in a tarball
-#     (.git_hash written by make_archive.sh, or .git_archival.txt filled in by
-#     "git archive", which makes the tarballs of GitHub)
+#     (.git_archival.txt filled in by "git archive", which make_archive.sh and
+#     GitHub make the tarballs by)
 #   - "unknown", otherwise
 # followed by "-dirty" if files under the version control have changes which
-# are not committed, as "v2.1.0 (7b79e710-dirty)". Files which are not under
-# the version control are not taken into account, as "git describe --dirty".
+# are not committed in the repository, as "v2.1.0 (7b79e710-dirty)". Files
+# which are not under the version control are not taken into account, as
+# "git describe --dirty".
 
 # dsqss_normalize_version(<variable>)
 #
@@ -64,20 +65,13 @@ function(dsqss_get_git_hash source_dir var)
         set(dirty "-dirty")
       endif()
     endif()
-  else()
-    foreach(filename .git_hash .git_archival.txt)
-      if(NOT hash AND EXISTS "${source_dir}/${filename}")
-        file(STRINGS "${source_dir}/${filename}" lines LIMIT_COUNT 1)
-        string(STRIP "${lines}" hash)
-        # .git_archival.txt which is not filled in has "$Format:%H$"
-        if(hash MATCHES "^([0-9a-f]+)(-dirty)?$")
-          set(hash "${CMAKE_MATCH_1}")
-          set(dirty "${CMAKE_MATCH_2}")
-        else()
-          set(hash "")
-        endif()
-      endif()
-    endforeach()
+  elseif(EXISTS "${source_dir}/.git_archival.txt")
+    file(STRINGS "${source_dir}/.git_archival.txt" lines LIMIT_COUNT 1)
+    string(STRIP "${lines}" hash)
+    # "$Format:%H$" is left if it is not filled in
+    if(NOT hash MATCHES "^[0-9a-f]+$")
+      set(hash "")
+    endif()
   endif()
 
   string(LENGTH "${hash}" length)

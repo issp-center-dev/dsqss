@@ -16,15 +16,14 @@ if [ ! -d $ROOT_DIR/.git ]; then
   exit 1
 fi
 
-res=0
-type git-archive-all >/dev/null 2>&1 || res=1
-if [ $res -eq 1 ]; then
-  echo "ERROR: git-archive-all is not installed"
+if [ -z "$(git archive -h 2>&1 | grep -e '--add-file')" ]; then
+  echo "ERROR: git is too old (git archive --add-file is not available)"
   exit 1
 fi
 
 cd $ROOT_DIR
 rm -rf build-doc
+rm -f DSQSS_jp.pdf DSQSS_en.pdf
 mkdir build-doc
 cd build-doc
 cmake -DDocument=ON ../
@@ -34,22 +33,25 @@ for lang in jp en; do
 done
 cd $ROOT_DIR
 
+for lang in jp en; do
+  if [ ! -f DSQSS_${lang}.pdf ]; then
+    echo "ERROR: failed to build the manual (DSQSS_${lang}.pdf)"
+    exit 1
+  fi
+done
 
-git submodule update -i -r
 
-# commit hash for the version information of the programs built from the tarball
-githash=$(git rev-parse HEAD)
+# The tarball is made from HEAD. The commit hash is filled in .git_archival.txt
+# (export-subst in .gitattributes) for the version information of the programs
+# built from the tarball.
 if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
-  echo "WARNING: there are changes which are not committed"
-  githash="${githash}-dirty"
+  echo "WARNING: changes which are not committed are not included in the tarball"
 fi
-echo ${githash} > .git_hash
 
-git-archive-all \
-  --prefix=DSQSS-${version} \
-  --extra=.git_hash \
-  --extra=DSQSS_jp.pdf \
-  --extra=DSQSS_en.pdf \
-  DSQSS-${version}.tar.gz
-
-rm -f .git_hash
+git archive \
+  --format=tar.gz \
+  --prefix=DSQSS-${version}/ \
+  --add-file=DSQSS_jp.pdf \
+  --add-file=DSQSS_en.pdf \
+  -o DSQSS-${version}.tar.gz \
+  HEAD

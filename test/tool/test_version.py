@@ -49,11 +49,6 @@ def test_version_from_cmakelists_without_file(tmp_path):
 HASH = "0123456789abcdef0123456789abcdef01234567"
 
 
-def test_git_hash_from_git_hash_file(tmp_path):
-    (tmp_path / ".git_hash").write_text(HASH + "\n")
-    assert version.git_hash_from_source(str(tmp_path)) == "01234567"
-
-
 def test_git_hash_from_archival_file(tmp_path):
     (tmp_path / ".git_archival.txt").write_text(HASH + "\n")
     assert version.git_hash_from_source(str(tmp_path)) == "01234567"
@@ -64,27 +59,16 @@ def test_git_hash_from_archival_file_not_filled_in(tmp_path):
     assert version.git_hash_from_source(str(tmp_path)) == "unknown"
 
 
-def test_git_hash_file_precedes_archival_file(tmp_path):
-    (tmp_path / ".git_hash").write_text(HASH + "\n")
-    (tmp_path / ".git_archival.txt").write_text("$Format:%H$\n")
-    assert version.git_hash_from_source(str(tmp_path)) == "01234567"
-
-
-def test_git_hash_from_git_hash_file_of_dirty_tree(tmp_path):
-    (tmp_path / ".git_hash").write_text(HASH + "-dirty\n")
-    assert version.git_hash_from_source(str(tmp_path)) == "01234567-dirty"
-
-
 def test_git_hash_without_information(tmp_path):
     assert version.git_hash_from_source(str(tmp_path)) == "unknown"
 
 
 @pytest.mark.parametrize(
     "content",
-    ["", "0123456\n", "not a hash\n", "0123456g\n", "0123456-dirty\n", "-dirty\n"],
+    ["", "0123456\n", "not a hash\n", "0123456g\n", HASH + "-dirty\n"],
 )
 def test_git_hash_from_broken_file(tmp_path, content):
-    (tmp_path / ".git_hash").write_text(content)
+    (tmp_path / ".git_archival.txt").write_text(content)
     assert version.git_hash_from_source(str(tmp_path)) == "unknown"
 
 
@@ -116,8 +100,8 @@ def make_repository(root):
 
 def test_git_hash_from_repository(tmp_path):
     make_repository(tmp_path)
-    # the files for a tarball are not used in a repository
-    (tmp_path / ".git_hash").write_text(HASH + "\n")
+    # the file for a tarball is not used in a repository
+    (tmp_path / ".git_archival.txt").write_text(HASH + "\n")
 
     head = subprocess.check_output(
         ["git", "rev-parse", "HEAD"], cwd=str(tmp_path), universal_newlines=True
