@@ -241,6 +241,10 @@ class AlgInteraction:
                 )
         self.sitesources = [deepcopy(site.sources) for site in self.sites]
         self.intelements = deepcopy(hamint.elements)
+        # diagonal elements which are not listed are zero; make them explicit
+        # so that they take part in the energy shift
+        for st in product(*map(lambda site: range(site.N), self.sites)):
+            self.intelements.setdefault(dsqss.hamiltonian.keystate(st, st), 0.0)
         self.ebase_negsign = float("inf")
 
         self.signs = {}
@@ -272,14 +276,8 @@ class AlgInteraction:
         for st in product(*map(lambda site: range(site.N), self.sites)):
             ndiag += 1
             k = dsqss.hamiltonian.keystate(st, st)
-            if k in self.intelements:
-                self.intelements[k] += self.ebase_negsign
-                sumw += self.intelements[k]
-            else:
-                dsqss.hamiltonian.append_matelem(
-                    self.intelements, state=st, value=self.ebase_negsign
-                )
-                sumw += self.intelements[k]
+            self.intelements[k] += self.ebase_negsign
+            sumw += self.intelements[k]
         self.ebase_nobounce = max((2 * maxo - sumw) / ndiag, 0.0)
 
         self.ebase_extra = ebase_extra

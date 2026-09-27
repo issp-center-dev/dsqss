@@ -128,6 +128,57 @@ def test_algorithm_write_xml_with_empty_interaction(
     assert "nan" not in content
 
 
+# ---- diagonal elements which are not listed are zero ----
+# AlgInteraction given elements directly (not through IndeedInteraction, which
+# lists every diagonal element) has to agree with the fully listed one
+
+def _partial_elements():
+    from dsqss.hamiltonian import keystate
+
+    return {
+        "empty": {},
+        "offdiagonal only": {
+            keystate((0, 1), (1, 0)): -0.5,
+            keystate((1, 0), (0, 1)): -0.5,
+        },
+        "partial diagonal": {keystate((0, 0), (0, 0)): -1.0},
+        "partial diagonal and offdiagonal": {
+            keystate((0, 0), (0, 0)): 0.25,
+            keystate((0, 1), (1, 0)): 0.5,
+            keystate((1, 0), (0, 1)): 0.5,
+        },
+    }
+
+
+@pytest.mark.parametrize("name", _partial_elements().keys())
+def test_alginteraction_unlisted_diagonal_elements_are_zero(spin_half_ham, name):
+    elements = _partial_elements()[name]
+    hamint = types.SimpleNamespace(
+        itype=0, stypes=[0, 0], nbody=2, elements=dict(elements)
+    )
+    direct = AlgInteraction(hamint, spin_half_ham.sites)
+    listed = _alginteraction(spin_half_ham, dict(elements))
+
+    assert _ebase(direct) == pytest.approx(_ebase(listed))
+    assert direct.intelements == pytest.approx(listed.intelements)
+    assert direct.signs == listed.signs
+    assert len(direct.vertex.initialconfigurations) == len(
+        listed.vertex.initialconfigurations
+    )
+
+
+def test_alginteraction_partial_diagonal_ebase(spin_half_ham):
+    from dsqss.hamiltonian import keystate
+
+    k = keystate((0, 0), (0, 0))
+    hamint = types.SimpleNamespace(
+        itype=0, stypes=[0, 0], nbody=2, elements={k: -1.0}
+    )
+    interaction = AlgInteraction(hamint, spin_half_ham.sites)
+    assert _ebase(interaction) == 0.0
+    assert interaction.intelements == {k: pytest.approx(1.0)}
+
+
 # ---- known bug: ZeroDivisionError when a site has zero states ----
 
 def test_alginteraction_zero_states_site_raises_informative_error():
