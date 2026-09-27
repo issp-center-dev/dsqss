@@ -1,0 +1,118 @@
+# Version information of DSQSS
+#
+# The version number is set as DSQSS_VERSION in the top-level CMakeLists.txt,
+# and nowhere else. The programs print it together with the commit hash, as
+# "v2.1.0 (7b79e710)", by the --version option.
+#
+# The commit hash is the first 8 digits of
+#   - the hash of HEAD, in a git repository
+#   - the hash of the commit which the tarball was made from, in a tarball
+#     (.git_hash written by make_archive.sh, or .git_archival.txt filled in by
+#     "git archive", which makes the tarballs of GitHub)
+#   - "unknown", otherwise
+# followed by "-dirty" if files under the version control have changes which
+# are not committed, as "v2.1.0 (7b79e710-dirty)". Files which are not under
+# the version control are not taken into account, as "git describe --dirty".
+
+# dsqss_normalize_version(<variable>)
+#
+# removes the leading "v" of the version number (both 2.1.0 and v2.1.0 are
+# accepted), and checks if it is available as a version of a python package
+function(dsqss_normalize_version var)
+  string(STRIP "${${var}}" version)
+  string(REGEX REPLACE "^[vV]" "" version "${version}")
+
+  set(pre "[-_.]?(a|b|c|rc|alpha|beta|pre|preview)[-_.]?[0-9]*")
+  set(post "[-_.]?(post|rev|r)[-_.]?[0-9]*")
+  set(dev "[-_.]?dev[-_.]?[0-9]*")
+  if(NOT version MATCHES "^[0-9]+(\\.[0-9]+)*(${pre})?(${post})?(${dev})?$")
+    message(FATAL_ERROR
+      "DSQSS_VERSION \"${${var}}\" is not available as a version number.\n"
+      "It has to be numbers separated by dots, optionally followed by a suffix "
+      "of a pre-release, a post-release, or a development release, "
+      "such as 2.1.0, 2.2-rc1, and 2.2-dev (PEP 440).")
+  endif()
+  set(${var} "${version}" PARENT_SCOPE)
+endfunction()
+
+# dsqss_get_git_hash(<source directory> <variable>)
+function(dsqss_get_git_hash source_dir var)
+  set(hash "")
+  set(dirty "")
+  if(EXISTS "${source_dir}/.git")
+    if(NOT GIT_EXECUTABLE)
+      find_package(Git QUIET)
+    endif()
+    if(GIT_EXECUTABLE)
+      execute_process(
+        COMMAND "${GIT_EXECUTABLE}" rev-parse HEAD
+        WORKING_DIRECTORY "${source_dir}"
+        RESULT_VARIABLE result
+        OUTPUT_VARIABLE hash
+        ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
+      if(NOT result EQUAL 0)
+        set(hash "")
+      endif()
+
+      execute_process(
+        COMMAND "${GIT_EXECUTABLE}" status --porcelain --untracked-files=no
+        WORKING_DIRECTORY "${source_dir}"
+        RESULT_VARIABLE result
+        OUTPUT_VARIABLE changes
+        ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
+      if(result EQUAL 0 AND NOT "${changes}" STREQUAL "")
+        set(dirty "-dirty")
+      endif()
+    endif()
+  else()
+    foreach(filename .git_hash .git_archival.txt)
+      if(NOT hash AND EXISTS "${source_dir}/${filename}")
+        file(STRINGS "${source_dir}/${filename}" lines LIMIT_COUNT 1)
+        string(STRIP "${lines}" hash)
+        # .git_archival.txt which is not filled in has "$Format:%H$"
+        if(hash MATCHES "^([0-9a-f]+)(-dirty)?$")
+          set(hash "${CMAKE_MATCH_1}")
+          set(dirty "${CMAKE_MATCH_2}")
+        else()
+          set(hash "")
+        endif()
+      endif()
+    endforeach()
+  endif()
+
+  string(LENGTH "${hash}" length)
+  if(length LESS 8)
+    set(hash "unknown")
+  else()
+    string(SUBSTRING "${hash}" 0 8 hash)
+    set(hash "${hash}${dirty}")
+  endif()
+  set(${var} "${hash}" PARENT_SCOPE)
+endfunction()
+
+# dsqss_generate_version_file(<source directory> <version> <template> <output>)
+#
+# fills in @DSQSS_VERSION@, @DSQSS_GIT_HASH@, and @DSQSS_VERSION_STRING@ of
+# the template. The output is left untouched unless the content changes.
+function(dsqss_generate_version_file source_dir version template output)
+  set(DSQSS_VERSION "${version}")
+  dsqss_get_git_hash("${source_dir}" DSQSS_GIT_HASH)
+  set(DSQSS_VERSION_STRING "v${DSQSS_VERSION} (${DSQSS_GIT_HASH})")
+  configure_file("${template}" "${output}" @ONLY)
+endfunction()
+
+# dsqss_version_file_command(<variable> <template> <output>)
+#
+# gives the arguments of COMMAND to generate the file when DSQSS is built, so
+# that the commit hash follows the repository without running cmake again
+function(dsqss_version_file_command var template output)
+  set(${var}
+    "${CMAKE_COMMAND}"
+    "-DDSQSS_SOURCE_DIR=${CMAKE_SOURCE_DIR}"
+    "-DDSQSS_VERSION=${DSQSS_VERSION}"
+    "-DGIT_EXECUTABLE=${GIT_EXECUTABLE}"
+    "-DTEMPLATE=${template}"
+    "-DOUTPUT=${output}"
+    -P "${CMAKE_SOURCE_DIR}/cmake/GenerateVersionFile.cmake"
+    PARENT_SCOPE)
+endfunction()

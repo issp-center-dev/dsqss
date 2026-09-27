@@ -92,7 +92,7 @@ def main():
     parser.add_argument(
         "-o", "--output", dest="pfile", default="param.in", help="Parameter file"
     )
-    parser.add_argument("--version", action="version", version=dsqss.__version__)
+    parser.add_argument("--version", action=dsqss.VersionAction)
 
     args = parser.parse_args()
     if args.input is sys.stdin:

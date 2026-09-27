@@ -8,6 +8,7 @@ include_directories(.)
 set(dla_SOURCES dla.cc)
 
 add_executable(dla ${dla_SOURCES})
+add_dependencies(dla dsqss_version_header)
 install(TARGETS dla RUNTIME DESTINATION bin)
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Intel")

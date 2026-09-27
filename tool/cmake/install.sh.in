@@ -3,7 +3,13 @@ PREFIX=@CMAKE_INSTALL_PREFIX@
 cd @CMAKE_CURRENT_BINARY_DIR@
 
 echo "-- Installing dsqss tools to $PREFIX"
-@PYTHON_EXECUTABLE@ -m pip install --prefix=$PREFIX --no-deps @CMAKE_CURRENT_SOURCE_DIR@
+# The package staged in the build directory is installed.
+# Old versions of the build backend (poetry-core 1.4, for example) leave out
+# the files ignored by git, which the staged ones are if the build directory is
+# ignored. GIT_CEILING_DIRECTORIES keeps git from finding the repository above
+# the build directory.
+GIT_CEILING_DIRECTORIES=@CMAKE_BINARY_DIR@ \
+  @PYTHON_EXECUTABLE@ -m pip install --prefix=$PREFIX --no-deps @DSQSS_TOOL_STAGE_DIR@
 
 echo "export PATH=${PREFIX}/bin:\$PATH" > dsqssvars.sh
 

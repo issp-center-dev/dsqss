@@ -36,8 +36,20 @@ cd $ROOT_DIR
 
 
 git submodule update -i -r
+
+# commit hash for the version information of the programs built from the tarball
+githash=$(git rev-parse HEAD)
+if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
+  echo "WARNING: there are changes which are not committed"
+  githash="${githash}-dirty"
+fi
+echo ${githash} > .git_hash
+
 git-archive-all \
   --prefix=DSQSS-${version} \
+  --extra=.git_hash \
   --extra=DSQSS_jp.pdf \
   --extra=DSQSS_en.pdf \
   DSQSS-${version}.tar.gz
+
+rm -f .git_hash

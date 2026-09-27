@@ -1,6 +1,15 @@
 cmake_minimum_required(VERSION 3.1...3.20.2 FATAL_ERROR)
 project(DSQSS NONE)
+
+# The version number of DSQSS. This is the only place to set it;
+# the programs, the python package, and the manual take it from here.
 set(DSQSS_VERSION 2.1.0)
+
+include(${PROJECT_SOURCE_DIR}/cmake/DsqssVersion.cmake)
+dsqss_normalize_version(DSQSS_VERSION)
+find_package(Git QUIET)
+dsqss_get_git_hash(${PROJECT_SOURCE_DIR} DSQSS_GIT_HASH)
+message(STATUS "DSQSS version: v${DSQSS_VERSION} (${DSQSS_GIT_HASH})")
 
 message(STATUS "CMake version: " ${CMAKE_VERSION})
 
@@ -61,6 +70,23 @@ endif(ENABLE_MPI)
 
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/third-party/plog)
+
+# dsqss_version.h is generated at the configuration, and again at every build
+# to follow the commit hash of the repository
+set(DSQSS_GENERATED_INCLUDE_DIR ${CMAKE_BINARY_DIR}/generated)
+dsqss_generate_version_file(
+  ${PROJECT_SOURCE_DIR} ${DSQSS_VERSION}
+  ${PROJECT_SOURCE_DIR}/src/common/dsqss_version.h.in
+  ${DSQSS_GENERATED_INCLUDE_DIR}/dsqss_version.h)
+dsqss_version_file_command(
+  dsqss_version_header_command
+  ${PROJECT_SOURCE_DIR}/src/common/dsqss_version.h.in
+  ${DSQSS_GENERATED_INCLUDE_DIR}/dsqss_version.h)
+add_custom_target(dsqss_version_header
+  COMMAND ${dsqss_version_header_command}
+  COMMENT "Updating the version information"
+  VERBATIM)
+include_directories(${DSQSS_GENERATED_INCLUDE_DIR})
 
 set(python_version_required 3.8)
 

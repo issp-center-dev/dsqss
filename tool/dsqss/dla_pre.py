@@ -28,7 +28,7 @@ from dsqss import (
     std_model,
     util,
     wavevector,
-    __version__,
+    VersionAction,
 )
 
 
@@ -99,7 +99,7 @@ def main():
     parser.add_argument(
         "-p", "--paramfile", dest="pfile", default="param.in", help="Parameter file"
     )
-    parser.add_argument("--version", action="version", version=__version__)
+    parser.add_argument("--version", action=VersionAction)
 
     args = parser.parse_args()
     if args.input is sys.stdin:

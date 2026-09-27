@@ -12,6 +12,8 @@
 #include <fstream>
 #include <iostream>
 
+#include "../common/version.h"
+
 using namespace std;
 
 //--------------------------------------------------------------
@@ -32,6 +34,7 @@ void ShowUsage(std::string const &exename) {
   cout << "                if no, here is 0.\n";
   cout << "options:\n";
   cout << "    -o filename ... output file (default: lattice.xml)\n";
+  cout << "    --version   ... show the version\n";
 }
 
 //-------------------------------------------------------------
@@ -166,6 +169,10 @@ void WriteXML(int D, int orgL[], double orgB, double orgOB, int NLD, int NBD,
 }
 
 int main(int argc, char **argv) {
+  if (dsqss::show_version(argc, argv)) {
+    return 0;
+  }
+
   std::string exename(argv[0]);
   std::string filename("lattice.xml");
   if (argc < 3) {
