@@ -131,7 +131,7 @@ DSQSS is distributed under the GNU GPL v3.
 
 - [Boost C++ library](https://www.boost.org/) is redistributed under the Boost software license.
 - [Plog](https://github.com/SergiusTheBest/plog) is redistributed under the Mozilla Public License 2.0
-- [`FindPythonModule.cmake`](https://github.com/openturns/openturns/tree/master/cmake.FindPythonModule.cmake) is redistributed under the OSI approved BSD license.
+- [`FindPythonModule.cmake`](https://github.com/openturns/openturns/blob/master/cmake/FindPythonModule.cmake) is redistributed under the OSI approved BSD license.
 
 ## Acknowledgement
 
