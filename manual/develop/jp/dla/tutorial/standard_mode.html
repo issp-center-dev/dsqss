@@ -57,13 +57,13 @@ DSQSS/DLA のスタンダードモード使い方を学びます.</p>
 反強磁性ハイゼンベルグダイマーのファイルは以下の場所に用意されています
 (sample/dla/01_spindimer/std.toml)</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">hamiltonian</span><span class="p">]</span>
-<span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;spin&quot;</span>
+<span class="n">model</span> <span class="o">=</span> <span class="s2">"spin"</span>
 <span class="n">M</span> <span class="o">=</span>  <span class="mi">1</span>                 <span class="c1"># S=1/2</span>
 <span class="n">Jz</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>              <span class="c1"># coupling constant, negative for AF</span>
 <span class="n">Jxy</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>             <span class="c1"># coupling constant, negative for AF</span>
 <span class="n">h</span> <span class="o">=</span> <span class="mf">0.0</span>                <span class="c1"># magnetic field</span>
 <span class="p">[</span><span class="n">lattice</span><span class="p">]</span>
-<span class="n">lattice</span> <span class="o">=</span> <span class="s2">&quot;hypercubic&quot;</span> <span class="c1"># hypercubic, periodic</span>
+<span class="n">lattice</span> <span class="o">=</span> <span class="s2">"hypercubic"</span> <span class="c1"># hypercubic, periodic</span>
 <span class="n">dim</span> <span class="o">=</span> <span class="mi">1</span>                <span class="c1"># dimension</span>
 <span class="n">L</span> <span class="o">=</span> <span class="mi">2</span>                  <span class="c1"># number of sites along each direction</span>
 <span class="n">bc</span> <span class="o">=</span> <span class="n">false</span>             <span class="c1"># open boundary</span>
@@ -78,13 +78,13 @@ DSQSS/DLA のスタンダードモード使い方を学びます.</p>
 </div>
 <p>このファイルにz方向の外部磁場の印加の効果を付け加え, 格子の次元とサイトの数をそれぞれ2と4にします</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">hamiltonian</span><span class="p">]</span>
-<span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;spin&quot;</span>
+<span class="n">model</span> <span class="o">=</span> <span class="s2">"spin"</span>
 <span class="n">M</span> <span class="o">=</span>  <span class="mi">1</span>                 <span class="c1"># S=1/2</span>
 <span class="n">Jz</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>              <span class="c1"># coupling constant, negative for AF</span>
 <span class="n">Jxy</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>             <span class="c1"># coupling constant, negative for AF</span>
 <span class="n">h</span> <span class="o">=</span> <span class="mf">0.5</span>                <span class="c1"># magnetic field</span>
 <span class="p">[</span><span class="n">lattice</span><span class="p">]</span>
-<span class="n">lattice</span> <span class="o">=</span> <span class="s2">&quot;hypercubic&quot;</span> <span class="c1"># hypercubic, periodic</span>
+<span class="n">lattice</span> <span class="o">=</span> <span class="s2">"hypercubic"</span> <span class="c1"># hypercubic, periodic</span>
 <span class="n">dim</span> <span class="o">=</span> <span class="mi">2</span>                <span class="c1"># dimension</span>
 <span class="n">L</span> <span class="o">=</span> <span class="mi">4</span>                  <span class="c1"># number of sites along each direction</span>
 <span class="n">bc</span> <span class="o">=</span> <span class="n">false</span>             <span class="c1"># open boundary</span>
@@ -207,7 +207,7 @@ DSQSS/DLA のスタンダードモード使い方を学びます.</p>
 </pre></div>
 </div>
 <p>次に, kpoints.datを作成します。kpoint.datは波数ベクトルを逆格子ベクトルで展開した際の係数を指定するテキストファイルです. -sを使うことでサイズを指定できます. dla_wvgen -s に std.tomlファイルを与えます:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dla_wvgen -s &quot;8 8&quot; std.toml
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dla_wvgen -s "8 8" std.toml
 </pre></div>
 </div>
 <p>この結果, 以下の kpoints.datファイルが得られます</p>

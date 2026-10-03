@@ -80,21 +80,21 @@
 <p>入力ファイル例</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span># 1次元鎖, 8 sites
 [lattice]
-lattice = &quot;hypercubic&quot;
+lattice = "hypercubic"
 dim = 1
 L = 8
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span># 2次元正方格子, 4x4 sites
 [lattice]
-lattice = &quot;hypercubic&quot;
+lattice = "hypercubic"
 dim = 2
 L = 4
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span># 2本脚 はしご格子, 8x2 sites
 [lattice]
-lattice = &quot;hypercubic&quot;
+lattice = "hypercubic"
 dim = 2
 L = [8,2]
 bc = [true, false]
@@ -118,7 +118,7 @@ bc = [true, false]
 <p>入力ファイル例</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span># S=1/2 AF Heisenberg model
 [hamiltonian]
-model = &quot;spin&quot;
+model = "spin"
 M = 1
 Jz = -1.0
 Jxy = -1.0
@@ -126,7 +126,7 @@ Jxy = -1.0
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span># S=1 J1 AF J2 FM XY model under the field
 [hamiltonian]
-model = &quot;spin&quot;
+model = "spin"
 M = 2
 Jxy = [-1.0, 1.0]
 h = 1.0
@@ -134,7 +134,7 @@ h = 1.0
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span># hardcore boson
 [hamiltonian]
-model = &quot;boson&quot;
+model = "boson"
 M = 1
 t = 1.0
 V = 1.0
@@ -142,7 +142,7 @@ V = 1.0
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span># softcore boson (upto N=2)
 [hamiltonian]
-model = &quot;boson&quot;
+model = "boson"
 M = 2
 t = 1.0
 U = 1.0

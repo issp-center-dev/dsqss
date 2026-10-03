@@ -60,13 +60,13 @@ DSQSS/DLA の使い方を学びます.</p>
 これは単一の入力ファイルから, DSQSS/DLA  の入力ファイルを生成するPython スクリプトです.
 まず, dla_pre.py の入力ファイルとして, 次の内容を持つテキストファイル std.toml を準備します(sample/dla/01_spindimer/std.toml).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">hamiltonian</span><span class="p">]</span>
-<span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;spin&quot;</span>
+<span class="n">model</span> <span class="o">=</span> <span class="s2">"spin"</span>
 <span class="n">M</span> <span class="o">=</span>  <span class="mi">1</span>                 <span class="c1"># S=1/2</span>
 <span class="n">Jz</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>              <span class="c1"># coupling constant, negative for AF</span>
 <span class="n">Jxy</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>             <span class="c1"># coupling constant, negative for AF</span>
 <span class="n">h</span> <span class="o">=</span> <span class="mf">0.0</span>                <span class="c1"># magnetic field</span>
 <span class="p">[</span><span class="n">lattice</span><span class="p">]</span>
-<span class="n">lattice</span> <span class="o">=</span> <span class="s2">&quot;hypercubic&quot;</span> <span class="c1"># hypercubic, periodic</span>
+<span class="n">lattice</span> <span class="o">=</span> <span class="s2">"hypercubic"</span> <span class="c1"># hypercubic, periodic</span>
 <span class="n">dim</span> <span class="o">=</span> <span class="mi">1</span>                <span class="c1"># dimension</span>
 <span class="n">L</span> <span class="o">=</span> <span class="mi">2</span>                  <span class="c1"># number of sites along each direction</span>
 <span class="n">bc</span> <span class="o">=</span> <span class="n">false</span>             <span class="c1"># open boundary</span>
