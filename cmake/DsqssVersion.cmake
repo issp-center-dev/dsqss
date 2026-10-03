@@ -86,13 +86,51 @@ endfunction()
 
 # dsqss_generate_version_file(<source directory> <version> <template> <output>)
 #
-# fills in @DSQSS_VERSION@, @DSQSS_GIT_HASH@, and @DSQSS_VERSION_STRING@ of
-# the template. The output is left untouched unless the content changes.
+# fills in the references to DSQSS_VERSION, DSQSS_GIT_HASH, and
+# DSQSS_VERSION_STRING of the template. The output is left untouched unless
+# the content changes.
 function(dsqss_generate_version_file source_dir version template output)
+  # configure_file fills in a reference to a variable which is not set, or is
+  # empty, with nothing, and does not complain. Stop here instead of building
+  # programs which show an empty version.
+  if("${version}" STREQUAL "")
+    message(FATAL_ERROR "the version number is not given for ${output}")
+  endif()
+  file(READ "${template}" content)
+  # (bracket arguments, which no version of CMake expands the references in)
+  string(REGEX MATCHALL [=[@DSQSS_[A-Za-z0-9_]*@]=] references "${content}")
+  foreach(reference ${references})
+    if(NOT reference MATCHES
+        [=[^@(DSQSS_VERSION|DSQSS_GIT_HASH|DSQSS_VERSION_STRING)@$]=])
+      message(FATAL_ERROR
+        "${reference} in ${template} is not a reference to the version information")
+    endif()
+  endforeach()
+
   set(DSQSS_VERSION "${version}")
   dsqss_get_git_hash("${source_dir}" DSQSS_GIT_HASH)
   set(DSQSS_VERSION_STRING "v${DSQSS_VERSION} (${DSQSS_GIT_HASH})")
-  configure_file("${template}" "${output}" @ONLY)
+
+  set(candidate "${output}.new")
+  configure_file("${template}" "${candidate}" @ONLY)
+
+  if(EXISTS "${output}")
+    execute_process(
+      COMMAND "${CMAKE_COMMAND}" -E compare_files "${candidate}" "${output}"
+      RESULT_VARIABLE changed
+      OUTPUT_QUIET ERROR_QUIET)
+    if(changed)
+      # make which compares the time stamps by the second (GNU Make 3.81 of
+      # macOS, for example) does not compile the sources again if the output is
+      # written within the same second as the object files of the last build,
+      # and the programs keep the old version. Wait so that it gets a later one.
+      execute_process(COMMAND "${CMAKE_COMMAND}" -E sleep 1)
+      configure_file("${template}" "${output}" @ONLY)
+    endif()
+  else()
+    configure_file("${template}" "${output}" @ONLY)
+  endif()
+  file(REMOVE "${candidate}")
 endfunction()
 
 # dsqss_version_file_command(<variable> <template> <output>)
