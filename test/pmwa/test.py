@@ -1,6 +1,5 @@
 import json
 import os
-import shutil
 import subprocess as sub
 import sys
 
@@ -32,8 +31,8 @@ def cleanup(name=""):
         ("res", ".dat.0"),
         ("evout_res", ".dat.0_rank0.dat"),
         ("RNDevout_res", ".dat.0_rank0.dat"),
-        ("qmc_", ".inp"),
-        ("qmc_", ".inp.0.log"),
+        ("qmc", ".inp"),
+        ("qmc", ".inp.0.log"),
     ]:
         fname = "{0}{1}{2}".format(prefix, name, suffix)
         if os.path.exists(fname):
@@ -48,14 +47,16 @@ def genXML(param, name=""):
     # beta = param['beta']
     beta = 1.0
 
-    cmd = ["{0}/lattgene_P".format(BINDIR), str(D)]
+    # The tests share the working directory and may run in parallel, so that
+    # the lattice file is written under the name of the test from the start
+    cmd = ["{0}/lattgene_P".format(BINDIR), "-o", "lattice{0}.xml".format(name)]
+    cmd.append(str(D))
     cmd.extend(map(str, L))
     cmd.extend([str(beta), "1", "1", "0"])
 
     retval = sub.call(cmd)
     if retval != 0:
         sys.exit(retval)
-    shutil.move("lattice.xml", "lattice{0}.xml".format(name))
 
 
 def geninp(param, seed, nset=10, name=""):
