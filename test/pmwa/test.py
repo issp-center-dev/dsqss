@@ -31,8 +31,8 @@ def cleanup(name=""):
         ("res", ".dat.0"),
         ("evout_res", ".dat.0_rank0.dat"),
         ("RNDevout_res", ".dat.0_rank0.dat"),
-        ("qmc_", ".inp"),
-        ("qmc_", ".inp.0.log"),
+        ("qmc", ".inp"),
+        ("qmc", ".inp.0.log"),
     ]:
         fname = "{0}{1}{2}".format(prefix, name, suffix)
         if os.path.exists(fname):
