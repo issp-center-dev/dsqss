@@ -38,6 +38,8 @@
 <section id="requirements">
 <h2><span class="section-number">2.1. </span>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">¶</a></h2>
 <ul>
+<li><p>C++ compiler (C++11)</p></li>
+<li><p>CMake 3.2+</p></li>
 <li><p>(Optional) MPI (essential for PMWA)</p></li>
 <li><p>python 3.8+</p>
 <blockquote>
@@ -67,6 +69,7 @@
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>|-- CMakeLists.txt
 |-- LICENSE
 |-- README.md
+|-- cmake/
 |-- config/
 |-- doc/
 |-- sample/
@@ -84,7 +87,7 @@
 `-- tool/
     |-- cmake/
     |-- dsqss/
-    `-- setup.py
+    `-- pyproject.toml.in
 </pre></div>
 </div>
 </section>
@@ -144,6 +147,22 @@ Before invoke DSQSS commands, please load this file by <code class="docutils lit
 </div>
 <p>In the remaining, it is assumed that DSQSS is installed and this configuration file is loaded.</p>
 </section>
+<section id="version">
+<h2><span class="section-number">2.5. </span>Version<a class="headerlink" href="#version" title="Link to this heading">¶</a></h2>
+<p>The programs of DSQSS, including the tools such as <code class="docutils literal notranslate"><span class="pre">dla_pre</span></code> , show the version and the commit hash by the <code class="docutils literal notranslate"><span class="pre">--version</span></code> option:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dla --version
+v2.1.0 (7b79e710)
+</pre></div>
+</div>
+<p>The commit hash (the first 8 digits) tells the source from which DSQSS is built:</p>
+<ul class="simple">
+<li><p>the commit checked out when DSQSS is built from a git repository.
+It is followed by <code class="docutils literal notranslate"><span class="pre">-dirty</span></code> , as <code class="docutils literal notranslate"><span class="pre">v2.1.0</span> <span class="pre">(7b79e710-dirty)</span></code> , if files under the version control have changes which are not committed.</p></li>
+<li><p>the commit from which the archive file is made, when DSQSS is built from an archive file downloaded from GitHub.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unknown</span></code> , otherwise.</p></li>
+</ul>
+<p>Please include this output when you report a problem.</p>
+</section>
 </section>
 
 
@@ -175,6 +194,7 @@ Before invoke DSQSS commands, please load this file by <code class="docutils lit
 <li class="toctree-l2"><a class="reference internal" href="#download">2.2. Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#directory-structure">2.3. Directory structure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#install">2.4. Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version">2.5. Version</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../dla/tutorial/index.html">3. Tutorial of DSQSS/DLA</a></li>

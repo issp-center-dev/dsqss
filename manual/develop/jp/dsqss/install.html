@@ -40,6 +40,8 @@
 <h2><span class="section-number">2.1. </span>必要なライブラリ<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
 <p>DSQSSの使用には以下のプログラム・ライブラリが必要です.</p>
 <ul>
+<li><p>C++ コンパイラ (C++11 対応)</p></li>
+<li><p>CMake 3.2+</p></li>
 <li><p>(Optional) MPI (PMWAを使用する場合には必須)</p></li>
 <li><p>python 3.8+</p>
 <blockquote>
@@ -71,6 +73,7 @@
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>|-- CMakeLists.txt
 |-- LICENSE
 |-- README.md
+|-- cmake/
 |-- config/
 |-- doc/
 |-- sample/
@@ -88,7 +91,7 @@
 `-- tool/
     |-- cmake/
     |-- dsqss/
-    `-- setup.py
+    `-- pyproject.toml.in
 </pre></div>
 </div>
 </section>
@@ -143,6 +146,22 @@ DSQSS の実行前にはこのファイルを <code class="docutils literal notr
 </pre></div>
 </div>
 </section>
+<section id="id6">
+<h2><span class="section-number">2.5. </span>バージョンの確認<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h2>
+<p>DSQSS のプログラムは, <code class="docutils literal notranslate"><span class="pre">dla_pre</span></code> などの補助ツールも含めて, <code class="docutils literal notranslate"><span class="pre">--version</span></code> オプションでバージョンとコミットハッシュを表示します.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dla --version
+v2.1.0 (7b79e710)
+</pre></div>
+</div>
+<p>コミットハッシュ (先頭 8 桁) は, ビルドに使ったソースを表します.</p>
+<ul class="simple">
+<li><p>git リポジトリからビルドした場合は, ビルド時にチェックアウトしていたコミットです.
+バージョン管理下のファイルにコミットしていない変更があると, <code class="docutils literal notranslate"><span class="pre">v2.1.0</span> <span class="pre">(7b79e710-dirty)</span></code> のように <code class="docutils literal notranslate"><span class="pre">-dirty</span></code> が付きます.</p></li>
+<li><p>GitHub からダウンロードしたアーカイブファイルからビルドした場合は, アーカイブファイルの元になったコミットです.</p></li>
+<li><p>それ以外の場合は <code class="docutils literal notranslate"><span class="pre">unknown</span></code> です.</p></li>
+</ul>
+<p>不具合を報告する際には, この出力を添えてください.</p>
+</section>
 </section>
 
 
@@ -174,6 +193,7 @@ DSQSS の実行前にはこのファイルを <code class="docutils literal notr
 <li class="toctree-l2"><a class="reference internal" href="#id3">2.2. ダウンロード</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id4">2.3. フォルダ構成</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id5">2.4. インストール</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">2.5. バージョンの確認</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../dla/tutorial/index.html">3. DLAのチュートリアル</a></li>
