@@ -12,4 +12,5 @@ add_test(NAME version/generate_version_file
   COMMAND ${CMAKE_COMMAND}
     -DDSQSS_CMAKE_DIR=${PROJECT_SOURCE_DIR}/cmake
     -DWORK_DIR=${CMAKE_CURRENT_BINARY_DIR}/version
+    -DGIT_EXECUTABLE=${GIT_EXECUTABLE}
     -P ${CMAKE_CURRENT_SOURCE_DIR}/version/test_generate_version_file.cmake)
