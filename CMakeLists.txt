@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1...3.20.2 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.2...3.20.2 FATAL_ERROR)
 project(DSQSS NONE)
 
 # The version number of DSQSS. This is the only place to set it;
@@ -82,8 +82,11 @@ dsqss_version_file_command(
   dsqss_version_header_command
   ${PROJECT_SOURCE_DIR}/src/common/dsqss_version.h.in
   ${DSQSS_GENERATED_INCLUDE_DIR}/dsqss_version.h)
+# BYPRODUCTS tells Ninja that the header may change during the build, so that
+# the sources including it are compiled again in the same build
 add_custom_target(dsqss_version_header
   COMMAND ${dsqss_version_header_command}
+  BYPRODUCTS ${DSQSS_GENERATED_INCLUDE_DIR}/dsqss_version.h
   COMMENT "Updating the version information"
   VERBATIM)
 include_directories(${DSQSS_GENERATED_INCLUDE_DIR})

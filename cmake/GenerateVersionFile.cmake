@@ -5,7 +5,7 @@
 
 # A script run by "cmake -P" starts without the policies. CMake 3 then expands
 # @VAR@ in quoted arguments (the old behavior of CMP0053), for example.
-cmake_minimum_required(VERSION 3.1...3.20.2)
+cmake_minimum_required(VERSION 3.2...3.20.2)
 
 include("${CMAKE_CURRENT_LIST_DIR}/DsqssVersion.cmake")
 

@@ -28,7 +28,7 @@ DSQSS implements the path-integral Monte Carlo method with the directed loop alg
 ### prerequisite
 
 - C++ Compiler
-- CMake >=2.8.12
+- CMake >=3.2
 - Python >=3.8
   - numpy
   - scipy

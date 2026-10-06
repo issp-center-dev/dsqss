@@ -6,7 +6,7 @@
 # The references in the templates are written as bracket arguments, which no
 # version of CMake expands.
 
-cmake_minimum_required(VERSION 3.1...3.20.2)
+cmake_minimum_required(VERSION 3.2...3.20.2)
 
 set(script "${DSQSS_CMAKE_DIR}/GenerateVersionFile.cmake")
 set(source_dir "${WORK_DIR}/source")
