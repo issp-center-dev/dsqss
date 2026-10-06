@@ -7,6 +7,8 @@ How to install
 Requirements
 ********************
 
+- C++ compiler (C++11)
+- CMake 3.2+
 - (Optional) MPI (essential for PMWA)
 - python 3.8+
 
@@ -34,6 +36,7 @@ Directory structure
   |-- CMakeLists.txt
   |-- LICENSE
   |-- README.md
+  |-- cmake/
   |-- config/
   |-- doc/
   |-- sample/
@@ -51,7 +54,7 @@ Directory structure
   `-- tool/
       |-- cmake/
       |-- dsqss/
-      `-- setup.py
+      `-- pyproject.toml.in
 
 
 Install
@@ -118,3 +121,20 @@ Before invoke DSQSS commands, please load this file by ``source`` command as ::
    $ source share/dsqss/dsqssvar-VERSION.sh
 
 In the remaining, it is assumed that DSQSS is installed and this configuration file is loaded.
+
+Version
+********************
+
+The programs of DSQSS, including the tools such as ``dla_pre`` , show the version and the commit hash by the ``--version`` option::
+
+   $ dla --version
+   v2.1.0 (7b79e710)
+
+The commit hash (the first 8 digits) tells the source from which DSQSS is built:
+
+- the commit checked out when DSQSS is built from a git repository.
+  It is followed by ``-dirty`` , as ``v2.1.0 (7b79e710-dirty)`` , if files under the version control have changes which are not committed.
+- the commit from which the archive file is made, when DSQSS is built from an archive file downloaded from GitHub.
+- ``unknown`` , otherwise.
+
+Please include this output when you report a problem.

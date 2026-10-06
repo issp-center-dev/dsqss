@@ -24,6 +24,7 @@ set(python_unit_test_src
   test_wavevector
   test_algorithm
   test_pmwa_pre_unit
+  test_version
 )
 
 if(MPI_FOUND)

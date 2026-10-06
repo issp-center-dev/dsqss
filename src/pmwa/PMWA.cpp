@@ -24,6 +24,10 @@
 #include "../common/version.h"
 
 int main(int argc, char **argv) {
+  if (dsqss::show_version(argc, argv)) {
+    return 0;
+  }
+
   Dla Sim(argc, argv);
 
   Sim.PMWA();

@@ -16,6 +16,17 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
+import os
+import re
+import sys
+
+# The version number is set in the top-level CMakeLists.txt,
+# and is taken through the python package of DSQSS
+sys.path.insert(
+    0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'tool')
+)
+from dsqss.version import __version__ as dsqss_version
+
 
 # -- Project information -----------------------------------------------------
 
@@ -24,9 +35,9 @@ copyright = u'2018-, DSQSS developers'
 author = u''
 
 # The short X.Y version
-version = u'2.1'
+version = re.sub(r'^([0-9]+\.[0-9]+).*$', r'\1', dsqss_version)
 # The full version, including alpha/beta/rc tags
-release = u'2.1.0'
+release = dsqss_version
 
 
 # -- General configuration ---------------------------------------------------

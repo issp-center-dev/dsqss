@@ -19,6 +19,10 @@ install(TARGETS lattgene_P RUNTIME DESTINATION bin)
 add_executable(pmwa_H ${pmwa_SOURCES} ${pmwa_SOURCES_H})
 add_executable(pmwa_B ${pmwa_SOURCES} ${pmwa_SOURCES_B})
 
+foreach(target lattgene_P pmwa_H pmwa_B)
+  add_dependencies(${target} dsqss_version_header)
+endforeach()
+
 install(TARGETS pmwa_H RUNTIME DESTINATION bin)
 install(TARGETS pmwa_B RUNTIME DESTINATION bin)
 target_compile_definitions(pmwa_H PRIVATE MEASURE_SPIN=1)

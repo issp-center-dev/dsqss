@@ -27,4 +27,15 @@ foreach(test ${python_test_src})
     add_python_test(${test})
 endforeach(test)
 
+# "v2.1.0 (7b79e710)" or "v2.1.0 (7b79e710-dirty)";
+# the hash is of the commit at the build
+set(hex "[0-9a-f]")
+set(version_pattern
+  "^v${DSQSS_VERSION} \\((${hex}${hex}${hex}${hex}${hex}${hex}${hex}${hex}(-dirty)?|unknown)\\)\n$")
+foreach(target pmwa_H pmwa_B lattgene_P)
+  add_test(NAME "pmwa/version_${target}" COMMAND ${target} --version)
+  set_tests_properties("pmwa/version_${target}" PROPERTIES
+    PASS_REGULAR_EXPRESSION "${version_pattern}")
+endforeach()
+
 add_subdirectory(data)

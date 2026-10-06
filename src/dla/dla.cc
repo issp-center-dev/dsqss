@@ -46,6 +46,10 @@
 // ######################################################################
 
 int main(int argc, char* argv[]) {
+  if (dsqss::show_version(argc, argv)) {
+    return 0;
+  }
+
   AutoDebugDump("main");
   // MPI  Initialization & Getting Size and Rank
 #ifdef MULTI

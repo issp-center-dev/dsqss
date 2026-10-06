@@ -1,1 +1,1 @@
-__version__ = "2.1.0"
+from .version import VersionAction, __version__, git_hash, version_string

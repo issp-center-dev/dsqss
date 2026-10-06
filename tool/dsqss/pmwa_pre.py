@@ -23,7 +23,7 @@ import subprocess
 import sys
 import warnings
 
-from . import __version__
+from . import VersionAction
 from .read_keyvalues import read_keyvalues
 from .util import ERROR
 
@@ -255,7 +255,7 @@ def main():
         action="store_true",
         help="Read from standard input (overrides --input)",
     )
-    parser.add_argument("--version", action="version", version=__version__)
+    parser.add_argument("--version", action=VersionAction)
 
     args = parser.parse_args()
     if args.stdin:

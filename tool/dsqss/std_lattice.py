@@ -18,7 +18,7 @@ import typing
 from typing import Dict, Any
 
 import sys
-from dsqss import __version__
+from dsqss import VersionAction
 from dsqss import lattice
 from dsqss import util
 from dsqss.lattice_factory import honeycomb, hypercubic, kagome, triangular
@@ -72,7 +72,7 @@ def main():
     parser.add_argument(
         "-g", "--gnuplot", dest="gnuplot", default="", help="Output Gnuplot filename"
     )
-    parser.add_argument("--version", action="version", version=__version__)
+    parser.add_argument("--version", action=VersionAction)
 
     args = parser.parse_args()
     inp: Dict[str, Any]
