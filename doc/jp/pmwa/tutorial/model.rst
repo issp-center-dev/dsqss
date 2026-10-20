@@ -63,17 +63,21 @@ PMWAを実行するには,テキスト形式の入力ファイルが必要です
 PMWAではハードコアボソン系(サイトに最大1つのボソン)とS=1/2のXXZ模型について計算可能です.ハードコアボソン系のハミルトニアンは
 
 .. math::
-   {\cal H} &= -t_{b} \sum_{\langle i, j\rangle}b_i^{\dagger} b_j + U_{BB}\sum_i n_i(n_i -1)
-   +V_{B1}\sum_{\langle i, j\rangle} n_i n_j \\ 
-   &+\mu\sum_i n_i-\Gamma\sum_i(b_i^{\dagger}+b_i),
+   {\cal H} &= -t_{b} \sum_{\langle i, j\rangle}\left(b_i^{\dagger} b_j + b_j^{\dagger} b_i\right) + \frac{U_{BB}}{2}\sum_i n_i(n_i -1)
+   +V_{B1}\sum_{\langle i, j\rangle} n_i n_j \\
+   &-\mu\sum_i n_i-\Gamma\sum_i(b_i^{\dagger}+b_i),
 
-で与えられます.ここで :math:`\langle i,j \rangle` は最近接のペアを表します.
+で与えられます.ここで :math:`\langle i,j \rangle` は最近接のペアを表します
+(化学ポテンシャルの符号に注意してください. :math:`\mu` が正のときボソン数が増える向きです).
 S=1/2のXXZ模型は
 
 .. math::
    {\cal H}^{XXZ} = -J_{xy} \sum_{\langle i, j\rangle}(S_i^x S_j^x + S_i^y S_j^y)-J_z\sum_{\langle i, j\rangle}S_i^zS_j^z-H \sum_{i}S_{i}^z -\Gamma \sum_i S_i^x,
 
 で与えられます.
+ホッピング ``t`` は非負でなければなりません.
+そのため, 二部格子上の反強磁性 :math:`J_{xy} < 0` に対しては ``t`` に :math:`|J_{xy}|` を与えます (``pmwa_pre`` は自動的にそうします).
+これは一方の副格子のスピンを :math:`z` 軸まわりに :math:`\pi` 回転することに相当し, この回転により上式の横磁場 :math:`\Gamma` は元のスピン系では交替横磁場 :math:`-\Gamma \sum_i (-1)^i S_i^x` になります.
 入力ファイルで指定するパラメータと上記式のパラメータは以下のように対応しています.
 
   .. csv-table::
