@@ -49,7 +49,7 @@ First of all, prepare a text file ``std.in`` with the following contents as an i
    NTHERM = 100
    NDECOR = 100
 
-This file is located in ``sample/pmwa/1DDimer`` directory.
+A similar input file (with a smaller system size and inverse temperature) is located in ``sample/pmwa/1DHeisenberg`` directory.
 Next, type the following command:
 
 ::
@@ -77,11 +77,11 @@ Calculation can be done independently for parallel number (4 for the above examp
 Analyze calculation results
 ************************************
 
-The calculation result is written to the output file ``sample.log``.
+The calculation result is written to the output file ``sample.log.0`` (the MPI rank is appended to the name given by ``outfile``).
 The energy is obtained by typing the following command:
 ::
 
-   $ grep ene sample.log
-   R ene  = -0.5705441 0.0003774399737579577
+   $ grep ene sample.log.0
+   R ene  = -0.4671043750000001 0.003447612152966477
 
 In the case of DSQSS / PMWA, it is necessary to insert a transverse magnetic field. Therefore, please note that extrapolation is necessary to obtain the result at zero magnetic field.
