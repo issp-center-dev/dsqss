@@ -65,15 +65,21 @@ PMWA can treat the models for hard-core boson and :math:`S=1/2` XXZ system.
 The Hamiltonian for hard-core boson system is given by
 
 .. math::
-   {\cal H} &= -t_{b} \sum_{\langle i, j\rangle}b_i^{\dagger} b_j + U_{BB}\sum_i n_i(n_i -1)
-   +V_{B1}\sum_{\langle i, j\rangle} n_i n_j \\ 
-   &+\mu\sum_i n_i-\Gamma\sum_i(b_i^{\dagger}+b_i),
+   {\cal H} &= -t_{b} \sum_{\langle i, j\rangle}\left(b_i^{\dagger} b_j + b_j^{\dagger} b_i\right) + \frac{U_{BB}}{2}\sum_i n_i(n_i -1)
+   +V_{B1}\sum_{\langle i, j\rangle} n_i n_j \\
+   &-\mu\sum_i n_i-\Gamma\sum_i(b_i^{\dagger}+b_i),
 
-where :math:`\langle i,j \rangle` indicates a nearest-neighbor pair.
+where :math:`\langle i,j \rangle` indicates a nearest-neighbor pair
+(note the sign of the chemical potential: a positive :math:`\mu` favors a larger number of bosons).
 For :math:`S=1/2` XXZ model, the hamiltonian is given by
 
 .. math::
    {\cal H}^{XXZ} = -J_{xy} \sum_{\langle i, j\rangle}(S_i^x S_j^x + S_i^y S_j^y)-J_z\sum_{\langle i, j\rangle}S_i^zS_j^z-H \sum_{i}S_{i}^z -\Gamma \sum_i S_i^x.
+
+The hopping ``t`` must be non-negative.
+For an antiferromagnetic :math:`J_{xy} < 0` on a bipartite lattice, ``t`` is therefore set to :math:`|J_{xy}|` (``pmwa_pre`` does this automatically),
+which amounts to rotating the spins on one sublattice by :math:`\pi` about the :math:`z` axis.
+Under this rotation the transverse field :math:`\Gamma` of the above expression becomes a *staggered* transverse field, :math:`-\Gamma \sum_i (-1)^i S_i^x`, in the original spin frame.
 
 The parameters specified in the input file and the parameters in the above expression correspond as follows.
 
