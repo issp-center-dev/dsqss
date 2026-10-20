@@ -279,13 +279,22 @@ The real space temperature Green's function is written into a file with the name
 The real space temperature Green's function is defined as the following:
 
 .. math::
-  G(\vec{r}_{ij}, \tau) \equiv \left\langle M_i^+(\tau) M_j^- \right\rangle
+  G(\vec{r}_{ij}, \tau) \equiv \frac{1}{2} \left[
+  \left\langle M_i^+(\tau) M_j^-(0) \right\rangle
+  + \left\langle M_j^-(\tau) M_i^+(0) \right\rangle
+  \right]
 
+that is, the Green's function :math:`\left\langle M_i^+(\tau) M_j^-(0) \right\rangle` symmetrized under :math:`\tau \leftrightarrow \beta - \tau`
+(the two terms coincide when the magnetization or the particle number is zero, e.g., in zero magnetic field).
 Displacement :math:`\vec{r}_{ij}` and imaginary time :math:`\tau` are specified by the name ``C<k>t<t>`` as the same way of structure factor,
 where ``<k>`` is an index of the displacement specified by ``kind`` (the first element of each ``R`` tag) in the relative coordinate XML file,
-and ``<t>`` is an index of the discretized imaginary time.
+and ``<t>`` is an index of the discretized imaginary time, :math:`\tau = t \beta / N_\tau` with :math:`t = 0, 1, \dots, N_\tau - 1` and :math:`N_\tau` given by ``ntau``.
 
 NOTE: The current version, this works only for :math:`S=1/2` model.
+
+NOTE: For an antiferromagnetic off-diagonal coupling (:math:`J_{xy} < 0`, or :math:`t < 0`) on a bipartite lattice,
+the output has the sign of the ferromagnetic model obtained by rotating the spins on one sublattice;
+:math:`G(\vec{r}_{ij}, \tau)` for a displacement connecting the two sublattices has the opposite sign to that of the original model.
 
 Momentum space temperature Green's function output
 **************************************************
@@ -293,10 +302,15 @@ The momentum space temperature Green's function is written into a file with the 
 The momentum space temperature Green's function is defined as the following:
 
 .. math::
-  G(\vec{k}, \tau) \equiv \left\langle M^+(\vec{k},  \tau) M^-(-\vec{k}, 0) \right\rangle
+  G(\vec{k}, \tau) \equiv \frac{1}{2} \left[
+  \left\langle M^+(\vec{k},  \tau) M^-(-\vec{k}, 0) \right\rangle
+  + \left\langle M^-(-\vec{k},  \tau) M^+(\vec{k}, 0) \right\rangle
+  \right]
 
-Wave vector :math:`\vec{r}_{ij}` and imaginary time :math:`\tau` are specified by the name ``C<k>t<t>`` as the same way of structure factor,
-where ``<k>`` is an index of the displacement specified by ``kind`` (the last element of each ``RK`` tag) in the wavevector XML file,
-and ``<t>`` is an index of the discretized imaginary time.
+that is, the Fourier transform of the real space temperature Green's function above, symmetrized under :math:`\tau \leftrightarrow \beta - \tau` in the same way.
+Wave vector :math:`\vec{k}` and imaginary time :math:`\tau` are specified by the name ``C<k>t<t>`` as the same way of structure factor,
+where ``<k>`` is an index of the wave vector specified by ``kindex`` (the last element of each ``RK`` tag) in the wavevector XML file,
+and ``<t>`` is an index of the discretized imaginary time, :math:`\tau = t \beta / N_\tau` with :math:`t = 0, 1, \dots, N_\tau - 1`.
 
 NOTE: The current version, this works only for :math:`S=1/2` model.
+The remark on the sign for antiferromagnetic couplings on bipartite lattices applies here as well.

@@ -277,15 +277,25 @@ NOTICE: 一般にモンテカルロ法では, 比熱や感受率など, サン�
 このファイルには温度グリーン関数
 
 .. math::
-  G(\vec{r}_{ij}, \tau) \equiv \left\langle M_i^+(\tau) M_j^- \right\rangle
+  G(\vec{r}_{ij}, \tau) \equiv \frac{1}{2} \left[
+  \left\langle M_i^+(\tau) M_j^-(0) \right\rangle
+  + \left\langle M_j^-(\tau) M_i^+(0) \right\rangle
+  \right]
 
-が出力されます. 変位 :math:`\vec{r}_{ij}` や虚時間 :math:`\tau` の値は構造因子と同様に, 
+が出力されます. これはグリーン関数 :math:`\left\langle M_i^+(\tau) M_j^-(0) \right\rangle` を :math:`\tau \leftrightarrow \beta - \tau` について対称化したものです
+(磁化や粒子数がゼロのとき, 例えばゼロ磁場では, 二つの項は一致します).
+変位 :math:`\vec{r}_{ij}` や虚時間 :math:`\tau` の値は構造因子と同様に,
 ``C<k>t<t>`` という形で物理量名によって区別されます.
-ここで ``<k>`` は変位XML ファイルの ``kind`` (``R`` タグの第一要素) で指定される変位のインデックスで, 
-``<t>`` は離散化した虚時間のインデックス.
+ここで ``<k>`` は変位XML ファイルの ``kind`` (``R`` タグの第一要素) で指定される変位のインデックスで,
+``<t>`` は離散化した虚時間のインデックスです. 虚時間は :math:`\tau = t \beta / N_\tau` (:math:`t = 0, 1, \dots, N_\tau - 1`, :math:`N_\tau` は ``ntau`` で指定) です.
 
 NOTICE:
 現在のバージョンでは :math:`S=1/2` のモデル以外はうまく計算できません.
+
+NOTICE:
+二部格子上の反強磁性的な非対角相互作用 (:math:`J_{xy} < 0` あるいは :math:`t < 0`) の場合,
+出力は一方の副格子のスピンを回転して得られる強磁性模型での符号を持ちます.
+すなわち, 異なる副格子を結ぶ変位に対する :math:`G(\vec{r}_{ij}, \tau)` の符号は元の模型と逆になります.
 
 波数表示温度グリーン関数出力ファイル
 ****************************************
@@ -293,13 +303,17 @@ NOTICE:
 このファイルには温度グリーン関数
 
 .. math::
-  G(\vec{k}, \tau) \equiv \left\langle M^+(\vec{k},  \tau) M^-(-\vec{k}, 0) \right\rangle
+  G(\vec{k}, \tau) \equiv \frac{1}{2} \left[
+  \left\langle M^+(\vec{k},  \tau) M^-(-\vec{k}, 0) \right\rangle
+  + \left\langle M^-(-\vec{k},  \tau) M^+(\vec{k}, 0) \right\rangle
+  \right]
 
-が出力されます.
-波数 :math:`\vec{k}` や虚時間 :math:`\tau` の値は構造因子と同様に, 
+が出力されます. これは上の実空間表示温度グリーン関数のフーリエ変換で, 同様に :math:`\tau \leftrightarrow \beta - \tau` について対称化されています.
+波数 :math:`\vec{k}` や虚時間 :math:`\tau` の値は構造因子と同様に,
 ``C<k>t<t>`` という形で物理量名によって区別されます.
-ここで ``<k>`` は波数ベクトルXMLファイルの ``kindex`` (``RK`` タグの最終要素) で指定される波数のインデックスで, 
-``<t>`` は離散化した虚時間のインデックス.
+ここで ``<k>`` は波数ベクトルXMLファイルの ``kindex`` (``RK`` タグの最終要素) で指定される波数のインデックスで,
+``<t>`` は離散化した虚時間のインデックスです (:math:`\tau = t \beta / N_\tau`, :math:`t = 0, 1, \dots, N_\tau - 1`).
 
 NOTICE:
 現在のバージョンでは :math:`S=1/2` のモデル以外はうまく計算できません.
+二部格子上の反強磁性相互作用に対する符号についての注意は, ここでも同様に当てはまります.
