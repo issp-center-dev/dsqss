@@ -77,11 +77,11 @@ Calculation can be done independently for parallel number (4 for the above examp
 Analyze calculation results
 ************************************
 
-The calculation result is written to the output file ``sample.log``.
+The calculation result is written to the output file ``sample.log.0`` (the MPI rank is appended to the name given by ``outfile``).
 The energy is obtained by typing the following command:
 ::
 
-   $ grep ene sample.log
+   $ grep ene sample.log.0
    R ene  = -0.4671043750000001 0.003447612152966477
 
 In the case of DSQSS / PMWA, it is necessary to insert a transverse magnetic field. Therefore, please note that extrapolation is necessary to obtain the result at zero magnetic field.
