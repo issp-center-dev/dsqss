@@ -22,6 +22,7 @@ endforeach()
 
 set(python_test_src
   test_pmwa_restart
+  test_pmwa_pre_energy
 )
 foreach(test ${python_test_src})
     add_python_test(${test})
