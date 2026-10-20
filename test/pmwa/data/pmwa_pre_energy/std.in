@@ -1,0 +1,24 @@
+[System]
+solver = PMWA
+[Hamiltonian]
+model_type = spin
+Jxy = -1.0
+Jz = -1.0
+Gamma = 0.4
+h = 0.2
+[Lattice]
+lattice_type = square
+D = 1
+L = 6
+Beta = 4.0
+[Parameter]
+RUNTYPE = 0
+CB = 1
+SEED = 19937
+NSET = 10
+NMCS = 1000
+NPRE = 1000
+NTHERM = 1000
+NDECOR = 1000
+latfile = lattice.xml
+outfile = sample.log
